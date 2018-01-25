@@ -79,16 +79,17 @@
 
 
 
-<meta name="description" content="万物皆空 唯有音乐">
-<meta property="og:type" content="website">
-<meta property="og:title" content="CYberseERker">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="这是在一次面试中遇到的简单算法题目，个人感觉比较有意思，所以决定分享一下自己的解题思路。 开始旋转 暴力求解这个就很简单了，循环对每个数的每一位上是否有1进行统计，下面是代码。 123456789101112131415161718192021222324252627#include &amp;lt;iostream&amp;gt;#include &amp;lt;sys/time.h&amp;gt;#include &amp;lt;u">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1~n的连续整数有多少个1？">
+<meta property="og:url" content="http://yoursite.com/2018/01/25/1-N的连续整数有多少个1？/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="万物皆空 唯有音乐">
+<meta property="og:description" content="这是在一次面试中遇到的简单算法题目，个人感觉比较有意思，所以决定分享一下自己的解题思路。 开始旋转 暴力求解这个就很简单了，循环对每个数的每一位上是否有1进行统计，下面是代码。 123456789101112131415161718192021222324252627#include &amp;lt;iostream&amp;gt;#include &amp;lt;sys/time.h&amp;gt;#include &amp;lt;u">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-01-25T10:03:12.085Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CYberseERker">
-<meta name="twitter:description" content="万物皆空 唯有音乐">
+<meta name="twitter:title" content="1~n的连续整数有多少个1？">
+<meta name="twitter:description" content="这是在一次面试中遇到的简单算法题目，个人感觉比较有意思，所以决定分享一下自己的解题思路。 开始旋转 暴力求解这个就很简单了，循环对每个数的每一位上是否有1进行统计，下面是代码。 123456789101112131415161718192021222324252627#include &amp;lt;iostream&amp;gt;#include &amp;lt;sys/time.h&amp;gt;#include &amp;lt;u">
 
 
 
@@ -118,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/25/1-N的连续整数有多少个1？/"/>
 
 
 
 
 
-  <title>CYberseERker</title>
+  <title>1~n的连续整数有多少个1？ | CYberseERker</title>
   
 
 
@@ -153,8 +154,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -227,9 +227,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -259,9 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/25/1-N的连续整数有多少个1？/" itemprop="url">1~n的连续整数有多少个1？</a></h1>
+          <h1 class="post-title" itemprop="name headline">1~n的连续整数有多少个1？</h1>
         
 
         <div class="post-meta">
@@ -333,9 +331,7 @@
       
 
       
-        
-          
-            <p>这是在一次面试中遇到的简单算法题目，个人感觉比较有意思，所以决定分享一下自己的解题思路。</p>
+        <p>这是在一次面试中遇到的简单算法题目，个人感觉比较有意思，所以决定分享一下自己的解题思路。</p>
 <h3 id="开始旋转"><a href="#开始旋转" class="headerlink" title="开始旋转"></a>开始旋转</h3><hr>
 <h4 id="暴力求解"><a href="#暴力求解" class="headerlink" title="暴力求解"></a>暴力求解</h4><p>这个就很简单了，循环对每个数的每一位上是否有1进行统计，下面是代码。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;sys/time.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line"></span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    while (scanf(&quot;%d&quot;,&amp;n) != EOF) &#123;</span><br><span class="line">        long long ans = 0;</span><br><span class="line">        struct timeval start, end;</span><br><span class="line">        gettimeofday( &amp;start, NULL );</span><br><span class="line">        printf(&quot;start : %ld.%d\n&quot;, start.tv_sec, start.tv_usec);</span><br><span class="line">        </span><br><span class="line">        for (int i = 1; i &lt;= n; i++) &#123;</span><br><span class="line">            int j = i;</span><br><span class="line">            while (j) &#123;</span><br><span class="line">                if (j % 10 == 1) &#123;</span><br><span class="line">                    ans++;</span><br><span class="line">                &#125;</span><br><span class="line">                j /= 10;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        printf(&quot;%lld\n&quot;,ans);</span><br><span class="line">        gettimeofday( &amp;end, NULL );</span><br><span class="line">        printf(&quot;end   : %ld.%d\n&quot;, end.tv_sec, end.tv_usec);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -385,8 +381,6 @@ end   : 1516867103.522456
 </code></pre><p>哈哈，输出时间都在20微秒左右，应该算得上是一个比较好的方法吧。</p>
 <p>时间复杂度(log<sub>10</sub> n)<sup>3</sup></p>
 
-          
-        
       
     </div>
     
@@ -403,12 +397,12 @@ end   : 1516867103.522456
       
 
       
+      
+      
 
       
 
       
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -418,10 +412,11 @@ end   : 1516867103.522456
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -429,6 +424,20 @@ end   : 1516867103.522456
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -449,8 +458,17 @@ end   : 1516867103.522456
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -492,6 +510,22 @@ end   : 1516867103.522456
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#开始旋转"><span class="nav-number">1.</span> <span class="nav-text">开始旋转</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#暴力求解"><span class="nav-number">1.1.</span> <span class="nav-text">暴力求解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二分查找"><span class="nav-number">1.2.</span> <span class="nav-text">二分查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#排列组合"><span class="nav-number">1.3.</span> <span class="nav-text">排列组合</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -625,6 +659,10 @@ end   : 1516867103.522456
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -642,6 +680,18 @@ end   : 1516867103.522456
       <script id="dsq-count-scr" src="https://caiyuan.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/01/25/1-N的连续整数有多少个1？/';
+          this.page.identifier = '2018/01/25/1-N的连续整数有多少个1？/';
+          this.page.title = '1~n的连续整数有多少个1？';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://caiyuan.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
