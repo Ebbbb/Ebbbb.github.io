@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="这是在一次面试中遇到的简单算法题目，个人感觉比较有意思，所以决定分享一下自己的解题思路。 开始旋转 暴力求解这个就很简单了，循环对每个数的每一位上是否有1进行统计，下面是代码。 123456789101112131415161718192021222324252627#include &amp;lt;iostream&amp;gt;#include &amp;lt;sys/time.h&amp;gt;#include &amp;lt;u">
+<meta name="description" content="我自己在面试中遇到了这个题目，在面试过程中由于时间关系，自己当时只是描述了一下思路，后来我抽时间把这个思路实现了。这个过程我感觉比较有意思，所以决定分享一下。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="1~n的连续整数有多少个1？">
 <meta property="og:url" content="http://yoursite.com/2018/01/25/1-N的连续整数有多少个1？/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="这是在一次面试中遇到的简单算法题目，个人感觉比较有意思，所以决定分享一下自己的解题思路。 开始旋转 暴力求解这个就很简单了，循环对每个数的每一位上是否有1进行统计，下面是代码。 123456789101112131415161718192021222324252627#include &amp;lt;iostream&amp;gt;#include &amp;lt;sys/time.h&amp;gt;#include &amp;lt;u">
+<meta property="og:description" content="我自己在面试中遇到了这个题目，在面试过程中由于时间关系，自己当时只是描述了一下思路，后来我抽时间把这个思路实现了。这个过程我感觉比较有意思，所以决定分享一下。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-01-30T06:41:09.072Z">
+<meta property="og:updated_time" content="2018-01-30T07:16:04.131Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="1~n的连续整数有多少个1？">
-<meta name="twitter:description" content="这是在一次面试中遇到的简单算法题目，个人感觉比较有意思，所以决定分享一下自己的解题思路。 开始旋转 暴力求解这个就很简单了，循环对每个数的每一位上是否有1进行统计，下面是代码。 123456789101112131415161718192021222324252627#include &amp;lt;iostream&amp;gt;#include &amp;lt;sys/time.h&amp;gt;#include &amp;lt;u">
+<meta name="twitter:description" content="我自己在面试中遇到了这个题目，在面试过程中由于时间关系，自己当时只是描述了一下思路，后来我抽时间把这个思路实现了。这个过程我感觉比较有意思，所以决定分享一下。">
 
 
 
@@ -331,7 +331,7 @@
       
 
       
-        <p>这是在一次面试中遇到的简单算法题目，个人感觉比较有意思，所以决定分享一下自己的解题思路。</p>
+        <p>我自己在面试中遇到了这个题目，在面试过程中由于时间关系，自己当时只是描述了一下思路，后来我抽时间把这个思路实现了。这个过程我感觉比较有意思，所以决定分享一下。<br><a id="more"></a></p>
 <h3 id="开始旋转"><a href="#开始旋转" class="headerlink" title="开始旋转"></a>开始旋转</h3><hr>
 <h4 id="暴力求解"><a href="#暴力求解" class="headerlink" title="暴力求解"></a>暴力求解</h4><p>这个就很简单了，循环对每个数的每一位上是否有1进行统计，下面是代码。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">scanf</span>(<span class="string">"%d"</span>,&amp;n) != EOF) &#123;</span><br><span class="line">        <span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">start</span>, <span class="title">end</span>;</span></span><br><span class="line">        gettimeofday( &amp;start, <span class="literal">NULL</span> );</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"start : %ld.%d\n"</span>, start.tv_sec, start.tv_usec);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> j = i;</span><br><span class="line">            <span class="keyword">while</span> (j) &#123;</span><br><span class="line">                <span class="keyword">if</span> (j % <span class="number">10</span> == <span class="number">1</span>) &#123;</span><br><span class="line">                    ans++;</span><br><span class="line">                &#125;</span><br><span class="line">                j /= <span class="number">10</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%lld\n"</span>,ans);</span><br><span class="line">        gettimeofday( &amp;end, <span class="literal">NULL</span> );</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"end   : %ld.%d\n"</span>, end.tv_sec, end.tv_usec);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
