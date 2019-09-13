@@ -79,16 +79,27 @@
 
 
 
-<meta name="description" content="万物皆空 唯有音乐">
-<meta property="og:type" content="website">
-<meta property="og:title" content="CYberseERker">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="###简介1977年，R.S.Boyer和J.S.Moore发表了他们的经典论文 “A Fast String Search Algorithm”。Boyer-Moore技术展示了一种对字符串查找问题的新解决方案：它利用两种方法，使得无需检查文本中的所有字符即可查找文本变为可能。这两种方法称为启发式方法（heuristic）（即使用以前的信息来寻找解决方案的技术），它们分别是“跳过字符”和“重复模">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习Boyer-Moore算法">
+<meta property="og:url" content="http://yoursite.com/2019/09/13/学习Boyer-Moore算法/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="万物皆空 唯有音乐">
+<meta property="og:description" content="###简介1977年，R.S.Boyer和J.S.Moore发表了他们的经典论文 “A Fast String Search Algorithm”。Boyer-Moore技术展示了一种对字符串查找问题的新解决方案：它利用两种方法，使得无需检查文本中的所有字符即可查找文本变为可能。这两种方法称为启发式方法（heuristic）（即使用以前的信息来寻找解决方案的技术），它们分别是“跳过字符”和“重复模">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="https://github.com/Ebbbb/BlogResource/blob/master/boyer_moore/bm1.jpeg">
+<meta property="og:image" content="https://github.com/Ebbbb/BlogResource/blob/master/boyer_moore/bm2.png">
+<meta property="og:image" content="https://github.com/Ebbbb/BlogResource/blob/master/boyer_moore/bm3.png">
+<meta property="og:image" content="https://github.com/Ebbbb/BlogResource/blob/master/boyer_moore/bm4.png">
+<meta property="og:image" content="https://github.com/Ebbbb/BlogResource/blob/master/boyer_moore/bm5.png">
+<meta property="og:image" content="https://github.com/Ebbbb/BlogResource/blob/master/boyer_moore/bm6.png">
+<meta property="og:image" content="https://github.com/Ebbbb/BlogResource/blob/master/boyer_moore/bm7.png">
+<meta property="og:image" content="https://github.com/Ebbbb/BlogResource/blob/master/boyer_moore/bm8.png">
+<meta property="og:image" content="https://github.com/Ebbbb/BlogResource/blob/master/boyer_moore/bm9.png">
+<meta property="og:updated_time" content="2019-09-13T07:05:30.268Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CYberseERker">
-<meta name="twitter:description" content="万物皆空 唯有音乐">
+<meta name="twitter:title" content="学习Boyer-Moore算法">
+<meta name="twitter:description" content="###简介1977年，R.S.Boyer和J.S.Moore发表了他们的经典论文 “A Fast String Search Algorithm”。Boyer-Moore技术展示了一种对字符串查找问题的新解决方案：它利用两种方法，使得无需检查文本中的所有字符即可查找文本变为可能。这两种方法称为启发式方法（heuristic）（即使用以前的信息来寻找解决方案的技术），它们分别是“跳过字符”和“重复模">
+<meta name="twitter:image" content="https://github.com/Ebbbb/BlogResource/blob/master/boyer_moore/bm1.jpeg">
 
 
 
@@ -118,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/09/13/学习Boyer-Moore算法/"/>
 
 
 
 
 
-  <title>CYberseERker</title>
+  <title>学习Boyer-Moore算法 | CYberseERker</title>
   
 
 
@@ -153,8 +164,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -227,9 +237,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -259,9 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/13/学习Boyer-Moore算法/" itemprop="url">学习Boyer-Moore算法</a></h1>
+          <h1 class="post-title" itemprop="name headline">学习Boyer-Moore算法</h1>
         
 
         <div class="post-meta">
@@ -333,9 +341,7 @@
       
 
       
-        
-          
-            <p>###简介<br>1977年，R.S.Boyer和J.S.Moore发表了他们的经典论文 “A Fast String Search Algorithm”。Boyer-Moore技术展示了一种对字符串查找问题的新解决方案：它利用两种方法，使得无需检查文本中的所有字符即可查找文本变为可能。这两种方法称为启发式方法（heuristic）（即使用以前的信息来寻找解决方案的技术），它们分别是“跳过字符”和“重复模式”，也称“坏字符”和“好后缀”。现在使用的各种文本编辑器的查找功能（Ctrl+F），大多都采用Boyer-Moore算法。</p>
+        <p>###简介<br>1977年，R.S.Boyer和J.S.Moore发表了他们的经典论文 “A Fast String Search Algorithm”。Boyer-Moore技术展示了一种对字符串查找问题的新解决方案：它利用两种方法，使得无需检查文本中的所有字符即可查找文本变为可能。这两种方法称为启发式方法（heuristic）（即使用以前的信息来寻找解决方案的技术），它们分别是“跳过字符”和“重复模式”，也称“坏字符”和“好后缀”。现在使用的各种文本编辑器的查找功能（Ctrl+F），大多都采用Boyer-Moore算法。</p>
 <p>接下来我们就用J.S.Moore提供的例子来学习一下。T是文本串，P是模式串，我们的目的就是在T中找到P。这里要说明一点：这里我们是倒序比较两个字符串，如果匹配失败再根据两种启发式方法来移动模式串。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Text T : HERE IS A SIMPLE EXAMPLE</span><br><span class="line">Pattern P : EXAMPLE</span><br><span class="line">           &lt;--</span><br></pre></td></tr></table></figure>
 <p>###坏字符（Bad Character Heuristic）<br><strong>当文本 T 中的某个字符跟模式 P 的某个字符不匹配时，我们称文本 T 中的这个失配字符为坏字符。</strong></p>
@@ -385,8 +391,6 @@
 <p>####博客<br><a href="http://www.ruanyifeng.com/blog/2013/05/boyer-moore_string_search_algorithm.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2013/05/boyer-moore_string_search_algorithm.html</a><br><a href="https://www.cnblogs.com/gaochundong/p/boyer_moore_string_matching_algorithm.html" target="_blank" rel="noopener">https://www.cnblogs.com/gaochundong/p/boyer_moore_string_matching_algorithm.html</a><br><a href="https://blog.csdn.net/appleprince88/article/details/11881323" target="_blank" rel="noopener">https://blog.csdn.net/appleprince88/article/details/11881323</a></p>
 <p>####书籍<br>《程序员实用算法》</p>
 
-          
-        
       
     </div>
     
@@ -403,158 +407,28 @@
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/29/螺旋输出n阶矩阵-数字范围1-n-n/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Cai Yuan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CYberseERker">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/29/螺旋输出n阶矩阵-数字范围1-n-n/" itemprop="url">螺旋输出行列为n的数组(数字范围1-n*n)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-29T11:21:03+08:00">
-                2018-01-29
-              </time>
+              <a href="/2018/01/29/螺旋输出n阶矩阵-数字范围1-n-n/" rel="next" title="螺旋输出行列为n的数组(数字范围1-n*n)">
+                <i class="fa fa-chevron-left"></i> 螺旋输出行列为n的数组(数字范围1-n*n)
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/29/螺旋输出n阶矩阵-数字范围1-n-n/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/01/29/螺旋输出n阶矩阵-数字范围1-n-n/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/01/29/螺旋输出n阶矩阵-数字范围1-n-n/" class="leancloud_visitors" data-flag-title="螺旋输出行列为n的数组(数字范围1-n*n)">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">Visitors&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <p>这道题是从朋友的面试经历中得知的，当时闲着没事就花点时间解决了，后来换了一个角度来看问题，又发现了另一个解法。很好！这个应该写在小本本上记下来。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/29/螺旋输出n阶矩阵-数字范围1-n-n/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -564,156 +438,11 @@
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/25/1-N的连续整数有多少个1？/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Cai Yuan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CYberseERker">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/25/1-N的连续整数有多少个1？/" itemprop="url">1~n的连续整数有多少个1？</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-25T09:53:13+08:00">
-                2018-01-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/25/1-N的连续整数有多少个1？/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/01/25/1-N的连续整数有多少个1？/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/01/25/1-N的连续整数有多少个1？/" class="leancloud_visitors" data-flag-title="1~n的连续整数有多少个1？">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">Visitors&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>我自己在面试中遇到了这个题目，在面试过程中由于时间关系，自己当时只是描述了一下思路，后来我抽时间把这个思路实现了。这个过程我感觉比较有意思，所以决定分享一下。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/25/1-N的连续整数有多少个1？/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -721,6 +450,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -917,6 +660,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -934,6 +681,18 @@
       <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/09/13/学习Boyer-Moore算法/';
+          this.page.identifier = '2019/09/13/学习Boyer-Moore算法/';
+          this.page.title = '学习Boyer-Moore算法';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
