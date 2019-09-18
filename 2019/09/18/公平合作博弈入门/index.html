@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="博弈论简介　　博弈论，又称为对策论（Game Theory）、赛局理论等，既是现代数学的一个新分支，也是运筹学的一个重要学科。　　博弈论主要研究公式化了的激励结构间的相互作用，是研究具有斗争或竞争性质现象的数学理论和方法。 博弈论考虑游戏中的个体的预测行为和实际行为，并研究它们的优化策略。生物学家使用博弈理论来理解和预测进化论的某些结果。　　博弈论已经成为经济学的标准分析工具之一。在金融学、证券学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="公平合作博弈入门">
+<meta property="og:url" content="http://yoursite.com/2019/09/18/公平合作博弈入门/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="博弈论简介　　博弈论，又称为对策论（Game Theory）、赛局理论等，既是现代数学的一个新分支，也是运筹学的一个重要学科。　　博弈论主要研究公式化了的激励结构间的相互作用，是研究具有斗争或竞争性质现象的数学理论和方法。 博弈论考虑游戏中的个体的预测行为和实际行为，并研究它们的优化策略。生物学家使用博弈理论来理解和预测进化论的某些结果。　　博弈论已经成为经济学的标准分析工具之一。在金融学、证券学">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game7.png">
+<meta property="og:updated_time" content="2019-09-18T10:24:05.593Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="公平合作博弈入门">
+<meta name="twitter:description" content="博弈论简介　　博弈论，又称为对策论（Game Theory）、赛局理论等，既是现代数学的一个新分支，也是运筹学的一个重要学科。　　博弈论主要研究公式化了的激励结构间的相互作用，是研究具有斗争或竞争性质现象的数学理论和方法。 博弈论考虑游戏中的个体的预测行为和实际行为，并研究它们的优化策略。生物学家使用博弈理论来理解和预测进化论的某些结果。　　博弈论已经成为经济学的标准分析工具之一。在金融学、证券学">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/18/公平合作博弈入门/"/>
+
+
+
+
+
+  <title>公平合作博弈入门 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/18/公平合作博弈入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">公平合作博弈入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-18T18:11:27+08:00">
+                2019-09-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/18/公平合作博弈入门/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/09/18/公平合作博弈入门/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/09/18/公平合作博弈入门/" class="leancloud_visitors" data-flag-title="公平合作博弈入门">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="博弈论简介"><a href="#博弈论简介" class="headerlink" title="博弈论简介"></a>博弈论简介</h3><p>　　博弈论，又称为对策论（Game Theory）、赛局理论等，既是现代数学的一个新分支，也是运筹学的一个重要学科。<br><br>　　博弈论主要研究公式化了的激励结构间的相互作用，是研究具有斗争或竞争性质现象的数学理论和方法。 博弈论考虑游戏中的个体的预测行为和实际行为，并研究它们的优化策略。生物学家使用博弈理论来理解和预测进化论的某些结果。<br><br>　　博弈论已经成为经济学的标准分析工具之一。在金融学、证券学、生物学、经济学、国际关系、计算机科学、政治学、军事战略和其他很多学科都有广泛的应用。<br><a id="more"></a></p>
+<h3 id="巴什博弈"><a href="#巴什博弈" class="headerlink" title="巴什博弈"></a>巴什博弈</h3><h4 id="一个简单的游戏"><a href="#一个简单的游戏" class="headerlink" title="一个简单的游戏"></a>一个简单的游戏</h4><p>　　定义一个取石子的游戏规则如下：<br><br>　　(1)有两个玩家，分别记作玩家 I 和玩家 II。<br><br>　　(2)有21个石子放在桌子上。<br><br>　　(3)每个玩家一次可以取走1或2或3个石子。<br><br>　　(4)两个玩家交替进行取石子操作，由玩家 I 开始游戏。<br><br>　　(5)取走最后一个石子的玩家获胜（如果玩家没有石子可取，他就输了）。<br><br><br>　　玩家怎么做才能获胜？使用向后归纳法来分析玩家当前状态是输是赢。<br><br>　　如果玩家面临0个石子，那么他就输了。<br><br>　　如果玩家面临1、2、3个石子，那么他就赢了。<br><br>　　如果玩家面临4个石子，那么他就输了（因为他一次取不完，而剩下的石子下一个玩家可以一次取完）。<br><br>　　如果玩家面临5、6、7个石子，那么他就赢了（因为他可以留下4个石子，下一个玩家必输）。<br><br>　　…</p>
+<h4 id="必胜点和必败点"><a href="#必胜点和必败点" class="headerlink" title="必胜点和必败点"></a>必胜点和必败点</h4><p>　　假如使用N来表示必胜点，P来表示必败点。有如下规定：<br><br>　　(1)游戏的终结点使用P表示。<br><br>　　(2)对于每一个N点，至少可以有一种操作可以进入P点。<br><br>　　(3)对于每一个P点，每一种操作都只能进入N点。<br><br><br>　　假如把上面取子的规则改成{1,3,4}，会出现什么情况呢？<br><br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game1.png" alt="image"><br><br><br>　　整个序列一直在重复PNPNNNN这个模式。如果有100个石子，当前位置是必胜还是必败？<br><br>　　100 mod 7 = 2，整个模式只有 0 和 2 是必败点，所以100应该是一个必败点。</p>
+<h3 id="尼姆博弈"><a href="#尼姆博弈" class="headerlink" title="尼姆博弈"></a>尼姆博弈</h3><p>　　假如把游戏规则改一下，现在有三堆石子，每次只能操作一堆石子，可以从中拿走任意数量。这个游戏该怎么确定胜败规律呢？</p>
+<h4 id="预备分析"><a href="#预备分析" class="headerlink" title="预备分析"></a>预备分析</h4><p>　　首先可以确定的就是(0, 0, 0)作为终结点标记为P，如果是只剩下一堆的情况(0, 0, x)，x  &gt; 0，那么这是一个N点。如果剩下两堆，并且这两堆数目相同，很明显这是一个P点（比如(0, 1, 1)和(0, 2, 2)，当前玩家从一堆中拿多少个，下一个玩家就从另一堆中拿多少个）。如果剩下数目不同的两堆，那么这是一个N点。<br><br>　　如果三堆都还有石子呢？像(1, 1, 1)、(1, 1, 2)、(1, 1, 3)和(1, 2, 2)这些点明显是N点（它们可以被当前玩家操作成(0, 1,1)或者(0, 2, 2)）。接下来看一下(1, 2, 3)，这是一个P点，因为不管怎么操作它都会进入之前所发现的N点中。也许我们可以继续分析找出接下来的P点(1, 4, 5)、(2, 4, 6)，但是这样分析下去是很困难的。<br><br>　　如果继续分析下去，你们可能会发现这里也存在一种模式。</p>
+<h4 id="尼姆和"><a href="#尼姆和" class="headerlink" title="尼姆和"></a>尼姆和</h4><p>　　我们知道所有的非负整数都可以表达为二进制。<br><br>　　$x=x_m2^m+x_{m-1}2^{m-1}+…+x_12+x_0$<br><br>　　我们可以使用$(x_mx_{m-1}…x_1x_0)_2$来表示一个非负整数的二进制形式，比如$22=(10110)_2$。<br><br><br>　　<strong>定义：$(x_m…x_0)_2$和$(y_m…y_0)_2$的尼姆和可以写作$(x_m…x_0)_2⊕(y_m…y_0)_2=(z_m…z_0)_2$，对于所有的k，有$z_k=x_k+y_k  (mod  2)$。</strong><br><br><br>　　比如求一下22和51的尼姆和：<br><br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game2.png" alt="image"><br><br>　　⊕就是我们熟知的异或运算,它满足以下规律：<br><br>　　$x⊕(y⊕z)=(x⊕y)⊕z$<br><br>　　$x⊕y=y⊕x$<br><br>　　$0⊕x=x$<br><br>　　$x⊕x=0$<br><br>　　如果 $x⊕y=x⊕z$ ，就表示y=z。<br><br><br>　　<strong>定理1：在尼姆游戏的规则下，如果$(x_1,x_2,x_3)$是一个P点，当且仅当$x_1⊕x_2⊕x_3=0$。（这个定理适用于多堆石子游戏，不仅仅只对3堆有效）</strong><br><br>　　证明：<br><br>　　　　假设我们用集合X来表示尼姆和为0的点，集合Y表示其他的点。接下来我们检验一下必胜点和必败点的定义：<br><br>　　　　(1)终结点都在集合X中，终结点的定义就是任何一堆都没有石子，那么$0⊕0⊕0…. = 0$。<br><br>　　　　(2)对于所有集合Y中的点，都可以通过至少一种操作进入X。假设我们找到Y中一个点，按照二进制的形式纵向排列每一堆石子的个数（像尼姆和定义下面的举例一样），尼姆和不为0，一定是某些二进位上存在奇数个’1’，找到最左边出现奇数个’1’的一列，选取这一列有’1’的一堆进行操作，让每个二进制位的纵向排列都是偶数个’1’。<br><br>　　　　(3)对于集合X中的点，每一个操作都会进入Y。如果$(x_1,x_2,…)$是集合X中的点，如果我们将$x_1$变成$x_1^{‘}&lt;x_1$，那么我们不能证明，因为如果这个等式成立，就表示$x_1=x_1^{‘}$（不存在一个都不取得操作）。所以$x_1^{‘}⊕x_2…≠0$，这就表示$(x_1^{‘},x_2…)$不在集合X中。<br><br>　　　　以上过程说明X中的点都是P点。<br><br>　　证毕。</p>
+<h3 id="有向图博弈"><a href="#有向图博弈" class="headerlink" title="有向图博弈"></a>有向图博弈</h3><p>　　所有的取子游戏，其实都可以使用一个<strong><u>有向图</u></strong>来表示。而且接下来会讲到<strong><u>Sprague-Grundy函数</u></strong>（简称SG函数）,这个函数可以理解为PN原理的升级版，而且函数的结果也不仅仅只包含P点和N点的信息。</p>
+<h4 id="有向图"><a href="#有向图" class="headerlink" title="有向图"></a>有向图</h4><p>　　<strong>定义：一个有向图G，由一对(X, F)组成，X是一个非空点（位置）集合，F是一个函数，x 是X的元素，F(x)表示当前点 x 可能到达的后继点，F(x) ⊂ X。如果F(x)是空集，那么 x 就是终结点。</strong><br><br><br>　　举个例子，本文第一个取子游戏可表示为(X, F)，X = {0, 1, … , n}，F = {k-3, k-2, k-1}（小于0的元素忽略），对于x点可以到达的点有：F(0) = ∅，F(1) = {0}，F(2) = {0, 1} … 。<br><br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game3.png" alt="image"></p>
+<h4 id="Sprague-Grundy函数"><a href="#Sprague-Grundy函数" class="headerlink" title="Sprague-Grundy函数"></a>Sprague-Grundy函数</h4><p>　　有向图博弈可以通过PN原理来分析，而且也可以通过SG函数来分析。<br><br><br>　　<strong>定义：一个有向图(X, F)的SG函数，在有向图定义的基础上，取值是非负整数有如下公式。</strong><br><br>　　$g(x)=min \{n≥0: n≠g(y) , y∈F(x)\}$<br><br><br>　　换句话来说，g(x)是不在x的后继点的SG函数值中的非负整数。<br><br>　　接下来分析本文第一个取子游戏的SG函数，终结点0，没有后继点，g(0) = 0；点1可以到达点0，g(1) = 1；点2可以到达点1、0，g(2) = 2；点3可以到达点2、1、0，g(3) = 3；点4可以到达点3、2、1，g(4) = 0。接着分析下去：<br><br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game4.png" alt="image"><br><br>　　有没有发现SG函数与PN原理的相似之处?<br><br>　　(1)终结点的g(x) = 0。<br><br>　　(2)如果在点x处g(x) ≠ 0，那么x的后继点至少存在一个g(y) = 0。<br><br>　　(3)如果在点x处g(x) = 0, 那么所有x的后继点，g(y) ≠ 0。<br><br><br>　　注意：这里的有向图存在SG函数不允许图中存在有环的情况，而且途中所有路径必须是有限的（<strong><u>递进有限的有向图</u></strong>）。<br><br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game5.png" alt="image"></p>
+<h3 id="多个合作博弈组合"><a href="#多个合作博弈组合" class="headerlink" title="多个合作博弈组合"></a>多个合作博弈组合</h3><p>　　如果把多个合作游戏放在一起，玩家轮流操作，每次只能在一个合作游戏中按规则操作一次，如何预测玩家的胜负呢？这里就需要用上面提到的SG函数来解决了。</p>
+<h4 id="合作博弈的和"><a href="#合作博弈的和" class="headerlink" title="合作博弈的和"></a>合作博弈的和</h4><p>　　假设我们有n个递进有限的有向图$G_1=(X_1,F_1),G_2=(X_2,F_2),…,G_n=(X_n,F_n)$，它们可以组合成一个新的有向图$G=(X,F)$，它叫作$G_1,G_2,…G_n$的和，记作$G=G_1+G_2…+G_n$。集合 X 是一个笛卡尔积，$X=X_1×X_2…×X_n$，其中的元素是n个点的元组$(x_1,x_2,…,x_n)$，对于所有的$x_i∈X_i$，元素$x=(x_1,x_2,…,x_n)∈X$。F(x)存在如下等式：<br><br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game6.png" alt="image"><br><br>　　对于点中$x=(x_1,x_2,…,x_n)$，任意一个点$x_i$都可以找到它的后继点集合$F_i(x_i)$，并且x的后继点都可以在上图函数F中找到，所以 G 是有向图$G_1,…G_n$的和。<br><br>　　如果$G_i$是递进有限的，那么 G 也是递进有限的。因为点$x=(x_1,x_2,…,x_n)$的后继点的个数是所有组合有向图$x_i$的后继点个数的和。<br><br>　　尼姆博弈就可以看做三个巴什博弈的和，虽然一堆石子玩起来很简单，但是多个博弈组合起来玩也许就会很复杂了。</p>
+<h4 id="Sprague-Grundy定理"><a href="#Sprague-Grundy定理" class="headerlink" title="Sprague-Grundy定理"></a>Sprague-Grundy定理</h4><p>　　显然这个定理一定包含了SG函数，还会用到尼姆和。而且这个定理也可以起到PN原理的作用（判断当前点的胜败情况），证明过程与定理1类似。<br><br><br>　　<strong>定理2：如果$g_i$表示递进有限的有向图$G_i$的SG函数，i = 1, … , n，那么$G=G_1+G_2…+G_n$存在SG函数$g(x_1,…,x_n)=g_1(x_1)⊕g_2(x_2)…⊕g_2(x_n)$。</strong><br><br>　　证明：<br><br>　　　　假设$x=(x_1,x_2,…,x_n)$是集合X中的一点，那么存在$b=g(x_1)⊕…⊕g(x_n)$。<br><br>　　　　那么证明以下两点 g 满足SG函数的定义：<br><br>　　　　(1)对于每一个非负整数 a &lt; b, 存在 x 的后继点 y，g(y) = a。<br><br>　　　　(2)在 x 的所有后继点中，不存在 g(y) = b。<br><br>　　　　为了证明(1)，假设 d = a ⊕ b，在二进制展开d中找到最左边出现‘1’的二进位k（从右向左数），因为b &gt; a，所以 b 在第 k 位一定是’1’，又因为$b=g(x_1)⊕…⊕g(x_n)$，那么一定存在一个$g_i(x_i)$使得 b 在第 k 位是奇数个’1’，假设i = 1，那么$d⊕g_1(x_1) &lt; g_1(x_1)$，所以存在一种操作$g_1(x_1^{‘})=d⊕g_1(x_1)$，$(x_1,x_2,…,x_n)$可以通过符合规则的操作达到$(x_1^{‘},x_2,…,x_n)$。<br><br>　　　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/game/game7.png" alt="image"><br><br>　　　　最后证明(2)就比较简单了，假设$(x_1,x_2,…,x_n)$的后继点是$(x_1^{‘},x_2,…,x_n)$，如果$g_1(x_1)⊕g_2(x_2)…⊕g_n(x_n)=g_1(x_1^{‘})⊕g_2(x_2)…⊕g_n(x_n)$，那么$g_1(x_1)=g_1(x_1^{‘})$，因为$x_1^{‘}$是$x_1$的后继点，根据SG函数的定义显然$g_1(x_1)≠g_1(x_1^{‘})$。<br><br>　　证毕。<br><br><br>　　现在我们可以利用SG定理来分析多个合作博弈组合的胜负规律了。</p>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><p><strong>《GAME THEORY》 by Thomas S. Ferguson</strong></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/17/了解RSA加密/" rel="next" title="了解RSA加密">
+                <i class="fa fa-chevron-left"></i> 了解RSA加密
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/18/计算几何之凸包/" rel="prev" title="计算几何之凸包">
+                计算几何之凸包 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#博弈论简介"><span class="nav-number">1.</span> <span class="nav-text">博弈论简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#巴什博弈"><span class="nav-number">2.</span> <span class="nav-text">巴什博弈</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一个简单的游戏"><span class="nav-number">2.1.</span> <span class="nav-text">一个简单的游戏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#必胜点和必败点"><span class="nav-number">2.2.</span> <span class="nav-text">必胜点和必败点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#尼姆博弈"><span class="nav-number">3.</span> <span class="nav-text">尼姆博弈</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#预备分析"><span class="nav-number">3.1.</span> <span class="nav-text">预备分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#尼姆和"><span class="nav-number">3.2.</span> <span class="nav-text">尼姆和</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有向图博弈"><span class="nav-number">4.</span> <span class="nav-text">有向图博弈</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#有向图"><span class="nav-number">4.1.</span> <span class="nav-text">有向图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Sprague-Grundy函数"><span class="nav-number">4.2.</span> <span class="nav-text">Sprague-Grundy函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多个合作博弈组合"><span class="nav-number">5.</span> <span class="nav-text">多个合作博弈组合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#合作博弈的和"><span class="nav-number">5.1.</span> <span class="nav-text">合作博弈的和</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Sprague-Grundy定理"><span class="nav-number">5.2.</span> <span class="nav-text">Sprague-Grundy定理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文档"><span class="nav-number">6.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/09/18/公平合作博弈入门/';
+          this.page.identifier = '2019/09/18/公平合作博弈入门/';
+          this.page.title = '公平合作博弈入门';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
