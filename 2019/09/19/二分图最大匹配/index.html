@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="二分图　　二分图又称作二部图，是图论中的一种特殊模型。 设G=(V,E)是一个无向图，如果顶点V可分割为两个互不相交的子集(A,B)，并且图中的每条边（i，j）所关联的两个顶点i和j分别属于这两个不同的顶点集(i in A,j in B)，则称图G为一个二分图。　　　　切记二分图中不存在顶点数为奇数的环路，通常可以使用染色法（该方法使用两种颜色，相邻的点标记不同的颜色）来辨别二分图。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二分图最大匹配">
+<meta property="og:url" content="http://yoursite.com/2019/09/19/二分图最大匹配/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="二分图　　二分图又称作二部图，是图论中的一种特殊模型。 设G=(V,E)是一个无向图，如果顶点V可分割为两个互不相交的子集(A,B)，并且图中的每条边（i，j）所关联的两个顶点i和j分别属于这两个不同的顶点集(i in A,j in B)，则称图G为一个二分图。　　　　切记二分图中不存在顶点数为奇数的环路，通常可以使用染色法（该方法使用两种颜色，相邻的点标记不同的颜色）来辨别二分图。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi9.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi10.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi11.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi12.png">
+<meta property="og:updated_time" content="2019-09-19T10:32:00.316Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="二分图最大匹配">
+<meta name="twitter:description" content="二分图　　二分图又称作二部图，是图论中的一种特殊模型。 设G=(V,E)是一个无向图，如果顶点V可分割为两个互不相交的子集(A,B)，并且图中的每条边（i，j）所关联的两个顶点i和j分别属于这两个不同的顶点集(i in A,j in B)，则称图G为一个二分图。　　　　切记二分图中不存在顶点数为奇数的环路，通常可以使用染色法（该方法使用两种颜色，相邻的点标记不同的颜色）来辨别二分图。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/19/二分图最大匹配/"/>
+
+
+
+
+
+  <title>二分图最大匹配 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/19/二分图最大匹配/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">二分图最大匹配</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-19T18:32:00+08:00">
+                2019-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/19/二分图最大匹配/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/09/19/二分图最大匹配/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/09/19/二分图最大匹配/" class="leancloud_visitors" data-flag-title="二分图最大匹配">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="二分图"><a href="#二分图" class="headerlink" title="二分图"></a>二分图</h3><p>　　二分图又称作二部图，是图论中的一种特殊模型。 设G=(V,E)是一个无向图，如果顶点V可分割为两个互不相交的子集(A,B)，并且图中的每条边（i，j）所关联的两个顶点i和j分别属于这两个不同的顶点集(i in A,j in B)，则称图G为一个二分图。<br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi1.png" alt="image"><br>　　切记二分图中不存在顶点数为奇数的环路，通常可以使用染色法（该方法使用两种颜色，相邻的点标记不同的颜色）来辨别二分图。<br><a id="more"></a></p>
+<h3 id="匹配"><a href="#匹配" class="headerlink" title="匹配"></a>匹配</h3><p>　　二分图的“匹配”是指一些边的集合，并且任意两条边没有公共点。下图中红色标注的即为匹配边。<br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi2.png" alt="image"></p>
+<h3 id="最大匹配"><a href="#最大匹配" class="headerlink" title="最大匹配"></a>最大匹配</h3><p>　　二分图的“最大匹配”，指的是二分图的所有匹配中边数最多的匹配。</p>
+<h3 id="交替路"><a href="#交替路" class="headerlink" title="交替路"></a>交替路</h3><p>　　从一个未匹配点出发，依次经过非匹配边、匹配边、非匹配边……形成的路径叫交替路。</p>
+<h3 id="增广路"><a href="#增广路" class="headerlink" title="增广路"></a>增广路</h3><p>　　从一个未匹配点出发，走交替路到达另一个未匹配点，并且非匹配边比匹配边多一条，那么这条路径叫增广路。如果用增广路中的非匹配边代替原来的匹配边，可以使匹配数量增加一个。下图中蓝色和红色标注表示当前匹配的一条增广路。<br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi3.png" alt="image"><br>　　<strong>定理：一个匹配是最大匹配当且仅当它不存在增广路。</strong></p>
+<h3 id="匈牙利算法"><a href="#匈牙利算法" class="headerlink" title="匈牙利算法"></a>匈牙利算法</h3><p>　　匈牙利算法是一种在多项式时间内求解任务分配问题的组合优化算法，并推动了后来的原始对偶方法。美国数学家哈罗德·库恩于1955年提出该算法。此算法之所以被称作匈牙利算法，是因为算法很大一部分是基于以前匈牙利数学家Dénes Kőnig和Jenő Egerváry的工作之上创建起来的。<br>　　若P是图G中一条连通两个未匹配顶点的路径，并且属于M的边和不属于M的边（即已匹配和待匹配的边)在P上交替出现，则称P为相对于M的一条增广路径。<br>　　算法轮廓：<br>　　（1）置M为空<br>　　（2）找出一条增广路径P，通过异或操作获得更大的匹配M’代替M<br>　　（3）重复（2）操作直到找不出增广路径为止</p>
+<h4 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h4><p>　　假如一个班上有3个男生和3个女生，每个男生都有喜欢的女生（可以有多个），每个男生只会和自己喜欢的女生谈恋爱，怎么撮合最多的情侣关系？<br>　　男1喜欢女1和女2，男2喜欢女2和女3，男3只喜欢女1。<br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi4.png" alt="image"><br>　　从男1开始配对，没啥难度，直接找到（男1，女1）。<br>　　PS：单独的一条非匹配边也可以叫做增广路。<br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi5.png" alt="image"><br>　　接下来看男2，也没啥问题，找到（男2，女2）。<br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi6.png" alt="image"><br>　　好了，轮到男3，但是他唯一的心动女生已经被选了。。。<br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi7.png" alt="image"><br>　　我们知道女1是和男1配对了，那么男1可以换一个妹子吗？<br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi8.png" alt="image"><br>　　男1准备换女2的时候又发现女2也有主了，那么男2可以换一个妹子吗？<br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi9.png" alt="image"><br>　　嘿嘿，原来女3这个妹子还没人选。<br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi10.png" alt="image"><br>　　以上标黄线的图就是寻找增广路的过程，接着让非匹配边替换匹配边得到新的匹配集合。<br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi11.png" alt="image"></p>
+<h4 id="模板代码"><a href="#模板代码" class="headerlink" title="模板代码"></a>模板代码</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> g[<span class="number">105</span>][<span class="number">105</span>],used[<span class="number">105</span>],linker[<span class="number">105</span>];</span><br><span class="line"><span class="comment">//g用来记录二分图左集合到右集合的关系边</span></span><br><span class="line"><span class="comment">//在每次寻找增广路的过程中used用来标记不能修改匹配的右集合点</span></span><br><span class="line"><span class="comment">//linker从右集合指向左集合反向记录匹配</span></span><br><span class="line"><span class="keyword">int</span> uN,uM; <span class="comment">//二分图左右集合点数量</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> m;</span><br><span class="line">    <span class="keyword">for</span> (m = <span class="number">0</span>; m &lt; uM; m++) &#123;</span><br><span class="line">        <span class="comment">//当前两个点存在关系边，并且m点还没有尝试过修改匹配。</span></span><br><span class="line">        <span class="keyword">if</span> (g[n][m] &amp;&amp; !used[m]) &#123;</span><br><span class="line">            used[m] = <span class="number">1</span>;</span><br><span class="line">            <span class="comment">//如果m点没有匹配或者m点可以修改匹配，那么就找到了一条增广路。</span></span><br><span class="line">            <span class="keyword">if</span> (linker[m] == <span class="number">-1</span> || dfs(linker[m])) &#123;</span><br><span class="line">                linker[m] = n;</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">hungary</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    <span class="built_in">memset</span>(linker, <span class="number">-1</span>, <span class="keyword">sizeof</span>(linker));</span><br><span class="line">   	<span class="comment">//依次为左集合的点寻找增广路</span></span><br><span class="line">    <span class="keyword">for</span> (n = <span class="number">0</span>; n &lt; uN; n++) &#123;</span><br><span class="line">        <span class="comment">//每次找增广路要重置标记数组</span></span><br><span class="line">        <span class="built_in">memset</span>(used, <span class="number">0</span>, <span class="keyword">sizeof</span>(used));</span><br><span class="line">        <span class="keyword">if</span> (dfs(n)) &#123;</span><br><span class="line">            res++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n, m, k;	<span class="comment">//n和m是临时变量，k表示关系边的数量</span></span><br><span class="line">    <span class="built_in">memset</span>(g, <span class="number">0</span>, <span class="keyword">sizeof</span>(g));</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>, &amp;uN, &amp;uM, &amp;k);</span><br><span class="line">    <span class="comment">//录入关系边</span></span><br><span class="line">    <span class="keyword">while</span> (k--) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>, &amp;n, &amp;m);</span><br><span class="line">        g[n][m] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,hungary());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Hopcroft-Karp算法"><a href="#Hopcroft-Karp算法" class="headerlink" title="Hopcroft-Karp算法"></a>Hopcroft-Karp算法</h3><p>　　HK算法的作用也是求二分图最大匹配，它在匈牙利算法的基础上做了一些改进，并且提升了效率。假设二分图的结点数量是n，匈牙利算法的时间复杂度为O(n^3)，HK算法的时间复杂度为O(n^2.5)。</p>
+<h4 id="推导理论"><a href="#推导理论" class="headerlink" title="推导理论"></a>推导理论</h4><p>　　本来如果只有原版英文资料我会做一些翻译，但是我找到了完整的中文版论文。<br>　　<a href="https://github.com/Ebbbb/BlogResource/raw/master/bi_graph/A%20n%5E2.5%20algorithm%20for%20maximum%20matchings%20in%20bipartite%20graphs-%5B中文版%2C%20John%20E.%20Hopcroft%20%26%20Richard%20M.%20Karp%5D.pdf" target="_blank" rel="noopener">A n^2.5 algorithm for maximum matchings in bipartite graphs-[中文版, John E. Hopcroft &amp; Richard M. Karp].pdf</a><br>　　其实看完整片论文我们只需要一个关键性的结论。<br>　　假设P是我们我们要找的增广路径，M表示匹配集合，s是我们所求的最大匹配基数（匹配对数）。<br>　　注意M0表示空集，P0表示M0的增广路径，|P|表示增广路径的长度，通过s次寻找增广路径就能找到最大匹配。有以下序列：<br>　　$|P_0|,|P_1|…|P_s|$<br>　　在这个序列中最多只有$2⎣ \sqrt{s}⎦+2$个不同的增广路径长度，并且相同长度的路径没有公共结点。<br>　　那么定义以下算法：<br>　　<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/bi_graph/bi12.png" alt="image"><br>　　<strong>最短增广路径是相对于当前匹配集合M而言的，比如M是空集的时候，能找到的最短增广路径长度应该是1。</strong><br>　　也就是说我们通过最多执行$2⎣ \sqrt{s}⎦+2$次上图步骤1即可找到最大匹配。<br>　　有了前面匈牙利算法的基础，KM算法重点就是理解如何找到最短增广路径。</p>
+<h4 id="模板代码-1"><a href="#模板代码-1" class="headerlink" title="模板代码"></a>模板代码</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">3010</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXM = <span class="number">3010</span>*<span class="number">3010</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> INF = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Edge</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> v;</span><br><span class="line">	<span class="keyword">int</span> next;</span><br><span class="line">&#125;edge[MAXM];</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">double</span> x, y;</span><br><span class="line">	<span class="keyword">double</span> v;</span><br><span class="line">&#125;a[MAXN], b[MAXN];</span><br><span class="line"> </span><br><span class="line"><span class="keyword">int</span> nx, ny;</span><br><span class="line"><span class="keyword">int</span> cnt;</span><br><span class="line"><span class="keyword">int</span> t;</span><br><span class="line"><span class="keyword">int</span> dis;</span><br><span class="line"><span class="comment">//first记录Edge链表的头结点，通过Edge.next存储所有u的关系边。</span></span><br><span class="line"><span class="keyword">int</span> first[MAXN];</span><br><span class="line"><span class="keyword">int</span> xlink[MAXN], ylink[MAXN]; </span><br><span class="line"><span class="comment">/*xlink[i]表示左集合顶点所匹配的右集合顶点序号，ylink[i]表示右集合i顶点匹配到的左集合顶点序号。*/</span></span><br><span class="line"><span class="keyword">int</span> dx[MAXN], dy[MAXN]; </span><br><span class="line"><span class="comment">/*dx[i]表示左集合i顶点的距离编号，dy[i]表示右集合i顶点的距离编号*/</span></span><br><span class="line"><span class="keyword">int</span> vis[MAXN]; <span class="comment">//寻找增广路的标记数组 </span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	cnt = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">memset</span>(first, <span class="number">-1</span>, <span class="keyword">sizeof</span>(first));</span><br><span class="line">	<span class="built_in">memset</span>(xlink, <span class="number">-1</span>, <span class="keyword">sizeof</span>(xlink));</span><br><span class="line">	<span class="built_in">memset</span>(ylink, <span class="number">-1</span>, <span class="keyword">sizeof</span>(ylink));</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">read_graph</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	edge[cnt].v = v;</span><br><span class="line">	edge[cnt].next = first[u], first[u] = cnt++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//找出当前匹配的最短增广路径长度</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bfs</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; q;</span><br><span class="line">	dis = INF;</span><br><span class="line">	<span class="built_in">memset</span>(dx, <span class="number">-1</span>, <span class="keyword">sizeof</span>(dx));</span><br><span class="line">	<span class="built_in">memset</span>(dy, <span class="number">-1</span>, <span class="keyword">sizeof</span>(dy));</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nx; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(xlink[i] == <span class="number">-1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			q.push(i);</span><br><span class="line">			dx[i] = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span>(!q.empty())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> u = q.front(); q.pop();</span><br><span class="line">		<span class="keyword">if</span>(dx[u] &gt; dis) <span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> e = first[u]; e != <span class="number">-1</span>; e = edge[e].next)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> v = edge[e].v;</span><br><span class="line">			<span class="keyword">if</span>(dy[v] == <span class="number">-1</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				dy[v] = dx[u] + <span class="number">1</span>;</span><br><span class="line">				<span class="keyword">if</span>(ylink[v] == <span class="number">-1</span>) dis = dy[v];</span><br><span class="line">				<span class="keyword">else</span></span><br><span class="line">				&#123;</span><br><span class="line">					dx[ylink[v]] = dy[v]+<span class="number">1</span>;</span><br><span class="line">					q.push(ylink[v]);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> dis != INF;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//匈牙利算法寻找增广路径，不过要限制增广路径的长度。</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> u)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> e = first[u]; e != <span class="number">-1</span>; e = edge[e].next)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> v = edge[e].v;</span><br><span class="line">		<span class="keyword">if</span>(!vis[v] &amp;&amp; dy[v] == dx[u]+<span class="number">1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			vis[v] = <span class="number">1</span>;</span><br><span class="line">            <span class="comment">//在这里限制路径长度</span></span><br><span class="line">			<span class="keyword">if</span>(ylink[v] != <span class="number">-1</span> &amp;&amp; dy[v] == dis) <span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">if</span>(ylink[v] == <span class="number">-1</span> || find(ylink[v]))</span><br><span class="line">			&#123;</span><br><span class="line">				xlink[u] = v, ylink[v] = u;</span><br><span class="line">				<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">int</span> Hopcroft-Karp()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//while循环最多执行2s^0.5 + 2次即可找到最大匹配，每次bfs这个过程最复杂的情况就是遍历完所有结点。</span></span><br><span class="line">	<span class="keyword">while</span>(bfs())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">memset</span>(vis, <span class="number">0</span>, <span class="keyword">sizeof</span>(vis));</span><br><span class="line">        <span class="comment">//由于长度相同的增广路径没有公共节点，for循环中find函数最坏情况只是遍历完所有的关系边。</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nx; i++) <span class="keyword">if</span>(xlink[i] == <span class="number">-1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			ans += find(i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> u, v, k;  <span class="comment">//u和v是临时变量，k表示关系边的数量</span></span><br><span class="line">    init();</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>, &amp;nx, &amp;ny, &amp;k);</span><br><span class="line">    <span class="comment">//录入关系边</span></span><br><span class="line">    <span class="keyword">while</span> (k--) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>, &amp;u, &amp;v);</span><br><span class="line">        read_graph(u, v);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,Hopcroft-Karp());</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/19/搜索入门/" rel="next" title="搜索入门">
+                <i class="fa fa-chevron-left"></i> 搜索入门
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#二分图"><span class="nav-number">1.</span> <span class="nav-text">二分图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配"><span class="nav-number">2.</span> <span class="nav-text">匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最大匹配"><span class="nav-number">3.</span> <span class="nav-text">最大匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交替路"><span class="nav-number">4.</span> <span class="nav-text">交替路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增广路"><span class="nav-number">5.</span> <span class="nav-text">增广路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匈牙利算法"><span class="nav-number">6.</span> <span class="nav-text">匈牙利算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#举例说明"><span class="nav-number">6.1.</span> <span class="nav-text">举例说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板代码"><span class="nav-number">6.2.</span> <span class="nav-text">模板代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hopcroft-Karp算法"><span class="nav-number">7.</span> <span class="nav-text">Hopcroft-Karp算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#推导理论"><span class="nav-number">7.1.</span> <span class="nav-text">推导理论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板代码-1"><span class="nav-number">7.2.</span> <span class="nav-text">模板代码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/09/19/二分图最大匹配/';
+          this.page.identifier = '2019/09/19/二分图最大匹配/';
+          this.page.title = '二分图最大匹配';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
