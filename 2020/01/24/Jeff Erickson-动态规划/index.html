@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言记得前文《回溯》中作者承诺要在后面优化回溯算法，果然这一章好几个都是前面的例子。以前我做过一些动态规划的题目，却总是不得要领。通过“递归-&amp;gt;回溯-&amp;gt;动态规划”这样循序渐进的讲解，现在我真是醍醐灌顶啊！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jeff Erickson 《Free Algorithms Textbook》 -- 动态规划">
+<meta property="og:url" content="http://yoursite.com/2020/01/24/Jeff Erickson-动态规划/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言记得前文《回溯》中作者承诺要在后面优化回溯算法，果然这一章好几个都是前面的例子。以前我做过一些动态规划的题目，却总是不得要领。通过“递归-&amp;gt;回溯-&amp;gt;动态规划”这样循序渐进的讲解，现在我真是醍醐灌顶啊！">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program9.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program10.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program11.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program12.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program13.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program14.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program15.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program16.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program17.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program18.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program19.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program20.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program21.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program22.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program23.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program24.png">
+<meta property="og:updated_time" content="2020-01-24T11:16:41.738Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jeff Erickson 《Free Algorithms Textbook》 -- 动态规划">
+<meta name="twitter:description" content="前言记得前文《回溯》中作者承诺要在后面优化回溯算法，果然这一章好几个都是前面的例子。以前我做过一些动态规划的题目，却总是不得要领。通过“递归-&amp;gt;回溯-&amp;gt;动态规划”这样循序渐进的讲解，现在我真是醍醐灌顶啊！">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/24/Jeff Erickson-动态规划/"/>
+
+
+
+
+
+  <title>Jeff Erickson 《Free Algorithms Textbook》 -- 动态规划 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/24/Jeff Erickson-动态规划/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Jeff Erickson 《Free Algorithms Textbook》 -- 动态规划</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-24T19:16:40+08:00">
+                2020-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/24/Jeff Erickson-动态规划/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/01/24/Jeff Erickson-动态规划/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/01/24/Jeff Erickson-动态规划/" class="leancloud_visitors" data-flag-title="Jeff Erickson 《Free Algorithms Textbook》 -- 动态规划">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记得前文《回溯》中作者承诺要在后面优化回溯算法，果然这一章好几个都是前面的例子。以前我做过一些动态规划的题目，却总是不得要领。通过“递归-&gt;回溯-&gt;动态规划”这样循序渐进的讲解，现在我真是醍醐灌顶啊！<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="斐波那契数列"><a href="#斐波那契数列" class="headerlink" title="斐波那契数列"></a>斐波那契数列</h3><p>计算斐波那契数列是一个老生常谈的问题了，下面给出较为常见的算法伪代码：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program1.png" alt="image"><br>其实这种单纯的递归算法是相当慢的。抛开递归调用不看，整个算法只有一个常数级的步骤：一次比较或者一次加法。如果用T(n)表示RecFibo，递推式如下：</p>
+<script type="math/tex; mode=display">T(0)=1,\ \ T(1)=1,\ \ T(n)=T(n-1)+T(n-2)+1</script><p>这个看起来有点像是斐波那契的通项公式啊！写出T(n)的前几项值来看，T(n)可以化简为$T(n)=2F_{n+1}-1$，可以通过归纳法验证。通过一些超出本书范围的方法可知$F_n=\Theta(\phi^n)$，$\phi=(\sqrt5+1)/2≈1.61803$（黄金分割比例）。简单来说，这个递归算法的运行时是指数级别的。<br>　　那怎么才能直接看出是不是指数级增长呢？如果把RecFibo的递归看成是一颗二叉树，它的叶子节点是0或者1。因为最终输出的是$F_n$，那就刚好需要有$F_n$个叶子节点的值是1；这些叶子节点代表RecFibo(1)的调用。由一次简单的归纳可知RecFibo(0)刚好调用了$F_{n-1}$次。（如果我们只要一个渐进边界，得知RecFib(0)的调用次数最多和RecFibo(1)一样就足够了）这样，整棵递归树有$F_n+F_{n-1}=F_{n+1}$个叶子节点，又因为它是一棵满二叉树（国内外的定义不一样），他总共有$2F_{n+1}-1=O(F_n)$个节点。</p>
+<h4 id="记忆化"><a href="#记忆化" class="headerlink" title="记忆化"></a>记忆化</h4><p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program2.png" alt="image"><br>造成此算法运行慢的明显原因就是重复计算相同的斐波那契项。如果在第一次计算出某个中间项就记录下来，后面用到它的时候直接到记录中去查，这样就可以避免一些无意义的递归调用，从而加速算法的执行。最简单直接就是用数组来存中间项，优化过后的伪代码如下：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program3.png" alt="image"><br>　　如果只考虑加法执行的次数，又因为每个斐波那契项只计算一次，那么MemFibo的运行时就是$O(n)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program4.png" alt="image"></p>
+<h4 id="打表"><a href="#打表" class="headerlink" title="打表"></a>打表</h4><p>一旦我们看出了F[]数组是怎么填充的，就可以使用for循环有意按顺序填充数组，而没有必要去依赖一个相对复杂的递归算法。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program5.png" alt="image"><br>现在我们就可以清晰的看出：IterFibo使用$O(n)$次加法，存储了$O(n)$个整数。</p>
+<h4 id="存储关键信息"><a href="#存储关键信息" class="headerlink" title="存储关键信息"></a>存储关键信息</h4><p>在许多动态规划算法中，没有必要保留计算过程中的所有结果。比如IterFibo算法就可以优化成只维持两个最新的数组元素。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program6.png" alt="image"></p>
+<h3 id="更快计算斐波那契数"><a href="#更快计算斐波那契数" class="headerlink" title="更快计算斐波那契数"></a>更快计算斐波那契数</h3><p>尽管前一个方法看起来简单漂亮，但他还不是计算斐波那契数的最快算法。我们通过利用下面这个斐波那契的矩阵变形式得到一个更快的算法：</p>
+<script type="math/tex; mode=display">\begin{bmatrix} 0 & 1 \\ 1 & 1 \end{bmatrix}\begin{bmatrix} x \\ y  \end{bmatrix}=\begin{bmatrix} y \\ x+y  \end{bmatrix}
+\quad</script><p>换句话说，一个二维矢量乘上矩阵$\begin{bmatrix} 0 &amp; 1 \ 1 &amp; 1 \end{bmatrix}$和IterFibo2中的单次循环迭代的效果是一样的。那么下面的矩阵乘上n次和循环迭代n次相同：</p>
+<script type="math/tex; mode=display">\begin{bmatrix} 0 & 1 \\ 1 & 1 \end{bmatrix}^n\begin{bmatrix} 1 \\ 0  \end{bmatrix}=\begin{bmatrix} F_{n-1} \\ F_n  \end{bmatrix}
+\quad</script><p>所以如果我们想要计算第n个斐波那契数，我们只需要计算出矩阵$\begin{bmatrix} 0 &amp; 1 \ 1 &amp; 1 \end{bmatrix}$的n次方。如果我们使用重复平方法来计算矩阵的n次方只需要$O(log n)$次乘法，这里的2X2的矩阵相乘可以降低为常数级别的乘法和加法，这样，我们可以通过$O(log n)$次整数算数运算计算出$F_n$。<br>　　我们同样可以通过这个递推式$F_n=F_mF_{n-m-1}+F_{m+1}F_{n-m}$来完成同样的优化加速，通过归纳法我们可以证明对于所有的整数m和n都是有效的。尤其是这个递推式可以推导出下面两个相邻斐波那契数的递推式：</p>
+<script type="math/tex; mode=display">\begin{align}F_{2n-1}&=F_{n-1}^2+F_n^2 \\F_{2n}&=F_n(F_{n-1}+F_{n+1})=F_n(2F_{n-1}+F_n) \end{align}</script><p>根据这连个递推式可以写出如下算法：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program7.png" alt="image"><br>通过我们标准的递归树技术可以看出这个算法只需要执行$O(log n)$次整数算数运算。</p>
+<h4 id="并没有多快"><a href="#并没有多快" class="headerlink" title="并没有多快"></a>并没有多快</h4><p>斐波那契数的增长是指数级别的。第n个斐波那契数的长度大约是$n log_{10}\phi≈n/5$位十进制数，或者$n log_2\phi$位二进制数。那么我们不能在对数级时间内计算出$F_n$。<br>　　问题的关键就是我们不能再常数时间内计执行任意精确地算术。用$M(n)$表示计算两个n位数相乘的时间。FastRecFibo的运行时递推式就是$T(n)=T(\lfloor n/2\rfloor)+M(n)$，这里通过递归树解出来得到$T(n)=O(M(n))$。目前已知最快的整数乘法运行时是$O(n log n)$，那么这也是FastRecFibo的运行时。<br>　　那么这个算法的运行时回避线性迭代算法慢吗？事实上，任意两个数的加法也不是常数级别的。两个n位数相加需要的运行时是$O(n)$，那么迭代算法IterFibo和IterFibo2的实际运行时间是$O(n^2)$。所以FastRecFibo明显还是比迭代算法快。<br>　　在最初的递归算法中，那些任意精确算术的消耗已经淹没在了海量的递归调用中了。</p>
+<h3 id="字符串分割优化"><a href="#字符串分割优化" class="headerlink" title="字符串分割优化"></a>字符串分割优化</h3><p>接下来的例子是上一章的字符串分割，已知一个字符串A[1..n]和一个判断是否为单词的子程序IsWord，我们想知道A能不能分割成一系列的单词。Splittable(i)返回true表示后缀A[i..n]可以分割为一系列单词，这个函数满足以下递推式：</p>
+<script type="math/tex; mode=display">\begin{equation}Splittable(i)=\begin{cases}true & if\ i>n\\ \bigvee\limits_{j=i}^n(IsWord(i,j)\wedge Splittable(j+1)) & otherwise\end{cases}\end{equation}</script><p>这个递推式如果直接写成回溯算法，在最坏情况下会调用$O(2^n)$次IsWord方法。<br>　　但是对于任何确定的字符串A[1..n]，最多只有n种不同的方式去调用Splittable(i)—$1\leq i\leq n+1$—而且只有$O(n^2)$种不同的方式去调用IsWord—$1\leq i\leq j\leq n$。那么为什么我们会使用指数级的时间来计算多项式级数量的东西呢？<br>　　每次递归子问题都会指定一个1到n+1之间的整数，那么我们把Splittable函数的结果记录到SplitTable[1..n+1]数组中。每一个子问题Splittable(i)又依赖于子问题Splittable(j)，j&gt;i，那么记忆化递归算法应该按照索引从大到小的顺序来填充数组。如果我们有意地填充数组，就能得到下面这个动态规划算法，它执行IsWord的次数为$O(n^2)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program8.png" alt="image"></p>
+<h3 id="模式"><a href="#模式" class="headerlink" title="模式"></a>模式</h3><p>简单地说，动态规划就是没有重复的递归。动态规划会存储中间子问题的结果，通常但不总是以数组或者表的形式。很多人都会错误地致力于怎么实现记忆化而不重视如何找到一个正确的递推式。只要我们找到了正确的递推式，那么再谈如何去记忆化就很明显了，但是如果递推式是错误的，任凭你再怎么优化也是徒劳的。<br>动态规划算法最好划分为两个阶段来实现。<br>1.<strong>递归地描述问题</strong>。将整个问题划分为一些子问题并且为之写下一段递归公式或者算法。这是非常困难的一步，一个完整的递归表述有两个部分：<br>(a)<strong>详细描述</strong>。用连贯清晰的语言描述一个你想要递归解决的问题—并不是如何去解决问题，而是你要解决的问题是什么。如果没有详细描述，根本就没办来判定你的答案是否正确。<br>(b)<strong>解决方案</strong>。为整个问题给出一个清晰的递归描述或者算法，其中又包含一些范围较小却又正好与原问题相同的子问题。<br>2.<strong>自下而上的解决递推式。</strong>通过正确顺序地考虑中间子问题，以递推式的基础边界情况开始向上递推写出一个算法。这个阶段可以分解成几个较小且相似的机械化步骤：<br>(a)<strong>确定子问题。</strong>给你一个初始输入，你的递归算法可以通过多少种不同的方式调用自身？例如，RecFibo的参数总是0到n之间的整数。<br>(b)<strong>选择一个存储数据结构。</strong>找到一个可以存储每一个确定子问题结果的数据结构。我们通常但不总是使用多为数组。<br>(c)<strong>确定依赖关系。</strong>除了基础边界情况，每一个子问题都会依赖其他的子问题。为你的数据结构画一幅图，选择一个一般性的元素，画出它所依赖的其他元素。<br>(d)<strong>找到一个正确的求值顺序。</strong>对相互依赖的子问题排序。首先考虑基础边界情况，最后构造出最原始最上层的问题。你上一步确定的依赖关系将会用来确定上层的子问题部分情况；你需要找到这些部分情况的线性扩展。<br>(e)<strong>分析空间和运行时。</strong>不同子问题的数量决定了记忆化算法的空间复杂度。为了计算总共的运行时，累加所有可能子问题的运行时，假设更深层粗的递归调用已经被记录了。这个一步也可以在(a)之后直接进行。<br>(f)<strong>写下算法。</strong>你知道该通过什么顺序来考虑子问题，也知道怎么解决每个子问题。如果你的数据结构是一个数组，这就意味着你可以写一个嵌套循环来代替递归调用。</p>
+<h3 id="别用贪心算法"><a href="#别用贪心算法" class="headerlink" title="别用贪心算法"></a>别用贪心算法</h3><p>这一小节作者就是在喷使用贪心有多愚蠢！任何可以用贪心算法解决的问题都可以用动态规划解决。我就留个标题作个提醒吧！</p>
+<h3 id="最长递增子序列优化"><a href="#最长递增子序列优化" class="headerlink" title="最长递增子序列优化"></a>最长递增子序列优化</h3><h4 id="第一个递推式"><a href="#第一个递推式" class="headerlink" title="第一个递推式"></a>第一个递推式</h4><p>又是一个上一章的例子。给你一个数组A[1..n]，LISbigger(i,j)表示A[j..n]中元素值比A[i]大的最长递增子序列。下面是递推式：</p>
+<script type="math/tex; mode=display">\begin{equation}LISbigger(i)=\begin{cases}0 & if\ j<n \\ LISbigger(i,j+1) & if\ A[i]\geq A[j] \\ max\begin{cases} LISbigger(i,j+1) \\ 1+ LISbigger(j,j+1)\end{cases} & otherwise \end{cases}\end{equation}</script><p>为了解决原始问题，我们需要增加一个哨兵值A[0]=-∞到数组中，然后计算LISbigger(0,1)。<br>　　每一个递归子问题都定义了两个索引i和j，所以总共只有$O(n^2)$个不同的递归子问题。我们可以使用一个二维数组LISbigger[0..n,1..n]来记录这些子问题。不算递归调用次数，每个子问题可以在$O(1)$时间内解决。所以我们可以预测最后的动态规划算法执行时间应该是$O(n^2)$。<br>　　这里填充记忆数组的顺序并不是十分清晰；我们仅仅知道LISbigger[i,j]填充的时机应该在LISbigger[i,j+1]和LISbigger[j,j+1]之后。就像下面这张图：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program9.png" alt="image"><br>　　幸运的是这一信息已经足够给我们一个有效求值的顺序。如果我们从右到左一次填充一列数据，那我们计算当前一个数据时，前一列的数据都是可用的。这也许不是递归算法所使用的的顺序，但它确实有效的。上图阐释了这个求值顺序，双线箭头表示外层循环，单线箭头表示内层循环。因为我们填充每一行的顺序是不重要的，所以这里的单线箭头是双向的。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program10.png" alt="image"><br>　　接着看看我们的伪代码；正如我们所预料的，这个算法的运行时就是$O(n^2)$。如果有必要，通过只维持最新的两列数据LISbigger[·,j]和LISbigger[·,j+1]，我们可以我们可以空间大小从$O(n^2)$缩减到$O(n)$。</p>
+<h4 id="第二个递推式"><a href="#第二个递推式" class="headerlink" title="第二个递推式"></a>第二个递推式</h4><p>我们第二个回溯算法来自于函数LISfirst(i)，它表示以A[i]开头求A[i..n]的最长递增子序列。从这个定义我们可以得出以下递推式：</p>
+<script type="math/tex; mode=display">LISfirst(i)=1+\max\{LISfirst(j)\ |\ j>i\ and\ A[j]>A[i]\}</script><p>这里我们假设$\max ∅ = 0$，那么自然就可以知道LISfirst(n)=1。为了解决原问题，我们可以添加一个哨兵值A[0]=-∞，再计算LISfirst(0)-1。<br>　　现在我们的递归子问题只需要用到一个索引，所以我们也只需要一个一位数组LISfirst[1..n]来记录中间结果。每次填充LISfirst[i]只要已知所有LISfirst[j]，j&gt;i，那么我们直接降序填充数组即可。这个动态规划算法的执行时间是$O(n^2)$，运行空间是$O(n)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program11.png" alt="image"></p>
+<h3 id="编辑距离"><a href="#编辑距离" class="headerlink" title="编辑距离"></a>编辑距离</h3><p>两个字符串之间的<strong>编辑距离</strong>是指通过插入、删除和替换操作把一个字符串变形成另外一个的最少操作次数。比如，把字符串FOOD变为MONEY需要四次操作：</p>
+<script type="math/tex; mode=display">\underline{F}OOD\rightarrow MO\underline{O}D\rightarrow MON_{\wedge}D\rightarrow MONE\underline{D}\rightarrow MONEY</script><p>　　为了更形象化，我们可以两个字符串并排起来。第一个串中间的空格表示插入，第二个串中间的空格表示删除。同一列有两个不同的字符表示替换。那么如果没有相同字符的列就是需要操作的。</p>
+<script type="math/tex; mode=display">\begin{align}&\ F\ O\ O\ \ \ \ D\\&MO\ N\ E\ Y\end{align}</script><p>　　很明显我们不能再三次操作内把FOOD替换成MONEY，所以FOOD和MONEY的编辑距离是四次。一般而言我们不能简单地看出最少编辑次数。比如下面可以看出字符串ALGROITHM和ALTRUISTIC的编辑次数是6。那这是不是最少编辑次数呢？</p>
+<script type="math/tex; mode=display">\begin{align}&\ A\ L\ G\ O\ R\ \ \ \ \ I\ \ \ \ T\ H\ M\\&A\ L\ \ \ \ \ T\ R\ U\ I\ S\ T\ \ I\ \ C\end{align}</script><h4 id="递归结构"><a href="#递归结构" class="headerlink" title="递归结构"></a>递归结构</h4><p>为了开发一个计算编辑距离的动态规划算法，我们首先需要递归地详细描述这个问题。我们前面的排列形式有一个很关键的最佳子结构属性。假设我们已知两个字符串的最短编辑距离的排列形式。如果我们移除最后一列，那么剩下的行就代表着剩余前缀的最短编辑距离。我们可以通过反证法证明这个观察结论：如果前面提到的前缀有最短的编辑步骤，把最后一列放回去就能得到原字符串的最短编辑步骤。一旦我们弄清楚最后一列发生了什么，通过归纳法即可得出剩下的最佳排列形式。<br>　　换句话说，这里的排列形式就是我们从右到左编辑操作的序列。解决编辑距离问题需要做一系列的决定，输出的每一列是怎么排的。在这一系列决定中间，我们已经把一个串的后缀和另一个串的后缀排列好了。</p>
+<script type="math/tex; mode=display">\begin{align}&\overbrace{\ A\ L\ G\ O\ R}&I&\ \ \ \ \ \ T\ H\ M\\&A\ L\ \ T\ R\ U&I\ &\ S\ \ T\ \ I\ \ C\end{align}</script><p>因为已经决定部分编辑操作的次数正好是不匹配列的数量，剩下的决定并不依赖于我们已经决定部分的操作次数；它们只依赖于还未排列的前缀部分。</p>
+<script type="math/tex; mode=display">\begin{align}&\overbrace{\ A\ L\ G\ O\ R}\\&A\ L\ \ T\ R\ U\end{align}</script><p>这样，对于任何两个字符串A[1..m]和B[1..n]，我们可以将编辑距离问题递归表述为：对于任意i和j，用Edit(i,j)表示前缀A[1..i]和B[1..j]的编辑距离。我们需要计算出Edit(m,n)。</p>
+<h4 id="递推式"><a href="#递推式" class="headerlink" title="递推式"></a>递推式</h4><p>当i和j都是正数，如果要得到A[1..i]和A[1..j]的最短编辑距离，就需要考虑最后一列的三种处理方式：<br>•<strong>插入：</strong>第一个串最后一列为空，这种情况编辑距离就等于Edit(i,j-1)+1。后面的+1表示最后一列的操作是插入，剩下的部分再递归求解。</p>
+<script type="math/tex; mode=display">\begin{align}&\overbrace{ALGOR}\\&ALTR&U\end{align}</script><p>•<strong>删除：</strong>第二个串最后一列为空，这种情况编辑距离就等于Edit(i-1,j)+1。后面的+1表示最后一列的操作是删除，剩余的部分继续递归。</p>
+<script type="math/tex; mode=display">\begin{align}&\overbrace{ALGO}&R\\&ALTRU\end{align}</script><p>•<strong>替换：</strong>两个串最后一列都有字符。如果这两个字符不同，那么编辑距离就等于Edit(i-1,j-1)+1。如果这两个字符相同，这次替换就是免费的，编辑距离就等于Edit(i-1,j-1)。</p>
+<script type="math/tex; mode=display">\begin{align}&\overbrace{ALGO}&R\\&ALTR&U\end{align}</script><p>这种一般情况的分析直到i=0或者j=0结束，但是这种边界情况很容易直接处理。<br>•把一个空串变成长度为j的串需要j次插入，Edit(0,j)=j。<br>•把一个长度为i的串变为空串需要i次删除，Edit(i,0)=i。<br>当然空串变为空串不需要任何操作。我们可以得出Edit函数满足递推式：</p>
+<script type="math/tex; mode=display">\begin{equation}Edit(i,j)=\begin{cases}i&if\ j=0\\j&if\ i=0\\ \min\begin{cases}Edit(i,j-1)+1\\ Edit(i-1,j)+1 \\Edit(i-1,j-1)+[A[i]≠B[j]]\end{cases}&otherwise\end{cases}\end{equation}</script><h4 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h4><p>现在有了递推式，根据下面机械化的流程我们可以直接将它转化为动态规划算法。<br>•<strong>子问题：</strong>每个子问题都有两个索引来定义，$0\leq i\leq m$和$0\leq j\leq n$。<br>•<strong>存储结构：</strong>要记录所有Edit(i,j)可能的值，需要一个二维数组Edit[0..n,0..n]。<br>•<strong>依赖关系：</strong>当我们计算Edit[i,j]的时候，他只依赖于三个相邻的元素，Edit[i-1,j]、Edit[i,j-1]、Edit[i-1,j-1]。<br>•<strong>求值顺序：</strong>按照从左到右，从上到下即可保证计算当前元素前他所依赖的三个元素已经有值了。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program12.png" alt="image"><br>•<strong>空间和时间：</strong>存储结构的大小是O(mn)，每次计算Edit[i,j]只需要O(1)的时间，所以该算法的运行时应该是O(mn)。<br>下面是最终的动态规划算法伪代码：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program13.png" alt="image"><br>　　关于字符串ALGORITHM和ALTRUISTIC存储表的变化情况如下图。粗体数字表示所在位置的两个字符相同。字符串ALGORITHM和ALTRUISTIC的编辑距离确实是6。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program14.png" alt="image"><br>　　图中的箭头表示每次填充的取值来源。每一个箭头方向对应着不同的编辑操作，垂直=删除，水平=插入，对角=替换。粗体红色的对角箭头表示相同字符免费替换。任何一条从左上到右下的路径都表示一个字符串之间的最佳编辑顺序。在图中我们可以找到三条这样的路径，每一条都表示字符串ALGORITHM变形为ALTRUISTIC的不同方式。</p>
+<script type="math/tex; mode=display">\begin{align}&\ A\ L\ G\ O\ R\ \ I\ \ \ \ T\ H\ M\\&A\ L\ \ T\ R\ U\ I\ S\ T\ \ I\ \ C\end{align}</script><script type="math/tex; mode=display">\begin{align}&\ A\ L\ G\ O\ R\ \ \ \ \ I\ \ \ \ T\ H\ M\\&A\ L\ \ \ \ \ T\ R\ U\ I\ S\ T\ \ I\ \ C\end{align}</script><script type="math/tex; mode=display">\begin{align}&\ A\ L\ G\ O\ R\ \ \ \ \ I\ \ \ \ T\ H\ M\\&A\ L\ \ T\ \ \ \ R\ U\ I\ S\ T\ \ I\ \ C\end{align}</script><p>　　我们的编辑距离算法并没有实际去计算或者存储这些表中的箭头，但是我们可以通过这些表中的数值反向推出路径。只要我们填充完存储表，我们就可以在O(m+n)的时间内计算出最短的编辑顺序。</p>
+<h3 id="子集和优化"><a href="#子集和优化" class="headerlink" title="子集和优化"></a>子集和优化</h3><p>双是一个上一章的例子。已知一个正整数的数组X[1..n]，问能不能找到X的子集，其所有元素之和为T？用SS(i,t)表示X[i..n]中有没有子集的和为t，递推式如下：</p>
+<script type="math/tex; mode=display">\begin{equation}SS(i,t)=\begin{cases}true&if\ t=0\\false&if\ t<0\ or\ i>n\\SS(i+1,t)\vee SS(i+1,t-X[i])&otherwise\end{cases}\end{equation}</script><p>通过下面的模板，我们可以把这个递推式转化成动态规划算法。<br>•<strong>子问题：</strong>每个子问题都需要两个索引来表示，$1\leq i\leq n+1$和$t\leq T$。然而t&lt;0的种情况是不重要的，所以没必要存储他们。我们可以将递推式改进如下：</p>
+<script type="math/tex; mode=display">\begin{equation}SS(i,t)=\begin{cases}true&if\ t=0\\false&if\ i>n\\SS(i+1,t)&if\ t<X[i]\\SS(i+1,t)\vee SS(i+1,t-X[i])&otherwise\end{cases}\end{equation}</script><p>•<strong>数据结构：</strong>只需要一个二维数组S[1..n+1,0..T]，S[i,t]就表示SS(i,t)的结果。<br>•<strong>求值顺序：</strong>如果当前计算S[i,t]，那么它只依赖于后面一列SS[i+1,·]的值。所以填充数组时外层循环需要从后往前，内层循环则不考虑顺序。<br>•<strong>空间和时间：</strong>前面定下的存储结构需要空间大小为O(nT)，如果S[i+1,t]和S[i+1,t-X[i]]都是已知，那么计算S[i,t]只需要常数级的时间，整个算法的运行时也只需要O(nT)。<br>下面就是动态规划算法伪代码：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program15.png" alt="image"><br>通常情况下动态规划算法都是优于递归回溯算法的。但也有例外，如果T大于了$2^n$，那么整个迭代算法就会比单纯的递归算法慢，因为它会去浪费大部分的时间去计算递归算法不会考虑的情况。</p>
+<h3 id="最佳二叉搜索树优化"><a href="#最佳二叉搜索树优化" class="headerlink" title="最佳二叉搜索树优化"></a>最佳二叉搜索树优化</h3><p>叒是一个上一章的例子，输入一个已排序的数组A[1..n]和一个频率数组f[1..n]，f[i]表示A[i]被访问的次数。用OptCost(i,k)表示子数组A[i..k]的通过最佳二叉树访问所有元素的时间，有如下递推式：</p>
+<script type="math/tex; mode=display">\begin{equation}OptCost(i,k)=\begin{cases}0 & if\ i>k \\ \sum\limits^{k}_{j=i}f[j]+\min\limits_{i\leq r\leq k}\begin{cases} OptCost(i,r-1) \\ +\ OptCost(r+1,k)\end{cases} & otherwise \end{cases}\end{equation}</script><p>这个递推式里面的求和部分看起来不舒服，我们做一些调整。对于任意一对索引$i\leq k$，用F(i,k)表示A[i..k]的所有元素的直接访问次数：</p>
+<script type="math/tex; mode=display">F(i,k):=\sum\limits_{j=i}^kf[j]</script><p>这个方程满足递推式：</p>
+<script type="math/tex; mode=display">\begin{equation}F(i,k)=\begin{cases}f[i] & if\ i=k \\ F(i,k-1)+f[k] & otherwise \end{cases}\end{equation}</script><p>我们可以在$O(n^2)$时间内计算出所有可能的F(i,k)，前提是使用动态规划算法。通过模板流程写出下面的算法：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program16.png" alt="image"><br>有了这个初始化方法，我们就可以原来的OptCost递推式简化如下：</p>
+<script type="math/tex; mode=display">\begin{equation}OptCost(i,k)=\begin{cases}0 & if\ i>k \\ F[i,k]+\min\limits_{i\leq r\leq k}\begin{cases} OptCost(i,r-1) \\ +\ OptCost(r+1,k)\end{cases} & otherwise \end{cases}\end{equation}</script><p>接着按照正常流程来走。<br>•<strong>子问题：</strong>每个递归子问题的范围有两个索引决定，$1\leq i\leq n$和$0\leq k\leq n$。<br>•<strong>记忆化：</strong>使用一个二维数组OptCost[1..n+1,0..n]。<br>•<strong>依赖关系：</strong>OptCost[i,k]的计算依赖于OptCost[i,j-1]和OptCost[j+1,k]，$i\leq j\leq k$。换而言之，每次填充的位置依赖于同列下侧或者同行左侧的值。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program17.png" alt="image"><br>用下面的子程序来更新Opt[i,k]，但前提是要保证依赖部分必须有值。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program18.png" alt="image"><br>•<strong>求值顺序：</strong>这里有三种求值顺序，第一种把所有边界情况OptCost[i,i-1]都赋值，再去计算OptCost[i,i+d]，d的值按顺序从0递增到n-1。最后就可以计算出OptCost[1,n]。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program19.png" alt="image"><br>另外两种直接针对嵌套循环来说，他们分别是外层自底向上内层自左向右或者外层自左向右内层自底向上。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program20.png" alt="image"><br>之前也说过，双线箭头表示外层循环，单线箭头表示内层循环。双向单线箭头则表示内存循环的计算顺序不重要。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program21.png" alt="image"><br>•<strong>空间和时间：</strong>存储空间大小为$O(n^2)$，不管使用的是那个求值顺序，我们计算Opt[i,k]需要的时间是O(n)，所以整个算法需要的时间是$O(n^3)$。<br>通常我们可以直接从递推式中预测出空间和时间边界。OptCost函数有两个参数，每一个参数都有n个不同的值，所以我们大概知道数据结构的空间大小是$O(n^2)$。另外，递推式的右侧有三个变量i、k、r，每一个大概都有n个不同的值，所以要计算出所有情况应该需要$O(n^3)$的时间。</p>
+<h3 id="关于树的动态规划"><a href="#关于树的动态规划" class="headerlink" title="关于树的动态规划"></a>关于树的动态规划</h3><p>到此，我们所有的动态规划例子都是用多维数组来存储递归子问题的结果。然而，接下来的这个例子将会告诉我们并不是所有情况都有适当的适当的数据结构可用。<br>　　一个图的<strong>独立集</strong>是它所有顶点的子集，其中这些点没有直接相连的边。找到任意一个图的最大独立集是极其困难的；事实上，这是一个权威的NP难问题，这个问题后面的章节会谈到。但是对于某些比较特殊的图，我们可以很快找到最大独立集。尤其是，输入的图是一个有n个顶点的树，我们可以在O(n)时间内找到最大独立集。<br>　　假设我们有一棵树T。为了不失普遍性，假设T是一棵有根的树；它就有一个特别的节点叫作根，所有的边都直接或者间接从这个点出发。（如果T是一棵无根树—一个非循环的连通无向图—我们可以选择任何一个点作为根）如果w通往根节点的唯一路径中包含v，那么我们就称w是v的后裔节点；同样的，v的后裔节点就包括它本身和它的子节点的后裔节点。以v作为根节点的子树就由v的所有后裔节点和它们之间的边构成。<br>　　对于任意T中的节点v，用MIS(v)表示以v作为根节点子树的最大独立集。在这个子树中任何不包括v的独立集都是以v的子节点作为根的子树的独立集组成的。另外，任意包括v的独立集都不包含v的子节点在内，因此他们包含的是以v的孙节点作为根的子树的独立集。这样，函数MIS遵守下面这个递推式，$w\downarrow v$表示w是v的子节点。</p>
+<script type="math/tex; mode=display">MIS(v)=\max\left\{\sum\limits_{w\downarrow v}MIS(w),1+\sum\limits_{w\downarrow v}\sum\limits_{x\downarrow w}MIS(x)\right\}</script><p>我们需要计算MIS(r)，r是T的根节点。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program22.png" alt="image"><br>现在考虑我们该用什么数据结构来记录这个递推式呢？最自然的选择就是使用T本身！对于T中的每个节点v，给它构造一个新变量v.MIS来存储MIS(v)的结果。（原则上来说，我们还是可以使用数组，但是我们还需要知道每个节点的前驱和后继，显然数组就不太容易做到了）<br>　　怎么考虑子问题的顺序呢？如何解决关于v节点的子问题取决于关于v的子节点和孙节点的子问题。那么我们按任意顺序来访问节点，保证每个节点都在它的父节点之前被访问过了；特别是我们可以使用后序遍历。<br>　　这个算法的运行时怎么算呢？关于每个节点v的非递归运行时适合它的子节点和孙节点数量成比例的；这个数量肯定不是从一个点到另一个这么算。但是我们还是可以来分析一下：每一个顶点都为它的祖父节点和父节点贡献了常数级的时间！因为每个节点最多只有一个父节点和一个祖父节点，那么这个算法运行时间是O(n)。<br>　　下面就是动态规划算法。当然，他还是递归的，因为这是实现树的后序遍历的最常用的方法。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program23.png" alt="image"><br>通过多定义两个函数，我们可以得出一个简单的线性算法。<br>•用MISyes(v)表示在以v为根节点的子树中包含v的最大独立集。<br>•用MISno(v)表示在以v为根节点的子树中不包含v的最大独立集。<br>根据定义有下面两个递推式：</p>
+<script type="math/tex; mode=display">\begin{align}MISyes(v)&=1+\sum\limits_{w\downarrow v}MISno(w)\\MISno(v)&=\sum\limits_{w\downarrow v}\max\left\{MISyes(w),MISno(w)\right\}\end{align}</script><p>关于存储结构只需要给每个节点定义两个新变量即可。直接后序遍历在O(n)时间内就可以计算出最大独立集。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program24.png" alt="image"><br>在循环中的第二行，我们用到的w.MISno在前一行的递归调用中就已经计算出来了。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>我感觉每个例子都能加深我对动态规划算法的理解，所以这一篇我几乎是全文翻译了。特别是作者提出的动态规划问题的分析模式，它应该是本文的重中之重了。这套模式用在动态规划问题上简直屡试不爽，当然这只是我看了作者分析之后的感受。最后我建议不要一看是动态规划问题就拿这个模式往上套，因为作者说了“First make it work, then make it fast”。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="http://jeffe.cs.illinois.edu/teaching/algorithms/book/03-dynprog.pdf" target="_blank" rel="noopener">http://jeffe.cs.illinois.edu/teaching/algorithms/book/03-dynprog.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/11/Jeff Erickson-回溯/" rel="next" title="Jeff Erickson 《Free Algorithms Textbook》 -- 回溯">
+                <i class="fa fa-chevron-left"></i> Jeff Erickson 《Free Algorithms Textbook》 -- 回溯
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#斐波那契数列"><span class="nav-number">2.1.</span> <span class="nav-text">斐波那契数列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#记忆化"><span class="nav-number">2.1.1.</span> <span class="nav-text">记忆化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打表"><span class="nav-number">2.1.2.</span> <span class="nav-text">打表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#存储关键信息"><span class="nav-number">2.1.3.</span> <span class="nav-text">存储关键信息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更快计算斐波那契数"><span class="nav-number">2.2.</span> <span class="nav-text">更快计算斐波那契数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#并没有多快"><span class="nav-number">2.2.1.</span> <span class="nav-text">并没有多快</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串分割优化"><span class="nav-number">2.3.</span> <span class="nav-text">字符串分割优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模式"><span class="nav-number">2.4.</span> <span class="nav-text">模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#别用贪心算法"><span class="nav-number">2.5.</span> <span class="nav-text">别用贪心算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最长递增子序列优化"><span class="nav-number">2.6.</span> <span class="nav-text">最长递增子序列优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一个递推式"><span class="nav-number">2.6.1.</span> <span class="nav-text">第一个递推式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二个递推式"><span class="nav-number">2.6.2.</span> <span class="nav-text">第二个递推式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编辑距离"><span class="nav-number">2.7.</span> <span class="nav-text">编辑距离</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#递归结构"><span class="nav-number">2.7.1.</span> <span class="nav-text">递归结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#递推式"><span class="nav-number">2.7.2.</span> <span class="nav-text">递推式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态规划"><span class="nav-number">2.7.3.</span> <span class="nav-text">动态规划</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子集和优化"><span class="nav-number">2.8.</span> <span class="nav-text">子集和优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最佳二叉搜索树优化"><span class="nav-number">2.9.</span> <span class="nav-text">最佳二叉搜索树优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于树的动态规划"><span class="nav-number">2.10.</span> <span class="nav-text">关于树的动态规划</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">4.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/01/24/Jeff Erickson-动态规划/';
+          this.page.identifier = '2020/01/24/Jeff Erickson-动态规划/';
+          this.page.title = 'Jeff Erickson 《Free Algorithms Textbook》 -- 动态规划';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
