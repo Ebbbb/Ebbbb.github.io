@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/greedy/greedy4.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/greedy/greedy5.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/greedy/greedy6.png">
-<meta property="og:updated_time" content="2020-04-05T00:28:02.200Z">
+<meta property="og:updated_time" content="2020-04-05T00:34:04.312Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Free Algorithms Textbook》 -- 贪心算法">
 <meta name="twitter:description" content="前言在上一篇《动态规划》作者把贪心算法喷的一无是处，然而接着就是“真香”警告😹。本来想看作者怎么圆上一篇的发言，结果别人翻篇不提了。本文的内容不像前三篇那样环环相扣，而是独立的知识点。">
@@ -568,42 +568,42 @@
 <table>
 <thead>
 <tr>
-<th>q</th>
+<th style="text-align:center">q</th>
 <th style="text-align:center">r</th>
-<th style="text-align:right">s</th>
+<th style="text-align:center">s</th>
 <th></th>
-<th>A</th>
-<th>B</th>
-<th>C</th>
+<th style="text-align:center">A</th>
+<th style="text-align:center">B</th>
+<th style="text-align:center">C</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>A</td>
-<td style="text-align:center">C</td>
-<td style="text-align:right">A</td>
-<td></td>
-<td>r</td>
-<td>s</td>
-<td>q</td>
-</tr>
-<tr>
-<td>C</td>
 <td style="text-align:center">A</td>
-<td style="text-align:right">B</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">A</td>
 <td></td>
-<td>q</td>
-<td>q</td>
-<td>r</td>
+<td style="text-align:center">r</td>
+<td style="text-align:center">s</td>
+<td style="text-align:center">q</td>
 </tr>
 <tr>
-<td>B</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">A</td>
 <td style="text-align:center">B</td>
-<td style="text-align:right">C</td>
 <td></td>
-<td>s</td>
-<td>r</td>
-<td>s</td>
+<td style="text-align:center">q</td>
+<td style="text-align:center">q</td>
+<td style="text-align:center">r</td>
+</tr>
+<tr>
+<td style="text-align:center">B</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">C</td>
+<td></td>
+<td style="text-align:center">s</td>
+<td style="text-align:center">r</td>
+<td style="text-align:center">s</td>
 </tr>
 </tbody>
 </table>
@@ -614,42 +614,42 @@
 <table>
 <thead>
 <tr>
-<th>q</th>
+<th style="text-align:center">q</th>
 <th style="text-align:center">r</th>
-<th style="text-align:right">s</th>
+<th style="text-align:center">s</th>
 <th></th>
-<th>A</th>
-<th>B</th>
-<th>C</th>
+<th style="text-align:center">A</th>
+<th style="text-align:center">B</th>
+<th style="text-align:center">C</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>C</td>
-<td style="text-align:center">A</td>
-<td style="text-align:right">A</td>
-<td></td>
-<td>q</td>
-<td>q</td>
-<td>s</td>
-</tr>
-<tr>
-<td>B</td>
 <td style="text-align:center">C</td>
-<td style="text-align:right">B</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">A</td>
 <td></td>
-<td>s</td>
-<td>r</td>
-<td>r</td>
+<td style="text-align:center">q</td>
+<td style="text-align:center">q</td>
+<td style="text-align:center">s</td>
 </tr>
 <tr>
-<td>A</td>
 <td style="text-align:center">B</td>
-<td style="text-align:right">C</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">B</td>
 <td></td>
-<td>r</td>
-<td>s</td>
-<td>q</td>
+<td style="text-align:center">s</td>
+<td style="text-align:center">r</td>
+<td style="text-align:center">r</td>
+</tr>
+<tr>
+<td style="text-align:center">A</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">C</td>
+<td></td>
+<td style="text-align:center">r</td>
+<td style="text-align:center">s</td>
+<td style="text-align:center">q</td>
 </tr>
 </tbody>
 </table>
