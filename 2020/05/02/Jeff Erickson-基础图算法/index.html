@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言看到标题我打开笔记本查了查，关于图的算法我学习过并查集（最小生成树）、最短路径和无向图的传递闭包等问题。以前学习这些算法的时候遇到好多概念都不理解，无奈只能查资料先弄懂图的一些基础概念才能继续。等我整理完这篇文章，以后复习起来就方便多了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jeff Erickson 《Free Algorithms Textbook》 -- 基础图算法">
+<meta property="og:url" content="http://yoursite.com/2020/05/02/Jeff Erickson-基础图算法/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言看到标题我打开笔记本查了查，关于图的算法我学习过并查集（最小生成树）、最短路径和无向图的传递闭包等问题。以前学习这些算法的时候遇到好多概念都不理解，无奈只能查资料先弄懂图的一些基础概念才能继续。等我整理完这篇文章，以后复习起来就方便多了。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph9.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph10.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph11.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph12.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph13.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph14.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph15.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph16.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph17.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph18.png">
+<meta property="og:updated_time" content="2020-05-02T13:00:51.426Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jeff Erickson 《Free Algorithms Textbook》 -- 基础图算法">
+<meta name="twitter:description" content="前言看到标题我打开笔记本查了查，关于图的算法我学习过并查集（最小生成树）、最短路径和无向图的传递闭包等问题。以前学习这些算法的时候遇到好多概念都不理解，无奈只能查资料先弄懂图的一些基础概念才能继续。等我整理完这篇文章，以后复习起来就方便多了。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/05/02/Jeff Erickson-基础图算法/"/>
+
+
+
+
+
+  <title>Jeff Erickson 《Free Algorithms Textbook》 -- 基础图算法 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/02/Jeff Erickson-基础图算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Jeff Erickson 《Free Algorithms Textbook》 -- 基础图算法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-05-02T21:00:50+08:00">
+                2020-05-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/02/Jeff Erickson-基础图算法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/05/02/Jeff Erickson-基础图算法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/05/02/Jeff Erickson-基础图算法/" class="leancloud_visitors" data-flag-title="Jeff Erickson 《Free Algorithms Textbook》 -- 基础图算法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>看到标题我打开笔记本查了查，关于图的算法我学习过并查集（最小生成树）、最短路径和无向图的传递闭包等问题。以前学习这些算法的时候遇到好多概念都不理解，无奈只能查资料先弄懂图的一些基础概念才能继续。等我整理完这篇文章，以后复习起来就方便多了。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="基本定义"><a href="#基本定义" class="headerlink" title="基本定义"></a>基本定义</h3><p>一个<strong>图</strong>的正式定义是一对(V,E)的集合，V是任意的有限集合，其中的元素是<strong>顶点</strong>或者<strong>节点</strong>，而E是有V中的成对元素组成的集合，我们称之为<strong>边</strong>。在一个<strong>无向图</strong>中，构成边的两个点没有先后顺序；通常可以用<strong>uv</strong>来代替{u,v}来表示u和v之间的无向边。在一个<strong>有向图</strong>中，构成边的两个点有先后顺序；通常可以用<strong>u→v</strong>来代替(u,v)表示从u到v的有向边。<br>　　接下来的标准练习中，我们用V来表示图中顶点的数量，E表示边的数量。这样，在任意无向图中有$0\leq E\leq \binom{V}{2}$，在任意有向图中有$0\leq E\leq V(V-1)$。<br>　　一个边uv或者u→v的端点是u和v。为了区分有向边u→v的两个端点，我们把u称为尾端点，v称为头端点。<br>　　对于一个图的边定义存在一些禁止项；多个无向边不能有相同的端点，多个有向边不能有相同的头尾端点；无向边不能是一个端点从自身到自身。我们将不存在环和平行边的图成为简单图；将非简单图称之为多重图。尽管与正式定义存在区别，大多数算法从简单图扩展到多重图都会有一点或者没有修改，正是因为如此，我认为没有必要在这里给出正是定义。<br>　　对于一个无向图中的任意边uv，我们将u称为v的<strong>邻居</strong>并且反之亦然，我们可以说u和v是<strong>邻近的</strong>。一个节点的<strong>度</strong>就是它邻居的数量。在有向图中，我们区分两个钟邻居。对于任意有向边u→v，我们将u称为v的<strong>前驱</strong>，将v称为u的<strong>后继</strong>。一个顶点的<strong>入度</strong>就是它前驱的数量；它的<strong>出度</strong>就是它后继的数量。<br>　　如果V’⊆V并且E’⊆E，那么图G’=(V’,E’)是G=(V,E)的<strong>子图</strong>。G的<strong>真子图</strong>是除了他自身以外的子图。<br>　　一个无向图中的<strong>通路（walk）</strong>由一系列顶点组成，其中每一对邻近顶点对都是在G中邻近的；我们也可以把通路认为是一系列的边。如果一条通路中的每一个顶点最多被访问一次，我们称之为<strong>路径（path）</strong>。对于图G中的任意两个顶点u和v，如果u和v在G中存在一条通路，我们就称u和v是<strong>可达到的</strong>。如果一个无向图中每两个顶点之间都是可达到的，那么它就是<strong>连通的</strong>。每个无向图都包含一个或者多个<strong>连通分量</strong>，每个连通分量都是它的最大连通子图；两个顶点在同一个连通分量当且仅当他们之间存在一条路径。<br>　　如果一条通路的起点和终点相同，那么它是<strong>闭合的</strong>。一个<strong>环路</strong>就是一条闭合通路，每个顶点进出一次。当一个无向图中不存在子图是环路，那么它是<strong>非循环的（acyclic）</strong>；非循环图也可以称为<strong>森林</strong>。一棵<strong>树</strong>就是一个连通的非循环图，或者可以说森林的一个分量。无向图G的一棵<strong>生成树</strong>是G的一个子图，并且他是一棵包含了G中所有顶点的树。一个图有生成树当且仅当它是连通的。一个<strong>生成森林</strong>就是G中的生成树集合，其中的元素来自于G的每一个分量。<br>　　关于有向图中的一些定义稍有不同。一条<strong>有向通路</strong>是指一系列的顶点$v_0\rightarrow v_1\rightarrow v_2\rightarrow ··· \rightarrow v_l$，其中$v_{i-1}\rightarrow v_i$是每个索引i的一条有向边。有向路径和有向环路的定义也是类似的。在一个有向图G中顶点u到顶点v是可达到的当且仅当G包含一个从u到v的有向通路。当每个顶点到每个别的顶点都是可达到的，那么这个图是<strong>强连通的</strong>。如果一个有向图不包含有向环路，那么它是<strong>非循环的</strong>。</p>
+<h3 id="表示和例子"><a href="#表示和例子" class="headerlink" title="表示和例子"></a>表示和例子</h3><p>表示图最通用的方法就是把它画出来。图中的顶点就用一个小圆圈或者别的图形表示，边则用曲线或者直线线段表示。一个图是<strong>平面的（planar）</strong>，要求作图的时候没有两条边是交叉的；这种作图也可以叫做<strong>嵌入图（embedding）</strong>。同样的图可以有许多不同的画法，所以画图的时候不能用一些特殊画法来混淆原图。特殊情况下，平面图可有有一些非平面画法。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph1.png" alt="image"><br>　　然而前面这种简单作画并不是图的唯一最有用表示方法。比如<strong>交邻图</strong>中的几何对象对于每种对象都有相应的节点图形；对于交邻对象之间的关系也有相应的表示边。一个图能不能用交邻图表示取决于你决定用什么对象来表示顶点。不同类型的对象（线段，矩形，圆等等）定义不同种类的图。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph2.png" alt="image"><br>　　另外一个例子就是递归算法的<strong>依赖图</strong>。依赖图一个有向无环图。对于一个特定输入生成一系列不同的顶点来表示递归子问题。如果从一个子问题到另一个子问题存在边，那么计算第二个子问题需要用到第一个问题的递归结果。比如斐波那契数列</p>
+<script type="math/tex; mode=display">\begin{equation}F_n=\begin{cases}0&if\ n=0\\1&if\ n=1\\F_{n-1}+F_{n-2}&otherwise\end{cases}\end{equation}</script><p>在依赖图中用整数0,1,2,…,n表示顶点，对于2到n之间的数用$pairs(i-1)→i$和$pairs(i-2)→i$表示关系边。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph3.png" alt="image"><br>　　再举一个复杂一点的例子，需要回忆一下第三章（动态规划）的一个小节<strong>编辑距离</strong>：</p>
+<script type="math/tex; mode=display">\begin{equation}Edit(i,j)=\begin{cases}i&if\ j=0\\j&if\ i=0\\ \min\begin{cases}Edit(i,j-1)+1\\ Edit(i-1,j)+1 \\Edit(i-1,j-1)+[A[i]≠B[j]]\end{cases}&otherwise\end{cases}\end{equation}</script><p>这个递推式的依赖图是一个网格，顶点(i,j)存在三条关系边，分别是水平边$(i-1,j)→(i,j)$，垂直边$(i,j-1)→(i,j)$，对角边$(i-1,j-1)→(i,j)$。对于任意递推式先画一个依赖图可以有效帮助设计动态规划算法；一个正确的计算顺序保证了每个子问题被访问之前它的子问题已被解决。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph4.png" alt="image"><br>　　此外还有一个有趣的例子是游戏、谜题、机械的<strong>配置图</strong>。配置图中的每一个顶点都是谜题中的有效配置；如果可以通过一小步变动（规则允许）从一个配置转变为另一个，那么从这一个配置到另一个就存在一条关系边。即便是一个相当简单的机械，它的配置图也可能机器复杂，而且我们也只能知道关于配置图的一些局部信息。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph5.png" alt="image"><br>　　配置图和我们在第二章（回溯）中提到的游戏树（想不起来为啥这一小节我没翻译到笔记中）关系亲密，但是有一个关键的不同点。每个游戏中的状态恰好在配置图中出现一次，但是可以在游戏树种出现多次。简单来说，配置图是记忆化的游戏树。<br>　　<strong>有限状态自动机</strong>可以用形式语言构造一个标记有向图。回忆一下确定性有限状态自动机形式定义是一个5维元组$M=(\Sigma,Q,s,A,\delta)$，$\Sigma$表示输入字母表，$Q$表示有限状态集合，$s∈Q$是起始状态，$A⊆Q$是终止状态集合，$\delta:Q \times \Sigma\rightarrow Q$是状态转移函数。通常我们将M视为一个有向图$G_M$会更有用，它的顶点在状态集合Q中，对于每个状态$q∈Q$和输入字母$a∈\Sigma$它的边是$q\rightarrow \delta(q,a)$。那么M所接受的语言L(M)就可以转化为关于图$G_M$的问题。比如$L(M)=∅$当且仅当从起始状态s出发没有可接受变化状态。<br>　　最后，有时候一个图可以用来隐式表达别的更大的图。一个较好的隐式表达例子就是子集构造法，它将非确定性有限自动机（NFA）转换为确定性有限自动机（DFA），而且可以应用到任意有向图中。给出任意有向图$G=(V,E)$，我们可以定义一个新的有向图$G’=(2^V,E’)$，它的顶点是所有V的子集，它的边定义如下：</p>
+<script type="math/tex; mode=display">E':=\{A\rightarrow B|u\rightarrow v\in E\ for\ some\ u\in A\ and\ v\in B\}</script><p>我们可以机械地将这个定义翻译成算法来通过G构造G’，但是严格来说，这个构造是不必要的，因为G已经是已经是G’的隐式表达了。<br>　　很重要的是不要将这些例子/表述混淆于实际的正式定义：一个由集合对(V,E)表示的图，V是任意非空有限集合，E是V中元素对（不管有没有顺序）组成的集合。简短一点：一个图就是一个成对事物的集合。</p>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>实际上，图的表示通常使用两种数据结构：邻接表和邻接矩阵。在高水准下，两个数据结构都是由索引表示顶点的数组；这就要求每个顶点有一个从1到V的唯一整数表示。在正式意义上，这些数字就是顶点。</p>
+<h4 id="邻接表"><a href="#邻接表" class="headerlink" title="邻接表"></a>邻接表</h4><p>到目前为止存储图最通用的数据结构还是<strong>邻接表</strong>。邻接表是一个列表数组，每个列表包含了一个顶点的邻居（在有向图中是出邻居）。对于无向图，每个边uv都会存储两次，一次在u的邻居列表中，一次在v的邻居列表中。对于两种类型的图，需求的存储空间都是O(V+E)。<br>　　有几种不同的方式用来表达这些邻居列表，但是标准实现都是用一个简单的单链表。最终的数据结构允许我们在O(1+deg(V))时间内列入节点v的邻居；只浏览v的邻居表。同样地，我们通过浏览u的邻居表可以在O(1+deg(u))时间内确定$u\rightarrow v$是否存在。对于无向图，通过同时浏览u和v的邻居表我们将时间缩减到O(1+min{deg(u),deg(v)})内，浏览的停止条件是定位到关系边或者到达列表末尾。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph6.png" alt="image"><br>　　当然链表并不是唯一可用的数据结构；任何别的支持搜索、列举、插入和删除的数据结构都行。例如，我们可以用平衡二叉搜索树来存储u的邻居表，它可以将确定uv是否存在的执行时间缩减到O(1+log(deg(u)))，或者可以通过适当构造的哈希表降到O(1)。<br>　　有一种邻接表的通用实现方式叫<strong>邻接数组</strong>，仅用一个数组就能存储所有的边，一个顶点的边存储在某段连续区间内，另外有一个数组存储每个顶点的边区间的起始位置。此外，要注意保持两个数组的对应顺序，那么我们就可以在O(log(deg(u)))时间内确定u和v是否相邻。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph7.png" alt="image"></p>
+<h4 id="邻接矩阵"><a href="#邻接矩阵" class="headerlink" title="邻接矩阵"></a>邻接矩阵</h4><p>另外一种存储图的数据结构是<strong>邻接矩阵</strong>。图G的邻接矩阵是一个由0和1组成的V X V矩阵，通常我们用二维数组A[1..V,1..V]来表示，每个数组的值表示一条关系边的是否存在。对于所有的顶点u和v：<br>　　•如果图是无向的，那么A[u,v]:=1当且仅当uv∈E。<br>　　•如果图示有向的，那么A[u,v]:=1当且仅当u→v∈E。<br>对于无向图，邻接矩阵是对称的，这表示对于所有的顶点u和v有A[u,v]=A[v,u]，因为uv和vu只是同一条边的不同名称，对角线上的点A[u,u]全是0。对于有向图，邻接矩阵可能对称也可能不对称，对角线上的点可能是0也可能不是。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph8.png" alt="image"><br>　　给出一个邻接矩阵，我们确定两个顶点是否存在边的时间是$\Theta(1)$。我们列举一个顶点的所有邻居需要时间$\Theta(V)$，通过浏览对应行或者列。这个运行时是固定的，即使一个顶点的邻居数量很少，我们还是要遍历整行来确定结果。同样的，邻接矩阵要求的存储空间是$\Theta(V^2)$，不考虑这个图实际有多少条边，所以它对于稠密图来说空间利用率很高。</p>
+<h4 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h4><p>下面有个表展示不同数据结构的各种时间和空间数据。标记了*的数据表示需要额外的时间来维护哈希表。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph9.png" alt="image"><br>　　根据这个比较，你也许会想为什么有人要用邻接矩阵；毕竟，使用哈希存储的邻接表与之有同样的操作时间，而且还用了更少的空间。最主要的原因是对于足够稠密的图，邻接矩阵使用起来更有效、更简单，因为它避免了跟踪指针和计算哈希函数；它使用的是连续的内存。<br>　　同样地，为什么又有人愿意使用链表的邻接表来存储邻居而不是平衡二叉搜索树或者哈希表的呢？主要原因还是实际运用中标准的邻接表在大多数应用场景都够用，很多标准的图算法实际上不会去查询一条任意边是否存在，或者尝试插入或删除一条边，所以为了这些操作来优化数据结构是不必要的。<br>　　但是在我看来，对于两种数据结构最引人瞩目的原因是许多图都是用邻接矩阵和标准邻接表来隐式表达的。例如：<br>　　•交邻图通常基于几何对象来表达的。只要我们能在常数时间内知道两个对象是否相交，就可以把交邻图用于任何图算法，并且假装这个输入图还是用邻接矩阵存储的。<br>　　•任何通过指针来组成记录的数据结构都可以被看成是一个有向图。如果图算法使用了这些数据结构，可以假装这个图是被被存储在标准邻接表中。<br>　　•同样的，假如我们能在常数时间内根据给出的配置枚举所有可能的移动，那么我们可以把任意图算法应用于配置图，尽管这个图是用标准邻接表来表示的。<br>在这本书的余下部分，除非明确声明，否则所有的图算法的时间界限都是假设输入图是用标准邻接表来表示的。</p>
+<h3 id="任意优先搜索"><a href="#任意优先搜索" class="headerlink" title="任意优先搜索"></a>任意优先搜索</h3><p>目前为止我们只讨论了图的本地操作；关于一个图我们可以提出的最基本的问题是<strong>可达性</strong>。给出一个图G和一个顶点G中的点s，可达性问题就是问从s出发哪些顶点是可以到达的；也就是对于一个顶点v是否存在从s到v的路径？现在，让我们只考虑无向图；后面再来对有向图做个简短说明。对于无向图，能够到达s的顶点肯定和s处于同一个连通分量。<br>　　也许最自然的可达性算法（至少对于大部分人来说）是<strong>深度优先搜索</strong>。这个算法可以用递归也可以用迭代。这就是一个算法的不同实现方式，他们之间唯一不同的地方是可以在非递归的版本中看到递归栈。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph10.png" alt="image"><br>　　深度优先搜索只是图遍历算法家族（我们称之为<strong>任意优先搜索</strong>）的一种。通常的图遍历算法都是将候选边存在一个数据结构中，这个数据结构我们暂时称之为“袋子”。这个“袋子”最重要的属性是我们可以放东西进去，稍后也可以把东西取出来。栈就是一种类型的袋子，当然并不唯一一个。接下来就是通用算法：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph11.png" alt="image"><br>　　WhateverFirstSearch算法标记每一个可以从s出发到达的节点或者什么都不做。这个算法对于每个G中的顶点最多标记一次。为了证明它遍历了连通图中的每个顶点至少一次，我们需要稍微修改一下算法；修改的位置是红色加粗的。这个改动存储的是顶点对而不是单独的顶点。这个改动允许我们记住顶点v是否已经访问过了，并且记住最早是通过哪个顶点访问到v。我们这个最早通过的顶点称之为v的父节点。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph12.png" alt="image"><br><strong>定理5.1.</strong> WhateverFirstSearch只会标记可以从s出发到达的顶点。或者说，parent(v)≠∅的顶点对(v,parent(v))集合定义了一个包含s的连通分量的生成树。</p>
+<p><strong>证明：</strong> 首先我们通过对从s到v最短路径距离的归纳，讨论这个算法标记了从s出发到达的每一个顶点v。这个算法标记了s。让v表示从s出发到达的任意顶点，假设s→···→u→v是从s到v边最少的路径。那么前缀路径s→···→u也是s到u边最少的路径，所以归纳假设表明这个算法标记了u。当这个算法标记u，它一定会把(u,v)放到袋子里，所以稍后它会从袋子里取出(u,v)，这个时候算法会马上标记v，除非他早就被标记了。<br>　　每一个parent(v)≠∅的顶点对(v,parent(v))都是一个基本图G中的边。我们称对于任意被标记的顶点v，父边路径v→parent(v)→parent(parent(v))→···最终都会导向s；我们可以通过对被标记顶点顺序的归纳证明这个声明。因为s到达自身是很简单的，所以让v表示任意别的标记顶点。v的父节点在一定是在v之前被标记，所以归纳假设表明父边路径v→parent(v)→parent(parent(v))→···最终都会导向s；再加上一个父边s→parent(s)就可以完成这个声明了。<br>　　前面这个声明表示算法标记了每个从s出发可到达的顶点，记录了所有可以形成一个连通图的父边集合。因为每个除了s的顶点都有一个唯一的父节点，父边的数量正好比被标记顶点的数量少一。我们得出结论这些父边形成了一棵树。</p>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>这个遍历算法的运行时间取决于我们这个袋子采用的是什么数据结构，但是我们可以做一些普遍观察。用T表示从袋子里插入或删除一个数据的时间。每一个标记顶点会做一次for循环$(†)$，因此最多执行V次。s所在的连通分量中每个边uv都会被放进袋子两次；一次是(u,v)，另一次是(v,u)，所以$(★★)$标记的行最多执行2E次。最后再取出之前我们需要放入东西才行，所以$(★)$标记的行最多执行2E+1次。这样，假设基本图G是存储在标准邻接表中，WhateverFirstSearch的运行时为<strong>O(V+ET)</strong>。（如果G存储在邻接矩阵中，那么运行时就增加到$O(V^2+ET)$）</p>
+<h3 id="关键变量"><a href="#关键变量" class="headerlink" title="关键变量"></a>关键变量</h3><h4 id="栈：深度优先"><a href="#栈：深度优先" class="headerlink" title="栈：深度优先"></a>栈：深度优先</h4><p>如果我们的袋子使用的结构是栈，我们需要回顾深度优先搜索算法。栈支持插入（push）和删除（pop）的操作时间是O(1)。那么整个算法的运行时为<strong>O(V+E)</strong>。这种方式有父边记录形成的生成树叫做<strong>深度优先生成树</strong>。这棵树的形状取决于邻居节点在for循环$(†)$中的访问顺序，但是普遍来说，深度优先生成树都比较瘦长。下一章会有讲到深度优先搜索的重要属性和应用场景。</p>
+<h4 id="队列：广度优先"><a href="#队列：广度优先" class="headerlink" title="队列：广度优先"></a>队列：广度优先</h4><p>如果我们的袋子使用的结构是队列，我们就有了一个不同的图遍历算法叫做广度优先搜索。队列支持插入（push）和删除（pull）的操作时间是O(1)，那么算法的运行时也是<strong>O(V+E)</strong>。这种根据父边形成的<strong>广度优先生成树</strong>包含了在同一连通分量中从起点s到每个其他顶点的最短路径；关于最短路径会在下下下章讲到（第八章）。这棵树的形状取决于邻居节点在for循环$(†)$中的访问顺序，但是普遍俩说，深度优先生成树都比较粗短。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph13.png" alt="image"></p>
+<h4 id="优先队列：最佳优先"><a href="#优先队列：最佳优先" class="headerlink" title="优先队列：最佳优先"></a>优先队列：最佳优先</h4><p>最后如果我们的袋子使用的结构是优先队列，我们就又有了另一个图遍历算法家族叫做<strong>最佳优先搜索</strong>。因为优先队列存储每个边只存一次，插入一条边或者取出优先级最低的边需要的时间为O(log E)，这就表示最佳搜索的运行时为<strong>O(V+Elog E)</strong>。<br>　　因为有很多不同的方法可以分配边的优先级，而且不同的选择会导致不同的算法行为，所以这里把最佳优先搜索称为算法家族而不是一个单独算法。下面会提到三种著名的分配方法，但是除此之外还有很多。在这三个例子中，我们假设每个边uv或者u→v的权重w(uv)和w(u→v)都不为负。<br>　　首先，如果输入图是无向的，我们用每条边的权重作为优先级，最佳搜索会构造一个s所在连通分量的最小生成树。只要权重不同，最后的生成树结果不取决于起点或者遍历邻居的顺序。这种情况下，最小生成树就是唯一的。这种最佳搜索的实例算法就是我们所知的prim算法；在下下章（第七章）会继续讨论最小生成树。定义一个路径的长度为它边的权重和。我们也可以在权重图中用最佳优先搜索计算出最短路径。每个标记点存储一个距离值dist(v)。我们初始化dist(s)=0。对于每个其他顶点v，当我们设置边parent(v)←p，我们也会设置dist(v)←dist(p)+w(p→v)，当我们插入边v→w到优先队列时，就用dist(v)+w(v→w)作为优先级。假设所有边的权重都是正的，dist(v)就是s到v的最短路径的长度。这种最佳搜索的实例算法就是我们所知的dijkstra算法；我们在下下下章（第八章）会再次看到这个算法。<br>　　最后，将一条路径的宽度定义为它的最小权重边的权值。使用dijkstra最佳搜索算法做一点改动就可以计算出从s出发到任意顶点的<strong>最广路径</strong>；这个最广路径也可以称为<strong>瓶颈最短路径</strong>。么个标记顶点v存储一个值width(v)。初始化width(s)=∞。对于每个其他顶点v，当我们设置parent(v)←p时，我们也要设置width(v)←min{width(p),w(p→v)}，当我们把边v→w放入优先队列时，使用min{width(v),w(v→w)}作为优先级。算法中最广路径对于计算最大流很有用，这个知识点会在第十章讲到。</p>
+<h4 id="非连通图"><a href="#非连通图" class="headerlink" title="非连通图"></a>非连通图</h4><p>WhateverFirstSearch(s)只会访问顶点s可以到达的那些顶点。为了访问到G中的每个顶点，我们需要使用到一个包装函数。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph14.png" alt="image"><br>如果对WFSAll算法稍加改进就能计算出当前图的连通分量个数。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph15.png" alt="image"><br>在做一点点改进，我们就能记录每个连通分量的顶点个数了。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph16.png" alt="image"><br>　　WFSAll对每个顶点标记了一次，每条边只放进和取出袋子一次，所以总共的运行时是O(V+ET)，T是对袋子操作的时间。如果我们深度优先搜索或者广度优先搜索作为袋子操作方法，那么算法的运行时为O(V+E)。<br>　　因为WhateverFirstSearch计算一个连通分量的生成树，我们可以使用WFSAll来计算整个图的生成森林。特别是带权边作为优先级的最佳优先搜索可以在O(V+Elog E)时间内计算出最小权重生成森林。</p>
+<h4 id="有向图"><a href="#有向图" class="headerlink" title="有向图"></a>有向图</h4><p>任意优先搜索使用到有向图上很简单；唯一不同的地方当我们标记一个点时，是把它的所有的出邻居放进袋子。实际上如果我们用到的是标准邻接表或者邻接矩阵，那么完全没必要修改代码。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph17.png" alt="image"><br>　　前面我们证明过算法会标记从s出发可以达到的所有顶点，有向边parent(v)→p定义了一棵有根树，它的所有边都是在远离根节点s。即使图是连通的，我们也没必要去获取这个图的生成树，因为可达性不是对称的了。<br>　　需要注意的是，WhateverFirstSearch确实定义了一个从s到其可达顶点的生成树。通过变化袋子的实现方式，我们也可以获取这些顶点的深度优先生成树，广度优先搜索树，最小权重有向生成树，最短路径树，或者最广路径树。</p>
+<h3 id="图规约：Flood-Fill"><a href="#图规约：Flood-Fill" class="headerlink" title="图规约：Flood Fill"></a>图规约：Flood Fill</h3><p>有个早期任意优先搜索的范例之一是被Edward Moore在1950年中期提出的。一个像素地图使用一个二维数组来表示，数组值表示颜色；独立的每个数组值被称作像素，具体可以看下面的图。像素图中的连通区域是一个有相同颜色的连通像素点集合，其中如果两个像素点在水平或者垂直方向上是邻居就可以被认为是相邻的。flood fill操作通常表示在一个光栅图编辑软件中将一个连通区域的像素点染上一个新的颜色；这个操作的输入包含目标区域中的两个索引i、j和一个新的颜色。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph18.png" alt="image"><br>　　flood fill问题根据定义可以被简化成可达性问题。我们定义一个无向图G=(V,E)，它的顶点都是单独的像素点，相互之间可以通过边连接的像素点有着同样的颜色。像素图中的每个连通区域就是图G中的一个连通分量；这样，flood fill问题就被简化成了图G的可达性问题。我们可以使用任意优先搜索来解决这个可达性问题，从一个像素点(i,j)开始，加上一点改动；当我们标记一个顶点时，也要改变它的颜色。对于一个n x n的像素图，图G有$n^2$个顶点，最多$2n^2$条边，所以任意优先搜索的运行时为$O(V+E)=O(n^2)$。<br>　　这个简单的例子说明简化的基本步骤。我们用一个已有的算法作为黑盒子子程序，而不是从头开始解决flood-fill问题。在这里任意优先搜索是怎么运作的完全不相关；重要的是它的说明：给出一个图G和一个起点s，标记图G中从s出发可达的所有顶点。就像其他子程序一样，我们还需要描述怎么构造输入和怎么使用它的输出。我们还必须根据输入参数来分析最终的算法，而不是我们算法构造的中间图的顶点和边。<br>　　现在我们暂时有个有效的算法，但我们可以采用两个简单的优化来使它更快，一个是实际的，另一个是理论的：<br>　　•在一个实际的实现中，我们不会去为G实现一个单独的数据结构。相反，我们就当它还是标准邻接表来直接使用像素地图，因为我们可以在O(1)时间内列出具有相同颜色的邻居。尤其是我们没必要单独去标记顶点；我们可以用像素颜色来代替。<br>　　•更谨慎的分析会发现运行时和被填充区域像素点（图G中包含点(i,j)的连通分量中的顶点）的数量有关。也就是说实际上运行时会小于$O(n^2)$。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>关于图的基础知识很多是定义方面的，而且本文引入的概念应该还会重复用到。前面一大段概念读完之后，后面才提到了图的存储结构和遍历算法；有几个算法都是我学过的，后续章节也还有具体讲解。读完这篇我最大的感受就是大脑里面关于图的知识点都串起来了，即便是学过的算法我也还想看看作者的讲解，也许jeffe</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="http://jeffe.cs.illinois.edu/teaching/algorithms/book/05-graphs.pdf" target="_blank" rel="noopener">http://jeffe.cs.illinois.edu/teaching/algorithms/book/05-graphs.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/05/Jeff Erickson-贪心算法/" rel="next" title="Jeff Erickson 《Free Algorithms Textbook》 -- 贪心算法">
+                <i class="fa fa-chevron-left"></i> Jeff Erickson 《Free Algorithms Textbook》 -- 贪心算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本定义"><span class="nav-number">2.1.</span> <span class="nav-text">基本定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表示和例子"><span class="nav-number">2.2.</span> <span class="nav-text">表示和例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据结构"><span class="nav-number">2.3.</span> <span class="nav-text">数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#邻接表"><span class="nav-number">2.3.1.</span> <span class="nav-text">邻接表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#邻接矩阵"><span class="nav-number">2.3.2.</span> <span class="nav-text">邻接矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#比较"><span class="nav-number">2.3.3.</span> <span class="nav-text">比较</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#任意优先搜索"><span class="nav-number">2.4.</span> <span class="nav-text">任意优先搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分析"><span class="nav-number">2.4.1.</span> <span class="nav-text">分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键变量"><span class="nav-number">2.5.</span> <span class="nav-text">关键变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#栈：深度优先"><span class="nav-number">2.5.1.</span> <span class="nav-text">栈：深度优先</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#队列：广度优先"><span class="nav-number">2.5.2.</span> <span class="nav-text">队列：广度优先</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优先队列：最佳优先"><span class="nav-number">2.5.3.</span> <span class="nav-text">优先队列：最佳优先</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非连通图"><span class="nav-number">2.5.4.</span> <span class="nav-text">非连通图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有向图"><span class="nav-number">2.5.5.</span> <span class="nav-text">有向图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图规约：Flood-Fill"><span class="nav-number">2.6.</span> <span class="nav-text">图规约：Flood Fill</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">4.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/05/02/Jeff Erickson-基础图算法/';
+          this.page.identifier = '2020/05/02/Jeff Erickson-基础图算法/';
+          this.page.title = 'Jeff Erickson 《Free Algorithms Textbook》 -- 基础图算法';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
