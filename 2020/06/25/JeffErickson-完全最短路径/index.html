@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言要是以前让我看到这个题目，我肯定会遍历所有点使用单源最短路径算法。但是这个问题单独讲了一篇，必定有其中的奥妙。目前为止图类算法的最优运行时应该是O(VE)级别的，如果算法存在重复遍历点和边那就可能还存在可优化的地方。当然这是我个人的感觉，话先撂这儿，等被打脸再说。👀">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jeff Erickson 《Algorithms》 -- 完全最短路径">
+<meta property="og:url" content="http://yoursite.com/2020/06/25/JeffErickson-完全最短路径/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言要是以前让我看到这个题目，我肯定会遍历所有点使用单源最短路径算法。但是这个问题单独讲了一篇，必定有其中的奥妙。目前为止图类算法的最优运行时应该是O(VE)级别的，如果算法存在重复遍历点和边那就可能还存在可优化的地方。当然这是我个人的感觉，话先撂这儿，等被打脸再说。👀">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp9.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp10.png">
+<meta property="og:updated_time" content="2020-06-25T13:46:51.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 完全最短路径">
+<meta name="twitter:description" content="前言要是以前让我看到这个题目，我肯定会遍历所有点使用单源最短路径算法。但是这个问题单独讲了一篇，必定有其中的奥妙。目前为止图类算法的最优运行时应该是O(VE)级别的，如果算法存在重复遍历点和边那就可能还存在可优化的地方。当然这是我个人的感觉，话先撂这儿，等被打脸再说。👀">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/06/25/JeffErickson-完全最短路径/"/>
+
+
+
+
+
+  <title>Jeff Erickson 《Algorithms》 -- 完全最短路径 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/25/JeffErickson-完全最短路径/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Jeff Erickson 《Algorithms》 -- 完全最短路径</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-06-25T21:34:00+08:00">
+                2020-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/06/25/JeffErickson-完全最短路径/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/06/25/JeffErickson-完全最短路径/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/06/25/JeffErickson-完全最短路径/" class="leancloud_visitors" data-flag-title="Jeff Erickson 《Algorithms》 -- 完全最短路径">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>要是以前让我看到这个题目，我肯定会遍历所有点使用单源最短路径算法。但是这个问题单独讲了一篇，必定有其中的奥妙。目前为止图类算法的最优运行时应该是O(VE)级别的，如果算法存在重复遍历点和边那就可能还存在可优化的地方。当然这是我个人的感觉，话先撂这儿，等被打脸再说。👀<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>在前一章中我们讨论过几个单源最短路径算法，已知图中一个起点s，计算出它到图中其他顶点的最短路径。<br>• dist(v)表示从s到v的最短路径长度；<br>• pred(v)表示从s到v的最短路径中的倒数第二个顶点。</p>
+<p>在本章，我们考虑更普遍的完全最短路径问题，也就是每个可能的源点到图中所有顶点的最短路径。对于每对顶点u和v，我们想计算出一下信息：<br>• dist(u,v)表示从u到v的最短路径长度；<br>• pred(u,v)表示从s到v的最短路径中的倒数第二个顶点。</p>
+<p>这些直观地定义不包含一些边界情况，所有这些我们在上一章中都见过。<br>• 如果从u到v没有通路，那么也就不存在从u到v的最短路径；这种情况下，我们定义dist(u,v)=∞以及pred(u,v)=Null。<br>• 如果u和v之间存在负权环，那么通过这个环可以缩减路径长度；这种情况下，我们定义dist(u,v)=-∞以及pred(u,v)=Null。<br>• 最后，如果u不在负权环中，那么从u到自身的最短路径不需要边，因此就没有上一条边；这种情况下，我们定义dist(u,u)=0以及pred(u,u)=Null。</p>
+<p>完全最短路径问题的期望输出是一对V * V数组，一个存储$V^2$个最短路径距离，另一个存储$V^2$个前驱指针。在本章，我们更倾向于计算距离数组。至于前驱数组，我们可以对计算过程做一些小改动即可得到。</p>
+<h3 id="大量单一源点"><a href="#大量单一源点" class="headerlink" title="大量单一源点"></a>大量单一源点</h3><p>完全最短路径问题最明显的解决方案就是执行V次单源最短路径算法，一个源点执行一次。特别地，为了填充一维子数组dist[s,·]，我们对源点s调用单源最短路径算法。这种算法运行时取决于我们采用哪一种单源最短路径算法。根据图的结构和边权，这里我们有四种选择：<br>　　• 如果图是无权的，使用广度优先搜索的总运行时为$O(VE)=O(V^3)$。<br>　　• 如果图是有向无环的，使用拓扑顺序遍历顶点的总运行时为$O(VE)=O(V^3)$。<br>　　• 如果所有边权都是非负的，使用Dijkstra算法的总运行时为$O(VE logV)=O(V^3 logV)$。<br>　　• 最后，通常情况下使用Bellman-Ford算法的总运行时为$O(V^2E)=O(V^4)$</p>
+<h3 id="再赋权"><a href="#再赋权" class="headerlink" title="再赋权"></a>再赋权</h3><p>负权边确实很影响我们的计算速度；但我们能摆脱它吗？如果每条边增加相同的值让所有的边权都变成正的，那么我们就可以用Dijkstra而不是Bellman-Ford算法，很多人都有过这样的注意。然而，这个简单的想法不行，因为直观上来说因为两种“长度”概念是矛盾的—边多的路径权值可能比边少的路径权值还小。如果我们以同样的速率增加边权，边多的路径将会边少的路径增长更快；这样，两个顶点之间的最短路径就可能发生变化。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp1.png" alt="image"><br>　　然而，确实存在一个非常微妙的再赋权方法，它可以保存最短路径。假设每个顶点一个关联代价$π(v)$，它可以是正数、负数或者0。我们可以定义一个新的权值函数：</p>
+<p>$w’(u\rightarrow v)=\pi(u)+w(u\rightarrow v)-\pi(v)$</p>
+<p>为了方便理解，想象一下当我们离开顶点u时，我们需要付一种退出税务$\pi(u)$，当我们进入顶点v时，我们得到一种加入收益$\pi(v)$。<br>　　不难发现新的权值函数$w’$和原权值方程$w$是一样的，实际上，对于任意从u到v的路径$u\rightsquigarrow v$，我们有</p>
+<p>$w’(u\rightsquigarrow v)=\pi(u)+w(u\rightsquigarrow v)-\pi(v)$</p>
+<p>我们付出$\pi(u)$的税务，加上原来路径的权值，减去$\pi(v)$的收益。至于路径中的每个中间顶点，我们得到$\pi(x)$的收益，但是又马上作为税务出去了！因为所有从u到v的路径长度改变的量是一样的，所以从u到v的最短路径没有改变。</p>
+<h3 id="Johnson算法"><a href="#Johnson算法" class="headerlink" title="Johnson算法"></a>Johnson算法</h3><p>Johnson的完全最短路径算法计算出每个顶点的关联代价$\pi(v)$，所以每条边的新权值都是非负的，然后基于这些再赋权的边再使用Dijkstra算法。<br>　　首先，假设输入图有一个顶点s可以到达所有其他顶点。Johnson使用Bellman-Ford算法计算出从s到所有其他点的最短路径，然后在使用代价函数$\pi(v)=dist(s,v)$对图进行再赋权。每条边的新权值遵循以下函数：</p>
+<p>$w’(u\rightarrow v)=dist(s,u)+w(u\rightarrow v)-dist(s,v)$</p>
+<p>因为Bellman-Ford算法停止了，所以新的权重都是非负的！回想一下$u\rightarrow v$是紧边，仅当$dist(s,v)+w(u\rightarrow v)&lt;dist(s,v)$，而且单源最短路径算法会排除所有的紧边。<br>　　如果不存在合适的顶点s，那么不管从哪里启动Bellman-Ford算法都会有一些顶点的代价是无穷大。为了避免这种情况，我们总是增加一个新顶点s到输入图中，它到所有其他顶点的边权为0，但是没有边可以到达s。这个改动不会改变原来任意两个点之间的最短路径，因为没有路径可以到达s。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp2.png" alt="image"><br>　　完整的伪代码如上图所示。这个算法的运行时由调用Dijkstra的次数决定。尤其是，我们花费了O(VE)执行BellmanFord一次，O(VE logV)执行了V次Dijkstra，以及O(V+E)用来记账。这样，全部的运行时间就是$O(VE logV)=O(V^3logV)$。负权边也不能减慢我们的速度！</p>
+<h3 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h3><p>我们也可以直接使用动态规划来解决完全最短路径问题，而不是多次调用单源算法。对于稠密图，有$E=\Omega(V^2)$，动态规划最终产出的算法相较于Johnson算法更快更简单。<strong>本章剩余部分，我们直接假设输入图不包含负权环。</strong><br>　　通常对于动态规划算法，我们首先需要一个递推式。和单源算法一样，有“明显”的递归定义如下：</p>
+<script type="math/tex; mode=display">\begin{equation}dist(u,v)=\begin{cases}0 & if\ u=v\\ \min\limits_{x\rightarrow v}(dist(u,x)+w(x\rightarrow v)) & otherwise\end{cases}\end{equation}</script><p>当然它只会在输入图为有向无环图时有效；任何有向环都会使这个递推式进入无限循环。<br>　　通过引入一个额外参数，我们可以打破这个无限循环，正如我们对Bellman-Ford算法所做的；用$dist(u,v,l)$表示从u到v经过最多l条边的最短路径长度。最短路径最多经过V-1条边，所以真正的最短路径距离就是$dist(u,v,V-1)$。Bellman的单源递推式采用这个设置后变成：</p>
+<script type="math/tex; mode=display">\begin{equation}dist(u,v,l)=\begin{cases}0 & if\ l=0\ and\ u=v\\∞ & if\ l=0\ and\ u\neq v\\ min\begin{cases}dist(u,v,l-1)\\ \min\limits_{x\rightarrow v}(dist(u,x,l-1)+w(x\rightarrow v))\end{cases}& otherwise\end{cases}\end{equation}</script><p>将这个递推式直接转化成动态规划算法；产出算法运行时为$O(V^2E)=O(V^4)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp3.png" alt="image"><br>　　和Bellman-Ford算法的优化一样，我们不需要最内层的对于顶点v的循环和迭代索引l。改动后的算法如下。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp4.png" alt="image"><br>　　从这个推导过程，不难看出这个产出算法和交错执行V次不同源点的Bellman-Ford算法一样。特别是，对于所有的顶点u和v，在主循环l次迭代后，$dist[u,v]$的值不会超过从u到v不超过l条边的最短路径长度。</p>
+<h3 id="分而治之"><a href="#分而治之" class="headerlink" title="分而治之"></a>分而治之</h3><p>但是我们还有更进一步的改动。通过考虑目标顶点的所有可能前驱，Bellman的递推式将最短路径看作是一条更短的最短路径和一条边。相反，如果我们将最短路径看作是经过一些中间点的两条更短的最短路径。这个想法给了我们一个不同含义的的相同递推式$dist(u,v,l)$，这里我们基础情况是l=1而不是l=0，因为只有一条边的路径是没有中间点的。为了方便简化这个递推式，我们定义对于每个顶点v有$w(v\rightarrow v)=0$。</p>
+<script type="math/tex; mode=display">\begin{equation}dist(u,v,l)=\begin{cases}w(u\rightarrow v) & if\ l=1\\ \min\limits_{x\rightarrow v}(dist(u,x,l/2)+dist(x,v,l/2)) & otherwise\end{cases}\end{equation}</script><p>如你所见，在这个递推式中l必须是2的次方数，否则我们可能就要去寻找小数条边！但是这并不是什么大问题；如果$l\geq V-1$那么$dist(u,v,l)$就是从u到v的最短路径；特别是，我们可以用$l=2^{\lceil lgV\rceil}&lt;2V$。（国内lg的底数是10，但是作者在此处想用的底数应该是2）<br>　　再一次，动态规划算法结构是很清晰的。即使我们没有写出算法，也能得出运行时$O(V^3logV)$—我们需要u、v和x各V个，以及$\lceil lgV\rceil$个不同l的值。在接下来的伪代码中我们用数组元素$dist[u,v,i]$存储$dist(u,v,2^i)$的值。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp5.png" alt="image"><br>　　不像我们早期的算法，FischerMeyerAPSP与调用V次单源最短路径的算法不同；特别是，最内层的循环不是简单的放松紧边。不过，我们任然可以移除数组的最后一维，使用$dist[u,v]$替换每一处$dist[u,v,i]$，正如我们前面对动态规划算法的处理；这将空间复杂度从$O(V^3)$降到了$O(V^2)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp6.png" alt="image"></p>
+<h3 id="趣味矩阵乘法"><a href="#趣味矩阵乘法" class="headerlink" title="趣味矩阵乘法"></a>趣味矩阵乘法</h3><p>计算有向图的最短路径和计算矩阵的幂有非常紧密的关联。将FischerMeyerAPSP的内层循环和下面n*n矩阵平方的算法相比较。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp7.png" alt="image"><br>两个算法的唯一不同点在于第二个算法使用加法代替乘法，取最小值代替加法。由于这个原因，最短路径的内层循环有时会被称为“趣味”矩阵乘法。<br>　　我们较慢的算法ShimbelAPSP就是对权重矩阵w计算V-1次“趣味”矩阵乘法的标准迭代算法。在设置循环中我们将矩阵的对角线都设成0，其余设成∞。在第二个主循环中我们使用上一次的结果继续执行“趣味”矩阵乘法。<br>　　目前存在很多处理矩阵乘法更快的分治算法，它们都极大的提升了运算时间。但是所有这些更快的算法都用到了减法，但是我们还不知道减法的“趣味”转换是什么。（取最小值的反操作是什么？）所以至少对于一般图来说，没有“明显”的方法可以优化动态规划算法的内层循环。</p>
+<h3 id="Floyd-Warshall（Kleene）算法"><a href="#Floyd-Warshall（Kleene）算法" class="headerlink" title="Floyd-Warshall（Kleene）算法"></a>Floyd-Warshall（Kleene）算法</h3><p>我们最快动态规划算法和标准Johnson算法都有一个因子$O(logV)$。Kleene发现了一种表述方式可以移除这个对数因子，他依然使用之前的动态规划递推式。但是第三个参数的含义却不同了，它不再是限制边的数量，而是一些可以通过的确定顶点。此处，“通过”是指“进入然后离开”；比如，路径$w\rightarrow x\rightarrow y\rightarrow z$从w开始通过x、y最终到达z。<br>　　用数字1到V来随意标记所有顶点。对于每对顶点u和v以及整数r，我们定义<strong>$\pi(u,v,r)$表示从u到v经过数字标记不超过r的顶点的最短路径</strong>。特别是，$\pi(u,v,V)$确实表示了从u到v的最短路径。我们观察到这些路径都有一个简单的递归结构。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp8.png" alt="image"><br>• 路径$\pi(u,v,0)$不通过任何中间点，所以它表示u到v这条边。<br>• 对于任意$r&gt;0$，$\pi(u,v,r)$要么通过顶点r，要么不通过。<br>　　- 如果$\pi(u,v,r)$通过顶点r，那么它就由从u到r和从r到v的子路径构成。两条子路径经过的中间点的顶点标记不会超过r-1；此外，由于条件限制子路径也是最短的。所以两个子路径一定是某一对$\pi(u,r,r-1)$和$\pi(r,v,r-1)$。<br>　　- 另外，如果$\pi(u,v,r)$不通过顶点r，那么它通过的顶点标记不超过r-1，由于条件限制它一定是最短路径。所以在这种情况下，我们得到$\pi(u,v,r)=\pi(u,v,r-1)$。</p>
+<p>现在用$dist(u,v,r)$表示路径$\pi(u,v,r)$的长度。由$\pi(u,v,r)$的递归结构得出以下递推式：</p>
+<script type="math/tex; mode=display">\begin{equation}dist(u,v,r)=\begin{cases}w(u\rightarrow v) & if\ r=0\\ min\begin{cases}dist(u,v,r-1)\\ dist(u,r,r-1)+dist(r,v,r-1)\end{cases}& otherwise\end{cases}\end{equation}</script><p>我们的目标是计算所有顶点u和v的$dist(u,v,V)$。再一次，我们通过递推式得出动态规划运行时为$O(V^3)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp9.png" alt="image"><br>　　正如我们之前的所有的最短路径动归算法，通过移除数组的第三个记忆维我们可以简化KleeneAPSP。也正是由于我们对顶点的数字标记是任意的，没有必要特意在伪代码中指出。我们修改后得到Floyd和Warshall的版本如下：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp10.png" alt="image"><br>　　我们将FloydWarshall和我们之前稍慢的动态规划算法LeyzorekAPSP比较会发现有趣的事情。并非执行$O(logV)$次顶点三元组循环计算，FloydWarshall只执行一次就够了，但这仅仅是因为它的三个内层循环的嵌套顺序与后者不同。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>本文篇幅不算长，但分别从两种思维方式引导出常规的优化算法。正常情况我们都知道可以使用单源算法来解决完全最短路径问题，不过Dijkstra的运行时明显优于Bellman-Ford却受制于负权边，这是一个优化点。然后就是我们熟悉的动态规划，由一般递推式得出的算法还是比较慢，因为我们的思路是把当前路径切割为一条路径和一条边，这又是一个优化点。尤其是最后这个动归算法，思路就更巧妙了，完全不同于之前。当然还得感谢FloydWarshall算法！不然我就被打脸了。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="http://jeffe.cs.illinois.edu/teaching/algorithms/book/09-apsp.pdf" target="_blank" rel="noopener">http://jeffe.cs.illinois.edu/teaching/algorithms/book/09-apsp.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/07/JeffErickson-最短路径/" rel="next" title="Jeff Erickson 《Algorithms》 -- 最短路径">
+                <i class="fa fa-chevron-left"></i> Jeff Erickson 《Algorithms》 -- 最短路径
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#大量单一源点"><span class="nav-number">2.1.</span> <span class="nav-text">大量单一源点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#再赋权"><span class="nav-number">2.2.</span> <span class="nav-text">再赋权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Johnson算法"><span class="nav-number">2.3.</span> <span class="nav-text">Johnson算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态规划"><span class="nav-number">2.4.</span> <span class="nav-text">动态规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分而治之"><span class="nav-number">2.5.</span> <span class="nav-text">分而治之</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#趣味矩阵乘法"><span class="nav-number">2.6.</span> <span class="nav-text">趣味矩阵乘法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Floyd-Warshall（Kleene）算法"><span class="nav-number">2.7.</span> <span class="nav-text">Floyd-Warshall（Kleene）算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">4.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/06/25/JeffErickson-完全最短路径/';
+          this.page.identifier = '2020/06/25/JeffErickson-完全最短路径/';
+          this.page.title = 'Jeff Erickson 《Algorithms》 -- 完全最短路径';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
