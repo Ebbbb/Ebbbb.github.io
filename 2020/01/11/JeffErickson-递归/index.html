@@ -91,7 +91,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion3.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion4.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion5.png">
-<meta property="og:updated_time" content="2020-06-25T13:36:26.418Z">
+<meta property="og:updated_time" content="2020-07-05T02:54:30.654Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 递归">
 <meta name="twitter:description" content="前言　　前段时间我读了Jeff教授算法文章后受益颇多，所以决定根据他的每个知识点做一些学习记录。一来我可以提升自己的翻译能力，再者我可以缩减原文篇幅方便以后查看。">
@@ -361,7 +361,7 @@
 <script type="math/tex; mode=display">T(n)\leq T(n/3)+T(2n/3)+O(n)</script><p>这个递推式也许看起来可怕，但实际上还是很平常的。如果我们画几层递归树来看，就会很快发现每一层的节点值之和不超过n—越深的层将会失去一些节点—整棵树的高度为$log_{3/2} n=O(log n)$。那么马上可以得出$T(n)=O(n log n)$。（整棵递归树的层数应该是$log_3 n=Ω(log n)$，所以在这种保守分析只能增大一个常数因子，对于我们来说一点都不重要。）事实上递归树是否平衡并没有实际影响。<br>　　作为一个比较特殊的例子，快速排序最坏的递推式$T(n)=T(n-1)+T(1)+O(n)$给了我们一颗完全不平衡的递归树，所有非叶节点的子节点中有一个是叶节点，它逐层的和并不在我们前面提到的三种情况中，但是我们还是可以得出答案$T(n)=O(n^2)$，通过观察发现每层的值最大是n且最多只有n层。（我们再次发现保守分析并不重要，因为有n/2层的值是不低于n/2的）</p>
 <h3 id="忽略向上和向下取整"><a href="#忽略向上和向下取整" class="headerlink" title="忽略向上和向下取整"></a>忽略向上和向下取整</h3><p>细心的读者也许会反对我们的分析掩盖了一个重要的细节。归并排序的运行时并没有严格遵守递推式$T(n)=2T(n/2)+O(n)$；毕竟输入大小n可能是一个奇数，那么一个非整数大小的数组排序有什么意义呢？完整的归并排序递推式是比较难以处理的：</p>
 <script type="math/tex; mode=display">T(n)=T(\lceil n/2 \rceil)+T(\lfloor n/2 \rfloor)+O(n)</script><p>当然，我们可以通过归纳法来验证$T(n)=O(n log n)$，但是这将通过非常可怕的必要计算。幸运的是有一个简单的技术可以从地推始终移除向上和向下取整，它叫做领域变换。<br>•首先，因为我们是要得到一个上界，可以安全的高估T(n)，只要假装两个子问题的大小是相等的，然后再消除向上取整：<script type="math/tex">T(n)\leq 2T(\lceil n/2 \rceil)+n\leq 2T(n/2+1)+n</script><br>•其次，我们定义一个新的函数$S(n)=T(n+α)$，利用常数α让S(n)满足一个简单的递推式$S(n)\leq 2S(n/2)+O(n)$。为了找到一个合适的α，我们从已经给出的T递推式得到S递推式：</p>
-<script type="math/tex; mode=display">\begin{align*}S(n)&=T(n+α)\\ &\leq2T(n/2+α/2+1)+n+α\\ &=2S(n/2-α/2+1)+n+α\end{align*}</script><p>令α=2降低退市简化成$S(n)\leq 2S(n/2)+n+2$，这正是我们想要的。<br>•最后，由这个递推式可以得出$S(n)=O(n log n)$，因此</p>
+<script type="math/tex; mode=display">\begin{align*}S(n)&=T(n+α)\\ &\leq2T(n/2+α/2+1)+n+α\\ &=2S(n/2-α/2+1)+n+α\end{align*}</script><p>令α=2将递推式简化成$S(n)\leq 2S(n/2)+n+2$，这正是我们想要的。<br>•最后，由这个递推式可以得出$S(n)=O(n log n)$，因此</p>
 <script type="math/tex; mode=display">T(n)=S(n-2)=O((n-2)log(n-2))=O(n\ log\ n)</script><p>领域变化可以用来为任何分治递推式移除取整和低位项。但是我们不再需要如此麻烦地验证这些细节问题了！从现在起，遇到分治递推式就可以直接忽略掉取整和低位项了。</p>
 <h3 id="线性时间内查找"><a href="#线性时间内查找" class="headerlink" title="线性时间内查找"></a>线性时间内查找</h3><h4 id="快速查找"><a href="#快速查找" class="headerlink" title="快速查找"></a>快速查找</h4><p>快速查找使用快速排序中的Partition方法，伪代码如下：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion4.png" alt="image"><br>快速查找的最坏运行时和快速排序很相似。</p>
 <script type="math/tex; mode=display">T(n)\leq \max\limits_{1\leq r\leq n}max\{T(r-1),T(n-r)\}+O(n)</script><p>用l表示递推子问题的范围大小，我们可以将此递推式简化如下：</p>
@@ -373,7 +373,7 @@
 <h4 id="理性核实"><a href="#理性核实" class="headerlink" title="理性核实"></a>理性核实</h4><p>可能大家都想知道为什么分块大小是5？答案是5是构成指数级衰减递归树的最小奇数。如果我们的分块大小是3，那么运行时递推式就是</p>
 <script type="math/tex; mode=display">T(n)\leq T(n/3)+T(2n/3)+O(n)</script><p>这个式子在前文中已经见过了，分块大小为3并不能在线性时间内查找到元素。<br>　　通过严格分析我们会发现$O()$记号隐藏的常数相当大，如果我们只记录比较运算。从五个元素中找出中间元素，最多需要6次比较，所以我们需要经过6n/5次比较才能启动递归子问题。Partition操作需要n-1次比较，但是我们已经知道了3n/5的元素或大或小与游标元素，那么Partition实际上只需要2n/5次比较。这样，一个更详细的最坏比较递推式就是</p>
 <script type="math/tex; mode=display">T(n)\leq T(n/5)+T(7n/10)+8n/5</script><p>通过递归树方法得出上界</p>
-<script type="math/tex; mode=display">T(n)\leq \frac{8n}{5}\sum\limits_{i\geq 0}(\frac{9}{10})^i=\frac{8n}{5}·10=16n</script><p>实际上，这个MomSelect并真的就是最坏情况分析预测的这么慢，毕竟不可能每次递归都选到最坏的游标。</p>
+<script type="math/tex; mode=display">T(n)\leq \frac{8n}{5}\sum\limits_{i\geq 0}(\frac{9}{10})^i=\frac{8n}{5}·10=16n</script><p>实际上，这个MomSelect并非真的就是最坏情况分析预测的这么慢，毕竟不可能每次递归都选到最坏的游标。</p>
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最近在看罗素的《哲学问题》，有条评论说“科学研究有两大利器，归纳和演绎”。读完Jeff教授的文章我对此也深感认同，因为原文多处理论都是通过归纳假设来证明的，而且后面有留有一半的篇幅是练习题留给读者思考（多数需要证明题目以便解答后续的问题）。</p>
 <h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="http://jeffe.cs.illinois.edu/teaching/algorithms/book/01-recursion.pdf" target="_blank" rel="noopener">http://jeffe.cs.illinois.edu/teaching/algorithms/book/01-recursion.pdf</a></p>
 

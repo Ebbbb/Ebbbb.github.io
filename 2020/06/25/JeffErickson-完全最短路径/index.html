@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="前言要是以前让我看到这个题目，我肯定会遍历所有点使用单源最短路径算法。但是这个问题单独讲了一篇，必定有其中的奥妙。目前为止图类算法的最优运行时应该是O(VE)级别的，如果算法存在重复遍历点和边那就可能还存在可优化的地方。当然这是我个人的感觉，话先撂这儿，等被打脸再说。👀">
+<meta name="description" content="前言这个问题单独讲了一篇，必定有其中的奥妙。目前为止图类算法的最优运行时应该是O(VE)级别的，如果算法存在重复遍历点和边那就可能还存在可优化的地方，所以单纯使用单源最短路径算法解决此问题并不是最优解。当然这是我个人的感觉，话先撂这儿，等被打脸再说。👀">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jeff Erickson 《Algorithms》 -- 完全最短路径">
 <meta property="og:url" content="http://yoursite.com/2020/06/25/JeffErickson-完全最短路径/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="前言要是以前让我看到这个题目，我肯定会遍历所有点使用单源最短路径算法。但是这个问题单独讲了一篇，必定有其中的奥妙。目前为止图类算法的最优运行时应该是O(VE)级别的，如果算法存在重复遍历点和边那就可能还存在可优化的地方。当然这是我个人的感觉，话先撂这儿，等被打脸再说。👀">
+<meta property="og:description" content="前言这个问题单独讲了一篇，必定有其中的奥妙。目前为止图类算法的最优运行时应该是O(VE)级别的，如果算法存在重复遍历点和边那就可能还存在可优化的地方，所以单纯使用单源最短路径算法解决此问题并不是最优解。当然这是我个人的感觉，话先撂这儿，等被打脸再说。👀">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp2.png">
@@ -96,10 +96,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp8.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp9.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp10.png">
-<meta property="og:updated_time" content="2020-06-25T13:46:51.423Z">
+<meta property="og:updated_time" content="2020-07-05T03:29:31.786Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 完全最短路径">
-<meta name="twitter:description" content="前言要是以前让我看到这个题目，我肯定会遍历所有点使用单源最短路径算法。但是这个问题单独讲了一篇，必定有其中的奥妙。目前为止图类算法的最优运行时应该是O(VE)级别的，如果算法存在重复遍历点和边那就可能还存在可优化的地方。当然这是我个人的感觉，话先撂这儿，等被打脸再说。👀">
+<meta name="twitter:description" content="前言这个问题单独讲了一篇，必定有其中的奥妙。目前为止图类算法的最优运行时应该是O(VE)级别的，如果算法存在重复遍历点和边那就可能还存在可优化的地方，所以单纯使用单源最短路径算法解决此问题并不是最优解。当然这是我个人的感觉，话先撂这儿，等被打脸再说。👀">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp1.png">
 
 
@@ -342,7 +342,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>要是以前让我看到这个题目，我肯定会遍历所有点使用单源最短路径算法。但是这个问题单独讲了一篇，必定有其中的奥妙。目前为止图类算法的最优运行时应该是O(VE)级别的，如果算法存在重复遍历点和边那就可能还存在可优化的地方。当然这是我个人的感觉，话先撂这儿，等被打脸再说。👀<br><a id="more"></a></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个问题单独讲了一篇，必定有其中的奥妙。目前为止图类算法的最优运行时应该是O(VE)级别的，如果算法存在重复遍历点和边那就可能还存在可优化的地方，所以单纯使用单源最短路径算法解决此问题并不是最优解。当然这是我个人的感觉，话先撂这儿，等被打脸再说。👀<br><a id="more"></a></p>
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>在前一章中我们讨论过几个单源最短路径算法，已知图中一个起点s，计算出它到图中其他顶点的最短路径。<br>• dist(v)表示从s到v的最短路径长度；<br>• pred(v)表示从s到v的最短路径中的倒数第二个顶点。</p>
 <p>在本章，我们考虑更普遍的完全最短路径问题，也就是每个可能的源点到图中所有顶点的最短路径。对于每对顶点u和v，我们想计算出一下信息：<br>• dist(u,v)表示从u到v的最短路径长度；<br>• pred(u,v)表示从s到v的最短路径中的倒数第二个顶点。</p>
 <p>这些直观地定义不包含一些边界情况，所有这些我们在上一章中都见过。<br>• 如果从u到v没有通路，那么也就不存在从u到v的最短路径；这种情况下，我们定义dist(u,v)=∞以及pred(u,v)=Null。<br>• 如果u和v之间存在负权环，那么通过这个环可以缩减路径长度；这种情况下，我们定义dist(u,v)=-∞以及pred(u,v)=Null。<br>• 最后，如果u不在负权环中，那么从u到自身的最短路径不需要边，因此就没有上一条边；这种情况下，我们定义dist(u,u)=0以及pred(u,u)=Null。</p>
@@ -365,7 +365,7 @@
 <h3 id="Floyd-Warshall（Kleene）算法"><a href="#Floyd-Warshall（Kleene）算法" class="headerlink" title="Floyd-Warshall（Kleene）算法"></a>Floyd-Warshall（Kleene）算法</h3><p>我们最快动态规划算法和标准Johnson算法都有一个因子$O(logV)$。Kleene发现了一种表述方式可以移除这个对数因子，他依然使用之前的动态规划递推式。但是第三个参数的含义却不同了，它不再是限制边的数量，而是一些可以通过的确定顶点。此处，“通过”是指“进入然后离开”；比如，路径$w\rightarrow x\rightarrow y\rightarrow z$从w开始通过x、y最终到达z。<br>　　用数字1到V来随意标记所有顶点。对于每对顶点u和v以及整数r，我们定义<strong>$\pi(u,v,r)$表示从u到v经过数字标记不超过r的顶点的最短路径</strong>。特别是，$\pi(u,v,V)$确实表示了从u到v的最短路径。我们观察到这些路径都有一个简单的递归结构。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp8.png" alt="image"><br>• 路径$\pi(u,v,0)$不通过任何中间点，所以它表示u到v这条边。<br>• 对于任意$r&gt;0$，$\pi(u,v,r)$要么通过顶点r，要么不通过。<br>　　- 如果$\pi(u,v,r)$通过顶点r，那么它就由从u到r和从r到v的子路径构成。两条子路径经过的中间点的顶点标记不会超过r-1；此外，由于条件限制子路径也是最短的。所以两个子路径一定是某一对$\pi(u,r,r-1)$和$\pi(r,v,r-1)$。<br>　　- 另外，如果$\pi(u,v,r)$不通过顶点r，那么它通过的顶点标记不超过r-1，由于条件限制它一定是最短路径。所以在这种情况下，我们得到$\pi(u,v,r)=\pi(u,v,r-1)$。</p>
 <p>现在用$dist(u,v,r)$表示路径$\pi(u,v,r)$的长度。由$\pi(u,v,r)$的递归结构得出以下递推式：</p>
 <script type="math/tex; mode=display">\begin{equation}dist(u,v,r)=\begin{cases}w(u\rightarrow v) & if\ r=0\\ min\begin{cases}dist(u,v,r-1)\\ dist(u,r,r-1)+dist(r,v,r-1)\end{cases}& otherwise\end{cases}\end{equation}</script><p>我们的目标是计算所有顶点u和v的$dist(u,v,V)$。再一次，我们通过递推式得出动态规划运行时为$O(V^3)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp9.png" alt="image"><br>　　正如我们之前的所有的最短路径动归算法，通过移除数组的第三个记忆维我们可以简化KleeneAPSP。也正是由于我们对顶点的数字标记是任意的，没有必要特意在伪代码中指出。我们修改后得到Floyd和Warshall的版本如下：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/apsp/apsp10.png" alt="image"><br>　　我们将FloydWarshall和我们之前稍慢的动态规划算法LeyzorekAPSP比较会发现有趣的事情。并非执行$O(logV)$次顶点三元组循环计算，FloydWarshall只执行一次就够了，但这仅仅是因为它的三个内层循环的嵌套顺序与后者不同。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>本文篇幅不算长，但分别从两种思维方式引导出常规的优化算法。正常情况我们都知道可以使用单源算法来解决完全最短路径问题，不过Dijkstra的运行时明显优于Bellman-Ford却受制于负权边，这是一个优化点。然后就是我们熟悉的动态规划，由一般递推式得出的算法还是比较慢，因为我们的思路是把当前路径切割为一条路径和一条边，这又是一个优化点。尤其是最后这个动归算法，思路就更巧妙了，完全不同于之前。当然还得感谢FloydWarshall算法！不然我就被打脸了。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>本文篇幅不算长，但分别从两种思维方式引导出常规的优化算法。其一使用单源算法来解决完全最短路径问题，不过Dijkstra的运行时明显优于Bellman-Ford却受制于负权边，这是一个优化点；其二就是我们熟悉的动态规划，由一般递推式得出的算法还是比较慢，因为我们通常的思路是把当前路径切割为一条路径和一条边，这又是一个优化点。但本文令我惊叹的时最后这个动归算法，思路就更巧妙了，完全不同于之前限制通过变得数量来令算法停止，而是限制通过确定的顶点，当然重点还是它挽救了我的颜面！😏</p>
 <h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="http://jeffe.cs.illinois.edu/teaching/algorithms/book/09-apsp.pdf" target="_blank" rel="noopener">http://jeffe.cs.illinois.edu/teaching/algorithms/book/09-apsp.pdf</a></p>
 
       

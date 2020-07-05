@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="前言又是我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ">
+<meta name="description" content="前言我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jeff Erickson 《Algorithms》 -- 最短路径">
 <meta property="og:url" content="http://yoursite.com/2020/06/07/JeffErickson-最短路径/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="前言又是我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ">
+<meta property="og:description" content="前言我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp2.png">
@@ -112,10 +112,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp24.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp25.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp26.png">
-<meta property="og:updated_time" content="2020-06-25T13:39:59.029Z">
+<meta property="og:updated_time" content="2020-07-05T03:20:20.247Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 最短路径">
-<meta name="twitter:description" content="前言又是我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ">
+<meta name="twitter:description" content="前言我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp1.png">
 
 
@@ -358,7 +358,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>又是我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ<br><a id="more"></a></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ<br><a id="more"></a></p>
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>假设给我们一个有向加权图G=(V,E,w)和两个顶点，我们想找到从源点s到目标点t的最短路径。也就是，我们想找到从s到t的有向路径P的最小化函数：</p>
 <script type="math/tex; mode=display">w(P):=\sum\limits_{u\rightarrow v\in P}w(u\rightarrow v)</script><p>比如，现实生活中我们想从一个城市到另一个城市，那么图中的顶点就是城市，边就是道路，权重就是行驶时间，同一条路可能因为方向不同而行驶时间不同。</p>
 <h3 id="最短路径树"><a href="#最短路径树" class="headerlink" title="最短路径树"></a>最短路径树</h3><p>几乎每个已知的计算一个点到另一个的最短路径算法都是在解决<strong>单源最短路径（SSSP）</strong>问题：找到从源点s到每个其他顶点的最短路径。这个问题通常是通过找到以s为根的最短路径树来解决，这棵树包含了所有要求的最短路径。<br>　　不难发现如果每个点的最短路径是唯一的，那么它们就会形成一棵树，因为任意最短路径的子路径本身就是一条最短路径。如果到达某个顶点有多条最短路径，那么我们总是可以选出一条后组合其他路径形成一棵树。如果存在最短路径从s到达两个顶点，先分叉，后合并，在分叉，我们可以不改变长度地修改其中一条，这样两条路径只会分叉一次。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp1.png" alt="image"><br>　　尽管最小生成树和最短路径树都是最佳生成树，但它们却不是一个东西。最短路径树有根且有向；最小生成树是无根且无向的。最短路径树是为有向图自然定义的；最小生成树是为无向图自然定义的。如果边权不同，只会存在一棵最小生成树，但是每个顶点都可以引导一棵不同的最短路径树；此外，有可能每个最短路径树会用到不同的最小生成树边的子集。</p>
@@ -397,7 +397,7 @@
 <h4 id="动态规划形式"><a href="#动态规划形式" class="headerlink" title="动态规划形式"></a>动态规划形式</h4><p>Richard Bellman是通过动态规划得出算法的。照例，我们需要给出一个最短路径距离的递归定义。直接使用有向无环图的递推式是相当有诱惑力的：</p>
 <script type="math/tex; mode=display">\begin{equation}dist(v)=\begin{cases}0 & if\ v=s\\ \min\limits_{u\rightarrow v}(dist(u)+w(u\rightarrow v)) & otherwise\end{cases}\end{equation}</script><p>不过如果输入图不是有向无环图，这个递推式就不起作用了！假设输入图有个有向环u→v→w→u。计算dist(w)我们需要知道dist(v)，计算dist(v)我们需要知道dist(u)，但是计算dist(u)我们需要知道dist(w)。如果输入图有任何有向环，我们就会陷入无限循环！<br>　　为了提供一正确的递推式，我们需要在距离函数中添加额外的结构参数，它会在每次递归调用后自动减少，这样定义当参数变为0时函数计算就结束了，Bellman选择<strong>最大边数量</strong>作为额外参数。<br>　　正如我们早期的分析，用$dist_{\leq i}(v)$表示从s到v不超过i条边的最短通路长度。Bellman观察到这个函数遵循以下递推式：</p>
 <script type="math/tex; mode=display">\begin{equation}dist_{\leq i}(v)=\begin{cases}0 & if\ i=0\ and\ v=s\\∞ & if\ i≠0\ and\ v=s\\ min\begin{cases}dist_{\leq i-1}(v)\\ \min\limits_{u\rightarrow v}(dist_{\leq i-1}(u)+w(u\rightarrow v))\end{cases}& otherwise\end{cases}\end{equation}</script><p>　　我们假设输入图没有负权环，所以我们的目标是计算出每个顶点的$dist_{\leq V-1}(v)$。现在有一个使用此递推式简单动态规划算法，$dits[i,v]$存储的是$dist_{i}(v)$的值。最终最短路径距离的正确性取决于这个递推式，明显它的运行时是O(VE)。具体算法代码如下：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp23.png" alt="image"><br>　　通过一系列简单的操作我们可以将这个动态规划算法转变成原始形式的BellmanFord。首先，最外层循环的每次迭代访问每条边最多一次，而且我们访问这些边的顺序也不重要。这样，我们可以安全的最后三步提出当前循环！改动后的算法遍历边的顺序不同了，但是对于所有的i和v它依然能正确计算$dist_{\leq i}(v)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp24.png" alt="image"><br>　　接下来我们将最后两步的索引i-1改成i。这个改动也许会让$dist[i,v]$比以前更快接近真实的最短路径距离。对应引理8.6和8.7，我们现在有$dist[i,v]\leq dist_{\leq i}(v)$，而不是$dist[i,v]=dist_{\leq i}(v)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp25.png" alt="image"><br>　　但是这个算法看起来有点蠢，在最外层循环的第i次迭代中，我们将数组dist[·,·]的第i-1行复制给了第i行，然后又开始修改第i行的每个元素。所以我们根本不需要一个二维数组；索引i完全就是冗余的！在我们最终改版里，我们只需要维护一个一维的暂存距离数组。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp26.png" alt="image"><br>　　这个最终版本的动态规划算法就和我们BellmanFord的原始形式一样了！开始的三行就是初始化最短路径距离，最后的两行就是当边是紧的就放松加入。BellmanFordFinal与我们的原始形式有两个不同特征：没有维护前驱指针和没检测负权环。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后又提到了动态规划，看来拓扑排序在在图类算法中应用真的很广泛。想当初学背包问题全靠死记硬背，对于最优子结构分析我老是抓不到重点。现在看来应该是我涉猎太浅、经验不足。多亏了jeff教授的算法书，解开了我一直以来的好多疑惑。以后我也会多向身边的人推荐这本书来聊表谢意。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最后又提到了动态规划，看来拓扑排序在在图类算法中应用真的很广泛。想当初学背包问题全靠死记硬背，对于最优子结构分析我老是抓不到重点。现在看来应该是我涉猎太浅、经验不足。多亏了jeff教授这本书，解开了我长久以来的一些疑惑。以后我也会多向身边的人推荐这本书来聊表谢意。</p>
 <h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="http://jeffe.cs.illinois.edu/teaching/algorithms/book/08-sssp.pdf" target="_blank" rel="noopener">http://jeffe.cs.illinois.edu/teaching/algorithms/book/08-sssp.pdf</a></p>
 
       
