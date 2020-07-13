@@ -96,7 +96,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc8.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc9.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc10.png">
-<meta property="og:updated_time" content="2020-07-13T08:32:53.378Z">
+<meta property="og:updated_time" content="2020-07-13T08:33:59.841Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Free Algorithms Textbook》 -- 最大流&amp;最小割">
 <meta name="twitter:description" content="前言我在学二分匹配时知道可以用最大流来解决问，但是也没去看过具体实现。也就是说这个知识点对我来说算是全新的，而且还要看全英文，还没开始我就已经觉得压力山大了。如果理解不当翻译不好，那以后再回来纠正吧。">
@@ -371,7 +371,7 @@
 <h3 id="Ford和Fulkerson的增广路径算法"><a href="#Ford和Fulkerson的增广路径算法" class="headerlink" title="Ford和Fulkerson的增广路径算法"></a>Ford和Fulkerson的增广路径算法</h3><p>Ford和Fulkerson的最大流-最小割定理暗示了一个计算最大流的算法：以一个值为零的流开始，不断地从余量图中寻找任意路径来增大当前流，直到没有这样的路径存在。<br>  这个算法有一个重要且明显的推论：</p>
 <p><strong>完整性定理.</strong> 如果流网络的容量都是整数，那么存在一个最大流通过的每一条边都是一个整数。</p>
 <p><strong>证明：</strong> 我们基于增广路径算法的每次迭代后来做归纳，所有流的值和所有的余量都是整数。<br>• 在第一次迭代之前，当前流的值是0（这是一个整数）,所有余量都是原来的原来的容量，根据定义这些也是整数。<br>• 再往后的每次迭代中，有归纳假设可知增广路径的容量F是一个整数，所以增广后改变每一条边上的流，以及每一条边的余量，也是一个整数。<br>尤其是，增广路径算法的每次迭代后流的值都会增加一个正整数。接着这个算法最终停止返回一个最大流。</p>
-<p>  如果每条边的容量都是一个整数，适当的，Ford-Fulkerson算法最多经过$ |f^<em>| $次迭代，$ f^</em> $就是一个最大流。在每次迭代中，我们可以构造余量图$G_f$并且在$O(E)$时间内执行一个任意优先搜索找到增广路径。这样，在这个设置下，此算法的最坏运行时为$O(E|f^<em>|)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc7.png" alt="image"><br>  Jack Edmonds和Richar Karp观察到这个运行时本质上过于严谨。假设有一个4节点网络如上图，X是一个超大的整数。这个网络中的最大流明显是$2X$。然而Ford-Fulkerson也许会交替在增广路径$s\rightarrow u\rightarrow v\rightarrow t$和$s\rightarrow v\rightarrow u\rightarrow t$中推入一个单元流，导致运行时达到$\Theta(X)=\Omega(|f^</em>|)$。<br>  Ford和Fulkerson的算法在实践中中通常还是算快的，尤其是在最大流值$|f^*|$较小的情况下，但是如果没有进一步地限制增广路径，最坏情况下这个算法并不是高效地。Edmonds和Karp的特殊网络案例描述起来只需要$O(logX)$字节；这样，Ford-Fulkerson算法的运行时实际上是输入大小的指数级。</p>
+<p>  如果每条边的容量都是一个整数，适当的，Ford-Fulkerson算法最多经过$ |f^<em>| $次迭代，就是一个最大流。在每次迭代中，我们可以构造余量图$G_f$并且在$O(E)$时间内执行一个任意优先搜索找到增广路径。这样，在这个设置下，此算法的最坏运行时为$O(E|f^</em>|)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc7.png" alt="image"><br>  Jack Edmonds和Richar Karp观察到这个运行时本质上过于严谨。假设有一个4节点网络如上图，X是一个超大的整数。这个网络中的最大流明显是$2X$。然而Ford-Fulkerson也许会交替在增广路径$s\rightarrow u\rightarrow v\rightarrow t$和$s\rightarrow v\rightarrow u\rightarrow t$中推入一个单元流，导致运行时达到$\Theta(X)=\Omega(|f^<em>|)$。<br>  Ford和Fulkerson的算法在实践中中通常还是算快的，尤其是在最大流值$|f^</em>|$较小的情况下，但是如果没有进一步地限制增广路径，最坏情况下这个算法并不是高效地。Edmonds和Karp的特殊网络案例描述起来只需要$O(logX)$字节；这样，Ford-Fulkerson算法的运行时实际上是输入大小的指数级。</p>
 <h3 id="无理数容量"><a href="#无理数容量" class="headerlink" title="无理数容量"></a>无理数容量</h3><p>但是如果容量并不都是整数呢？如果我们将所有容量都乘一个正的常量，每一个地方的最大流都会增大一个同样的常量因子。也就是说如果所有的边容量都是有理数，那么Ford-Fulkerson算法最终会停止，尽管任然需要指数级的时间（相对于描述输入的空间大小）。<br>  然而，如果我们允许无理数容量，这个算法可以无限循环下去，一直找到越来越小的增广路径。更糟的是，这个增广的无限序列不会收敛于最大流，或者甚至连最大流的分数部分都不是！Uri Zwick在1993年找到了一个网络展现了这个糟糕的情况。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc8.png" alt="image"><br>  假设一个6节点的网络如上图。九条边中有六条是超大整数容量$X$，两条的容量是1，还有一条的容量是$\phi=(\sqrt{5}-1)/2\approx 0.618034$，选择这个容量是因为$1-\phi=\phi^2$。为了证明Ford-Fulkerson算法会卡住，我们可以观察在算法过程中三条水平边的余量。（其他六条边的余量总是不小于$X-3$）<br>  假设Ford-Fulkerson算法选择上图中间的增广路径作为开始。三条水平边，从左到右，现在的余量是$1,0,\phi$。归纳地假设三条水平边的余量是$\phi^{k-1},0,\phi^k$，k为任意正整数。</p>
 <ol>
 <li>通过增广路径B，流的值增加$\phi^k$；现在的余量是$\phi^{k+1},\phi^k,0$。</li>
