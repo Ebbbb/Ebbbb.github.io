@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言我在学二分匹配时知道可以用最大流来解决问，但是也没去看过具体实现。也就是说这个知识点对我来说算是全新的，而且还要看全英文，还没开始我就已经觉得压力山大了。如果理解不当翻译不好，那以后再回来纠正吧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jeff Erickson 《Free Algorithms Textbook》 -- 最大流&amp;最小割">
+<meta property="og:url" content="http://yoursite.com/2020/07/11/JeffErickson-最大流&最小割/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言我在学二分匹配时知道可以用最大流来解决问，但是也没去看过具体实现。也就是说这个知识点对我来说算是全新的，而且还要看全英文，还没开始我就已经觉得压力山大了。如果理解不当翻译不好，那以后再回来纠正吧。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc9.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc10.png">
+<meta property="og:updated_time" content="2020-07-13T07:48:59.797Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jeff Erickson 《Free Algorithms Textbook》 -- 最大流&amp;最小割">
+<meta name="twitter:description" content="前言我在学二分匹配时知道可以用最大流来解决问，但是也没去看过具体实现。也就是说这个知识点对我来说算是全新的，而且还要看全英文，还没开始我就已经觉得压力山大了。如果理解不当翻译不好，那以后再回来纠正吧。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/07/11/JeffErickson-最大流&最小割/"/>
+
+
+
+
+
+  <title>Jeff Erickson 《Free Algorithms Textbook》 -- 最大流&最小割 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/11/JeffErickson-最大流&最小割/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Jeff Erickson 《Free Algorithms Textbook》 -- 最大流&最小割</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-11T10:48:31+08:00">
+                2020-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/07/11/JeffErickson-最大流&最小割/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/07/11/JeffErickson-最大流&最小割/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/07/11/JeffErickson-最大流&最小割/" class="leancloud_visitors" data-flag-title="Jeff Erickson 《Free Algorithms Textbook》 -- 最大流&最小割">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我在学二分匹配时知道可以用最大流来解决问，但是也没去看过具体实现。也就是说这个知识点对我来说算是全新的，而且还要看全英文，还没开始我就已经觉得压力山大了。如果理解不当翻译不好，那以后再回来纠正吧。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>在20世纪50年代中期，美国空军研究人员Theodore E. Harris和退伍将军Frank S. Ross写了一份研究连接苏维埃联盟和它的卫星国之间的铁路网络的机密报告。这个网络建模成一个图，44个顶点表示地理区域，105条边表示区域之间的铁路。每条边带有一个权值，表示区域之间材料运送的速率。根据总计和误差，他们断定了能从俄罗斯运送到欧洲的最大货物量和通过移除连接切断这个网络的最简方式（简单来说就是炸毁铁轨），他们称之为“瓶颈”。他们的报告以及网络图直到1999年才撤销保密。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc1.png" alt="image"><br>  这是有史以来第一次最大流和最小割问题的应用记录。对于两个问题，输入是一个有向图$G=(V,E)$，以及两个特殊顶点s和t，他们分别是源点和汇点。和上一章一样，我们使用$u\rightarrow v$表示从顶点u到v的有向边。直观上，最大流问题就是求从s到t运送资源的最大速率；最小割问题就是求可以切断s到t通路的最小代价。</p>
+<h3 id="流"><a href="#流" class="headerlink" title="流"></a>流</h3><p><strong>(s,t)-flow</strong>（或者说就是指脱离上下文通过源点和汇点的流）是一个函数$f:E\rightarrow\mathbb{R}$对于除了s和t外的点满足以下<strong>守恒约束</strong>：</p>
+<script type="math/tex; mode=display">\sum\limits_u f(u\rightarrow v)=\sum\limits_w f(v\rightarrow w)</script><p>通俗来讲，就是进入v和离开v的流是相等的。为了简化概念，我们定义如果图中不存在边$u\rightarrow v$那么$f(u\rightarrow v)=0$。流$f$的值记作$|f|$,它是离开顶点s的网络流：</p>
+<script type="math/tex; mode=display">|f|:=\sum\limits_w f(s\rightarrow w)-\sum\limits_u f(u\rightarrow s)</script><p>  不难证明$|f|$与流入汇点的网络流相等。为了简化概念，用$\partial f(v)$表示离开任意顶点v的网络流</p>
+<script type="math/tex; mode=display">\partial f(v):=\sum\limits_u f(u\rightarrow v)-\sum\limits_w f(v\rightarrow w)</script><p>这个守恒约束意味着对于除了s和t的每个顶点v都有$\partial f(v)=0$，所以</p>
+<script type="math/tex; mode=display">\sum\limits \partial f(v)= \partial f(s)+\partial f(t)</script><p>另外，任意流离开一个顶点后一定会进入另一个顶点，所以我们一定有$\sum_v \partial f(v)=0$。接着就得到了$|f|=\partial f(s)=-\partial f(t)$。<br>  现在假设我们有另外一个函数$c:E\rightarrow\mathbb{R}_{\geq 0}$表示对于每条边e的非负<strong>容量</strong>$c(e)$。我们说一个流f是<strong>可行的</strong>仅当对于每条边$0\leq f(e)\leq c(e)$。大多数时候我们只讨论基于确定容量函数c的可行流。当$f(e)=c(e)$时我们称流f<strong>浸满</strong>了边e，当$f(e)=0$我们成e<strong>避开</strong>边。最大流问题就是是计算在带有容量函数的有向图中值最大的可行(s,t)-flow。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc2.png" alt="image"></p>
+<h3 id="割"><a href="#割" class="headerlink" title="割"></a>割</h3><p><strong>(s,t)-cut</strong>（或者说就是指脱离上下文通过源点和汇点的割）是将顶点分为两个相交集合S和T的分割—这表示$S\cup T=V$并且$S\cap T=\varnothing$—其中$s\in S$，$t\in T$。<br>  如果我们有一个容量函数$c:E\rightarrow\mathbb{R}_{\geq 0}$，一个割的容量就是从S到T的所有边的容量和：</p>
+<script type="math/tex; mode=display">||S,T||:=\sum\limits_{v\in S}\sum\limits_{w\in T}c(v\rightarrow w)</script><p>（如果图中不存在$v\rightarrow w$，我们再次假设$c(\rightarrow w)=0$）注意这个定义是对称的；从T到S的边是不重要的。最小割问题就是容量最小的(s,t)-cut。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc3.png" alt="image"><br>  直观上，最小割是一种破坏从s到t的所有流的代价最小的方式。确实，不难看出流和割的以下关系：<br><strong>引理10.1.</strong>用$f$表示任意可行的(s,t)-flow，$(S,T)$表示任意(s,t)-cut。$f$的值不超过$(S,T)$的容量。甚至$|f|=||S,T||$当且仅当$f$浸满了每条从S到T的边并且避开了每条从T到S的边。</p>
+<p><strong>证明：</strong>选择一对你中意的流$f$和割$(S,T)$，接着看下面的不等式推导：</p>
+<script type="math/tex; mode=display">\begin{align}|f|&=\partial f(s) &[定义]&\\&=\sum\limits_{v\in S}\partial f(v) &[守恒约束]& \\ &=\sum\limits_{v\in S}\sum\limits_{w}f(v\rightarrow w)-\sum\limits_{v\in S}\sum\limits_{u}f(u\rightarrow v) &[\partial 定义]& \\&=\sum\limits_{v\in S}\sum\limits_{w\notin S}f(v\rightarrow w)-\sum\limits_{v\in S}\sum\limits_{w\notin S}f(u\rightarrow v) &[移除从S到S的边]& \\ &=\sum\limits_{v\in S}\sum\limits_{w\in T}f(v\rightarrow w)-\sum\limits_{v\in S}\sum\limits_{w\in T}f(u\rightarrow v) &[割定义]& \\ &\leq \sum\limits_{v\in S}\sum\limits_{w\in T}f(v\rightarrow w) &[因为f(u\rightarrow v)\geq 0]& \\ &\leq \sum\limits_{v\in S}\sum\limits_{w\in T}c(v\rightarrow w) &[因为f(u\rightarrow v)\leq c(v\rightarrow w)]& \\ &=||S,T|| &[定义]& \end{align}</script><p>以上推导式中：在第二步，因为对于$v\in S\{s}$有$\partial f(v)=0$，我们就是在加零。在第四步，我们移除了x、y都在S中的流$f(x\rightarrow y)$的值，因为它在两个求和中都存在，当v=x、w=y它为正，当v=y、u=x它为负。<br>  而且推导中第一个不大于关系式要变成等于当且仅当$f$避开了所有从T到S的边。类似地第二个不大于关系式要变成等于当且仅当f浸满了所有从S到T的边。</p>
+<p>这个引理说明如果$|f|=||S,T||$，那么$f$一定是一个最大流，并且$(S,T)$一定是一个最小割。</p>
+<h3 id="最大流-最小割定理"><a href="#最大流-最小割定理" class="headerlink" title="最大流-最小割定理"></a>最大流-最小割定理</h3><p>每个流网络中都存在一个可行流(s,t)-flow $f$和一个(s,t)-cut $(S,T)$，并且$|f|=||S,T||$。这就是著名的<strong>最大流-最小割定理</strong>，它在1954年被Lester Ford和Delbert Fulkerson首次证明。</p>
+<p><strong>最大流-最小割定理</strong>：在每个带有源点s和汇点t的流网络中，最大流(s,t)-flow的值等于最小割(s,t)-cut的容量。</p>
+<p>  Ford和Fulkerson如下证明这个定理。假设一个图G，顶点s和t，容量函数$c:E\rightarrow\mathbb{R}_{\geq 0}$。如果我们假设G是以简化的（任意两个点u和v之间最多一条边），证明起来会更容易。换句话说，要么$c(u\rightarrow v)=0$，或者$c(v\rightarrow u)=0$。这个假设很容易实现：在每条边$u\rightarrow v$中插入新顶点x，用路径$u\rightarrow x\rightarrow v$代替边$u\rightarrow v$，然后定义$c(u\rightarrow x)=c(x\rightarrow v)=c(u\rightarrow v)$。修改后的图与原图有着同样的最大流值和最小割容量。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc4.png" alt="image"><br>  已知$f$是G中的任意一个可行的(s,t)-flow。我们定义一个新的容量函数$c_f:V\times V\rightarrow\mathbb{R}$，称之为<strong>剩余容量</strong>（后面我就简称“余量”了），如下：</p>
+<script type="math/tex; mode=display">\begin{equation}c_f(u\rightarrow v)=\begin{cases}c(u\rightarrow v)-f(u\rightarrow v) &if\ u\rightarrow v\in E \\ f(v\rightarrow u) &if\ v\rightarrow u\in E \\ 0 &otherwise \end{cases}\end{equation}</script><p>直观上，一条边的余量表示这条边当前还能通过多大值的流。因为$f\geq 0$和$f\leq c$，这些余量永远是非负的。有可能原图不存在边$u\rightarrow v$，但是有$c_f(u\rightarrow v) &gt; 0$的情况。这样我们定义<strong>余量图</strong>$G_f=(V,E_f)$，$E_f$是一个边的集合，这些变得的余量都是正的。大多数余量图都是非简化的；特别是当$0&lt;f(u\rightarrow v)&lt;c(u\rightarrow v)$，那么余量图$G_f$中同时包含了边$u\rightarrow v$及其反向边$v\rightarrow u$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc5.png" alt="image"><br>  现在我们有两种情况要考虑：余量图$G_f$中存在一条从源点s到汇点t的有向路径，或者它不存在。<br>  首先假设余量图$G_f$包含一条从s到t的有向路径P；我们称P为<strong>增广路径</strong>。用$F=min_{u\rightarrow v\in P} c_f(u\rightarrow v)$表示我们能从P中通过的最大流量。我们定义一个新的流$f’:E\rightarrow\mathbb{R}$（在原图中）如下：</p>
+<script type="math/tex; mode=display">\begin{equation}f'(u\rightarrow v)=\begin{cases} f(u\rightarrow v)+F &if\ u\rightarrow v\in P \\ f(u\rightarrow v)-F &if\ v\rightarrow u\in P \\ f(u\rightarrow v) &otherwise \end{cases}\end{equation}</script><p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc6.png" alt="image"></p>
+<p>  我们称这个新流$f’$对于原容量c也是可行的，这表示在任何地方都有$0\leq f’\leq c$。假设原图中的一条边$u\rightarrow v$，存在三种情况需要考虑。<br>  • 如果增广路径P包含了$u\rightarrow v$，那么</p>
+<script type="math/tex; mode=display">f'(u\rightarrow v)=f(u\rightarrow v)+F>f(u\rightarrow v)\geq 0</script><p>  因为f是可行流，并且</p>
+<script type="math/tex; mode=display">\begin{align}f'(u\rightarrow v)&=f(u\rightarrow v)+F &f'定义&\\ &\leq f(u\rightarrow v)+c_f(u\rightarrow v) &F定义& \\ &=f(u\rightarrow v)+c(u\rightarrow v)-f(u\rightarrow v) &c_f定义& \\ &=c(\rightarrow v)\end{align}</script><p>  • 如果增广路径P包含了反向边$v\rightarrow u$，那么</p>
+<script type="math/tex; mode=display">f'(u\rightarrow v)=f(u\rightarrow v)-F<f(u\rightarrow v)\leq c(u\rightarrow v)</script><p>  又是因为f是可行流，并且</p>
+<script type="math/tex; mode=display">\begin{align}f'(u\rightarrow v)&=f(u\rightarrow v)-F &f'定义&\\ &\geq f(u\rightarrow v)-c_f(v\rightarrow u) &F定义& \\ &=f(u\rightarrow v)-f(u\rightarrow v) &c_f定义& \\ &=0\end{align}</script><p>  • 最后，如果增广路径既不通过$u\rightarrow v$也不通过$v\rightarrow u$，那么$f’(u\rightarrow v)=f(u\rightarrow v)$，因为$f$是可行流，有$0\leq f’(u\rightarrow v)\leq c(u\rightarrow v)$。</p>
+<p>所以$f’$也是可行流。<br>  最后，增广路径中只有第一条是从s离开的，这表示$|f’|=|f|+F&gt;|f|$。这样，$f’$是一个比$f$更大的可行流。我们得出如果在余量图$G_f$中存在从s到t的路径，那么$f$就不是最大流。</p>
+<p>  另外，假如余量图$G_f$不包含从s到t的有向路径。S表示$G_f$中可以从s到达的顶点，那么T=V\S。(S,T)无疑就是一个(s,t)-cut。对于每个顶点$u\in S$和$v\in T$，我们有</p>
+<script type="math/tex; mode=display">c_f(u\rightarrow v)=(c(u\rightarrow v)-f(u\rightarrow v))+f(v\rightarrow u)=0</script><p>$f$是可行流表示$c(u\rightarrow v)-f(u\rightarrow v)\geq 0$并且$f(v\rightarrow u)\geq 0$，所以事实上我们一定有$c(\rightarrow v)-f(u\rightarrow v)=0$并且$f(v\rightarrow u)=0$。换句话说，我们的流$f$浸满了每一条从S到T的边而且避开了每一条从T到S的边。引理10.1表明<br>现在$|f|=||S,T||$，这意味着$f$是一个最大流并且$(S,T)$是一个最小割。</p>
+<p>  这样证明就完成了。</p>
+<h3 id="Ford和Fulkerson的增广路径算法"><a href="#Ford和Fulkerson的增广路径算法" class="headerlink" title="Ford和Fulkerson的增广路径算法"></a>Ford和Fulkerson的增广路径算法</h3><p>Ford和Fulkerson的最大流-最小割定理暗示了一个计算最大流的算法：以一个值为零的流开始，不断地从余量图中寻找任意路径来增大当前流，直到没有这样的路径存在。<br>  这个算法有一个重要且明显的推论：</p>
+<p><strong>完整性定理.</strong> 如果流网络的容量都是整数，那么存在一个最大流通过的每一条边都是一个整数。</p>
+<p><strong>证明：</strong> 我们基于增广路径算法的每次迭代后来做归纳，所有流的值和所有的余量都是整数。<br>• 在第一次迭代之前，当前流的值是0（这是一个整数）,所有余量都是原来的原来的容量，根据定义这些也是整数。<br>• 再往后的每次迭代中，有归纳假设可知增广路径的容量F是一个整数，所以增广后改变每一条边上的流，以及每一条边的余量，也是一个整数。<br>尤其是，增广路径算法的每次迭代后流的值都会增加一个正整数。接着这个算法最终停止返回一个最大流。</p>
+<p>  如果每条边的容量都是一个整数，适当的，Ford-Fulkerson算法最多经过$|f^<em>|$次迭代，$f^</em>$就是一个最大流。在每次迭代中，我们可以构造余量图$G_f$并且在$O(E)$时间内执行一个任意优先搜索找到增广路径。这样，在这个设置下，此算法的最坏运行时为$O(E|f^<em>|)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc7.png" alt="image"><br>  Jack Edmonds和Richar Karp观察到这个运行时本质上过于严谨。假设有一个4节点网络如上图，X是一个超大的整数。这个网络中的最大流明显是$2X$。然而Ford-Fulkerson也许会交替在增广路径$s\rightarrow u\rightarrow v\rightarrow t$和$s\rightarrow v\rightarrow u\rightarrow t$中推入一个单元流，导致运行时达到$\Theta(X)=\Omega(|f^</em>|)$。<br>  Ford和Fulkerson的算法在实践中中通常还是算快的，尤其是在最大流值$|f^*|$较小的情况下，但是如果没有进一步地限制增广路径，最坏情况下这个算法并不是高效地。Edmonds和Karp的特殊网络案例描述起来只需要$O(logX)$字节；这样，Ford-Fulkerson算法的运行时实际上是输入大小的指数级。</p>
+<h3 id="无理数容量"><a href="#无理数容量" class="headerlink" title="无理数容量"></a>无理数容量</h3><p>但是如果容量并不都是整数呢？如果我们将所有容量都乘一个正的常量，每一个地方的最大流都会增大一个同样的常量因子。也就是说如果所有的边容量都是有理数，那么Ford-Fulkerson算法最终会停止，尽管任然需要指数级的时间（相对于描述输入的空间大小）。<br>  然而，如果我们允许无理数容量，这个算法可以无限循环下去，一直找到越来越小的增广路径。更糟的是，这个增广的无限序列不会收敛于最大流，或者甚至连最大流的分数部分都不是！Uri Zwick在1993年找到了一个网络展现了这个糟糕的情况。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc8.png" alt="image"><br>  假设一个6节点的网络如上图。九条边中有六条是超大整数容量$X$，两条的容量是1，还有一条的容量是$\phi=(\sqrt{5}-1)/2\approx 0.618034$，选择这个容量是因为$1-\phi=\phi^2$。为了证明Ford-Fulkerson算法会卡住，我们可以观察在算法过程中三条水平边的余量。（其他六条边的余量总是不小于$X-3$）<br>  假设Ford-Fulkerson算法选择上图中间的增广路径作为开始。三条水平边，从左到右，现在的余量是$1,0,\phi$。归纳地假设三条水平边的余量是$\phi^{k-1},0,\phi^k$，k为任意正整数。</p>
+<ol>
+<li>通过增广路径B，流的值增加$\phi^k$；现在的余量是$\phi^{k+1},\phi^k,0$。</li>
+<li>通过增广路径C，流的值增加$\phi^k$；现在的余量是$\phi^{k+1},0,\phi^k$。</li>
+<li>通过增广路径B，流的值增加$\phi^{k+1}$；现在的余量是$0,\phi^{k+1},\phi^{k+2}$。</li>
+<li>通过增广路径A，流的值增加$\phi^{k+1}$；现在的余量是$\phi^{k+1},0,\phi^{k+2}$。</li>
+</ol>
+<p>也就是说通过归纳法在$4n+1$次增广操作后，水平边的余量是$\phi^{2n-2},0,\phi^{2n-1}$，随着增广的次数趋于无穷，流的值收敛于</p>
+<script type="math/tex; mode=display">1+2\sum\limits^\infty_{i=1}\phi^i=1+\frac{2}{\phi}=2+\sqrt{5}<5</script><p>（注：上面的关系式和原书不一致，我令$F_n=\sum^\infty_{i=1}\phi^i$，再推出$F_n-\phi F_n=\phi$，之后的推导结果就有分歧了，不过影响不大。）<br>如此明显可以看出最大流的值$2X+1\gg 5$。</p>
+<p>  务实的读者会发现，为什么要关注无理数容量呢；毕竟，计算机只能准确表示证书或者有理数。好问题！数学家的答案是限制整数容量就是人为的；它是数字计算硬件的产物（或者也许是其他不相关的物理法则），并不是抽象计算问题的固有特征。但是一个更实际的原因是此算法的无理数输入行为告诉我们在实际情况中有时候浮点容量会带来一些造成一些糟糕的情况！即使是非常合理的容量，在Ford-Fulkerson算法的算法实现过程中稍有不慎也会导致无限循环，因为一些简单的舍入失误，也会导致偏离正确答案。</p>
+<h3 id="流的分解与聚合"><a href="#流的分解与聚合" class="headerlink" title="流的分解与聚合"></a>流的分解与聚合</h3><p>流是通常会被定义为通过图中一些满足确定约束的顶点和边的函数。然而，流在确定的上下文中有一个更自然且好用的第二特征。<br>  考虑一个带有源点s和汇点t的任意图$G$。假设任意两个(s,t)-flow $f$和$g$，以及任意两个实数$\alpha$和$\beta$，还有函数$h:E\rightarrow\mathbb{R}$定义如下：</p>
+<script type="math/tex; mode=display">h(u\rightarrow v):=\alpha\cdot f(u\rightarrow v)+\beta\cdot g(u\rightarrow v)</script><p>对于每条边$u\rightarrow v$；我们将这个定义简化为$h=\alpha f+\beta g$。根据定义可以直接得出h也是一个(s,t)-flow，值为$|h|=\alpha |f|+\beta |g|$。普遍来说，任意(s,t)-flow的线性叠加也是一个(s,t)-flow。<br>  事实证明任意(s,t)-flow可以被写成一个特殊结构的权值和。对于任意从s到t的有向路径P，我们定义相应的<strong>路径流</strong>，设置如下：</p>
+<script type="math/tex; mode=display">\begin{equation}P(u\rightarrow v)=\begin{cases}1 & if\ u\rightarrow v\in P \\ -1 & if\ v\rightarrow u\in P \\ 0 & otherwise\end{cases}\end{equation}</script><p>由定义可知函数$P:E\rightarrow\mathbb{R}$确实一个值为1的(s,t)-flow。这里我们故意让变量P即表示路径又表示通过该路径的单元流。<br>  类似地，对于任何一个有向环C，我们定义相应的<strong>环流</strong>，设置如下：</p>
+<script type="math/tex; mode=display">\begin{equation}C(u\rightarrow v)=\begin{cases}1 & if\ u\rightarrow v \in C \\ -1 & if\ v\rightarrow  u\in C \\ 0 & otherwise\end{cases}\end{equation}</script><p>  接着，验证函数$C:E\rightarrow\mathbb{R}$是值为0的(s,t)-flow就很简单了。<br>  我们前文的论证表明任意路径流和环流的线性叠加后变成了另外一个流；这个权值求和也称作<strong>流聚合</strong>。此外，每个非负流都有一个如下特殊结构的<strong>流分解</strong>。</p>
+<p><strong>流分解定理.</strong> 每一个非负的(s,t)-flow $f$ 可以被写成是非负的有向路径和有向环的线性叠加。此外，一条有向边$u\rightarrow v$出现在这些路径或者环的其中之一当且仅当$f(u\rightarrow v)&gt;0$，并且路径和环的数量不会超过这个网络中边的数量。</p>
+<p><strong>证明：</strong> 通过归纳法我们基于非负流中边的数量来证明此定理，直接逆向执行Ford-Fulkerson算法。只要至少有一条图中的边带有非负流，我们就可以找到一条带有流的(s,t)-path或者一个有向环。尽量从路径和环中减去流直到只剩一条边，然后归纳法可以给出我们剩下的分解。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc9.png" alt="image"><br>  为了形式化论证，我们先考虑<strong>复合环流（circulation）</strong>的特殊情况；假设路径中流的值为0，所有的流都保存在顶点中。假设任意流网络中的一个任意复合环流$f$，用 $#f$ 表示边$u\rightarrow v$且$f(u\rightarrow v)&gt;0$的数量。我们证明$f$可以被分解为不超过$max\{0,#f-1\}$个非负环的线性叠加，基于$#f$归纳。有以下三种情况需要考虑：<br>  • 如果$#f=0$，那么$f$明显是0个环的线性叠加。<br>  • 假设对于任意一个简单有向环的边$u\rightarrow v$有$f(u\rightarrow v)&gt;0$。那么$#f\geq 2$，并且毋庸多言$f$是一个有向环的线性叠加。<br>  • 相反，选择一个任意边$u\rightarrow v$并且$f(u\rightarrow v)&gt;0$。假设一个任意通路$v_0\rightarrow v_1\rightarrow v_2\rightarrow \cdot\cdot\cdot$，$v_0=u$且$v_1=v$，如此对于任意索引i都有$f(v_{i-1}\rightarrow v_i)&gt;0$。守恒约束表明每个顶点有流进入就有流离开，所以我们可以随意设定这个通路的长度；尤其是，这个通路最终一定会到达同一顶点超过一次。用k表示对于任意$j&lt;k$满足$v_j=v_k$的最小索引。子通路$v_j\rightarrow v_{j+1}\rightarrow \cdot\cdot\cdot\rightarrow v_k$是一个简单有向环C。<br>  定义$F:=min_{e\in C} f(e)$，然后假设一个函数$f’:=f-F\cdot C$，或者更啰嗦的表示为：</p>
+<script type="math/tex; mode=display">\begin{equation}f'(u\rightarrow v):=\begin{cases}f(u\rightarrow v)-F & if\ u\rightarrow v\in C \\ f(u\rightarrow v) & otherwise\end{cases}\end{equation}</script><p>有定义可知$f’$是G中另外一个可行的复合环流。C中至少存在一条边$e\in C$并且$f(e)=F$，因此$f’(e)=0$，也就是说$#f’\leq #f-1$。因为$f’$中带有流的边比$f$少，归纳法最多能把$f’$分解成$#f’-1\leq #f-2$个环。将F个单元流加入环C就得到了f的流分解；简介表示为：$f=f’+F\cdot C$。</p>
+<p>现在用$f$表示任意流网络中的任意一个(s,t)-flow，如此就有$|f|&gt;0$。添加一条边$t\rightarrow s$到网络中，并且通过设置$f’(t\rightarrow s)=|f|$，对于原图中的所有边$u\rightarrow v$有$f’(u\rightarrow v)=f(u\rightarrow v)$，定义一个复合环流$f’$；可以看出$#f’=#f+1\geq 2$。前面的论证说明复合环流$f’$最多由$#f’-1$个环线性叠加而成。删除边$t\rightarrow s$可知原始流$f$最多可以分解成$#f’-1=#f$个路径和环的线性叠加。特别是，$f’$中包含$t\rightarrow s$的环变成了$f$中的(s,t)-path，而$f’$中不包含$t\rightarrow s$的环在$f$中保持不变。</p>
+<p>  流分解定理的证明得到了两个特殊情况的强效结论。<br>  • 任意复合环流可以被分解为环的权值求和；不需要任何路径。<br>  • 任意有向无环的(s,t)-flow可以被分解为(s,t)-path的权值求和；不需要任何环。<br>此外，通过去除所有环流，我们可以将任意流转化成一个值相同的有向无环流。尤其是，每个流网络都有都有一个有向无环的最大(s,t)-flow。<br>  这个证明可以直接转化出一个算法，类似于Ford-Fulkerson，将任意(s,t)-flow分解出任意路径和环。这个算法重复地在剩余流中找到一个有向的(s,t)-path或者有向环，然后从其中减去这些路径或环中的流，直到剩余流为空。我们可以在O(V)时间内找到一个路径流或者环流：</p>
+<p>  • 如果任意边从s离开是带有非负流，在流图中由一条任意通路从s出发直到它到达t（找到一个流路径）或者二次到达同一顶点（找到一个流环路）。<br>  • 如果没有非负流从s离开，找到任意一个出流为正的顶点v，在流图中由一条任意通路从s出发二次到达同一顶点（找到一个流环路）。</p>
+<p>两种情况下，有守恒约束可知这个算法永远不会卡住。每次迭代需要$O(V)$的时间并且从流图中至少移除一条边；  这样，整个分解算法的运行时为$O(VE)$。<br>  流分解提供了一个自然的运行时更低的最大流算法，每次构造一个流路径或者流环路。每个流都可以被分解成最多E个路径和环，其中每个都不能超过V条边，所以总的来说流分解的复杂度是$O(VE)$。此外，每个流分解的构造流都很简单，复杂度是$\Omega(VE)$。这样，任何最大流算法明确的一次构造一个流路径或者流环路—尤其是，任何Ford和Fulkerson的增广路径算法的实现—最坏运行时为$\Omega(VE)$。</p>
+<h3 id="Edmonds和Karp的算法"><a href="#Edmonds和Karp的算法" class="headerlink" title="Edmonds和Karp的算法"></a>Edmonds和Karp的算法</h3><p>Ford和Fulkerson的算法没有指出如何选择余量图中的增广路径；最坏运行时的最坏情况恰恰取决于如何选择增广路径。在1970年代早期，Jack Edmonds和Richard Karp发表了两个选择增广路径的规则，两者都可以实现高效算法。</p>
+<h3 id="最大增广路径"><a href="#最大增广路径" class="headerlink" title="最大增广路径"></a>最大增广路径</h3><p>Edmonds和Karp首次提出这个贪心算法时基于以下规则：<strong>选择当前瓶颈值最大的增广路径。</strong><br>在有向图中找出最大瓶颈的(s,t)-path使用“最佳优先”遍历可以在$O(E logV)$时间内做到，类似于Jarnik的最小生成树算法或者Dijkstra的最短路径算法。这个算法增长一棵有向树T，根节点是s，一次增加一个顶点，通过重复的寻找离开T的最高容量的边并加入T中，直到T包含了一条从s到t的路径。或者，模仿Kruskal的算法—以容量递减的顺序一次插入一条边直到有一条从s到t的路径—尽管这个方法在有向图中的效率不高。<br>  为了完成这个流算法的运行时分析，我们需要一个算法停止前的迭代次数上界。事实上，对于任意实数容量，这个算法可能不会停止；对于整数容量，虽然我们可以通过最大流值$f^<em>$确定迭代次数，如下。<br>  用$f$表示G中的任意流，$f’$表示当前余量图$G_f$的最大流。（在算法开始之时，$G_f=G$并且$f’=f^</em>$）。我们已经证明过$f’$可以被分解为最多E个路径和环。一个简单的平均论证表明在这个分解中至少有一个条路径携带了不少于$|f’|/E$的单元流。也就是说$G_f$中的最大的(s,t)-path携带了不少于$|f’|/E$个单元流。<br>  这样，沿着$G_f$中的最大瓶颈流每次最少变为原来的$1-1/E$。换句话说，剩余的最大流随着迭代次数呈指数级衰减。经过$E\cdot ln|f^*|$次迭代，$G_f$中的最大流值不超过</p>
+<script type="math/tex; mode=display">\begin{align}|f^*|\cdot (1-1/E)^{E\cdot ln|f^*|} &=|f^*|\cdot e^{E\cdot ln(1-1/E)\cdot ln|f^*|} <|f^*|e^{-ln|f^*|}=1\end{align}</script><p>（式中e是自然常数不是边）注意式中第一个不等关系，需要求$E\cdot ln(1-1/E)$与常数-1的关系，此处令$f(E)=E$和$g(E)=ln(1-1/E)$，当E趋于无穷大时，$f(E)$趋于无穷大，$g(E)$趋于0。使用洛必达法则求导：</p>
+<script type="math/tex; mode=display">(E\cdot ln(1-1/E))'=(\frac{ln(1-1/E)}{1/E})'=\frac{\frac{E}{E-1}\cdot \frac{1}{E^2}}{-\frac{1}{E^2}}=-\frac{E}{E-1}</script><p>由上式可知$E\cdot (1-1/E)$的极限趋于-1。<br>在$E\cdot ln|f^<em>|$次迭代后，余量图中的最大流已经小于1。如果所有的容量都是整数，如果余量图中最大流，那它的值一定是0；换句话说$f$就是一个最大流。<br>  我们得出对于带有整数容量的图，Edmonds-Karp的最大路径算法运行时为$O(E^2logE log|f^</em>|)$。不像原来的Ford-Fulkerson算法，这个时间边界的确是输入大小的多项式级。<br>  正如原来的Ford-Fulkerson算法，最大路径算法也会在带有实数容量的网络中陷于无限循环。然而我们的分析表明即使算法不会停止，但它得到的流$f$无限接近真实的最大流。</p>
+<h3 id="最短增广路径"><a href="#最短增广路径" class="headerlink" title="最短增广路径"></a>最短增广路径</h3><p>第二个Edmons-Karp规则实际上应该是在Ford-Fulkerson最大流初稿中左右实践启发提到的；这个规则的一种变体又在1970年被俄罗斯数学家Yefim Dinitz独立提出。<br><strong>选个当前边最少的增广路径。</strong><br>使用广度优先搜索可以在$O(E)$时间内在余量图中找到最短增广路径。令人惊讶的是这个算法在多项式级次数迭代后停止，而不依赖于于实际边的容量。<br>  这个多项式级的上界证明依赖于两个余量图变化的两种情况。用$f_i$表示当前流经过了i次增广，$G_i$表示对应的余量图。特别是，$f_0=0$并且$G_0=G$。对于每个顶点v，用$level_i(v)$表示在$G_i$中从s到t的无权最短距离，或者换个说法，v在$G_i$中根节点为s的广度优先搜索树的层级。需要注意，如果在$G_i$中没有从s到v的路径，那么$level_i(v)=\infty$。<br>  我们首先观察的时一个顶点的层级只会随着增广次数的增加而增加。</p>
+<p><strong>引理10.2.</strong> 对于所有的顶点v和整数$i&gt;0$都有$level_i(v)\geq level_{i-1}(v)$。</p>
+<p><strong>证明：</strong> 假设一个任意的正整数$i&gt;0$和一个任意的顶点v。我们基于$level_i(v)$来归纳证明。假设对于所有的$level_i(u)&lt;level_i(v)$的顶点u，都有$level_i(u)\geq level_{i-1}(u)$。有三种情况需要考虑。<br>• 如果$v-s$，我们马上得到$level_i(s)=level_{i-1}=0$。<br>• 如果$G_i$中不存在从s到v的路径，那么$level_i(v)=\infty\geq level_{i-1}(v)$<br>• 相反，假设$s\rightarrow \cdot\cdot\cdot\rightarrow u\rightarrow v$是$G_i$中从s到v的无权最短路径。因为这是一个最短路径，我们得到$level_i(v)=level_i(u)+1$，所以归纳假设表明$level_i(u)\geq level_{i-1}(u)$。为了完成这个证明，我们需要推理出$level_{i-1}(u)\geq level_{i-1}(v)-1$。我们有两种子情况需要考虑。</p>
+<ul>
+<li>如果$u\rightarrow v$是$G_{i-1}$中的边，那么$level_{i-1}(v)\leq level_{i-1}(u)+1$，因为层级室友广度优先遍历定义的。</li>
+<li><p>否则，$u\rightarrow v$不是$G_{i-1}$中的边，那么它的反向边$v\rightarrow u$一定是第i条增广路径，根据定义这条反向边是$G_{i-1}$中从s到t的无权最短路径。也就是说$level_{i-1}(v)=level_{i-1}(u)\leq level_{i-1}(u)+1$。<br>在两种子情况中，都得到了$level_i(v)=level_i(u)+1\geq level_{i-1}(u)+1\geq level_{i-1}(v)$。</p>
+<p>我们在增广当前流时，增广路径中的瓶颈边会从余量图中消失，并且某些边又会因为增广路径的翻转再次出现。我们接着观察的时一条边不会消失或者出现太多次。</p>
+</li>
+</ul>
+<p><strong>引理10.3.</strong> 在执行Edmonds-Karp最短增广路径算法的过程中，每条边$u\rightarrow v$最多从余量图$G_f$中消失$V/2$次。</p>
+<p><strong>证明：</strong> 假设$u\rightarrow v$在余量图$G_i$和$G_{j+1}$中存在，但是在中间余量图$G_{i+1},…,G_j$中不存在，且所有$i&lt;j$。那么$u\rightarrow v$一定在第i条增广路径中，所以$level_i(v)=level_i(u)+1$，并且$v\rightarrow u$一定在第j条增广路径中，所以$level_j(v)=level_j(u)-1$。由上一条引理可知</p>
+<script type="math/tex; mode=display">level_j(u)=level_j(v)+1\geq level_i(v)+1=level_i(u)+2</script><p>换句话说，在$u\rightarrow v$的消失与出现之间，从s到u的距离最少增加2。因为每个层级都是少于V或者等于无穷的，那么消失的次数最多是$V/2$。</p>
+<p>  现在我们可以得出迭代次数的上界。因为每条边最多消失$V/2$次，总的消失次数是$EV/2$。但是每次迭代至少消失一条边，这个算法最多迭代$EV/2$次。最终，每次迭代的耗时为$O(E)$，算法总耗时为$O(VE^2)$。</p>
+<h3 id="进一步发展"><a href="#进一步发展" class="headerlink" title="进一步发展"></a>进一步发展</h3><p>到此最大流算法的故事还没有结束。在几十年的长远研究中出现过一些快速算法，下图做了一些总结。所有列出的算法都列出了运行时。大多数算法有两种变体：一种是每次迭代都执行暴力求解，另一种更快的变体则是使用负载的数据结构来维护流网络的生成树，所以每次迭代的执行时间都是对数级的；实际上，最大流任然是非常活跃的研究领域。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc10.png" alt="image"><br>  已知最快的最大流算法是James Orlin在2012年发布的，运行时为$O(VE)$，精确到流分解的最坏情况。Orlin算法的详情是超出本书范围的；使用的时他自己的新技术，Orlin使用了几个较老的算法和数据结构作为黑盒子，它们中大多本身都已很复杂了。贴别是，Orlin算法并没有清除的构造流的分解；事实上，对于只有$O(V)$条边的图，他的扩展算法的实际运行时只要$O(V^2/logV)$。不管怎么说，为了方便最大流算法的运行时分析，这个时间界限还是需要留意的。所以每当你看到相关问题，请记住：<strong>在O(VE)时间内计算出最大流是可行的</strong>。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>手都快断了，终于翻译完了。本文难度稍大，阅读过程中我去找了好几篇中文博客来辅助理解。主要还是有些概念完全摸不到边，读了几遍还是不懂。比如说反向边这个概念，当时我就想不明白为什么原图需要简化成两点之间不超过一条边，而余量图又不是；还有就是本文没给出增广路径的明确概念，而我对此的理解又仅限于二分图，想着想着就跑偏了；再有就是一些数学推导，别人公式一步就过去了，我还在大费周章地做代数运算。说真的，后面还有硬菜，我感觉有点啃不动了。🤷‍♀️</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/25/JeffErickson-完全最短路径/" rel="next" title="Jeff Erickson 《Algorithms》 -- 完全最短路径">
+                <i class="fa fa-chevron-left"></i> Jeff Erickson 《Algorithms》 -- 完全最短路径
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#流"><span class="nav-number">2.1.</span> <span class="nav-text">流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#割"><span class="nav-number">2.2.</span> <span class="nav-text">割</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最大流-最小割定理"><span class="nav-number">2.3.</span> <span class="nav-text">最大流-最小割定理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ford和Fulkerson的增广路径算法"><span class="nav-number">2.4.</span> <span class="nav-text">Ford和Fulkerson的增广路径算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无理数容量"><span class="nav-number">2.5.</span> <span class="nav-text">无理数容量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流的分解与聚合"><span class="nav-number">2.6.</span> <span class="nav-text">流的分解与聚合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Edmonds和Karp的算法"><span class="nav-number">2.7.</span> <span class="nav-text">Edmonds和Karp的算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最大增广路径"><span class="nav-number">2.8.</span> <span class="nav-text">最大增广路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最短增广路径"><span class="nav-number">2.9.</span> <span class="nav-text">最短增广路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进一步发展"><span class="nav-number">2.10.</span> <span class="nav-text">进一步发展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">4.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/07/11/JeffErickson-最大流&最小割/';
+          this.page.identifier = '2020/07/11/JeffErickson-最大流&最小割/';
+          this.page.title = 'Jeff Erickson 《Free Algorithms Textbook》 -- 最大流&最小割';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
