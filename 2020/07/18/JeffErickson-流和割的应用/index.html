@@ -96,7 +96,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fcapp/fcapp8.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fcapp/fcapp9.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fcapp/fcapp10.png">
-<meta property="og:updated_time" content="2020-07-19T14:05:29.089Z">
+<meta property="og:updated_time" content="2020-07-19T14:12:10.223Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 流和割的应用">
 <meta name="twitter:description" content="前言　　专门用一章来讲应用还真是少见，但这也说明流和割的应用确实是图算法的重中之重。我大概扫了一眼小标题，可以确定本篇涉及的内容应该与二分图的最大独立集和最小点覆盖问题类似。所以读懂本文应该不难，关键是了解什么样的应用场景会用到流和割。">
@@ -370,8 +370,9 @@
 <h3 id="不相交路径覆盖"><a href="#不相交路径覆盖" class="headerlink" title="不相交路径覆盖"></a>不相交路径覆盖</h3><p>有向图$G$的路径覆盖是一些$G$中有向路径的集合，每个$G$中的每个顶点至少出现在一条路径中。有向图$G$的不相交路径覆盖是一种路径覆盖，要求每个$G$中的顶点只出现在某一条路径中。每个有向图都都包含一种简单的路径覆盖，由多个长度为零的路径组成，但是没有什么探讨价值。相反，我们更希望找到数量最少的路径覆盖。一般来说这是一个NP-困难问题 — 一个图的不相交路径覆盖数量为1当且仅当它包含了一条汉密尔顿路径 — 但是对于有向无环图还是存在一种基于流的高效算法。<br>　　为了解决有向无环图$G=(V,E)$中的这个问题，我们构造一个新的二分图$G’=(V’,E’)$如下。</p>
 <ul>
 <li>对于每个$G$中的顶点v， $G’$包含两个顶点$v^{\flat}$和$v^{\sharp}$。</li>
-<li>对于每条$G$中的有向边$u\rightarrow v$，$G’$包含一条有向边$u^{\flat}v^{\sharp}$。<br>（如果$G$是使用邻接矩阵表示的，那么$G’$正好也可以用同样的邻接矩阵来表示。）<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fcapp/fcapp6.png" alt="image"><br>　　现在我宣布$G$可以被k条不相交路径覆盖当且仅当$G’$中存在大小为$V-k$的匹配。通常，我们分两个阶段来证明这个等价关系：<br>$\Leftarrow$ 假设$G$有一个包含k条路径的路径覆盖$P$；将$P$视为$G$的一个子图。每个$P$中的顶点入度不是0就是1；此外，$P$中的每条路径恰好有一个顶点的入度是0。也就是说$P$包含了正好$V-k$条边。现在顶一个一个包含$G’$中边的集合$M$如下：</li>
+<li>对于每条$G$中的有向边$u\rightarrow v$，$G’$包含一条有向边$u^{\flat}v^{\sharp}$。<br>（如果$G$是使用邻接矩阵表示的，那么$G’$正好也可以用同样的邻接矩阵来表示。）<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fcapp/fcapp6.png" alt="image"></li>
 </ul>
+<p>　　现在我宣布$G$可以被k条不相交路径覆盖当且仅当$G’$中存在大小为$V-k$的匹配。通常，我们分两个阶段来证明这个等价关系：<br>$\Leftarrow$ 假设$G$有一个包含k条路径的路径覆盖$P$；将$P$视为$G$的一个子图。每个$P$中的顶点入度不是0就是1；此外，$P$中的每条路径恰好有一个顶点的入度是0。也就是说$P$包含了正好$V-k$条边。现在顶一个一个包含$G’$中边的集合$M$如下：</p>
 <script type="math/tex; mode=display">M:=\{u^{\flat}v^{\sharp}\in E'\ |\ u\rightarrow v\in P\}</script><p>根据不相交路径覆盖的定义，每个$G$中的顶点最多有一条在$P$中的进入边和一条在$P$中的离开边。我们推断每个$G’$中的顶点最多与一条$M$中的边相关；也就是$M$数量是$V-k$。</p>
 <p>$\Rightarrow$ 假设$G’$有一个大小为$V-k$的匹配$M$。对应地定义一个$G$的子图$P=(V,M’)$，$M’$如下所示：</p>
 <script type="math/tex; mode=display">M':=\{u\rightarrow v\in E\ | \ u^{\flat}v^{\sharp}\in M\}</script><p>根据匹配的定义，每个$G$中的顶点在$P$中最多有一条进入边和一条离开边。也就是说$P$是$G$中不相交路径的集合；因为$P$包含了所有顶点，$P$定义了一个有$V-k$条边的不相交路径覆盖。$P$中路径的数量正好是$G$中没有$M’$中的边进入的顶点数量。我们推断$P$正好包含了k条路径。</p>
@@ -382,7 +383,7 @@
 <li>一个二维数组$T[1..m,1..m]$，$T[u,v]$表示从地点u到地点v的耗时。</li>
 </ul>
 <p>我们想要找到可以正常执教课程的教师最低数量，那么一个教师被安排了两个课程i和j，$C[j].start\geq C[i].start$，我们还要保证</p>
-<script type="math/tex; mode=display">C[j].start\geq C[i].end+T\big[C[i].loc,C[j].loc]\big]</script><p>我们可以将此问题约化为不相交路径覆盖问题来解决。我们构造一个有向无环图$G=(V,E)$，课程作为定点，边代表两个课程是否能够由同一位教师来上。特别是，有向边$i\rightarrow j$表示同一教师可以先教课程 i 再教课程 j 。可以再$O(n^2)$时间内暴力构造这个有向无环图。然后使用上述的匹配算法找到一个不相交路径覆盖；每个$G$中的有向路径代表着一个教师的课程计划。整个算法的运行时为$(n^2+VE)=\textbf{O(n^3)}$。<br>　　尽管开始的描述是以时间和距离为措辞，但这的确是一个最大匹配问题（也就是最大流问题）。特别是我们想为同一个教师安排尽量多的课程。我们需要的教师数量等于没有分配后继的课程数量；每个没有后继的课程就是同一教师上的最后一课。</p>
+<script type="math/tex; mode=display">C[j].start\geq C[i].end+T\big[C[i].loc,C[j].loc]\big]</script><p>我们可以将此问题约化为不相交路径覆盖问题来解决。我们构造一个有向无环图$G=(V,E)$，课程作为定点，边代表两个课程是否能够由同一位教师来上。特别是，有向边$i\rightarrow j$表示同一教师可以先教课程i再教课程j。可以再$O(n^2)$时间内暴力构造这个有向无环图。然后使用上述的匹配算法找到一个不相交路径覆盖；每个$G$中的有向路径代表着一个教师的课程计划。整个算法的运行时为$(n^2+VE)=\textbf{O(n^3)}$。<br>　　尽管开始的描述是以时间和距离为措辞，但这的确是一个最大匹配问题（也就是最大流问题）。特别是我们想为同一个教师安排尽量多的课程。我们需要的教师数量等于没有分配后继的课程数量；每个没有后继的课程就是同一教师上的最后一课。</p>
 <h3 id="棒球淘汰赛"><a href="#棒球淘汰赛" class="headerlink" title="棒球淘汰赛"></a>棒球淘汰赛</h3><p>每年数以百万的棒球迷都在热心的关注自己喜欢的球队，希望他们可以在季后赛中出线，最后参加世界级赛事。不过大多数队伍都会被“理论淘汰”，一般是在此之后的几天或者常规赛季结束之前。通常，很容易看出一个队伍被淘汰时候 — 在他们的角度来看无法赢得足够的分数追赶上领先的队伍。但有时候情况会非常微妙。比如，下面是1996年的八月美国东部棒球联赛的战绩。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fcapp/fcapp7.png" alt="image"><br>　　Detroit明显是落后的，但是仍然有一些铁粉希望他们能获胜。毕竟，如果Detroit赢了剩下的27场比赛，他们的赛季将以76胜结束，超过其他队伍目前的胜场。所以只要别的队伍输掉接下来的每场比赛 … 但这是不可能的，因为剩下的比赛是要互相进行的。下面有一个完成的讨论：</p>
 <blockquote>
 <p>  通过赢得所有剩下的比赛，Detroit就会以76-86的战绩结束本赛季。如果NewYork只赢得剩下场次中的两场，他们就会以77-85的战绩结束，并且还超过了Detroit。所以我们假设Detroit剩余场次不败并且NewYork不胜。</p>
@@ -397,8 +398,9 @@
 <ul>
 <li>对于每个收益项目，有$c(s\rightarrow v)=￥(v)$；</li>
 <li>对于每个付费项目，有$c(u\rightarrow t)=-￥(u)$；</li>
-<li>对于每个依赖边，有$c(u\rightarrow v)=\infty$；<br>所有边的容量都是整数，所以这是一个最小割问题的有效输入。<br>　　现在考虑$G’$中的任意(s,t)-cut $(S,T)$。对于原依赖图中的任意边$u\rightarrow v$，如果$u\in S$并且$v\in T$，那么$||S,T||=\infty$。这样，我们就可以合理地选择$S$中的项目当且仅当$(S,T)$的容量是有限的。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fcapp/fcapp10.png" alt="image"><br>　　事实上，容量越小的割对应的项目收益也越高。尤其是，我宣布$S$中的项目总收益是$P-||S,T||$，$P$是所有整数收益项目的和：</li>
+<li>对于每个依赖边，有$c(u\rightarrow v)=\infty$；</li>
 </ul>
+<p>所有边的容量都是整数，所以这是一个最小割问题的有效输入。<br>　　现在考虑$G’$中的任意(s,t)-cut $(S,T)$。对于原依赖图中的任意边$u\rightarrow v$，如果$u\in S$并且$v\in T$，那么$||S,T||=\infty$。这样，我们就可以合理地选择$S$中的项目当且仅当$(S,T)$的容量是有限的。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fcapp/fcapp10.png" alt="image"><br>　　事实上，容量越小的割对应的项目收益也越高。尤其是，我宣布$S$中的项目总收益是$P-||S,T||$，$P$是所有整数收益项目的和：</p>
 <script type="math/tex; mode=display">P=\sum\limits_v max\{0,￥(v)\}=\sum\limits_{￥(v)>0}￥(v)</script><p>我们可以根据定义直接证明。对于任意子集$X$，我们定义三个值。（通常，如果$c(u\rightarrow v)=0$，我们认为$u\rightarrow v$这条边不存在）</p>
 <script type="math/tex; mode=display">cost(X):=\sum\limits_{u\in X\\￥(u)<0}-￥(u)=\sum\limits_{u\in X}c(u\rightarrow t)</script><script type="math/tex; mode=display">yield(X):=\sum\limits_{u\in X\\￥(v)>0}￥(v)=\sum\limits_{v\in X}c(s\rightarrow v)</script><script type="math/tex; mode=display">profit(X):=\sum\limits_{v\in X}￥(v)=yield(X)-cost(X)</script><p>根据定义，$P=yield(V)=yield(S)+yield(T)$。因为$(S,T)$的容量是有限的，只有$s\rightarrow v$和$u\rightarrow t$这样的边被切割。根据前面的构造，每条边$s\rightarrow v$指向的是一个正数收益项目，$u\rightarrow t$指向负数收益项目。这样$||S,T||=cost(S)+yield(T)$。我们马上可以得到$P-||S,T||=yield(S)-cost(S)=profit(S)$。<br>　　也就是说通过计算$G’$中的最小割可以最大化我们的总收益。我们可以在$O(V+E)$时间内轻松构造$G’$，使用Orlin算法计算最小割的时间是$O(VE)$。我们得到整个项目挑选算法的运行时为$\textbf{O(VE)}$。</p>
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>本章并没有什么新知识点可以学习，或者说有，但并不是三言两语能说清的。通篇看下来都是在作经验之谈，也没有什么约定俗成的解决套路。重点就在于如何使用<strong>约化</strong>。关于这个东西就真的是仁者见仁智者见智了，个人的理解不同，解决问题的方向也就不同。约化的方式没有最好，只有更好！</p>
