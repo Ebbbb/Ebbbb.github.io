@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="前言在上一篇《动态规划》作者把贪心算法喷的一无是处，然而接着就是“真香”警告😹。本来想看作者怎么圆上一篇的发言，结果别人翻篇不提了。本文的内容不像前三篇那样环环相扣，而是独立的知识点。">
+<meta name="description" content="前言　　在上一篇《动态规划》作者把贪心算法喷的一无是处，然而接着就是“真香”警告😹。本来想看作者怎么圆上一篇的发言，结果别人翻篇不提了。本文的内容不像前三篇那样环环相扣，而是独立的知识点。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jeff Erickson 《Algorithms》 -- 贪心算法">
 <meta property="og:url" content="http://yoursite.com/2020/04/05/Jeff Erickson-贪心算法/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="前言在上一篇《动态规划》作者把贪心算法喷的一无是处，然而接着就是“真香”警告😹。本来想看作者怎么圆上一篇的发言，结果别人翻篇不提了。本文的内容不像前三篇那样环环相扣，而是独立的知识点。">
+<meta property="og:description" content="前言　　在上一篇《动态规划》作者把贪心算法喷的一无是处，然而接着就是“真香”警告😹。本来想看作者怎么圆上一篇的发言，结果别人翻篇不提了。本文的内容不像前三篇那样环环相扣，而是独立的知识点。">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/greedy/greedy1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/greedy/greedy2.png">
@@ -92,10 +92,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/greedy/greedy4.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/greedy/greedy5.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/greedy/greedy6.png">
-<meta property="og:updated_time" content="2020-06-25T13:36:08.838Z">
+<meta property="og:updated_time" content="2020-07-18T12:20:51.568Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 贪心算法">
-<meta name="twitter:description" content="前言在上一篇《动态规划》作者把贪心算法喷的一无是处，然而接着就是“真香”警告😹。本来想看作者怎么圆上一篇的发言，结果别人翻篇不提了。本文的内容不像前三篇那样环环相扣，而是独立的知识点。">
+<meta name="twitter:description" content="前言　　在上一篇《动态规划》作者把贪心算法喷的一无是处，然而接着就是“真香”警告😹。本来想看作者怎么圆上一篇的发言，结果别人翻篇不提了。本文的内容不像前三篇那样环环相扣，而是独立的知识点。">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/greedy/greedy1.png">
 
 
@@ -338,7 +338,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇《动态规划》作者把贪心算法喷的一无是处，然而接着就是“真香”警告😹。本来想看作者怎么圆上一篇的发言，结果别人翻篇不提了。本文的内容不像前三篇那样环环相扣，而是独立的知识点。<br><a id="more"></a></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　在上一篇《动态规划》作者把贪心算法喷的一无是处，然而接着就是“真香”警告😹。本来想看作者怎么圆上一篇的发言，结果别人翻篇不提了。本文的内容不像前三篇那样环环相扣，而是独立的知识点。<br><a id="more"></a></p>
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="磁带存储"><a href="#磁带存储" class="headerlink" title="磁带存储"></a>磁带存储</h3><p>假设我们有n个文件需要存储在磁带上。将来，使用者想要从这盘磁带上读取文件。从磁带上读取文件并不同于磁盘；首先我们要快进掉前面别的文件，那会耗费很多时间。用L[1..n]表示每个文件的长度；第i个文件的长度表示为L[i]。如果文件的存储顺序是1到n，那么查询第k个文件的耗费为</p>
 <script type="math/tex; mode=display">cost(k)=\sum\limits_{i=1}^kL[i]</script><p>这个耗费反映了实际上读取第k个文件之前我们必须浏览过所有之前的文件。如果假设每个文件被访问的概率相同，那么搜索一个随机文件的预期耗费是</p>
 <script type="math/tex; mode=display">E(cost)=\sum\limits_{k=1}^n\frac{cost(k)}{n}=\frac{1}{n}\sum\limits_{k=1}^n\sum\limits_{i=1}^kL[i]</script><p>　　如果我们改变磁带上文件的顺序，我们就改变了访问每个文件的耗费；有些文件的读取耗费会增大，但另一些的会变少。不同的顺序也会导致预期耗费不同。用π(i)表示第i个文件在磁带上的位置，那么关于排列π的预期耗费如下</p>
@@ -852,7 +852,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

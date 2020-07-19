@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="前言我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ">
+<meta name="description" content="前言　　我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jeff Erickson 《Algorithms》 -- 最短路径">
 <meta property="og:url" content="http://yoursite.com/2020/06/07/JeffErickson-最短路径/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="前言我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ">
+<meta property="og:description" content="前言　　我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp2.png">
@@ -112,10 +112,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp24.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp25.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp26.png">
-<meta property="og:updated_time" content="2020-07-05T03:20:20.247Z">
+<meta property="og:updated_time" content="2020-07-18T12:21:26.250Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 最短路径">
-<meta name="twitter:description" content="前言我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ">
+<meta name="twitter:description" content="前言　　我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp1.png">
 
 
@@ -358,7 +358,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ<br><a id="more"></a></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　我认识它，它不认识我。我笔记里面有Floyd、Dijkstra、BellmanFord和SPFA四个算法，且每个算法下都有思路分析，然而我还是想不起来当初是怎么理解的了。这样看来，我都不知道我脑袋里有多少类似的“空中楼阁”。所以人还是要时常回顾一下往事，因为以往的认知不一定牢靠。ヾ(◍°∇°◍)ﾉﾞ<br><a id="more"></a></p>
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>假设给我们一个有向加权图G=(V,E,w)和两个顶点，我们想找到从源点s到目标点t的最短路径。也就是，我们想找到从s到t的有向路径P的最小化函数：</p>
 <script type="math/tex; mode=display">w(P):=\sum\limits_{u\rightarrow v\in P}w(u\rightarrow v)</script><p>比如，现实生活中我们想从一个城市到另一个城市，那么图中的顶点就是城市，边就是道路，权重就是行驶时间，同一条路可能因为方向不同而行驶时间不同。</p>
 <h3 id="最短路径树"><a href="#最短路径树" class="headerlink" title="最短路径树"></a>最短路径树</h3><p>几乎每个已知的计算一个点到另一个的最短路径算法都是在解决<strong>单源最短路径（SSSP）</strong>问题：找到从源点s到每个其他顶点的最短路径。这个问题通常是通过找到以s为根的最短路径树来解决，这棵树包含了所有要求的最短路径。<br>　　不难发现如果每个点的最短路径是唯一的，那么它们就会形成一棵树，因为任意最短路径的子路径本身就是一条最短路径。如果到达某个顶点有多条最短路径，那么我们总是可以选出一条后组合其他路径形成一棵树。如果存在最短路径从s到达两个顶点，先分叉，后合并，在分叉，我们可以不改变长度地修改其中一条，这样两条路径只会分叉一次。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/sssp/sssp1.png" alt="image"><br>　　尽管最小生成树和最短路径树都是最佳生成树，但它们却不是一个东西。最短路径树有根且有向；最小生成树是无根且无向的。最短路径树是为有向图自然定义的；最小生成树是为无向图自然定义的。如果边权不同，只会存在一棵最小生成树，但是每个顶点都可以引导一棵不同的最短路径树；此外，有可能每个最短路径树会用到不同的最小生成树边的子集。</p>
@@ -522,7 +522,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

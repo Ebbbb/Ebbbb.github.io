@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="前言记得前文《回溯》中作者承诺要在后面优化回溯算法，果然这一章好几个都是前面的例子。以前我做过一些动态规划的题目，却总是不得要领。通过“递归-&amp;gt;回溯-&amp;gt;动态规划”这样循序渐进的讲解，现在我真是醍醐灌顶啊！">
+<meta name="description" content="前言　　记得前文《回溯》中作者承诺要在后面优化回溯算法，果然这一章好几个都是前面的例子。以前我做过一些动态规划的题目，却总是不得要领。通过“递归-&amp;gt;回溯-&amp;gt;动态规划”这样循序渐进的讲解，现在我真是醍醐灌顶啊！">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jeff Erickson 《Algorithms》 -- 动态规划">
 <meta property="og:url" content="http://yoursite.com/2020/01/24/Jeff Erickson-动态规划/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="前言记得前文《回溯》中作者承诺要在后面优化回溯算法，果然这一章好几个都是前面的例子。以前我做过一些动态规划的题目，却总是不得要领。通过“递归-&amp;gt;回溯-&amp;gt;动态规划”这样循序渐进的讲解，现在我真是醍醐灌顶啊！">
+<meta property="og:description" content="前言　　记得前文《回溯》中作者承诺要在后面优化回溯算法，果然这一章好几个都是前面的例子。以前我做过一些动态规划的题目，却总是不得要领。通过“递归-&amp;gt;回溯-&amp;gt;动态规划”这样循序渐进的讲解，现在我真是醍醐灌顶啊！">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program2.png">
@@ -110,10 +110,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program22.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program23.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program24.png">
-<meta property="og:updated_time" content="2020-06-25T13:35:11.809Z">
+<meta property="og:updated_time" content="2020-07-18T12:20:27.883Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 动态规划">
-<meta name="twitter:description" content="前言记得前文《回溯》中作者承诺要在后面优化回溯算法，果然这一章好几个都是前面的例子。以前我做过一些动态规划的题目，却总是不得要领。通过“递归-&amp;gt;回溯-&amp;gt;动态规划”这样循序渐进的讲解，现在我真是醍醐灌顶啊！">
+<meta name="twitter:description" content="前言　　记得前文《回溯》中作者承诺要在后面优化回溯算法，果然这一章好几个都是前面的例子。以前我做过一些动态规划的题目，却总是不得要领。通过“递归-&amp;gt;回溯-&amp;gt;动态规划”这样循序渐进的讲解，现在我真是醍醐灌顶啊！">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program1.png">
 
 
@@ -356,7 +356,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记得前文《回溯》中作者承诺要在后面优化回溯算法，果然这一章好几个都是前面的例子。以前我做过一些动态规划的题目，却总是不得要领。通过“递归-&gt;回溯-&gt;动态规划”这样循序渐进的讲解，现在我真是醍醐灌顶啊！<br><a id="more"></a></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　记得前文《回溯》中作者承诺要在后面优化回溯算法，果然这一章好几个都是前面的例子。以前我做过一些动态规划的题目，却总是不得要领。通过“递归-&gt;回溯-&gt;动态规划”这样循序渐进的讲解，现在我真是醍醐灌顶啊！<br><a id="more"></a></p>
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="斐波那契数列"><a href="#斐波那契数列" class="headerlink" title="斐波那契数列"></a>斐波那契数列</h3><p>计算斐波那契数列是一个老生常谈的问题了，下面给出较为常见的算法伪代码：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program1.png" alt="image"><br>其实这种单纯的递归算法是相当慢的。抛开递归调用不看，整个算法只有一个常数级的步骤：一次比较或者一次加法。如果用T(n)表示RecFibo，递推式如下：</p>
 <script type="math/tex; mode=display">T(0)=1,\ \ T(1)=1,\ \ T(n)=T(n-1)+T(n-2)+1</script><p>这个看起来有点像是斐波那契的通项公式啊！写出T(n)的前几项值来看，T(n)可以化简为$T(n)=2F_{n+1}-1$，可以通过归纳法验证。通过一些超出本书范围的方法可知$F_n=\Theta(\phi^n)$，$\phi=(\sqrt5+1)/2≈1.61803$（黄金分割比例）。简单来说，这个递归算法的运行时是指数级别的。<br>　　那怎么才能直接看出是不是指数级增长呢？如果把RecFibo的递归看成是一颗二叉树，它的叶子节点是0或者1。因为最终输出的是$F_n$，那就刚好需要有$F_n$个叶子节点的值是1；这些叶子节点代表RecFibo(1)的调用。由一次简单的归纳可知RecFibo(0)刚好调用了$F_{n-1}$次。（如果我们只要一个渐进边界，得知RecFib(0)的调用次数最多和RecFibo(1)一样就足够了）这样，整棵递归树有$F_n+F_{n-1}=F_{n+1}$个叶子节点，又因为它是一棵满二叉树（国内外的定义不一样），他总共有$2F_{n+1}-1=O(F_n)$个节点。</p>
 <h4 id="记忆化"><a href="#记忆化" class="headerlink" title="记忆化"></a>记忆化</h4><p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program2.png" alt="image"><br>造成此算法运行慢的明显原因就是重复计算相同的斐波那契项。如果在第一次计算出某个中间项就记录下来，后面用到它的时候直接到记录中去查，这样就可以避免一些无意义的递归调用，从而加速算法的执行。最简单直接就是用数组来存中间项，优化过后的伪代码如下：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program3.png" alt="image"><br>　　如果只考虑加法执行的次数，又因为每个斐波那契项只计算一次，那么MemFibo的运行时就是$O(n)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dy_program/dy_program4.png" alt="image"></p>
@@ -525,7 +525,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

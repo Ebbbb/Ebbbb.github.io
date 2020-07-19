@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="前言看到标题我打开笔记本查了查，关于图的算法我学习过并查集（最小生成树）、最短路径和无向图的传递闭包等问题。以前学习这些算法的时候遇到好多概念都不理解，无奈只能查资料先弄懂图的一些基础概念才能继续。等我整理完这篇文章，以后复习起来就方便多了。">
+<meta name="description" content="前言　　看到标题我打开笔记本查了查，关于图的算法我学习过并查集（最小生成树）、最短路径和无向图的传递闭包等问题。以前学习这些算法的时候遇到好多概念都不理解，无奈只能查资料先弄懂图的一些基础概念才能继续。等我整理完这篇文章，以后复习起来就方便多了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jeff Erickson 《Algorithms》 -- 基础图算法">
 <meta property="og:url" content="http://yoursite.com/2020/05/02/Jeff Erickson-基础图算法/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="前言看到标题我打开笔记本查了查，关于图的算法我学习过并查集（最小生成树）、最短路径和无向图的传递闭包等问题。以前学习这些算法的时候遇到好多概念都不理解，无奈只能查资料先弄懂图的一些基础概念才能继续。等我整理完这篇文章，以后复习起来就方便多了。">
+<meta property="og:description" content="前言　　看到标题我打开笔记本查了查，关于图的算法我学习过并查集（最小生成树）、最短路径和无向图的传递闭包等问题。以前学习这些算法的时候遇到好多概念都不理解，无奈只能查资料先弄懂图的一些基础概念才能继续。等我整理完这篇文章，以后复习起来就方便多了。">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph2.png">
@@ -104,10 +104,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph16.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph17.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph18.png">
-<meta property="og:updated_time" content="2020-06-25T13:35:49.007Z">
+<meta property="og:updated_time" content="2020-07-18T12:20:43.657Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 基础图算法">
-<meta name="twitter:description" content="前言看到标题我打开笔记本查了查，关于图的算法我学习过并查集（最小生成树）、最短路径和无向图的传递闭包等问题。以前学习这些算法的时候遇到好多概念都不理解，无奈只能查资料先弄懂图的一些基础概念才能继续。等我整理完这篇文章，以后复习起来就方便多了。">
+<meta name="twitter:description" content="前言　　看到标题我打开笔记本查了查，关于图的算法我学习过并查集（最小生成树）、最短路径和无向图的传递闭包等问题。以前学习这些算法的时候遇到好多概念都不理解，无奈只能查资料先弄懂图的一些基础概念才能继续。等我整理完这篇文章，以后复习起来就方便多了。">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph1.png">
 
 
@@ -350,7 +350,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>看到标题我打开笔记本查了查，关于图的算法我学习过并查集（最小生成树）、最短路径和无向图的传递闭包等问题。以前学习这些算法的时候遇到好多概念都不理解，无奈只能查资料先弄懂图的一些基础概念才能继续。等我整理完这篇文章，以后复习起来就方便多了。<br><a id="more"></a></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　看到标题我打开笔记本查了查，关于图的算法我学习过并查集（最小生成树）、最短路径和无向图的传递闭包等问题。以前学习这些算法的时候遇到好多概念都不理解，无奈只能查资料先弄懂图的一些基础概念才能继续。等我整理完这篇文章，以后复习起来就方便多了。<br><a id="more"></a></p>
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="基本定义"><a href="#基本定义" class="headerlink" title="基本定义"></a>基本定义</h3><p>一个<strong>图</strong>的正式定义是一对(V,E)的集合，V是任意的有限集合，其中的元素是<strong>顶点</strong>或者<strong>节点</strong>，而E是有V中的成对元素组成的集合，我们称之为<strong>边</strong>。在一个<strong>无向图</strong>中，构成边的两个点没有先后顺序；通常可以用<strong>uv</strong>来代替{u,v}来表示u和v之间的无向边。在一个<strong>有向图</strong>中，构成边的两个点有先后顺序；通常可以用<strong>u→v</strong>来代替(u,v)表示从u到v的有向边。<br>　　接下来的标准练习中，我们用V来表示图中顶点的数量，E表示边的数量。这样，在任意无向图中有$0\leq E\leq \binom{V}{2}$，在任意有向图中有$0\leq E\leq V(V-1)$。<br>　　一个边uv或者u→v的端点是u和v。为了区分有向边u→v的两个端点，我们把u称为尾端点，v称为头端点。<br>　　对于一个图的边定义存在一些禁止项；多个无向边不能有相同的端点，多个有向边不能有相同的头尾端点；无向边不能是一个端点从自身到自身。我们将不存在环和平行边的图成为简单图；将非简单图称之为多重图。尽管与正式定义存在区别，大多数算法从简单图扩展到多重图都会有一点或者没有修改，正是因为如此，我认为没有必要在这里给出正是定义。<br>　　对于一个无向图中的任意边uv，我们将u称为v的<strong>邻居</strong>并且反之亦然，我们可以说u和v是<strong>邻近的</strong>。一个节点的<strong>度</strong>就是它邻居的数量。在有向图中，我们区分两个钟邻居。对于任意有向边u→v，我们将u称为v的<strong>前驱</strong>，将v称为u的<strong>后继</strong>。一个顶点的<strong>入度</strong>就是它前驱的数量；它的<strong>出度</strong>就是它后继的数量。<br>　　如果V’⊆V并且E’⊆E，那么图G’=(V’,E’)是G=(V,E)的<strong>子图</strong>。G的<strong>真子图</strong>是除了他自身以外的子图。<br>　　一个无向图中的<strong>通路（walk）</strong>由一系列顶点组成，其中每一对邻近顶点对都是在G中邻近的；我们也可以把通路认为是一系列的边。如果一条通路中的每一个顶点最多被访问一次，我们称之为<strong>路径（path）</strong>。对于图G中的任意两个顶点u和v，如果u和v在G中存在一条通路，我们就称u和v是<strong>可达到的</strong>。如果一个无向图中每两个顶点之间都是可达到的，那么它就是<strong>连通的</strong>。每个无向图都包含一个或者多个<strong>连通分量</strong>，每个连通分量都是它的最大连通子图；两个顶点在同一个连通分量当且仅当他们之间存在一条路径。<br>　　如果一条通路的起点和终点相同，那么它是<strong>闭合的</strong>。一个<strong>环路</strong>就是一条闭合通路，每个顶点进出一次。当一个无向图中不存在子图是环路，那么它是<strong>非循环的（acyclic）</strong>；非循环图也可以称为<strong>森林</strong>。一棵<strong>树</strong>就是一个连通的非循环图，或者可以说森林的一个分量。无向图G的一棵<strong>生成树</strong>是G的一个子图，并且他是一棵包含了G中所有顶点的树。一个图有生成树当且仅当它是连通的。一个<strong>生成森林</strong>就是G中的生成树集合，其中的元素来自于G的每一个分量。<br>　　关于有向图中的一些定义稍有不同。一条<strong>有向通路</strong>是指一系列的顶点$v_0\rightarrow v_1\rightarrow v_2\rightarrow ··· \rightarrow v_l$，其中$v_{i-1}\rightarrow v_i$是每个索引i的一条有向边。有向路径和有向环路的定义也是类似的。在一个有向图G中顶点u到顶点v是可达到的当且仅当G包含一个从u到v的有向通路。当每个顶点到每个别的顶点都是可达到的，那么这个图是<strong>强连通的</strong>。如果一个有向图不包含有向环路，那么它是<strong>非循环的</strong>。</p>
 <h3 id="表示和例子"><a href="#表示和例子" class="headerlink" title="表示和例子"></a>表示和例子</h3><p>表示图最通用的方法就是把它画出来。图中的顶点就用一个小圆圈或者别的图形表示，边则用曲线或者直线线段表示。一个图是<strong>平面的（planar）</strong>，要求作图的时候没有两条边是交叉的；这种作图也可以叫做<strong>嵌入图（embedding）</strong>。同样的图可以有许多不同的画法，所以画图的时候不能用一些特殊画法来混淆原图。特殊情况下，平面图可有有一些非平面画法。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph1.png" alt="image"><br>　　然而前面这种简单作画并不是图的唯一最有用表示方法。比如<strong>交邻图</strong>中的几何对象对于每种对象都有相应的节点图形；对于交邻对象之间的关系也有相应的表示边。一个图能不能用交邻图表示取决于你决定用什么对象来表示顶点。不同类型的对象（线段，矩形，圆等等）定义不同种类的图。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph2.png" alt="image"><br>　　另外一个例子就是递归算法的<strong>依赖图</strong>。依赖图一个有向无环图。对于一个特定输入生成一系列不同的顶点来表示递归子问题。如果从一个子问题到另一个子问题存在边，那么计算第二个子问题需要用到第一个问题的递归结果。比如斐波那契数列</p>
 <script type="math/tex; mode=display">\begin{equation}F_n=\begin{cases}0&if\ n=0\\1&if\ n=1\\F_{n-1}+F_{n-2}&otherwise\end{cases}\end{equation}</script><p>在依赖图中用整数0,1,2,…,n表示顶点，对于2到n之间的数用$pairs(i-1)→i$和$pairs(i-2)→i$表示关系边。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/basic_graph/graph3.png" alt="image"><br>　　再举一个复杂一点的例子，需要回忆一下第三章（动态规划）的一个小节<strong>编辑距离</strong>：</p>
@@ -494,7 +494,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
