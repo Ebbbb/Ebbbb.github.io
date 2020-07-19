@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/greedy/greedy4.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/greedy/greedy5.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/greedy/greedy6.png">
-<meta property="og:updated_time" content="2020-07-18T12:20:51.568Z">
+<meta property="og:updated_time" content="2020-07-19T14:31:05.196Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 贪心算法">
 <meta name="twitter:description" content="前言　　在上一篇《动态规划》作者把贪心算法喷的一无是处，然而接着就是“真香”警告😹。本来想看作者怎么圆上一篇的发言，结果别人翻篇不提了。本文的内容不像前三篇那样环环相扣，而是独立的知识点。">
@@ -727,7 +727,7 @@
 <p>　　换句话说，Gale-Shapley算法站在医院的角度计算出了可行的最好稳定匹配。也就表示这个匹配对于医生来说应该是可行的最坏选择！用worst(α)表示医生α的最差可选的医院。</p>
 <p><strong>推论4.9</strong> Gale-Shapley算法为每一个医生α都匹配到了worst(α)。<br><strong>证明：</strong> 假设Gale-Shapley算法把医生α分配到了医院A；我们需要证明A=worst(α)。如果有任意一个稳定匹配存在A没有与α配对而是β。前面的推论告诉我们跟β相比A更喜欢α=best(A)。由于这个匹配是稳定的，因此α应该更喜欢它被分配的医院而不是A。这个论述对任何稳定匹配都是有效的，所以α更愿意选择别的可行匹配而不是A；换句话说，A=worst(α)。</p>
 <p>　　1981年Lester Dubins和David Freedman发现了这两个推论会造成一些微妙的后果，那就是医生可以通过谎报排名列表来优化自己的配对情况，而医院却不行。出于这方面的原因，在1998年NRMP颠倒了匹配算法的选择关系，那就是医生根据排名对医院发出合作请求，医院则根据排名列表接受收到的最好合作请求。这样，新的算法计算出了对医生最优可行选择的匹配，自然医院就是相反的情况。然而实际上这个关系颠倒只改变了不到1%的匹配情况。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>起初我做jeffe教授的文章翻译就是为了记录知识要点。但现在我对一些有趣知识点的背景故事也进行了翻译，大概是怕自己以后读起来太枯燥了吧。稳定匹配的背景故事大概是我目前为止读的最细的一个，也有可能是我记性差的原因🤦‍♂️。至于霍夫曼编码这个知识点，我在一些讲文件压缩的文章中读到过，现在也算是加深印象了。<br>　　谈谈我自己对贪心的看法吧。遇到任何问题，我觉得最容易想到的思路就是贪心，同时它也是最容易被错用的算法。对比贪心和动归两篇文章的普遍模式小节，我发现贪心的套用模步骤简短而且模糊，也就是贪心这个方案用起来很灵活，在正确性验证方面可能不太好找切入点；而像动归这种套用模式详细的算法用起来反而更稳当，也比较好验证。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>起初我做jeffe教授的文章翻译就是为了记录知识要点。但现在我对一些有趣知识点的背景故事也进行了翻译，大概是怕自己以后读起来太枯燥了吧。稳定匹配的背景故事比较有趣，没想到医院招聘还有这段历史。至于霍夫曼编码这个知识点，我在一些讲文件压缩的文章中读到过，现在也算是加深印象了。<br>　　谈谈我自己对贪心的看法吧。遇到任何问题，我觉得最容易想到的思路就是贪心，同时它也是最容易被错用的算法。对比贪心和动归两篇文章的普遍模式小节，我发现贪心的套用模步骤简短而且模糊，也就是贪心这个方案用起来很灵活，在正确性验证方面可能不太好找切入点；而像动归这种套用模式详细的算法用起来反而更稳当，也比较好验证。</p>
 <h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="http://jeffe.cs.illinois.edu/teaching/algorithms/book/04-greedy.pdf" target="_blank" rel="noopener">http://jeffe.cs.illinois.edu/teaching/algorithms/book/04-greedy.pdf</a></p>
 
       

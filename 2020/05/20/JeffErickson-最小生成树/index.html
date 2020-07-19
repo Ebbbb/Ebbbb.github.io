@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="前言　　根据以前的ppt和笔记资料，我应该是学过prim和kruskal算法的。但是现在我已经忘完了，一点印象都没有了。唉！再看一遍吧，没准这次就记住了。😂">
+<meta name="description" content="前言　　根据以前的ppt和笔记资料，我应该是学过prim和kruskal算法的。但是现在我已经忘完了，一点印象都没有了。唉！再看一遍。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jeff Erickson 《Algorithms》 -- 最小生成树">
 <meta property="og:url" content="http://yoursite.com/2020/05/20/JeffErickson-最小生成树/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="前言　　根据以前的ppt和笔记资料，我应该是学过prim和kruskal算法的。但是现在我已经忘完了，一点印象都没有了。唉！再看一遍吧，没准这次就记住了。😂">
+<meta property="og:description" content="前言　　根据以前的ppt和笔记资料，我应该是学过prim和kruskal算法的。但是现在我已经忘完了，一点印象都没有了。唉！再看一遍。">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mst/mst1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mst/mst2.png">
@@ -96,10 +96,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mst/mst8.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mst/mst9.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mst/mst10.png">
-<meta property="og:updated_time" content="2020-07-18T12:21:35.212Z">
+<meta property="og:updated_time" content="2020-07-19T14:38:08.438Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 最小生成树">
-<meta name="twitter:description" content="前言　　根据以前的ppt和笔记资料，我应该是学过prim和kruskal算法的。但是现在我已经忘完了，一点印象都没有了。唉！再看一遍吧，没准这次就记住了。😂">
+<meta name="twitter:description" content="前言　　根据以前的ppt和笔记资料，我应该是学过prim和kruskal算法的。但是现在我已经忘完了，一点印象都没有了。唉！再看一遍。">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mst/mst1.png">
 
 
@@ -342,7 +342,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　根据以前的ppt和笔记资料，我应该是学过prim和kruskal算法的。但是现在我已经忘完了，一点印象都没有了。唉！再看一遍吧，没准这次就记住了。😂<br><a id="more"></a></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　根据以前的ppt和笔记资料，我应该是学过prim和kruskal算法的。但是现在我已经忘完了，一点印象都没有了。唉！再看一遍。<br><a id="more"></a></p>
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>假设已知一个无向连通加权图。这个图G=(V,E)有一个函数$w:E→R$，w(e)表示每个边有一个实际的权值，可能是正的、负的或者是0。这一章会介绍几个算法来寻找G的<strong>最小生成树</strong>，生成树T的最小化函数如下：</p>
 <script type="math/tex; mode=display">w(T):=\sum\limits_{e\in T}w(e)</script><p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mst/mst1.png" alt="image"></p>
 <h3 id="不同的边权值"><a href="#不同的边权值" class="headerlink" title="不同的边权值"></a>不同的边权值</h3><p>这个问题中有个需要注意的点是，加权图可以有多个具有相同最小权值的生成树；特别是，如果G中每条边的权值都是1，那么每个G的生成树都是一个最小生成树，权值是V-1.这种不明确使我们开发算法变得复杂；如果我们可以假设最小生成树是唯一的，那么问题就会相对简单些。幸运的是，正好有一个方案保证了我们所需的唯一性。<br><strong>引理7.1.</strong> 如果图G中所有边的权值都是不同的，那么G有一棵唯一的最小生成树。</p>
@@ -359,7 +359,7 @@
 <h3 id="Jarnik（Prim）算法"><a href="#Jarnik（Prim）算法" class="headerlink" title="Jarnik（Prim）算法"></a>Jarnik（Prim）算法</h3><p>接下来这个古老的最小生成树算法是在1929年捷克数学家Vojteck Jarnik写信给Boruvka发表的。接下来又是一堆人陆续独立发现这个算法，其中一位就是Prim，还有Kruskal和Dijkstra。<br>　　在Jarnik算法中，中间森林F只包含了一个不平凡的分量T；所有其他分量都是独立的点。起初，T是图中的任意一个顶点。<strong>算法重复以下步骤知道T扩展到整个图：重复添加T的安全边到T中</strong>。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mst/mst7.png" alt="image"><br>　　为了实现Jarnik算法，我们T的邻接边都加入到优先队列中。当我们从优先队列中取出最小权值边时，我们首先检查它的两个端点是否在T中。如果不是，我们将这条边加入T并且将新的邻接边加入优先队列。换句话说，Jarnik算法就是第五章末提到的最佳优先搜索的变体！如果我们用标准二进制堆来实现所依赖的优先队列，Jarnik算法的运行时为O(E log E)=<strong>O(E log V)</strong>。</p>
 <h4 id="改进Jarnik算法"><a href="#改进Jarnik算法" class="headerlink" title="改进Jarnik算法"></a>改进Jarnik算法</h4><p>我们可以使用一个更复杂的优先队列数据结构<strong>斐波那契堆</strong>来改进算法，他在1984年被Michael Fredman和Robert Tarjan首次提出。和二进制堆一样，斐波那契堆支持标准优先队列操作Insert、ExtractMin、DecreaseKey。然而不像标准二进制堆，对每个操作的耗时都是O(log n)，斐波那契堆支持Insert和DecreaseKey的均摊耗时为常数级，ExtractMin的均摊耗时任然是O(log n)。<br>　　为了使用这个更快的数据结构，我们将G的顶点而不是边加入优先队列，顶点v的优先级可能是是它与树T之间的最小权重边，也可能是∞（没有边）。我们可以在算法开始时将所有顶点加入优先队列；然后我们再加入一条新边到T时，我们需要去更新下相邻顶点的优先级。<br>　　为了让这段叙述更简单，我们将算法分为两部分。JarnikInit初始化了优先队列；JarnikLoop是主要算法。输入包括了图的顶点和边以及一个起点s。对于每个顶点v，我们需要维护它的优先级priority(v)和最小权重边edge(v)，w(edge(v))=priority(v)。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mst/mst8.png" alt="image"><br>　　操作Insert和ExtractMin会被调用O(V)次，除了s以外的每个顶点一次，然后DecreaseKey会被调用O(E)次，每条边最多两次。这样，如果我们使用斐波那契堆，这个改进算法的运行时为<strong>O(E+V log V)</strong>，它确实比Boruvka算法快了除非E=O(V)。<br>　　然而实际上，这个改进几乎不会比单纯使用二进制堆块，除非输入图非常大且稠密。这个斐波那契堆算法相当复杂，而且运行时间和运行空间中隐藏的常量非常大—也不是无法容忍的，但确实远远超出了二进制堆操作的运行时O(log n)中的常量1。</p>
 <h3 id="Kruskal算法"><a href="#Kruskal算法" class="headerlink" title="Kruskal算法"></a>Kruskal算法</h3><p>最后一个MST算法是Joseph Kruskal在1956年首次发表的，在这片文章中还有他二次独立发现的Jarnik算法。Kruskal是受到了Boruvka张贴在普林斯顿数学系的一篇机翻原稿的激励。Kruskal发现Boruvka算法中有一些不必要的步骤。同样的算法在1957年被Harry Loberman和Arnold Weinberger再次发现，但不知道何故避免了用他们的名字命名。<br>　　和我们早期的最小生成树算法一样，Kruskal算法也有一条令人难忘的描述：<strong>通过权重从小到大的顺序遍历边；如果一条边是安全的，就把它加入F。</strong><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mst/mst9.png" alt="image"><br>最简单的按边权重从小到大的顺序遍历的方法就是在O(E log E)时间内按边权重排序，然后对这个边的排序列表用一个简单的for循环。很快我们就会看到，这种初步的排序控制了算法的运行时间。因为我们检测边的顺序是按权值从小到大，任意我们检测的边是安全的当且仅当它的端点在F中的不同分量重。假设我们遇到了一条将分量A和B连接起来边e，但它不是安全的。那么一定存在一条更小的边e’，恰好有一个端点在A中。但这是不可能的，因为每个之前检测的边现在两个端点都在F的同一分量中。<br>　　就像Boruvka算法一样，每个F的顶点都需要知道它在F的哪个分量中。然而也不同于Boruvka算法，我们不需要在每次添加边后从头计算所有的分量标记。相反，当两个分量被一条边相连时，较小的分量会继承较大分量的标签；就是说，我们遍历较小的分量。对于较小分量中的每个顶点这个遍历需要O(1)时间。每次一个顶点的分量标签改变，F中包含这个顶点的分量会至少增大一倍（递增因子大于2）；这样，每个顶点的分量标签最多改变O(log V)次。这表明更新顶点标签的总耗时只有O(V log V)。<br>　　一般来说，Kruskal算法将G中的顶点维护在一些分开的不相交子集中（在我们这里，就是F的分量），使用一个数据结构支持一下操作：<br>　　• MakeSet(v)—创建一个只包含顶点v的集合。<br>　　• Find(v)—返回一个包含v的集合的唯一标记。<br>　　• Union(u,v)—将u和v所在的集合合并。<br>下面就是使用这些操作来完整描述的Kruskal算法：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mst/mst10.png" alt="image"><br>　　在初始化排序后，这个算法恰好执行了V次MakeSet操作（每个顶点一次），2E次Find操作（每条边两次），V-1次Union操作（每条最小生成树的边一次）。我们刚才描述的不相交子集数据结构对于MakeSet和Find操作的耗时为O(1)，对于Union的均摊耗时为O(log V)。使用这个实现，花在维护集合划分上的总耗时为O(E+V log V)。<br>　　但是回想一下仅排序的耗时都已经是O(E log E)=O(E log V)了。因为这个比维护集合划分耗时更大，总的来说我们Kruskal算法的耗时是<strong>O(E log V)</strong>，和Boruvka算法一样，和使用普通堆的Jarnik算法也一样。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这篇好短啊！一天多就搞完了。除了Boruvka算法第一次见，其他两个经典算法我都是学过的。只不过以前是看着模板代码来死记，现在是通过引理推导来理解。而且这些算法的发现者，好多我都有所耳闻。不出意料下一章就是最短路径，那应该就有Dijkstra这个人物了。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这篇好短啊！一天多就搞完了。除了Boruvka算法第一次见，其他两个经典算法我都是学过的。只不过以前是看着模板代码来死记，现在是通过引理推导来理解。而且这些算法的发现者，好多我都有所耳闻。</p>
 <h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="http://jeffe.cs.illinois.edu/teaching/algorithms/book/07-mst.pdf" target="_blank" rel="noopener">http://jeffe.cs.illinois.edu/teaching/algorithms/book/07-mst.pdf</a></p>
 
       

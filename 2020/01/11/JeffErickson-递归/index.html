@@ -79,22 +79,22 @@
 
 
 
-<meta name="description" content="前言　　前段时间我读了Jeff教授算法文章后受益颇多，所以决定根据他的每个知识点做一些学习记录。一来我可以提升自己的翻译能力，再者我可以缩减原文篇幅方便以后查看。">
+<meta name="description" content="前言　　前段时间我读了Jeff教授算法文章后受益颇多，所以决定根据他的每个知识点做一些学习记录。一来我可以提升自己的翻译能力，再者记录一些重要知识点方便回顾。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jeff Erickson 《Algorithms》 -- 递归">
 <meta property="og:url" content="http://yoursite.com/2020/01/11/JeffErickson-递归/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="前言　　前段时间我读了Jeff教授算法文章后受益颇多，所以决定根据他的每个知识点做一些学习记录。一来我可以提升自己的翻译能力，再者我可以缩减原文篇幅方便以后查看。">
+<meta property="og:description" content="前言　　前段时间我读了Jeff教授算法文章后受益颇多，所以决定根据他的每个知识点做一些学习记录。一来我可以提升自己的翻译能力，再者记录一些重要知识点方便回顾。">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion2.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion3.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion4.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion5.png">
-<meta property="og:updated_time" content="2020-07-05T02:54:30.654Z">
+<meta property="og:updated_time" content="2020-07-19T14:32:30.297Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 递归">
-<meta name="twitter:description" content="前言　　前段时间我读了Jeff教授算法文章后受益颇多，所以决定根据他的每个知识点做一些学习记录。一来我可以提升自己的翻译能力，再者我可以缩减原文篇幅方便以后查看。">
+<meta name="twitter:description" content="前言　　前段时间我读了Jeff教授算法文章后受益颇多，所以决定根据他的每个知识点做一些学习记录。一来我可以提升自己的翻译能力，再者记录一些重要知识点方便回顾。">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion1.png">
 
 
@@ -337,7 +337,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　前段时间我读了Jeff教授算法文章后受益颇多，所以决定根据他的每个知识点做一些学习记录。一来我可以提升自己的翻译能力，再者我可以缩减原文篇幅方便以后查看。<br><a id="more"></a></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　前段时间我读了Jeff教授算法文章后受益颇多，所以决定根据他的每个知识点做一些学习记录。一来我可以提升自己的翻译能力，再者记录一些重要知识点方便回顾。<br><a id="more"></a></p>
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="约化"><a href="#约化" class="headerlink" title="约化"></a>约化</h3><p>约化是算法设计过程中最通用的方法。将问题X约化成问题Y意味着使用Y的算法作为一个黑盒子或者子程序来写X的算法。最重要的是X算法的正确性并不取决于Y算法是如何运作的。我们唯一能假设的是Y算法可以正确解决问题。在这个黑盒子内部是如何运作的并不是我们所关心的。<br>　　当我们在设计算法的时候，我们不需要知道所使用的的子程序是如何实现的，也不需要担心我们的算法又会被当成子程序来解决什么别的问题。这种忽视往往给初学者带来不适感，但这样却又是不可避免且极其有用的。</p>
 <h3 id="简化和代理"><a href="#简化和代理" class="headerlink" title="简化和代理"></a>简化和代理</h3><p>递归就是一种特别有用的约化，粗略描述如下：<br>•如果有一个问题实例可以被直接解决，那就直接解决它。<br>•反之，将它约化成一个或者多个<strong>更简单且相同的问题实例</strong>。<br>如果这里的自我引用（上述加粗部分）让你感觉到困惑，你将这些更简单的问题代理给“别人”会来解决，就像你可以假设其他类型的约化一样。现在你仅有的任务就是简化原问题，或者如果不需要进行简化就直接解决它；“别人”将会为你解决这些更简单的子问题，这里正如前文所提到的我们不需要关注子程序内部是如何实现的。富有数学经验的读者或许已经认出这个“别人”有一个更通俗的名称：<strong>归纳假设</strong>。<br>　　递归方法不能是无限循环的，最终这种循环都会导向一个可被解决的基础方案。满足这个条件的通用方法就是约化出一个或者多个范围更小且相同的问题实例。</p>
 <h3 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h3><p>归并排序的大致步骤如下：<br>1.将输入数组尽量分为大小相等的两个子数组。<br>2.对每个子数组进行归并排序。<br>3.将两个有序的子数组合并为一个。<br>下图是归并排序的伪代码：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion1.png" alt="image"> </p>

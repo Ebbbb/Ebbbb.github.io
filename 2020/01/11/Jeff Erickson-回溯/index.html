@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="前言　　本文的内容是基于递归来讲的，回溯是递归算法中的一种策略。总的来说这篇文章很有趣，大部分内容都跟玩游戏有关。基于上一篇《递归》来看此文没什么压力，不过还是有些重点需要记录一下。">
+<meta name="description" content="前言　　本文的内容是基于递归来讲的，而回溯是递归算法的关键。总的来说这篇文章很有趣，大部分内容都跟玩游戏有关。基于上一篇《递归》来看此文没什么压力，不过还是有些重点需要记录一下。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jeff Erickson 《Algorithms》 -- 回溯">
 <meta property="og:url" content="http://yoursite.com/2020/01/11/Jeff Erickson-回溯/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="前言　　本文的内容是基于递归来讲的，回溯是递归算法中的一种策略。总的来说这篇文章很有趣，大部分内容都跟玩游戏有关。基于上一篇《递归》来看此文没什么压力，不过还是有些重点需要记录一下。">
+<meta property="og:description" content="前言　　本文的内容是基于递归来讲的，而回溯是递归算法的关键。总的来说这篇文章很有趣，大部分内容都跟玩游戏有关。基于上一篇《递归》来看此文没什么压力，不过还是有些重点需要记录一下。">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/backtrack/backtrack1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/backtrack/backtrack2.png">
@@ -93,10 +93,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/backtrack/backtrack5.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/backtrack/backtrack6.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/backtrack/backtrack7.png">
-<meta property="og:updated_time" content="2020-07-18T12:20:36.082Z">
+<meta property="og:updated_time" content="2020-07-19T14:23:26.929Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 回溯">
-<meta name="twitter:description" content="前言　　本文的内容是基于递归来讲的，回溯是递归算法中的一种策略。总的来说这篇文章很有趣，大部分内容都跟玩游戏有关。基于上一篇《递归》来看此文没什么压力，不过还是有些重点需要记录一下。">
+<meta name="twitter:description" content="前言　　本文的内容是基于递归来讲的，而回溯是递归算法的关键。总的来说这篇文章很有趣，大部分内容都跟玩游戏有关。基于上一篇《递归》来看此文没什么压力，不过还是有些重点需要记录一下。">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/backtrack/backtrack1.png">
 
 
@@ -339,7 +339,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　本文的内容是基于递归来讲的，回溯是递归算法中的一种策略。总的来说这篇文章很有趣，大部分内容都跟玩游戏有关。基于上一篇《递归》来看此文没什么压力，不过还是有些重点需要记录一下。<br><a id="more"></a></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　本文的内容是基于递归来讲的，而回溯是递归算法的关键。总的来说这篇文章很有趣，大部分内容都跟玩游戏有关。基于上一篇《递归》来看此文没什么压力，不过还是有些重点需要记录一下。<br><a id="more"></a></p>
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="N皇后问题"><a href="#N皇后问题" class="headerlink" title="N皇后问题"></a>N皇后问题</h3><p>这是一个很出名的问题，给你一个8X8的国际象棋的棋盘，如何放置放置八个皇后（皇后的攻击范围是横竖线、对角线）让她们不能相互攻击？伪代码如下：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/backtrack/backtrack1.png" alt="image"><br>如果是4X4棋盘，可以画出递归树如下：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/backtrack/backtrack2.png" alt="image"></p>
 <h3 id="子集和"><a href="#子集和" class="headerlink" title="子集和"></a>子集和</h3><p>我们来看一个稍微复杂点的问题：给你一个正整数集合X和一个目标整数T，X是否存所有元素和为T的子集？比如，如果X={8,6,7,5,3,10,9}且T=15，那么符合要求的子集是存在的（{8,7},{7,5,3},{6,9},{5,10}）。但如果X={11,6,5,1,7,13,12}且T=15，那么答案则是不存在。<br>　　这里还有两种特殊的情况，如果T=0，答案是存在。另外，如果T&lt;0，答案是不存在。<br>　　对于所有一般情况，对于任意x ∈ X，如果X存在所有元素和为T的子集，有以下两种情况：<br>•X存在一个所有元素和为T的子集，并且它包含x。<br>•X存在一个所有元素和为T的子集，并且它不包含x。<br>　　那么根据这个思路设计算法如下：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/backtrack/backtrack3.png" alt="image"></p>
 <h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>为了方便分析这个算法，我们需要把一些细节描述的更清楚。首先，我们可以使用数组来代替集合，接着我们把原算法中“任意元素”改成“数组的最后一个元素”，那么原函数变成了（其实这里最好把数组变为全局变量，不然会增加很多内存消耗）：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/backtrack/backtrack4.png" alt="image"><br>接下来可以的出递推式$T(n)\leq 2T(n-1)+O(1)$，那么通项公式就是$T(n)=O(2^n)$，也就是说这个算法考虑了$2^n$个X的子集。</p>
@@ -362,7 +362,7 @@
 <script type="math/tex; mode=display">T(n)=\sum\limits^{n}_{k=1}(T(k-1)+T(n-k))+O(n)</script><p>O(n)符号来自于计算搜索$\sum^{n}_{i=1}f[i]$的所有次数。这个式子看起来确实糟糕，但是前面用过类似的方法来简化这类式子。</p>
 <script type="math/tex; mode=display">\begin{align*} T(n)&=2\sum\limits^{n-1}_{k=0}T(k)+αn \\ T(n-1)&=2\sum\limits^{n-2}_{k=0}T(k)+α(n-1) \\ T(n)-T(n-1)&=2T(n-1)+α \\ T(n)&=3T(n-1)+α \end{align*}</script><p>现在看起还不错了，直接得出通项公式$T(n)=O(3^n)$。通过这个分析可以看出来我们的递归算法并没有检测所有可能的二叉搜索树！有n个节点的二叉搜索树的数量满足以下递推式</p>
 <script type="math/tex; mode=display">N(n)=\sum\limits^{n-1}_{r=1}(N(r-1)·N(n-r))</script><p>它有一个闭型等式$N(n)=\theta(4^n/\sqrt n)$。我们的算法节约了相当客观的时间通过对每个根节点独立搜索它的左右最佳子树。一个二叉搜索树的全枚举应该考虑所有可能的左右子树；因此得出递推式N(n)。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>写完这篇译文后，我感觉自己的翻译速度变快了，而且也比较熟悉作者的推理逻辑了。最后这个小节给我留下了最深刻的印象，所以我几乎是全文翻译的。我发现自己对运行时计算这块真的是</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>写完这篇译文后，我感觉自己的翻译速度变快了，而且也比较熟悉作者的推理逻辑了。最后这个小节给我留下了最深刻的印象，所以我几乎是全文翻译的。我个人对运行时计算这块蛮有兴趣的，毕竟这是衡量算法优劣的标准嘛。</p>
 <h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="http://jeffe.cs.illinois.edu/teaching/algorithms/book/02-backtracking.pdf" target="_blank" rel="noopener">http://jeffe.cs.illinois.edu/teaching/algorithms/book/02-backtracking.pdf</a></p>
 
       

@@ -96,7 +96,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc8.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc9.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc10.png">
-<meta property="og:updated_time" content="2020-07-18T12:20:16.410Z">
+<meta property="og:updated_time" content="2020-07-19T14:35:25.156Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 最大流&amp;最小割">
 <meta name="twitter:description" content="前言　　我在学二分匹配时知道可以用最大流来解决问，但是也没去看过具体实现。也就是说这个知识点对我来说算是全新的，而且还要看全英文，还没开始我就已经觉得压力山大了。如果理解不当翻译不好，那以后再回来纠正吧。">
@@ -410,7 +410,7 @@
 <script type="math/tex; mode=display">level_j(u)=level_j(v)+1\geq level_i(v)+1=level_i(u)+2</script><p>换句话说，在$u\rightarrow v$的消失与出现之间，从s到u的距离最少增加2。因为每个层级都是少于V或者等于无穷的，那么消失的次数最多是$V/2$。</p>
 <p>　　现在我们可以得出迭代次数的上界。因为每条边最多消失$V/2$次，总的消失次数是$EV/2$。但是每次迭代至少消失一条边，这个算法最多迭代$EV/2$次。最终，每次迭代的耗时为$O(E)$，算法总耗时为$O(VE^2)$。</p>
 <h3 id="进一步发展"><a href="#进一步发展" class="headerlink" title="进一步发展"></a>进一步发展</h3><p>到此最大流算法的故事还没有结束。在几十年的长远研究中出现过一些快速算法，下图做了一些总结。所有列出的算法都列出了运行时。大多数算法有两种变体：一种是每次迭代都执行暴力求解，另一种更快的变体则是使用负载的数据结构来维护流网络的生成树，所以每次迭代的执行时间都是对数级的；实际上，最大流任然是非常活跃的研究领域。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/mfmc/mfmc10.png" alt="image"><br>　　已知最快的最大流算法是James Orlin在2012年发布的，运行时为$O(VE)$，精确到流分解的最坏情况。Orlin算法的详情是超出本书范围的；使用的是他自己的新技术，Orlin还使用了几个较老的算法和数据结构作为黑盒子，它们本身都已很复杂了。特别是，Orlin算法并没有清楚地构造流的分解；事实上，对于只有$O(V)$条边的图，他的扩展算法的实际运行时只要$O(V^2/logV)$。不管怎么说，为了方便最大流算法的运行时评估，这个时间界限还是需要留意的。所以每当你看到相关问题，请记住：<strong>在O(VE)时间内计算出最大流是可行的</strong>。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>手都快断了，终于翻译完了。本文难度稍大，阅读过程中我去找了好几篇中文博客来辅助理解。主要还是有些概念完全摸不到边，读了几遍还是不懂。比如说反向边这个概念，当时我就想不明白为什么原图需要简化成两点之间不超过一条边，而余量图又不是；还有就是本文没给出增广路径的明确概念，而我对此的理解又仅限于二分图，想着想着就跑偏了；再有就是一些数学推导，别人公式一步就过去了，我还在大费周章地做代数运算。说真的，后面还有硬菜，我感觉有点啃不动了。🤷‍♀️</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>手都快断了，终于翻译完了。本文难度稍大，阅读过程中我去找了好几篇中文博客来辅助理解。主要还是有些概念完全摸不到边，读了几遍还是不懂。比如说反向边这个概念，当时我就想不明白为什么原图需要简化成两点之间不超过一条边，而余量图又不是；还有就是本文没给出增广路径的明确概念，而我对此的理解又仅限于二分图，想着想着就跑偏了；再有就是一些数学推导，别人公式一步就过去了，我还在大费周章地做代数运算。</p>
 <h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2>
       
     </div>

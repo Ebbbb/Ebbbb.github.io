@@ -114,7 +114,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/depth_first/search26.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/depth_first/search27.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/depth_first/search28.png">
-<meta property="og:updated_time" content="2020-07-18T12:21:04.368Z">
+<meta property="og:updated_time" content="2020-07-19T14:33:33.412Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 深度优先搜索">
 <meta name="twitter:description" content="前言　　看了看本文的篇幅，我才发现自己对深度优先搜索的理解只停留在概念上，没有太深入去思考它的用处在哪里。接下来跟着jeff教授的讲解，来了解深度优先搜索在有向图中的应用吧。">
@@ -382,7 +382,7 @@
 <h4 id="Tarjan算法"><a href="#Tarjan算法" class="headerlink" title="Tarjan算法"></a>Tarjan算法</h4><p>一个更早但是思路更巧妙的计算强连通分量的线性算法在1972年被Bob Tarjan提出。直观上来看，Tarjan算法鉴定出G的源分量，删除它，然后递归的查找剩下的强连通分量；然而，整个计算过程只发生在一次深度优先搜索。<br>　　已知某个有向图G的一个任意深度优先遍历。对于每个顶点v，用<strong>low(v)</strong>表示在所有通过一条伴随最多一个非树边的树边路径可以从v到达的顶点中的最小起始时间。繁琐地，low(v) ≤ v.pre，因为v可以到达本身通过0条非树边和0条树边到达自身。Tarjan对沉分量的观察可以用low函数的形式来描述。</p>
 <p><strong>引理6.4.</strong> 一个顶点v是G中一个沉分量的根当且仅当low(v) = v.pre且对于每个v的后代w有low(w) ＜ w.pre。</p>
 <p><strong>证明：</strong> 首先，用v表示一个low(v) = v.pre的顶点。如果w是v的后代，x.pre &lt; v.pre，那么w→x这种边是不存在的。另外，v不能到达任意顶点y，y.pre &gt; v.post。这表明v只能到达它的后代，因此v的后代也只能到达v的后代。特别是，v不能到达它的父节点（如果有的话），所以v是一个强连通分量的根。<br>　　现在假设对于每个对于每个v的后代w有low(w) &lt; w.pre。那么每个后代w都能到达另一个顶点x（它必须是另一个v的后代）且x.pre &lt; w.pre。这样，由归纳可知每个v的后代都能达到v。这表明v的后代组成了一个根为v的强连通分量。此外，C一定是一个沉分量，因为v不能到达C以外的顶点。<br>　　另外，假设v是沉分量C的根。那么v可以到达另一个顶点w当且仅当w∈C。但是v可以到达所有它的后代，每个C中的顶点都是v的后代，所以v的后代组成了C。如果对于任意别的节点w∈C有low(w) = w.pre，那么w就是C的另一个根，这明显是不可能的。<br>　　使用任意深度优先搜索直接计算每个顶点的low(v)；见下图。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/depth_first/search27.png" alt="image"><br>　　由引理6.4可知在运行FindLow之后，我们可以在O(V+E)时间内确定每一个沉分量（通过一个全局的任意优先搜索），然后在O(V+E)时间内标记和删除这些沉分量（通过对每个根调用任意优先搜索），接着继续递归。不幸的是，这个最终算法也许需要执行V次迭代，每次只移除一个点，总运行时为O(VE)。<br>　　为了加速这个策略，Tarjan的算法维护了一个顶点的辅助栈（不同于递归栈）。当我们启动一个未使用顶点v时，就把它放到这个栈里面。当我们顶点v状态变为完成时，我们比较v.low和v.pre。然后当我们第一次发现v.low=v.pre时，我们就知道了三件事情：<br>　　• 顶点v是沉分量C的根。<br>　　• 所有C中的顶点都连续出现在辅助栈的顶部。<br>　　• C中的顶点在辅助栈位置最深的是v。<br>到这里，我们可以通过一个一个弹出辅助栈中顶点直到弹出v来确定C中的顶点。<br>　　我们可以删除C中的顶点后继续递归计算剩余图中的强连通分量，但是这样是很浪费的，因为在访问v之前我们将会重复所有的计算。相反，我们标记C中的每个顶点，确定v作为它强连通分量的根，然后对剩余的深度优先搜索忽略标记过顶点。正式地，这个改动将low(v)的定义变为了和v在同一强连通分量中v可以通过伴随最多一条非树边的树边路径到达的顶点中的最小起始时间。但是为了证明正确性，你可以观察忽略标记顶点和实际去删除它们引导的算法行为是一样的。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/depth_first/search28.png" alt="image"><br>　　最后，改动图6.18中的红色加粗部分后，Tarjan算法就是上图所示了。这个算法的运行时可以划分为两部分。每个顶点推进S一次和弹出S一次，所以维护辅助栈的时间是O(V)。如果我们忽略辅助栈的维护，算法的剩下部分就是一个标准的深度优先搜索。我们得出这个算法的运行时为O(V+E)。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>没想到深度优先搜索加上前序和后序序列可以推导出这么些顶点和边的重要性质。最让我感到惊喜的还是拓扑序列和动态规划如此密切的关系，这种新旧知识点的融会贯通总能令人印象深刻。至于两个有向图的强连通分量算法，一个比一个设计的巧妙，不过我听得最多的还是Tarjan算法。至此，jeff教授的免费算法我已经翻译了六篇，路已过半，再接再厉！(`へ´*)ノ</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>没想到深度优先搜索加上前序和后序序列可以推导出这么些顶点和边的重要性质。最让我感到惊喜的还是拓扑序列和动态规划如此密切的关系，这种新旧知识点的融会贯通总能令人印象深刻。至于两个有向图的强连通分量算法，一个比一个设计的巧妙，不过我听得最多的还是Tarjan算法。</p>
 <h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="http://jeffe.cs.illinois.edu/teaching/algorithms/book/06-dfs.pdf" target="_blank" rel="noopener">http://jeffe.cs.illinois.edu/teaching/algorithms/book/06-dfs.pdf</a></p>
 
       
