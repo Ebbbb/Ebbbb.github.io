@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言当初我是因为直接看最后一章看不懂，才决定从头开始看的。现在看来前面的章节对于理解最后一章的帮助非常有限，不过我也算是温故而知新。至于本书的最终章节，我还是要对自己有个交代。现在尽自己最大的努力去理解就好了，并不一定要完全吃透。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jeff Erickson 《Algorithms》 -- NP问题">
+<meta property="og:url" content="http://yoursite.com/2020/09/08/JeffErickson-NP问题/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言当初我是因为直接看最后一章看不懂，才决定从头开始看的。现在看来前面的章节对于理解最后一章的帮助非常有限，不过我也算是温故而知新。至于本书的最终章节，我还是要对自己有个交代。现在尽自己最大的努力去理解就好了，并不一定要完全吃透。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np9.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np10.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np11.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np12.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np13.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np14.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np15.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np16.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np17.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np18.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np19.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np20.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np21.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np22.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np23.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np24.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np25.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np26.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np27.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np28.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np29.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np30.png">
+<meta property="og:updated_time" content="2020-09-08T10:27:13.882Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- NP问题">
+<meta name="twitter:description" content="前言当初我是因为直接看最后一章看不懂，才决定从头开始看的。现在看来前面的章节对于理解最后一章的帮助非常有限，不过我也算是温故而知新。至于本书的最终章节，我还是要对自己有个交代。现在尽自己最大的努力去理解就好了，并不一定要完全吃透。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/09/08/JeffErickson-NP问题/"/>
+
+
+
+
+
+  <title>Jeff Erickson 《Algorithms》 -- NP问题 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/08/JeffErickson-NP问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Jeff Erickson 《Algorithms》 -- NP问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-09-08T18:27:12+08:00">
+                2020-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/09/08/JeffErickson-NP问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/09/08/JeffErickson-NP问题/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/09/08/JeffErickson-NP问题/" class="leancloud_visitors" data-flag-title="Jeff Erickson 《Algorithms》 -- NP问题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>当初我是因为直接看最后一章看不懂，才决定从头开始看的。现在看来前面的章节对于理解最后一章的帮助非常有限，不过我也算是温故而知新。至于本书的最终章节，我还是要对自己有个交代。现在尽自己最大的努力去理解就好了，并不一定要完全吃透。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="不可能赢的游戏"><a href="#不可能赢的游戏" class="headerlink" title="不可能赢的游戏"></a>不可能赢的游戏</h3><p>想象一下，有一个穿红色西装、举止可疑的销售人员向你展示了一个前面有n个二进制开关并且顶部有一个灯泡的黑色铁盒子。这个销售员告诉你这个灯泡的状态是由一个复杂的二进制电路控制的 — 里面是一些由电线连接的与、或、非门电路，盒子前的开关通过电线与之连接，灯泡也是通过一根电线与之连接。然后他问了你一个简单的问题：有没有可能通过设置这些开关来点亮灯泡？如果你正确回答这个问题，他会给你一万亿美元；如果你答错了，或者至死都没有回答，他将会带走你的灵魂。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np1.png" alt="image"><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np2.png" alt="image"><br>  据你所知，这个怪人根本就没有将开关连接到灯泡，所以无论你怎么设置开关，灯泡都不会亮。如果你说能够点亮灯泡，他会打开盒子并且展示其中根本就没有电路。但是如果你说不能够点亮灯泡，在你测试完所有$2^n$种设置之前，他会在盒子中神奇地创造一个可以点亮灯泡的电路当且仅当如果你还有至少一种设置没试过，然后按这个设置拨动开关，灯泡亮了。（你不知道他有没有说谎，因为你看不到盒子里面的情况。）唯一可以验证他的问题的方法就是尝试所有$2^n$种设置。你很快意识到这将会耗尽你的毕生时光，所以你委婉地拒绝了它的邀请。<br>  这个怪人微笑着说道，“哦，当然，你没有理由相信我。但是也许我能让你放下心来。”他交给你一大卷羊皮纸 — 上面画的是电路设计图。“这是盒子里电路的完整电路图，请随意参观盒子的内部情况，确定这个电路图是对的。或者按照这个电路图构造你自己的电路。或者写一个电脑程序来模拟这个电路。随你的喜好，如果你发现这个设计图跟盒子里的电路对不上，那你可以直接拿走一万亿美元。”经过一些检查，你发现这个设计图并没有什么问题；也不存在狡猾骗局的可能。<br>  但是你仍然应该拒绝这个怪人的“慷慨”邀请。这个问题通常被称作<strong>电路可满足性</strong>（CircuitSAT）：已知一个布尔电路，是否存在一种输入使电路输出True，或者相反，是否这个电路总是输出False。对于任意指定输入，使用深度优先搜索可以在多项式（Polynomial）时间内得到输出。但是没人知道除了暴力尝试$2^n$种输入之外的解决电路可满足性的更快方式，它要求时间是指数级的。诚然，也没有人实际证明过不存在暴力求解以外的方式 — 也许，仅是也许，这样高级的算法还未被发现 — 就好像没人实际证明过反重力独角兽不存在一样。出于实际考虑，假设不存在解决电路可满足问题的高效算法才是可靠的。<br>  最终你还是拒绝了这个怪人的邀请。他微笑着说道，“孩子，你比你看起来聪明多了。”说完他就骑着反重力独角兽飞走了。</p>
+<h3 id="P相比于NP"><a href="#P相比于NP" class="headerlink" title="P相比于NP"></a>P相比于NP</h3><p>一个算法被认为“高效”的最低要求是它的运行时被一个关于输入大小的多项式方程限制：$O(n^c)$，c是某个常数，n是输入大小。研究人员很早就认识到不是所有的问题都能被快速解决，确定一个问题能否被快速解决是很困难的。有一些被称为<strong>NP-hard</strong>的问题，大多数人都认为不能再多项式时间内解决，即使没人能证明它的下界在多项式级之上。<br>  判定问题是指一种输出值为布尔型（Yes或者No）的问题。我们定义三种类型的判定问题：</p>
+<ul>
+<li><strong>P</strong> 是能在多项式时间内被解决的判定问题集合。直观上，P就是能被快速解决问题的集合。</li>
+<li><strong>NP</strong> 也是判定问题集合，具有以下属性：如果问题的结果是Yes，这个事实存在一种证明，可以在多项式时间内验证。直观上，NP问题在已知正确答案的情况下可以被快速验证。</li>
+<li><strong>co-NP</strong> 在本质上是与NP相反的。如果一个co-NP问题的结果是No，这个事实存在一种证明，可以在多项式时间内验证。</li>
+</ul>
+<p>比如，电路可满足性问题属于NP。如果已知一个布尔电路是可满足的，那么给出任意输出为True的m个输入值就可以证明这个电路是可满足的；我们可以通过在多项式时间内计算电路输出来验证证明。电路可满足性问题被广泛认为是不属于P或者co-NP的，但是没有人实际证明过。<br>  每个属于P的判定问题也属于NP。如果一个问题属于P，通过重新计算我们可以在多项式时间内验证一个结果为Yes的答案！同样地，每个属于P的问题也属于co-NP。<br>  也许在计算机科学最重要但还未解答的问题就是复杂度类P和NP是否不同。直观上，大多数人明显会觉得P ≠ NP；你们所遇到过的很多算法和数据结构，即便答案很简单，解决起来却可能非常困难。很明显从头到尾解决一个问题比验证一个正确答案困难得多。我们有理由接受 — 并且大多数算法设计者确实接受 — 陈述“P ≠ NP”是一个自然定律，就像麦克斯韦方程和广义相对论也是自然定律，太阳东升西落是由证据强力支持的，却并没有数学证明。<br>  但是如果我们要在数学上严格，我们必须承认没人知道怎么证明P ≠ NP。事实上，在近数十年中有一些此证明上的进展。克雷数学研究所将“P相比于NP”列入七大千年问题之首，为此提供一百万美元的奖金作为奖励。是的，事实上，一些尝试解决这个问题的人为此丢掉了灵魂或者迷失了心智。<br>  还有一个更狡猾且仍然开放的问题，是否复杂度类NP和co-NP不同。即使我们能快速验证每个结果为Yes的答案，但并不能确定我们能快速验证所有结果为No的答案。比如，据我们所知，布尔电路的不可满足性没有简短证明。普遍的认知是NP ≠ co-NP，但也是没人知道怎么证明它。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np3.png" alt="image"></p>
+<h3 id="NP-hard、NP-easy、NP-complete"><a href="#NP-hard、NP-easy、NP-complete" class="headerlink" title="NP-hard、NP-easy、NP-complete"></a>NP-hard、NP-easy、NP-complete</h3><p>问题$\prod$属于NP-hard，如果已知一个$\prod$的多项式级算法，那么对于每个属于NP的问题都有一个多项式级的算法。换句话说：</p>
+<blockquote>
+<p>$\prod$是NP-hard $\Longleftrightarrow$ 如果$\prod$能在多项式时间内被解决，那么P = NP</p>
+</blockquote>
+<p>直观上，如果我们能快速解决一个指定的NP-hard问题，使用这个解法作为子程序，那么我们就能快速解决任意解法更简单的问题。NP-hard问题的难度不会低于任意属于NP的问题。<br>  最后，NP-complete是既属于NP-hard也属于NP（或者叫NP-easy）的问题。正式一点，NP-complete问题是属于NP的最难问题。在NP-complete集合中中已知一个问题的一个多项式级算法就表明其余问题也有一个多项式级算法。字面上已知的几千个NP-complete问题，解决一个就等于解决全部似乎令人难以置信。<br>  称一个问题是NP-hard就好像再说“如果我有条狗，那么它就能流利地说英语。”你可能不知道我有没有狗，但是我确信你肯定不信我有一条会说话的狗。没人在数学上证明狗不能说英语 — 事实上没人听说过有狗会说英语就是证据，通过许许多多的检测发现狗没有适合说话的口腔形状和智能，但这仅是证据不是数学证明。然而，如果我说我有一条会说流利英语的狗，没人会相信我。所以声明“如果我有一条狗，那么它就能流利地说英语”有一个自然推论：任何头脑正常的人都不相信我有一条狗！同样地，如果一个问题是NP-hard，任何头脑正常的人都不相信它能在多项式时间内被解决。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np4.png" alt="image"><br>  判断一个问题是否是NP-hard不太容易。接下来有个显著的定理分别在1971年和1973年被Stephen Cook和Leonid Levin发表。</p>
+<p><strong>Cook-Levin定理.</strong> 电路可满足性问题是NP-hard。（此处作者未证明。）</p>
+<h3 id="正式定义"><a href="#正式定义" class="headerlink" title="正式定义"></a>正式定义</h3><p>正式情况下，复杂度类P、NP和co-NP是根据语言和图灵机定义的。语言是指使用有限字母表$\Sigma$拼写的字符串集合；为了不使普遍性，我们假设$\Sigma = \{0,1\}$。图灵机是指一种限制非常严格的计算机 — 简单地说，就是具有无限内存带的有限状态机 — 它的精确定义不重要。P是一些通过确定的单磁带图灵机可以在多项式时间内判定的语言集合。类似地，NP是所有通过非确定的图灵机可以在多项式时间内判定的语言集合；NP则是<strong>N</strong>ondeterministc <strong>P</strong>olynomial-time的缩写。<br>  多项式时间的要求简单到我们不需要明确指定图灵机。事实上，任意在随机存取的机器上运行时不超过$T(n)$的算法都可以模拟一个单磁带，单轨，单磁头的运行时为$O(T(n)^4)$的图灵机。这个模拟结果允许我们以标准程序结构（如：数组、循环和递归）的形式来正式讨论计算的复杂度，而不是直接从图灵机的角度来描述。<br>  正式地，一个问题$\prod$是NP-hard当且仅当对于每个语言$\prod’\in NP$，存在一种从$\prod’$到$\prod$的<strong>图灵约化</strong>。图灵约化是一种让问题可以在图灵机上执行的约化；也就是，一个图灵机$M$可以使用另外一个问题$\prod$的图灵机$M’$作为子程序来解决问题$\prod’$。图灵约化也被称为预言约化；多项式级的图灵约化也被称为Cook约化。<br>  复杂度理论研究者更喜欢从多项式级的<strong>多至一约化</strong>的角度来定义NP-hard，通常也被称为Karp约化。从一个语言$L’\subseteq \Sigma^{*}$到另一个语言$L\subseteq \Sigma^{*}$的多至一约化是一个函数$f:\Sigma^{*}\rightarrow \Sigma^{*}$，$x\in L’$当且仅当$f(x)\in L$。那么我们可以定义一个语言L是NP-hard当且仅当，对于任意语言$L’\in NP$，存在一个能在多项式时间内计算的从$L’$到$L$的多至一约化。<br>  每个Karp约化都是一个Cook约化，但是反之不然。特别是，任意从一个判定问题$\prod$到另一个判定问题$\prod’$的Karp约化等同于将对$\prod$的输入转化为对$\prod’$的，为$\prod’$唤起一个预言者，据我们所知，不是每个Cook约化都能通过Karp约化模拟。<br>  复杂度理论家更偏爱Karp约化，主要是因为NP在Karp约化下是封闭的，但在Cook约化下则不是（除非NP=co-NP，这是不可能的）。有一些自然的问题对于Cook约化是NP-hard，但对于Karp约化仅当P=NP才是NP-hard。一个简单的例子就是UnSAT：已知一个布尔公式，是否它总输出false？另外，多至一约化只用于判定问题；正式一点，不存在优化或者构造问题是Karp-NP-hard。<br>  让事情变得更混乱的是，Cook和Karp在NP-hard的最初定义是以<strong>对数间隔约化</strong>的形式。每个对数间隔约化都是一个多项式级约化，但反之不然。将允许(Cook或Karp)约化集和从对数空间放宽到多项式时间是否会改变NP-hard问题集合，这是一个有待解决的问题。<br>  幸运的是，这些微妙之处都没在实际情况中暴露出来 — 特别是，本章描述的每个约化都可以被形式化为一个对数间隔的多至一约化 — 所以你可以清醒了。</p>
+<h3 id="约化和SAT"><a href="#约化和SAT" class="headerlink" title="约化和SAT"></a>约化和SAT</h3><p>为了证明任意非电路可满足性问题是NP-hard，我们使用约化论证。将问题A约化成问题B意味着假设已存在解决问题B的算法的情况下描述一种算法来解决问题A。在读这本书之前，你们已经有多年的约化经验了，只是你们把它称呼不同而已，比如子程序或者公共函数或者模块化编程等等。为了证明一些问题是NP-hard，我们描述一种问题之间类似的转换，但不是大多数人期待的方向。<br>  换句话说，为了证明你的问题是困难的，你需要为另一个你已经困难的问题描述一个高效算法，使用一个假想的高效算法作为子程序。本质逻辑就是反证法。约化意味着如果你的问题很简单，那么其他的问题也会很简单。同样地，因为你知道其他问题很困难，约化就意味着你的问题也很困难；你的假想算法并不真实存在。<br>  举一个经典的例子，考虑如下公式可满足性问题，通常我们称之为<strong>SAT</strong>。SAT的输入是一个布尔公式：</p>
+<script type="math/tex; mode=display">a\vee b\vee c\vee \overline{d} \Longleftrightarrow ((b\wedge \overline{c})\vee \overline{(\overline{a}\Rightarrow d)}\vee (c\neq a\wedge b))</script><p>问题是如何为a、b、c…分配布尔值使整个公式的输出为True。<br>  为了证明SAT是NP-hard，我们需要给出一个已知NP-hard问题的约化。我们已知的NP-hard问题仅有CircuitSAT，那就从这里着手吧。<br>  让K表示任意布尔电路。我们将K转化成布尔公式$\Phi$。首先将内部的每根电线标记为新变量$y_j$，将输出电线标记为变量z。公式$\Phi$由每个门电路的等式通过And符号连接而成，最后还要加上一个$\wedge z$。下图就是范例电路的转化结果。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np5.png" alt="image"><br>  现在我们称原电路K是可满足的<strong>当且仅当</strong>布尔表达$\Phi$是可满足的。正如每个“当且仅当”的表述，我们分两步来证明：</p>
+<p>$\Rightarrow$ 已知一个满足电路K的输入，通过计算K中每个电路门的输出，我们可以得出一个满足公式$\Phi$的赋值。</p>
+<p>$\Leftarrow$ 已知一个满足公式$\Phi$的赋值，通过去掉内部电线变量$y_i$和输出变量z，我们可以得到一个满足电路的输入。</p>
+<p>整个电路转化成公式的过程耗时是线性的。此外，所得到的公式的大小比任意合理电路表示形式大一个常数因子。<br>  为了方便讨论，现在假设存在一种算法可以确定一个布尔公式的可满足性。然后已知任意一个布尔电路K，我们像前面一样将K转化成布尔公式$\Phi$，然后使用这个神奇的算法来计算$\Phi$的可满足性，如下图所示。每个方框表示一个算法。左边红色的方框代表一个转化子程序。右边的方框表示假想的SAT算法。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np6.png" alt="image"><br>如果你想知道这个算法的伪代码，没问题！😼<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np7.png" alt="image"><br>将K转化成$\Phi$的时间是多项式级的（事实上，应该是线性的），所以整个CircuitSAT算法的运行时也是多项式级的。</p>
+<script type="math/tex; mode=display">T_{CircuitSAT}\leq O(n)+T_{SAT}(O(n))</script><p>我们得出的结论：已知SAT的任意一个多项式级算法，就能得到CircuitSAT的一个多项式级算法，也就意味着P = NP。所以SAT是NP-hard！</p>
+<h3 id="3SAT"><a href="#3SAT" class="headerlink" title="3SAT"></a>3SAT</h3><p>关于SAT有个很有用的特殊案例，证明NP-hard问题，我们称之为<strong>3CNF-SAT</strong>或者<strong>3SAT</strong>。<br>  一个布尔公式是合取范式（CNF）仅当它使用AND连接的子句(clause)的合取，子句中又是用OR连接的字面量析取，一个字面量一个变量或者其否定式。比如：</p>
+<script type="math/tex; mode=display">\overbrace{(a\vee b\vee c\vee d)}^{clause}\wedge(b\vee \overline{c}\vee \overline{d})\wedge(\overline{a}\vee c\vee d)\wedge(a\vee \overline{b})</script><p>一个3CNF公式就是一个CNF公式，只是每个子句恰好有三个字面量；上面这个例子不是3CNF公式，因为第一个子句包含了四个字面量，最后一个子句仅包含了两个。3SAT是一种限制为3CNF公式的SAT：已知一个3CNF公式，是否存在一种变量赋值是的公式的计算结果是True？<br>  通过一个更普遍的SAT问题的约化，我们可以证明3SAT是NP-hard。但是实际上从头开始直接约化CircuitSAT更简单。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np8.png" alt="image"><br>  已知任意一个布尔电路K，我们通过一些步骤将K转换成3CNF公式。除了最后一步，这个约化在1966年由Grigorii Tseitin提出，这个时间比Cook和Levin公布Cook-Levin定理的证明早了五年。我们没描述一个步骤，也会对其进行证明。</p>
+<ul>
+<li>确保K中每个AND和OR电路门恰好只有两个输入。如果任意电路门有k&gt;2 个输入，将它替换成一个带有k-1个二元电路门的二叉树。这个生成的电路称作$K’$。电路K和$K’$是逻辑相等的，所以每个满足K的输入也能满足$K’$，反之亦然。</li>
+<li>将$K’$抄写成一个布尔公式$\Phi_1$，每个电路们一个子句，就像我们之间约化为SAT一样。我们已经证明了每个满足$K’$的输入都可以转换出一个满足$\Phi_1$的赋值，反之亦然。</li>
+<li>使用CNF公式替换掉每个$\Phi_1$中的子句。$\Phi_1$中只存在三种类型的子句，每种都对应了$K’$中的一个电路们：<script type="math/tex">\begin{align}a=b\wedge c &\longmapsto (a\vee \overline{b} \vee \overline{c})\wedge(\overline{a}\vee b)\wedge(\overline{a}\vee c)\\ a=b\vee c &\longmapsto (\overline{a} \vee b\vee c)\wedge(a\vee \overline{b})\wedge(a\vee \overline{c}) \\ a=\overline{b} &\longmapsto (a\vee b)\wedge(\overline{a} \vee \overline{b})\end{align}</script>生成的这个CNF公式称作$\Phi_2$。因为公式$\Phi_1$和$\Phi_2$是逻辑相等的，每个满足$\Phi_1$的赋值也满足$\Phi_2$，反之亦然。</li>
+<li>将每个$\Phi_2$中的子句替换成一个3CNF公式。每个$\Phi_2$中的子句最多有三个字面量，但是我们需要每个子句恰好有三个字面量。为了得到3CNF公式，引入一个新的变量我们将$\Phi_2$中两个字面量的子句扩展成三个字面量，引入两个新的变量我们将$\Phi_2$中一个字面量的子句扩展成三个字面量。<script type="math/tex">\begin{align}a\vee b &\longmapsto (a\vee b\vee x)\wedge(a\vee b\vee \overline{x}) \\ z &\longmapsto (z\vee x\vee y)\wedge(z\vee \overline{x} \vee y)\wedge(z\vee x\vee \overline{y})\wedge(z\vee \overline{x} \vee \overline{y})\end{align}</script>生成的3CNF公式称作$\Phi_3$。新变量的取任意值，每个满足$\Phi_2$的赋值也满足$\Phi_3$。相反地，忽略新变量，每个满足$\Phi_3$的赋值也满足$\Phi_2$。</li>
+</ul>
+<p>比如，我们的范例电路可以穿换成如下的3CNF公式；相较于图12.5。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np9.png" alt="image"><br>咋看一眼，这个公式看起来比原电路更复杂，但事实上，它只比原来大了一个常数因子。特别是，简化电路$K’$的电线数量最多是元电路$K$的两倍，$K’$中的二元电路们最多转换成$\Phi_3$中的五个子句。即使这个公式的大小是原电路大小的高次多项式级函数（比如$n^{374}$），我们仍然可以进行有效约化。<br>  我们的约化在多项式时间内将一个任意布尔电路K转换成了一个3CNF公式$\Phi_3$。此外，任意满足电路K的输入可以转换出一个满足$\Phi_3$的赋值，并且任意满足$\Phi_3$的赋值也可以转换出一个满足K的输入。换句话说，K是可满足的当且仅当$\Phi_3$是可满足的。这样，如果3SAT可以在多项式时间内解决，那么CircuitSAT也能在多项式时间内被解决，也就是说P=NP。我们得出3SAT是NP-hard。</p>
+<h3 id="最大独立集（得自3SAT）"><a href="#最大独立集（得自3SAT）" class="headerlink" title="最大独立集（得自3SAT）"></a>最大独立集（得自3SAT）</h3><p>对于接下来我们考虑的问题，输入是一个简单的、无权的、无向图，问题是求解满足一些结构属性的最大或者最小的子图。<br>  G是一个任意图。关于G的一个<strong>独立集</strong>是指一个G中顶点的子集，并且顶点之间没有边。最大独立及问题，我们简称MaxIndSet，就是求一个已知图中的最大独立集。使用一个3SAT约化，接下来我们证明MaxIndSet是NP-hard，如图12.7。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np10.png" alt="image"><br>  已知任意3CNF公式$\Phi$，我们接着构造图G。用k表示$\Phi$中子句的数量。G正好有3k个顶点，每个都代表$\Phi$的一个字面量。G中两个顶点是相连的当且仅当（1）他们对应的字面量在同一个子句或者（2）他们都对应一个变量及其取反值。比如，公式$(a\vee b\vee c)\wedge(b\vee \overline{c} \vee \overline{d})\wedge(\overline{a}\vee c\vee d)\wedge(a\vee \overline{b} \vee \overline{d})$转换成图如下。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np11.png" alt="image"><br>  G中的独立集最多包含每个子句中的一个顶点，一位任意两个处于同一子句的顶点都是相连的。这样，G的最大独立集大小不超过k。我们称G有一个独立集的大小正好是k当且仅当原公式$\Phi$是可满足的。通常对于“当且仅当”语句，证明由两部分构成。</p>
+<p>$\Rightarrow$ 假设$\Phi$是可满足的。已知任意可满足的赋值。根据定义，$\Phi$中每个子句包含至少一个值为True的字面量。这样，我们选择一个包含G中k个顶点子集S，每个顶点来自一个三角子句，而且对应的k个字面量都是True。因为每个三角子句最多只有一个顶点在S中，不存在S中的两个顶点是由三角边相连的。因为每个对应S中顶点的字面量的值为True，不存在S中的两个顶点是由否定边（negetion edge）相连的。我们得出S是G的一个独立集，大小为k。</p>
+<p>$\Leftarrow$ 另一方面，假设G中存在大小为k的独立集S。每个S中的顶点一定在不同的三角子句中。假设我们将S中的字面量赋值为True；因为互斥的字面量都是有边相连的，这个赋值是一致的。也许存在变量x，x和$\overline{x}$都没有对应S中的顶点；所以我们可以将这些变量设置为任意值。因为S包含了每个三角子句中的一个顶点，每个$\Phi$中的子句包含至少一个值为True的字面量。我们得出$\Phi$是可满足的。</p>
+<p>即使每个步骤都是用蛮力求解，将3CNF公式$\Phi$转换成图G耗时是多项式级的。这样，如果我们可以在多项式时间内解决MaxIndSet，通过将输入公式$\Phi$转换成图然后把G的最大独立集的大小和$\Phi$中子句数量比较，那么我们也能在多项式时间内解决3SAT。但那将表示P=NP，这是很荒谬的！我们得出MaxIndSet是NP-hard。</p>
+<h3 id="普遍模式"><a href="#普遍模式" class="headerlink" title="普遍模式"></a>普遍模式</h3><p>所有NP-hard的证明 — 更普遍来说，所有多项式级的约化 — 都遵循同样的常规大纲。为了在多项式时间内将问题X约化成问题Y，我们需要做三件事：</p>
+<ol>
+<li>描述一个多项式级算法将X的一个任意实例x转换成Y的一个特殊实例。</li>
+<li>证明x是X的一个“优良”实例，那么y是Y的一个“优良”实例。</li>
+<li>证明y是Y的一个“优良”实例，那么x是X的一个“优良”实例。</li>
+</ol>
+<p>当然，进行正确的约化并不是要求我们一次解决这三个任务。首先写下一个看起来可行的算法，然后证明它的确可行，这一步很难成功，特别是时间限制方面。我们一定要得出这个算法，然后同时证明“当且仅当”两个充分和必要条件证明。<br>  有个要点困扰了很多学生，约化算法是单向的 — 从X到Y —但是正确性证明是双向的。但是正确性证明实际上并不是对称的。“充分”证明需要出X的任意实例，但是“必要”证明只需要通过约化算法处理Y的一个特殊实例。如何利用这个非对称性是成功设计正确约化的关键。<br>  我发现从证书转换的角度来思考实例本身非常有用 — 证明一个已知实例是“优良”的 。比如，一个CircuitSAT的证书就是一个可以让灯泡亮起来的输入集合；一个SAT或者3SAT的证书一个可满足的赋值；一个MaxIndSet的证书就是一个最大独立集。为了将X约化为Y，我们需要实际设计三种算法，每个都对应了一下的任务：</p>
+<ul>
+<li>在多项式时间内将X的一个任意实例x转换成Y的一个特殊实例y。</li>
+<li>将x的任意一个证书转成一个y的证书，以及</li>
+<li>将y的任意一个证书转成一个x的整数。</li>
+</ul>
+<p>第二和第三个任务是指第一个算法的输入和输出。这个证书转换需要是可逆的，不像实例转换。我们永远不需要转换Y的实例，而且我们不需要考虑任意Y的实例。只要第一个算法能在多项式时间内执行（在实践中，第二和第三个算法几乎总是比第一个简单）。<br>  比如，我们从CircuitSAT到3SAT的约化由三个算法组成：</p>
+<ul>
+<li>第一个转换是在多项式时间内将任意一个布尔电路K变成一个特殊的3CNF布尔公式$\Phi_3$。（为每根电线编写变量，为每个电路门编写子公式，然后将每个子公式扩展为3CNF）</li>
+<li>第二个转换是将任意一个满足K的输入变成满足$\Phi_3$的一个复制。（根据整个电路的输入，得出每根电线的对应变量，并且给额外变量赋予任意值）</li>
+<li>第三个转换是将任意一个满足$\Phi_3$复制变成一个满足K的输入。（将每个$\Phi_3$中电线变量转换成K中对应的电线）</li>
+</ul>
+<p>因为第一个算法把任意电路K编码成了一个高度结构化的3CNF公式$\Phi_3$，所以约化产生了作用。$\Phi_3$的特殊结构限制了如何才能满足它；每个满足$\Phi_3$的赋值一定“源自于”某个K的可行输入。我们完全不考虑任意3CNF公式。<br>  类似地，我们从3SAT到MaxIndSet的约化也是由三个算法构成：</p>
+<ul>
+<li>第一个转换是在多项式时间内将任意一个3CNF公式$\Phi$变成图G和特殊整数k。</li>
+<li>第二个转换是将任意一个满足$\Phi$的赋值变成一个G中大小为k的独立集。</li>
+<li>第三个转换是将G中任意一个大小为k的独立集变成一个满足$\Phi$的赋值。</li>
+</ul>
+<p>一样，我们第一次转换将输入公式$\Phi$编码成了一个高度结构化的图G和特殊整数k。G的结构保证了每个大小为k的独立集“源自于”一个满足$\Phi$的赋值。我们不考虑完全不考虑任意图或者任意独立集大小。</p>
+<h3 id="团和点覆盖（得自独立集）"><a href="#团和点覆盖（得自独立集）" class="headerlink" title="团和点覆盖（得自独立集）"></a>团和点覆盖（得自独立集）</h3><p>一个<strong>团（clique）</strong>是一个完整图的另一种称呼，这类图的每一对顶点都有一条边相连。MaxClique问题就是在一个已知图中找到最大完整图的顶点数量。一个图的<strong>顶点覆盖（vertex cover）</strong>是一个接触了图中每条边的顶点集合。MinVertexCover就是在一个已知图中找到最小的顶点覆盖大小。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np12.png" alt="image"><br>  使用一个由MaxIndSet得出的简单约化，我们可以证明MaxClique是NP-hard。任意图G存在一个顶点形同的边-补全图$\overline{G}$，但是这个图中的边与原图是对立的 — $uv$是一条$\overline{G}$中的边当且仅当$uv$不是G中的一条边。在G中一个顶点集合是独立的当且仅当同样的这些顶点在$\overline{G}$中定义了一个团。这样，G中的最大独立集合和G的边-补全图中的最大团有着同样的顶点。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np13.png" alt="image"><br>  证明MinVertexCover是NP-hard甚至更简单，因为它依赖于以下的简单观察：I是图G=(V,E)的一个独立集当且仅当它的补全集合V\I是同一个图G的一个顶点覆盖。这样，任意图的最大独立集正好是同一个图的最小点覆盖的补全集合！那么，如果一个n个顶点图的最小点覆盖大小是k，它的最大独立集的大小则是n-k。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np14.png" alt="image"></p>
+<h3 id="图着色（得自3SAT）"><a href="#图着色（得自3SAT）" class="headerlink" title="图着色（得自3SAT）"></a>图着色（得自3SAT）</h3><p>一个图G=(V,E)的正确<strong>k-着色（k-coloring）</strong>是一个函数$C:V\rightarrow \{1,2,…,k\}$，它为每个顶点分配k种颜色中的一个，而且每条边的两个顶点的颜色不同。图着色问题是想找到对于一个已知图满足着色条件的最少颜色数量。<br>  为了证明图着色是NP-hard，考虑判定问题<strong>3Color</strong>就足够了：已知一个图，是否它存在一个正确的3-着色？使用一个由3SAT得出的约化，我们来证明3Color是NP-hard。已知一个3CNF公式$\Phi$，我们构造一个图G可以被3-着色当且仅当$\Phi$是可满足的，常用图解表示如下。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np15.png" alt="image"><br>  我们使用将输出图分解为一些<strong>配件</strong>的标准策略进行约化，也就是在图着色语言中执行的各种语义的子图。将约化分解为配件不仅对于理解现有的约化以及证明其正确性有帮助，而且也有利于设计新的NP-hard约化。</p>
+<p>我们的从公式到图的约化使用了三种类型的配件：</p>
+<ul>
+<li>一个独立的真值配件：一个带有三个顶点T、F、X的三角，他们直接代表True、False、Other。因为这些点是相连的，他们的颜色一定是不同的。为了方便，我们将这些颜色命名为True、False、Other。这样，当我们说一个节点着色为True，意思就是它和顶点T的颜色是一样的。</li>
+<li>对于每个变量a，图中包含一个变量配件，它是一个将两个标记为a和$\overline{a}$的节点连接到真值配件中的节点X的三角。节点a的颜色不是True就是False，相反节点$\overline{a}$的颜色不是False就是True。<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np16.png" alt="image"></li>
+<li><p>最后对于$\Phi$中的每个子句，图中包含一个子句配件。每个子句配件连接三个字面量节点（来自对应的变量配件）到节点T（来自真值配件），使用五个新的未标记的节点和十条边，如下所示。<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np17.png" alt="image"></p>
+<p>实际上，子句配件中的每个三角作用就像是“多数电路门”。在任意有效的3-着色中，如果三角左边的两个顶点颜色相同，那么三角最右边的顶点一定是同样的颜色；另外，如果最左边的两个顶点颜色不同，那么最右边的顶点可以是任意颜色。如图12.14。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np18.png" alt="image"><br>如果一个子句配件不存在有效的3-着色，那么它的三个字面量节点的颜色都是False。另外，任意超过一种颜色的字面量节点着色都可以被扩展成子句配件的一个有效的3-着色。变量配件强制每个字面量节点的着色不是True就是False；这样，子句配件的任意有效的3-着色至少有一个字面量节点的颜色是True。<br>最终图G包含了恰好一个节点T，一个节点F，以及任意变量的两个节点a和$\overline{a}$。例如，图12.15展示了源自于3CNF公式$(a\vee b\vee c)\wedge(b\vee \overline{c} \vee \overline{d})\wedge(\overline{a} \vee c\vee d)\wedge(a\vee \overline{b} \vee \overline{d})$的结果图，此前我们在12.8中又来阐述MaxIndSet约化。这个3-着色对应着一些可行赋值中的一个：a = c = True, b = d = False。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np19.png" alt="image"><br>我们已经做了正确性证明的大部分工作了。如果公式是可满足的，那么我们就可以根据可行赋值来给字面量节点着色，然后通过每个子句配件扩展着色。另外，如果图存在3-着色，那么我们就能从任意3-着色中提取一个可行赋值 — 每个子句配件中至少有一个字面量节点的着色是True。<br>因为3Color是许多普遍图着色问题的一个特殊案例 — 着色所需的最少颜色种类？ — 这种更普遍的最优问题也是NP-hard。</p>
+<h3 id="哈密顿回路（Hamiltonian-Cycle）"><a href="#哈密顿回路（Hamiltonian-Cycle）" class="headerlink" title="哈密顿回路（Hamiltonian Cycle）"></a>哈密顿回路（Hamiltonian Cycle）</h3><p>一个图的<strong>哈密顿回路</strong>是一个经过每个顶点恰好一次的回路。（这个和欧拉回路不一样，欧拉回路是一个经过每条边恰好一次的闭合通路，而且通过构造一个线性时间的深度优先搜索也很容易找到）这里关于有向图中的哈密顿环路问题是NP-hard，我们考虑两种不同的证明。</p>
+<h4 id="根据顶点覆盖"><a href="#根据顶点覆盖" class="headerlink" title="根据顶点覆盖"></a>根据顶点覆盖</h4><p>我们第一个NP-hard证明得自顶点覆盖问题的判定版本约化。已知一个无向图G和一个整数k，我们构造一个有向图H，H中存在一个哈密顿环路当且仅当G有一个大小为k的顶点覆盖。就像我们前面的约化，输出图H由一些配件构成，每个都对应了输入G和k的某个特征。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np20.png" alt="image"></p>
+</li>
+<li><p>对于G中的每条无向边$uv$,H包含一个边配件，它由四个顶点$(u,v,in),(u,v,out),(v,u,in),(v,u,out)$和六条有向边<script type="math/tex">\begin{align}&(u,v,in)\rightarrow (u,v,out)&&(u,v,in)\rightarrow (v,u,in) &(v,u,in)\rightarrow (u,v,in) \\ &(v,u,in)\rightarrow (v,u,out)&&(u,v,out)\rightarrow (v,u,out) &(v,u,out)\rightarrow (u,v,out)\end{align}</script>如图12.16所示，每个“进入”顶点有一条额外的进入边而且每个“离开”顶点有一条额外的离开边。在H中的任意哈密顿回路必须通过边配件中三种方式中的一种 — 直接从两边通过，或者从一边迂回通过另一边回来再通过。最后，这些选择对应了u和v同属于某个顶点覆盖，仅有u或者仅有v属于某个顶点覆盖。<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np21.png" alt="image"></p>
+</li>
+<li>对于每个G中的顶点u，在H中所有$uv$的边配件相连成一条单一有向路径，我们称之为顶点链。特别是，假设顶点u有d个邻居$v_1,v_2,…,v_d$。那么H还有d-1条额外边$(u,v_i,out)\rightarrow (u,v_{i+1},in)$，i的值为1到d-1。</li>
+<li>最后，H也包含了k个覆盖顶点$x_1,x_2,…,x_k$。每个覆盖顶点有一条有向边到达每个顶点链的第一个顶点，以及一条有向边来自每个顶点链的最后一个顶点。</li>
+</ul>
+<p>图12.17展示了一个完成的转换实例；每一个双箭头的蓝色线段表示一对有向边。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np22.png" alt="image"></p>
+<p>通常，我们分两个阶段证明约化。</p>
+<p>$\Rightarrow$ 首先，我们假设$C={u_1,u_2,…,u_k}$是图G的一个大小为k的顶点覆盖。我们可以在H中构造一个哈密顿回路，通过接下来对C的“编码”。对于每个索引$1\leq i\leq k$，我们遍历顶点覆盖$x_i$的一条路径，通过$u_i$的顶点链到达顶点覆盖$x_{i+1}$（或者如果i=k则到达顶点覆盖$x_1$）。当我们遍历每个顶点$u_i$的链，我们决定如果在节点$(u_i,v,in)$往下进行如下：</p>
+<ul>
+<li>如果$v\in C$,沿着边$(u_i,v,in)\rightarrow(u_i,v,out)$走。</li>
+<li>如果$v\notin C$，迂回通过$(u_i,v,in)\rightarrow(v,u_i,in)\rightarrow(v,u_i,out)\rightarrow(u_i,v,out)$。<br>这样，对于G的每条边$uv$，如果$u\in C$，哈密顿回路将$(u,v,in)$和$(u,v,out)$视作u的顶点链经过，否则，将其视为v的顶点链。见图12.18。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np23.png" alt="image"></li>
+</ul>
+<p>$\Leftarrow$ 另外，假设H有一个哈密顿回路C。这个回路一定包含来从每个覆盖顶点到到顶点链起始位置的一条边。我们边配件的案例分析归纳表明在C进入顶点链的某个顶点u后，它一定遍历了整个顶点链。特别是，在每个顶点$(u,v,in)$，这个回路一定包含单条边$(u,v,in)\rightarrow (u,v,out)$或者迂回路径$(u,v,in)\rightarrow (v,u,in)\rightarrow (v,u,out)\rightarrow (u,v,out)$，接着一条边到达u的顶点链中的下一个边配件，或者如果当前是u的顶点链的最后一个边配件则到达一个覆盖顶点。尤其是，如果C包含了迂回边$(u,v,in)\rightarrow (v,u,in)$，他就不能包含任意覆盖顶点和v的顶点链之间的边。也就是说C遍历了正好k个顶点链。此外，这些顶点链对应了一个原图的顶点覆盖，因为C经过了G中每条边的$uv$的顶点$(u,v,in)$。</p>
+<p>我们得出G有一个大小为k的顶点覆盖当且仅当H包含了一个哈密顿环路。从G到H的转换耗时为$O(V^2)$；它表明有向哈密顿环路问题是NP-hard。</p>
+<h4 id="根据3SAT"><a href="#根据3SAT" class="headerlink" title="根据3SAT"></a>根据3SAT</h4><p>我们也可以通过直接从3SAT约化来证明有向哈密顿回路问题是NP-hard。已知一个任意3CNF公式$\Phi$，n个变量$x_1,x_2,…,x_n$和k个子句$c_1,c_2,…,c_k$，我们能构造一个包含哈密顿回路的有向图H当且仅当$\Phi$是可满足的，如下。<br>  对于每个变量$x_i$，我们构造一个变量配件，由一个2k个顶点的双向链表组成，$(i,0),(i,1),…,(i,2k)$，对于每个索引j，存在边$(i,j-1)\rightarrow (i,j)$和$(i,j)\rightarrow (i,j-1)$。我们将每对相邻的变量配件的第一个和最后一个节点连接起来，对于每个索引i通过增加边</p>
+<script type="math/tex; mode=display">(i,0)\rightarrow (i+1,0)\ \ \ \ (i,2k)\rightarrow (i+1,0)\ \ \ \ (i,0)\rightarrow (i+1,2k)\ \ \ \ (i,2k)\rightarrow (i+1,2k)</script><p>我们也需要连接最后一个边配件的两个端点，通过添加边</p>
+<script type="math/tex; mode=display">(n,0)\rightarrow (1,0)\ \ \ \ (n,2k)\rightarrow (1,0)\ \ \ \ (n,0)\rightarrow (1,2k)\ \ \ \ (n,2k)\rightarrow （1,2k)</script><p>得到的图G有恰好$2^n$个哈密顿回路，每个都对应这$\Phi$的n个变量的一种赋值。特别是，对于每个i，如果$x_i=True$我们从左到右遍历第i个变量配件，$x_i=False$则从右到左。见图12.19。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np24.png" alt="image"><br>  现在我们将图G扩展成一个更大的图H，通过增加每个子句$c_j$对应的子句顶点$[j]$，用六条边连接变量配件，如图12.20所示。对于$c_j$每个正的字面量$x_i$，我们增加边$(i,2j-1)\rightarrow [j]\rightarrow(i,2j)$，对于$c_j$中负的字面量$\overline{x}_i$，我们增加边$(i,2j)\rightarrow [j]\rightarrow (i,2j-1)$。这些子句顶点的链接保证了G中的一个哈密顿回路可以扩展成H中的一个哈密顿回路当且仅当对应的变量赋值满足$\Phi$。详细的案例分析现在表明H存在一个哈密顿回路当且仅当$\Phi$是可满足的。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np25.png" alt="image"><br>  将公式$\Phi$转换成图G耗时为$O(kn)$，最多就是公式长度的二次；我们得出有向的哈密顿回路问题是NP-hard。</p>
+<h4 id="变形和扩展"><a href="#变形和扩展" class="headerlink" title="变形和扩展"></a>变形和扩展</h4><p>对前面约化细微改动表明有向图的哈密顿路径问题也是NP-hard。一个哈密顿路径是指在一个有向图G中的一条简单路径经过了G中每个顶点恰好一次。事实上，存在一些简单的从哈密顿回路到哈密顿路径的多项式级约化，反之亦然。<br>  前面两个约化都是在处理有向图，但在对应无向图中的问题也是NP-hard。事实上，也存在一个相关约化，可以从有向哈密顿回路/路径问题到无向哈密顿回路/路径问题。<br>  最后，邪恶的旅行销售员问题就是要在一个边加权图找一个最短哈密顿回路（或者路径）。因为找到一个最短回路/路径明显是比确定一个回路/路径存在更困难的 — 假设一个图的每条边权值都是1 — TravelingSalesman也是NP-hard。</p>
+<h3 id="子集和（得自顶点覆盖）"><a href="#子集和（得自顶点覆盖）" class="headerlink" title="子集和（得自顶点覆盖）"></a>子集和（得自顶点覆盖）</h3><p>接下来的证明NP-hard问题是SubsetSum问题，在第二章提到过：已知一个正整数集合X和一个整数T，确定X是否存在一个子集，其中所有元素的和等于T。<br>  我们再一次用VertextCover约化。已知一个图G和一个整数k，我们需要计算一个正整数集合X和一个整数T，X存在一个子集和等于T当且仅当G存在一个大小为k的顶点覆盖。我们的转换只用到两种类型的“配件”，使用整数代表G中的顶点和边。<br>  用数字任意标记G中的边为0到E-1。对于每条边i，我们的集合X包含了整数$b_i:=4^i$，对于每个顶点v的整数</p>
+<script type="math/tex; mode=display">a_v:=4^E+\sum\limits_{i\in \Delta(v)}4^i</script><p>$\Delta(v)$是一个以v为端点的边集合。换个角度，我们可以认为每个X中的每个整数是4进制的(E+1)-数字号码。第E个数字是1仅当整数表示一个顶点，0则相反；对于每个i&lt;E，第i个数字是1仅当整数代表边i或者它的一个端点，0则相反。最后，我们设置目标和</p>
+<script type="math/tex; mode=display">T:=k\cdot 4^E+\sum\limits_{i=0}^{E-1}2\cdot 4^i</script><p>现在我们来证明这个约化是正确的。</p>
+<p>$\Rightarrow$首先，假设G有一个大小为k的顶点覆盖C。考虑子集</p>
+<script type="math/tex; mode=display">X':=\{a_v|v\in C\}\cup\{b_i|边i恰好有一个端点在C中\}</script><p>X’的元素和，用4进制来写，最高位是k，其他位都是2。这样，X’的元素和正好等于T。</p>
+<p>$\Leftarrow$另一方面，假设存在一个子集$X’\subseteq X$的和是T。特别是，我们一定有</p>
+<script type="math/tex; mode=display">\sum\limits_{v\in V'}a_v+\sum\limits_{i\in E'}b_i=t</script><p>其中$V’\subseteq V$和$E’\subseteq E$。如果我们把这个和写成4进制，在E以下的位上是没有进位的，因为对于每个i在X中只存在三个数字的第i位是1。每条边的数字$b_i$贡献一个1到和的第i位上，但是t的第i为是2。这样对于每条G中的边，至少有一个端点在$V’$中。换句话说，V’是一个顶点覆盖。此外，只有顶点数字会大于$4^E$，并且$\lfloor T/4^E\rfloor = k$，所以V’最多有k个元素。（事实上，不难看出V’正好有k个元素）</p>
+<p>例如，已知一个4-顶点图$G=(V,E)$，$V=\{u,v,w,x\}$和$E=\{uv,uw,vw,vx,wx\}$，我们的集合X包含了一下4进制整数：</p>
+<script type="math/tex; mode=display">\begin{align}&a_u:=111000_4=1344&&b_{uv}=010000_4=256 \\ &a_v:110110_4=1300&&b_{uw}=001000_4=64 \\ &a_w:=101101_4=1105&&b_{vw}:=000100_4=16 \\ &a_x:=100011_4=1029&&b_{vx}:=000010_4=4 \\ & &&b_{wx}:=000001_4=1\end{align}</script><p>如果我们找到的顶点覆盖大小k=2，我们的目标和就是$T:=222222_4=2730$。确实，顶点覆盖$\{v,w\}$对应的子集$\{a_v,a_w,b_{uv},b_{uw},b_{vx},b_{wx}\}$的和是$1300+1105+256+64+4+1=2730$。<br>  这个约化明显可以在多项式时间内执行。我们已经证明了VertexCover是NP-hard，所以得到SubsetSum也是NP-hard。</p>
+<h4 id="约化者警告"><a href="#约化者警告" class="headerlink" title="约化者警告"></a>约化者警告</h4><p>有一个微妙要点一定要在这里强调一下。几百页之前，在第三章，我们设计了一个动态规划算法在$O(nT)$时间内来解决SubsetSum。这不就是一个多项式级算法吗？我们刚刚是不是证明了P=NP？嘿，一百万美元在哪儿呢？<br>  唉，生活并不是这么单纯。确实，这个运行时确实是一个关于变量n和T的多项式函数，但是一个真正的多项式级算法的限制是运行时函数必须是输入大小的多项式函数 — 用来表示输入需要的字节数量。X中元素的值和目标和T可能是输入大小的指数级。的确，我们刚才描述的约化产出T的一个值是原输入图大小的指数级，这使得我们的动态规划算法运行时为指数级。<br>  类似这样的算法运行时我们称为<strong>伪多项式级</strong>，以及任意使用这种算法的NP-hard问题我们称为<strong>弱NP-hard</strong>。同样地，一个弱NP-hard问题是这样的：当输入数字是一进制表示，那么问题可以在多项式时间内解决；但输入数字变成二进制，问题就会变成NP-hard。如果一个问题即使输入数字是一进制表示也是NP-hard，那我们称之为<strong>强NP-hard</strong>。关于强NP-hard问题的一个例子就是TravelingSalesman，即便输入图是完整的，所有边的权值都是1或者2，它任然是NP-hard。</p>
+<h3 id="其他有用的NP-hard问题"><a href="#其他有用的NP-hard问题" class="headerlink" title="其他有用的NP-hard问题"></a>其他有用的NP-hard问题</h3><p>不夸张的说，现在已经有上千个问题被证明是NP-hard。这里我会列一些对用于约化的NP-hard问题。我不会具体描述这问题的NP-hard证明，但是你可以在Garey和Johnson的关于NP-Completeness的经典黑皮书找到它们。目前问题我讨论过的问题，以及下面的清单里的大部分问题，都是Richard Karp在首次证明的，在1972年的一篇里程碑文献里。</p>
+<ul>
+<li>PlanarCircuitSAT：已知一个布尔电路，它可以嵌入一个平面里，如此任意两条电线都不能交叉，是否存在一个输入是的电路输出True？这个问题可以由普通电路可满足性问题约化证明NP-hard，通过将每个交叉处替换成一个小的集成电路们。</li>
+<li>1-IN-3SAT：已知一个3CNF公式，是否存在一种赋值是的每个子句包含恰好一个字面量问题True？这个问题可以通过普通3SAT约化证明NP-hard。</li>
+<li>NotAllEqual3SAT：已知一个3CNF公式，是否存在一种赋值使得每个子句包含至少一个字面量为True和至少一个字面量为False？这个问题也可以通过普通3SAT约化证明。</li>
+<li>Planar3SAT：已知一个3CNF布尔公式，假设有一个二分图，它的顶点是子句和变量，边则表示一个变量出现在一个子句中。如果这个图是平面的，那么这个3CNF公式也是平面的。Planar3SAT问题是在问，已知一个平面的3CNF公式，是否存在一个可行赋值。这个问题可以通过PlanarCircuitSAT来证明NP-hard。</li>
+<li>Exact3DimensionMatching or X3M：已知一个集合S和一个S中3-元素子集的聚集，称作三元组，是否存在一个不相交三元组的子-聚集正好覆盖集合S？这个问题可以通过3SAT约化证明NP-hard，因为它里面有3。</li>
+<li>Partition：已知一个有n个整数的集合S，是否存在子集A和B，使得$A\cup B=S$，$A\cap B=\varnothing$，以及<script type="math/tex">\sum\limits_{a\in A}a=\sum\limits_{b\in B}b\ \ ?</script>这个问题可以通过SubsetSum约化证明NP-hard。正如SubsetSum，Partition问题也只是弱NP-hard。</li>
+<li>3Partition：已知一个有3n个整数的集合，是否能将它分成n个不相交的3元组子集，而且每个子集的和都是一样的？虽然名字相似，但是这个问题和Partition完全一样。这个问题可以通过X3M约化证明NP-hard，因为它里面有3。与Partition不同，这个3Partition问题是强NP-hard；即便每个输入数字都超过$n^3$，他仍然是NP-hard。</li>
+<li>SetCover：已知一个集合的聚集$S=\{S_1,S_2,…,S_m\}$，找到$S_i$的最小子-聚集，它包含了$\bigcup_iS_i$的所有元素。这个问题是VertexCover和X3M两者的泛化。</li>
+<li>HittingSet：已知一个集合的聚集$S=\{S_1,S_2,…,S_m\}$，找到$\bigcup_iS_i$中最小数量的元素，它碰撞到了S中的每个集合。这个问题是VertexCover的泛化。</li>
+<li>LongestPath：已知一个非负加权图G（有向或者无向）和两个顶点u、v，求在图中从u到v的最长简单路径是什么？一个路径是简单的仅当它经过每个顶点最多一次。这个问题是对应哈密顿回路问题的泛化。当然，对应的最短路径问题能在多项式时间内解决。</li>
+<li>SteinerTree：已知一个加权无向图G，有一些标记顶点，求G中包含了所有标记顶点的最小权值子树是什么？如果每个顶点都被标记了，最小SteinerTree就是一个最小生成树；如果恰好两个点被标记了，最小SteinerTree就是两点之间的最短路径。这个问题可以通过VertexCover约化证明NP-hard。</li>
+<li>Max2SAT：已知一个布尔合取范式，每个子句有两个字面量，找到一个变量赋值使得至少包含一个True字面量的子句最多。这个问题可以通过3SAT约化证明NP-hard（是的，即便其中没有3）。相对简单的判定问题2SAT，问是否存在一种赋值是的每个子句被满足，实际上可以在多项式时间内解决。</li>
+<li>MaxCut：已知一个无向图$G=(V,E)$，找到一个子集$S\subset V$使得恰好有一个端点在S中的边数量最多。等同于找到G的最大的二分子图。这个问题可以通过Max2SAT约化证明NP-hard。</li>
+</ul>
+<p>另外还有一些枯燥但是有用的问题，大多数有趣的谜题和单人游戏被证明是NP-hard，或者存在NP-hard泛化。这里有些你也许会觉得熟悉的例子：</p>
+<ul>
+<li>Minesweeper（得自CircuitSAT）</li>
+<li>Sudoku（最终得自3SAT）</li>
+<li>Tetris（得自3Partition）</li>
+<li>Klondike，aka“Solitaire”（得自3SAT）</li>
+<li>Pac-Man（得自HamiltoninaCycle）</li>
+<li>Super Mario Brothers（得自3SAT）</li>
+<li>Candy Crush Saga（得自3SAT的变形）</li>
+<li>Threes/2048（得自3SAT）</li>
+<li>Trainyard（得自DominatingSet）</li>
+<li>Shortest $n\times n\times n$ Rubik的方块解法（得自3SAT，通过一个PlanarUndirectedHamCycle的特殊案例）</li>
+<li>Cookie Clicker（得自Partition或者3Partition）</li>
+</ul>
+<p>截止2019年九月，还是没人提出Ultimate Paperclips、Line Rider，Twister、或者Cards Against Humanity是NP-hard的一般化证明，但我确定这只是时间问题而已。</p>
+<h3 id="选择合适的问题"><a href="#选择合适的问题" class="headerlink" title="选择合适的问题"></a>选择合适的问题</h3><p>证明一个问题是NP-hard的最大难点在于选择一个合适的约化问题。Cook-Levin定理表明如果任意NP-hard问题可以约化到问题X，那么每个NP-complete问题都能约化到X，但是放在一起处理会比其他的简单。虽然还不存在找到合适问题的体系方法，但是这里有一些经验法则。</p>
+<ul>
+<li>如果问题是问如何分配对象字节，或者选择对象的子集，或者将对象分为两个不同的子集，那就尝试从一些版本的SAT或者Partition约化。</li>
+<li>如果问题是问如何给对象分配标签，从一个小的不变集或者将对象分成小数量的子集，那就尝试从kColor或者3Color约化。</li>
+<li>如果问题是要求将一些对象安排成特定顺序，那就尝试从DirectedHamCycle或者DirectedHamPath或者Travelling-Salesman约化。</li>
+<li>如果问题是要求找到满足一些条件的最小子集，那就尝试从MinVertexCover约化。</li>
+<li>如果问题是要求找到满足一些条件的最大子集，那就尝试从MaxIndSet或者MaxClique或者Max2SAT约化。</li>
+<li>如果问题是要求将对象分成大量的小子集，那就尝试从3Partition约化。</li>
+<li>如果数字3很自然地出现在问题中，那就尝试3SAT或者3Color或者X3M或者3Partition约化。</li>
+<li>如果都失败了，那就尝试3SAT或者甚至CircuitSAT！</li>
+</ul>
+<p>我不推荐尝试从Tetris、SuperMarioBros或者Trainyard约化。因为你确实需要选择尽可能简单的起始问题，同时抓住一些问题难以解决的特性。</p>
+<h3 id="一个真实世界的例子"><a href="#一个真实世界的例子" class="headerlink" title="一个真实世界的例子"></a>一个真实世界的例子</h3><p><strong>Draughts</strong>是一个有千年历史的家庭棋盘游戏，大多数美国人都知道一个版本叫做checker或者English draughts，但是世界上最广为人知一个变体叫做<strong>international draughts（国际跳棋）</strong>或者<strong>Polish draughts</strong>，起源于16世纪的荷兰。关于完整的游戏规则，读者可以去查维基百科；这里有一些和Anglo-American游戏的不同点：</p>
+<ul>
+<li><strong>Flying kings</strong>：就像在跳棋中一样，一个棋子在一行中最后移动到离对手最近的位置就成为国王，并且获得了向后移动的能力。然而，与跳棋不同的是，国际跳棋中的国王在一个回合中可以沿着斜线移动任何距离，只要中间的方格是空的或者恰好包含一个对方的一个棋子(被捕获)。</li>
+<li><strong>Forced maximum capture</strong>：在每个回合，自己回合的玩家必须捕获尽可能多的对手棋子。这与跳棋中的强制捕获规则不同，它只要求每个玩家必须尽可能地捕获，并且捕获的移动棋子只有在不能进一步捕获时才结束。换句话说，跳棋需要在每个回合捕获一个局部最大的对方棋子集合;然而，国际跳棋要求全局最大捕获量。</li>
+<li><strong>Capture subtleties</strong>：和跳棋一样，只有在回合结束时才能从棋盘上取下被捕获的棋子。任何棋子最多只能被捕获一次。因此，当一个对手的棋子被跳过时，该棋子仍在棋盘上，但在回合结束前不能从它之上跳过。</li>
+</ul>
+<p>比如，下图第一个棋盘上，每个圆圈代表一个棋子，双圆圈代表国王。在第二个棋盘黑方表明了他必须移动的轨迹，捕获五颗白棋子，因为不可能捕获超过五颗。黑方不能再增加它的捕获量，不管是往东北还是东南，因为被捕获的棋子在他的回合结束前会一直在场上。然后第三个棋盘上是白方必须移动的轨迹，因为移动后没有黑棋子了，从而白方赢得了游戏。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np26.png" alt="image"><br>  真实场景下这个游戏是在一个附带黑白个20个棋子的$10\times 10$的棋盘上进行；我们可以提前计算好双方的在各种棋盘配置下的最优移动，然后将这些结果硬编码到常量大小的查找表。当然，这个常量很大，但它任然是一个常量！。<br>  不过假设国际跳棋的自然泛化是在一个$n\times n$的棋盘上。在这种设置下，<strong>找到一个合法的移动实际上是NP-hard</strong>！接下来得自有向图中哈密顿回路问题的约化被Bob Hearn在2010年发现。在大多数双人游戏中，找到最优移动是NP-hard（或者更糟）。这是我所知的一个游戏的唯一样例 — 此外数百年以来这个游戏有超过百万人玩过 — 仅看规则就是NP-hard。<br>  已知一个无向图G，有n个顶点，我们构造一个国际跳棋的棋盘配置，如此白方在单回合内可以捕获一个确定数量的黑棋子当且仅当G存在一个哈密顿回路。我们把G当作一个有向图，使用两个弧线$u\rightarrow v$和$v\rightarrow u$取代每条有向边$uv$。从1到n任意标记顶点。最后跳棋配置有几个配件：</p>
+<ul>
+<li>使用兔子形状的顶点配件来表示G中的顶点，均匀排列在一条水平线上。每个弧线$i\rightarrow j$由两条对角线表示，从顶点配件i的“左耳”到顶点配件j的“右耳”。如果$i<j$弧线$i\rightarrow j$的路径就在顶点配件的上方，如果$i="">j$则在顶点配件的下方。<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np27.png" alt="image"></j$弧线$i\rightarrow></li>
+<li>每个顶点配件体积最大的部分是一个菱形区域叫作地下室（vault）。地下室的墙壁是由一对黑棋子的固体层构成，它们不能被捕获；这些棋子在图中被画成灰色的圆圈。每个地下室中存在N个可被捕获的黑棋子，整数N后面再确定。一个白国王可以从“右耳”进入地下室，捕获每个内部的棋子，然后从“左耳”出去。两个耳朵是走廊，其墙壁也是双棋子层构成，墙壁上位于弧线路径端点处的间隙允许白国王进出。“耳朵”的长度可以轻松调整对齐其他配件。<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np28.png" alt="image"></li>
+<li>对于每个弧线$i\rightarrow j$，我们有一个拐角配件，它允许一个白国王离开顶点配件i重定向到顶点配件j。</li>
+<li>最后，在两个弧线路径交叉的地方，我们有一个交叉配件；这些配件允许白国王通过其中任意一个弧线路径，但是禁止从一个交换到另一个。<img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np29.png" alt="image"></li>
+</ul>
+<p>一个白国王是从某个地下室的底角出发。通过任意合法移动这个国王必须交替完成通过完整的弧线路径和清理地下室。这个国王可以通过各种的配件返回，进入每个地下室从出口退出，而且反之亦然。但是一个G中的哈密顿回路的逆转是另一个G中的哈密顿回路，所以反向移动也是可以的。<br>  如果G中存在一个哈密顿回路，白国王至少可以捕获nN个黑棋子，通过先访问每个其他地下室再回到一开始的地下室。另一方面，如果G中没有哈密顿回路，那么白国王最多可以捕获起始地下室中一半的棋子，这样总共能捕获最多$(n-1/2)N+O(n^3)$个敌方棋子。$O(n^3)$这一项代表拐角和交叉配件；每条边通过一个拐角配件和最多$n^2/2$个交叉配件。<br>  为了完成这个约化，我们设置$N=n^4$。综上，我们得到一个$O(n^5)\times O(n^5)$个棋盘配置，以及$O(n^5)$个黑棋子和一个白国王。我们能在多项式时间内通过蛮力求解清楚地构造这个棋盘配置。图12.25展示了一个完整例子的构造。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/np/np30.png" alt="image"><br>  接下来这个相关问题是否是NP-hard任然开放：已知一个$n\times n$国际跳棋的棋盘配置，白方能否在一回合内捕获所有的黑棋子？</p>
+<h3 id="On-Beyond-Zebra"><a href="#On-Beyond-Zebra" class="headerlink" title="On Beyond Zebra"></a>On Beyond Zebra</h3><p>P和NP只是复杂度类的大量层级的入门两步。在结束本书之前，我们在了解更多一些有趣的类。</p>
+<h4 id="多项式级空间"><a href="#多项式级空间" class="headerlink" title="多项式级空间"></a>多项式级空间</h4><p><strong>PSAPCE</strong>是指一系列可以使用多项式级空间解决的问题。每个输入NP的问题也属于PSAPCE。通常我们认为NP≠PSAPCE，但是几乎没人可以证明P≠PSAPCE。一个问题$\prod$是PSAPCE-hard仅当，对于任意可以在多项式级空间解决的问题$\prod’$，存在一种从$\prod’$到$\prod$的多项式时间多对一约化。如果任意PSPACE-hard问题输入NP，那么PSAPCE=NP；同样地，如果任意PSPACE-hard问题输入P，那么PSPACE=P。<br>  标准的PSPACE-hard问题是量化布尔公式问题，或者<strong>QBF</strong>：已知一个布尔公式$\Phi$中任意数量的全称量词或者存在量词，但是没有自由变量，$\Phi$可以True吗？比如，下面这个表达式是一个QBF的合法输入：</p>
+<script type="math/tex; mode=display">\exists a:\forall b:\exists c(\forall d:a\vee b\vee c\vee \overline{d})\Leftrightarrow((b\wedge \overline{c})\vee(\exists e:\overline{(\overline{a}\Rightarrow e)}\vee (c\neq a\wedge e)))</script><p>SAT与特殊情况的QBF相等仅限于输入公式纸包线存在量词（$\exists$）。即便输入公式中开始一定有所有全部量词，量词严格地转换于$\exists$和$\forall$之间，然后量词前置写成合取范式，每个子句恰好有三个字面量，QBF仍然保持PSPACE-hard，比如：</p>
+<script type="math/tex; mode=display">\exists a:\forall b:\exists c:\forall d:((a\vee b\vee c)\wedge(b\vee \overline{c} \vee \overline{d})\wedge(\overline{a}\vee c\vee d)\wedge(a\vee \overline{b} \vee \overline{d}))</script><p>  这个严格版本的QBF可以用来表达双人策略问题。假设两个玩家，Alice和Bob，已知一个基于自由变量$x_1,x_2,…,x_n$的3CNF。玩家按照索引交替赋值给变量 — Alice赋值给$x_1$，Bob赋值给$x_2$。Alice最终会给所有奇数索引的变量赋值，而Bob会给所有偶数索引的变量赋值。Alice想要是这个表达式为True，而Bob项要这个表达式为False。假设Alice和Bob都玩得很好，谁会赢得这个游戏？并不奇怪，大多数双人游戏比如tic-tac-toe，reversi，checkers，go，chess，和mancala — 或者更精确地，这些常量大小游戏到任意board size的适当泛化 — 都是PSPACE-hard。<br>  另一种标准PSPACE-hard问题是全体NFA：已知一个非确定性有限状态自动机M，基于某个字母表$\Sigma$，是否M接受$\Sigma^{*}$中的每个字符串？非常接近的问题NFA等价性（是否两个已知的NFA接受同样的语言？）和NFA最小化（已知一个NFA，找到能接受同样语言的最小NFA）也是PSAPCE-hard，以及关于常规表达式的对应问题也是。（关于确定性有限状态自动机的对应问题是能在多项式时间内解决的）</p>
+<h4 id="多项式级时间"><a href="#多项式级时间" class="headerlink" title="多项式级时间"></a>多项式级时间</h4><p>接下来这个数量巨大的复杂度类，<strong>EXP</strong>（也叫做EXPTIME），是一些能在指数级时间内被解决的一系列问题，那就是，使用最多$2^{n^c}$步，常量$c&gt;0$。每个输入PSPACE的问题（因此属于NP（因此属于P））也属于EXP。通常我们认为PSPACE$\subset$EXP，但是几乎没人能证明NP≠EXP。一个问题$\prod$是EXP-hard仅当，对于任意能在指数级时间内解决的问题$\prod’$，存在一种从$\prod’$到$\prod$的多项式时间多对一约化。如果任意EXP-hard问题是PSPACE，那么EXP=PSPACE；同样地，如果任意EXP-hard问题属于NP，那么EXP=NP。我们不知道P≠NP；特别是，不存在EXP-hard问题输入P。<br>  许多有趣双人游戏的自然泛化 — 比如checkers，chess，mancala，和go — 实际上是EXP-hard。PSPACE-complete游戏和EXP-hard游戏之间的界限相当微妙。比如，国际象棋（标注$8\times 8$棋盘）有三种情况需要画出来：僵局（选手没有被将军，但是没有合法移动），超过三次相同的棋盘位置，或者移动十五次中没有吃子或者移动小兵。$n\times n$的国际象棋泛化不属于PSPACE就属于EXP-hard，取决于我们怎么泛化规则。如果我们声明一种在$n^3$步后没有吃子的画法，那么每个游戏一定要在多项式级数量的移动后结束，所以我们能在多项式级空间内从一个已知的任意棋盘配置模拟所有可能的游戏情况。另外，如果我们完全忽略不吃自移动规则，最终游戏可能会持续指数级的步数，所以不存在明显的方式在多项式级空间内去检测重复位置；确实，这个版本的$n\times n$的国际象棋是EXP-hard。</p>
+<h4 id="精益求精"><a href="#精益求精" class="headerlink" title="精益求精"></a>精益求精</h4><p>自然地，即使指数级时间也不是这个故事的结尾。<strong>NEXP</strong>是可以在非确定性指数级时间内解决的判定问题类；同样地，一个判定问题属于NEXP当且仅当，对于每个Yes实例，存在一个可以在指数级时间内检验的事实证明。<strong>EXPSPACE</strong>是一系列可以使用指数级控件解决的判定问题。即使这些大复杂度类有困难问题；比如，如果我们增加一个交集运算符到常规语法表达式中，决定是否两个这样的表达式描述着同一种语言是EXPSPACE-hard。在EXPSPACE之上的复杂度类，有双重-指数级资源边界（EEXP，NEEXP，和EEXPSPACE），还有三重指数级资源边界（EEEXP，NEEEXP，和EEEXPSPACE），等等以此类推。<br>  所有这些复杂度类用一下包含关系排序：</p>
+<script type="math/tex; mode=display">P\subseteq NP\subseteq PSPACE\subseteq EXP\subseteq NEXP\subseteq EXPSPACE\subseteq EEXP\subseteq NEEXP\subseteq \cdot\cdot\cdot</script><p>大多数复杂度理论家坚信这个序列中的包含关系是严格的；也就是，没有两个复杂度类是相等的。然而，所证明的最强结果是，该序列中的每个类都严格包含序列中后面三步的类中。例如，我们证明了P≠EXP和PSPACE≠EXPSPACE，但不是P≠PSPACE或者NP≠EXP。这一系列增长地指数级复杂度类的限制是判定问题的<strong>ELEMENTARY</strong>，它的解决时间和空间由一个$2\uparrow^k$形式的函数限制，k是一个常量整数：</p>
+<script type="math/tex; mode=display">\begin{equation}2\uparrow^kn:=\begin{cases}n & if\ i>n\\ 2^{2\uparrow^{k-1}n} & otherwise\end{cases}\end{equation}</script><p>比如：$2\uparrow^1n=2^n$和$2\uparrow^2n=2^{2^n}$<br>  推测每个自然可判定问题能在初级时间内被解决是很诱人的，但事实上这个推测是不对的。假设<strong>泛化常规表达式</strong>由递归组合字符串定义，字符串是某个有限字母表通过串联$(xy)$、并联$(x+y)$、Kleene闭包$(x^{*})$、否定$(\overline{x})$构成。比如，常规表达式$\overline{(0+1)^{*}00(0+1)^{*}}$代表字符串${0,1}^{*}$的集合，不存在一行中有两个0。通过递归地将每个表达式转换为一个等效的NFA，在将NFA转换为一个DFA，然后最小化DFA，可以从算法上确定两个通用正则表达式是否描述相同的语言。然而，这个算法的运行时有个非初级边界$2\uparrow^{\Theta(n)}2$，直观上是因为递归否定的每一层都会成倍地增加状态数量。事实上，Larry Stockmeyer在1974年证明过这个问题仅在初级时间内不能被解决，即使我们禁止Kleene闭包。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>还是没完全搞懂，但是比最初看的那次好些了。可能是本章涉及的内容太多了，作者没办法照顾到各个层次的读者，导致我觉得最后一章的连贯性不如前面的章节。有点遗憾的NP-hard证明依赖于CircuitSAT，但作者也没搞懂CircuitSAT的证明；我自己也去找了一些证明文章来看，无奈没找到适合我看的版本。本书开篇提到的<strong>约化</strong>对于NP问题的鉴别中也是至关重要的，它让很多看似无关的问题之间产生了联系。就在你为自己理解NP问题感到满足时，作者突然站出来告诉你NP问题只不过是复杂度类中的冰山一角。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="http://jeffe.cs.illinois.edu/teaching/algorithms/book/12-nphard.pdf" target="_blank" rel="noopener">http://jeffe.cs.illinois.edu/teaching/algorithms/book/12-nphard.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/18/JeffErickson-流和割的应用/" rel="next" title="Jeff Erickson 《Algorithms》 -- 流和割的应用">
+                <i class="fa fa-chevron-left"></i> Jeff Erickson 《Algorithms》 -- 流和割的应用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不可能赢的游戏"><span class="nav-number">2.1.</span> <span class="nav-text">不可能赢的游戏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#P相比于NP"><span class="nav-number">2.2.</span> <span class="nav-text">P相比于NP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NP-hard、NP-easy、NP-complete"><span class="nav-number">2.3.</span> <span class="nav-text">NP-hard、NP-easy、NP-complete</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正式定义"><span class="nav-number">2.4.</span> <span class="nav-text">正式定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#约化和SAT"><span class="nav-number">2.5.</span> <span class="nav-text">约化和SAT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3SAT"><span class="nav-number">2.6.</span> <span class="nav-text">3SAT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最大独立集（得自3SAT）"><span class="nav-number">2.7.</span> <span class="nav-text">最大独立集（得自3SAT）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#普遍模式"><span class="nav-number">2.8.</span> <span class="nav-text">普遍模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#团和点覆盖（得自独立集）"><span class="nav-number">2.9.</span> <span class="nav-text">团和点覆盖（得自独立集）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图着色（得自3SAT）"><span class="nav-number">2.10.</span> <span class="nav-text">图着色（得自3SAT）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈密顿回路（Hamiltonian-Cycle）"><span class="nav-number">2.11.</span> <span class="nav-text">哈密顿回路（Hamiltonian Cycle）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#根据顶点覆盖"><span class="nav-number">2.11.1.</span> <span class="nav-text">根据顶点覆盖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#根据3SAT"><span class="nav-number">2.11.2.</span> <span class="nav-text">根据3SAT</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变形和扩展"><span class="nav-number">2.11.3.</span> <span class="nav-text">变形和扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子集和（得自顶点覆盖）"><span class="nav-number">2.12.</span> <span class="nav-text">子集和（得自顶点覆盖）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#约化者警告"><span class="nav-number">2.12.1.</span> <span class="nav-text">约化者警告</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他有用的NP-hard问题"><span class="nav-number">2.13.</span> <span class="nav-text">其他有用的NP-hard问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择合适的问题"><span class="nav-number">2.14.</span> <span class="nav-text">选择合适的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一个真实世界的例子"><span class="nav-number">2.15.</span> <span class="nav-text">一个真实世界的例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#On-Beyond-Zebra"><span class="nav-number">2.16.</span> <span class="nav-text">On Beyond Zebra</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多项式级空间"><span class="nav-number">2.16.1.</span> <span class="nav-text">多项式级空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多项式级时间"><span class="nav-number">2.16.2.</span> <span class="nav-text">多项式级时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#精益求精"><span class="nav-number">2.16.3.</span> <span class="nav-text">精益求精</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">4.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/09/08/JeffErickson-NP问题/';
+          this.page.identifier = '2020/09/08/JeffErickson-NP问题/';
+          this.page.title = 'Jeff Erickson 《Algorithms》 -- NP问题';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
