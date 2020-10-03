@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nfa/nfa1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nfa/nfa2.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nfa/nfa3.png">
-<meta property="og:updated_time" content="2020-10-03T14:38:02.969Z">
+<meta property="og:updated_time" content="2020-10-03T14:43:52.536Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 非确定性有限自动机">
 <meta name="twitter:description" content="前言这节课的重点在于非确定性优先自动机（NFA）模型以及它与DFA模型的关系。　　非确定性是计算理论中极为重要的概念。他指的是在一个计算中，不同的阶段可能会有多种选择的可能性。那么我们会思考这些选择的可能得到的输出，通常集中在是否存在一系列选择，它会导向一个特别的输出（比如一个有限自动机的接受状态）。　　这听起来像是一种幻想的涉及，不太可能与实际观点相关，因为现实的计算机不会做非确定性选择：在每一">
@@ -393,7 +393,7 @@
 </ol>
 <p>这就是我们通常证明两个集合相等的方式。没人告诉我们，这两个语句需要用同样的方式证明，通过分开处理我们能有更多的选择。我们先从集合关系$L(N)\subseteq L(M)$开始，它等同于如果$w\in L(N)$，那么$w\in L(M)$。我们回到$N$接受字符串$w$的定义，并尝试得出$M$也必须接受$w$。把所有细节都写下来太繁琐了，但你可以说服自己相信它就是这样的。另外一个关系$L(M)\subseteq L(N)$等同于说如果$w\in L(M)$，那么$w\in L(N)$。这里的基本思想是相似的，尽管特殊情况有点不同。这次我们从一个DFA的接受定义开始，对于$M$可行，然后在尝试推论$N$一定接受$w$。<br>　　另外一个证明这些语句的方式是使用函数$\delta^{*}$和$\mu^{*}$这是我们在讨论$\delta$和$\mu$所定义的。基于$w$的长度使用归纳法，可以证明</p>
 <script type="math/tex; mode=display">\mu^{*}(\varepsilon(R),w)=\bigcup\limits_{q\in R}\delta^{*}(q,w),</script><p>其中每个字符串$w\in \Sigma^{*}$以及每个子集$R\subseteq Q$。只要我们有这个，我们知道$\mu^{*}(\varepsilon(\{q_0\}),w)$包含在$G$中当且仅当$\delta^{*}(q_0,w)\cap F\neq\varnothing$，也就是说它等价于$w\in L(M)$当且仅当$w\in L(N)$。<br>　　无论哪种情况，你不会被要求去正式化和验证这个阶段提出的证明，你只需要思考一下它是如何完成的。</p>
-<h4 id="NFA转换DFA的过程"><a href="#NFA转换DFA的过程" class="headerlink" title="NFA转换DFA的过程"></a>NFA转换DFA的过程</h4><p>在本课程中典型的一种作业就是给出一个NFA，要求使用上述构造方法得出等价的DFA。这种机械化的作业不要去什么创造性，观察计算及执行的构造方法本身往后在本课程是很重要的，然而你们需要经手一些样例才能明白这些话。<br>　　如果你发现自己在动手实现这个结构，有必要指出的是你真的不需要写出每个$N$的状态子集然后再画箭头。$M$中的状态数量是$N$的指数级，有时候其中有些状态完全没有用 — 它们不可能从$M$的初始初始状态到达，他们只是对应了包含了$N$的初始状态的集合的$\varepsilon$-闭包，那么你只要画出你需要的新状态就好了。<br>　　然而最坏情况下，你确实需要所有这些状态。举个例子，对于任意正整数n，如果某个语言的一个$NFA$有n个状态，那么最小的DFA都有$2^n$个状态。所以，当NFA和DFA在相同的计算能力下，将一个NFA转换成DFA的转换成本非常大，相较于原来的NFA，DFA需要使用保留大量的状态。</p>
+<h4 id="NFA转换DFA的过程"><a href="#NFA转换DFA的过程" class="headerlink" title="NFA转换DFA的过程"></a>NFA转换DFA的过程</h4><p>在本课程中典型的一种作业就是给出一个NFA，要求使用上述构造方法得出等价的DFA。这种机械化的作业不要求什么创造性，观察计算及执行的构造方法本身往后在本课程是很重要的，然而你们需要经手一些样例才能明白这些话。<br>　　如果你发现自己在动手实现这个结构，有必要指出的是你真的不需要写出每个$N$的状态子集然后再画箭头。$M$中的状态数量是$N$的指数级，有时候其中有些状态完全没有用 — 它们不可能从$M$的初始初始状态到达，他们只是对应了包含了$N$的初始状态的集合的$\varepsilon$-闭包，那么你只要画出你需要的新状态就好了。<br>　　然而最坏情况下，你确实需要所有这些状态。举个例子，对于任意正整数n，如果某个语言的一个$NFA$有n个状态，那么最小的DFA都有$2^n$个状态。所以，当NFA和DFA在相同的计算能力下，将一个NFA转换成DFA的转换成本非常大，相较于原来的NFA，DFA需要保留大量的状态。</p>
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>不得不说翻译本系列的文章是个苦力活。因为目前大部分内容都是概念，看完了之后就开始码字了。希望后面的章节出点干货给我提提神，不然我怕是坚持不下去了。</p>
 <h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/CS360/Lectures/03.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/CS360/Lectures/03.pdf</a></p>
 
