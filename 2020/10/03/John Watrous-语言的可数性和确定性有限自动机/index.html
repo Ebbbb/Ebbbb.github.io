@@ -88,7 +88,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cnt_dfa/cnt_dfa1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cnt_dfa/cnt_dfa2.png">
-<meta property="og:updated_time" content="2020-10-03T14:27:56.306Z">
+<meta property="og:updated_time" content="2020-10-03T14:32:42.632Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 语言的可数性和确定性有限自动机">
 <meta name="twitter:description" content="前言以后《前言》这部分还是属于文章翻译，我自己的心得体会心在《结语》中。这节课的主要目的是介绍有限自动机模型，但是我们要先完成字母表、字符串和语言与可数性概念的讨论。">
@@ -339,7 +339,7 @@
 <h4 id="语言是可数的"><a href="#语言是可数的" class="headerlink" title="语言是可数的"></a>语言是可数的</h4><p>我们以下面的命题开始。</p>
 <p><strong>命题2.1.</strong> 对于任意字母表$\Sigma$，语言$\Sigma^{*}$是可数的。</p>
 <p>为了方便，我们主要关注对于二进制字母表$\Sigma=\{0,1\}$，如果证明这个命题；这个论证也很容易泛化成别的字母表。为了证明$\Sigma^{*}$是可数的，需要定义一个满射函数</p>
-<script type="math/tex; mode=display">f:\mathbb{N}\rightarrow \Sigma^{**}</script><p>事实上，从字符串的字典式排序出发，我们很容易得到一个以上形式的单射且满射的函数$f$。我们通过字符串长度来排序，然后对同等长度的字符串使用“字典”排序。$\Sigma^{*}$的字典式排序如下：</p>
+<script type="math/tex; mode=display">f:\mathbb{N}\rightarrow \Sigma^{*}</script><p>事实上，从字符串的字典式排序出发，我们很容易得到一个以上形式的单射且满射的函数$f$。我们通过字符串长度来排序，然后对同等长度的字符串使用“字典”排序。$\Sigma^{*}$的字典式排序如下：</p>
 <script type="math/tex; mode=display">\varepsilon,0,1,00,01,10,11,000,001,...</script><p>根据这个顺序我们可以定义一个满足形式的函数$f$，将$f(n)$设置为$\Sigma^{*}$的字典式序列中的第n个字符串，从0开始。这样，我们有</p>
 <script type="math/tex; mode=display">f(0)=\varepsilon,f(1)=0,f(2)=1,f(3)=00,f(4)=01,...</script><p>等等。有一个精确的计算$f(n)$的方法是将$n+1$写成二进制形式，然后丢掉最高位的1。<br>　　不难看出我们刚定义的函数$f$是满射的；每个二进制字符串都会作为函数$f$一个输出值。因此也就是说$\Sigma^{*}$是可数的。$f$也是一个单射函数。<br>　　我们很容易将这个论证泛化到其他的字母表。首先要做的事是决定这个字母表符号的顺序。对于二进制字母表，我们所接受的符号顺序是：先0，后1。如果我们使用其他的字母表，比如$\Gamma=\{\Game,\flat,\natural,\sharp\}$，排序的规则可能不太明显，但是只要我们选择一种或者保持不变就行。一旦我们确定了已知字母表$\Gamma$的排序，$\Gamma^{*}$的字典式排序就和我们上面做的一样了，使用字母表的顺序来决定“字典”顺序。根据得出的字典是排序，我们得到了一个单射且满射的函数$f:\mathbb{N}\rightarrow \Gamma^{*}$。</p>
 <p><strong>说明2.2.</strong> 关于术语“字典式排序”有一个简短的说明，有人用这个术语来表示一些不同的东西：根据长度而不是首字母的字典顺序。然后他们使用类似字典式排序来知道我们已知的字典式排序；这里完全没有必要担心这种矛盾。在科学和数学领域上有很多人们在术语上意见不一致的案例。重要的是每个人在使用时都清楚这个术语的含义。记住这一点，在本课程中字典式排序的意思就是字符串先按长度排序，等长的字符串再按“字典”顺序排列。</p>
@@ -353,11 +353,11 @@
 <p>　　对于任意字母表$\Sigma$，我们观察到每个语言$A\subseteq \Sigma^{*}$都是可数的，自然接下来就会问到是否所有基于$\Sigma$的语言集合是可数的。答案是否定的。</p>
 <p><strong>命题2.3.</strong> 已知一个字母表$\Sigma$，集合$\mathcal{P}(\Sigma^{*})$是不可数的。</p>
 <p>　　为了证明这个命题，我们不需要重复$\mathcal{P}(\mathbb{N})$的对角化论证。相反，我们可以简单地将那个定理和和这个事实，存在一个从$\mathbb{N}$到$\Sigma^{*}$的单射且满射的函数，联系起来。<br>　　详细一点，已知</p>
-<script type="math/tex; mode=display">f:\mathbb{N}\rightarrow \Sigma^{\*}</script><p>是一个单射且满射的函数，正如我们之前得自于$\Sigma^{*}$的字典式排序的那个函数。打个比方，我们可以如下将这个函数扩展到$\mathbb{N}$和$\Sigma^{*}$的幂集。已知</p>
-<script type="math/tex; mode=display">g:\mathcal{P}(\mathbb{N})\rightarrow \mathcal{P}(\Sigma^{\*})</script><p>是一个函数，定义为</p>
+<script type="math/tex; mode=display">f:\mathbb{N}\rightarrow \Sigma^{*}</script><p>是一个单射且满射的函数，正如我们之前得自于$\Sigma^{*}$的字典式排序的那个函数。打个比方，我们可以如下将这个函数扩展到$\mathbb{N}$和$\Sigma^{*}$的幂集。已知</p>
+<script type="math/tex; mode=display">g:\mathcal{P}(\mathbb{N})\rightarrow \mathcal{P}(\Sigma^{*})</script><p>是一个函数，定义为</p>
 <script type="math/tex; mode=display">g(A)=\{f(n):n\in A\}</script><p>对于所有$A\in \mathbb{N}$。用文字表达就是函数$g$简单地将$f$使用在了$\mathbb{N}$的子集的每个元素上。不难看出$g$是单射且满射的；我们可以直接使用$f$的反函数来表示$g$的反函数，如下：</p>
 <script type="math/tex; mode=display">g^{-1}(B)=\{f^{-1}(w):w\in B\}</script><p>对于每个$B\subseteq \Sigma^{*}$。<br>　　现在，因为存在一个形如$g:\mathcal{P}(\mathbb{N})\rightarrow \mathcal{P}(\Sigma^{*})$的单射且满射的函数，我们得出$\mathcal{P}(\mathbb{N})$和$\mathcal{P}(\Sigma^{*})$是“数量相同”的。因为$\mathcal{P}(\mathbb{N})$是不可数的，所以$\mathcal{P}(\Sigma^{*})$也是。为了让表述更正式，有人可能会相反地假设$\mathcal{P}(\Sigma^{*})$是可数的，也就是说存在一个满射函数，像这样</p>
-<script type="math/tex; mode=display">f:\mathbb{N}\rightarrow \mathcal{P}(\Sigma^{\*})</script><p>使用$g$的反函数来改造一下上面这个函数，我们得到另一个满射函数</p>
+<script type="math/tex; mode=display">f:\mathbb{N}\rightarrow \mathcal{P}(\Sigma^{*})</script><p>使用$g$的反函数来改造一下上面这个函数，我们得到另一个满射函数</p>
 <script type="math/tex; mode=display">g^{-1}\circ h:\mathbb{N}\rightarrow \mathcal{P}(\mathbb{N})</script><p>就我们所知这是矛盾的，因为$\mathcal{P}(\mathbb{N})$是不可数的。</p>
 <h3 id="确定性有限自动机"><a href="#确定性有限自动机" class="headerlink" title="确定性有限自动机"></a>确定性有限自动机</h3><p>我们要讨论的第一个计算模型叫作<strong>确定性有限自动机</strong>模型。你应该早就学过有限自动机了，所以我们没必要从最简单的地方开始了 — 但是当然我们还是需要一个正式定义来进行数学计算。<br>　　当你思考确定性有限自动机模型时，请记住以下两点：</p>
 <ol>
@@ -388,7 +388,7 @@
 </ol>
 <p>如果$M$不接受$w$，那么$M$就拒绝$w$。</p>
 <p>用文字描述，接受的正式定义就是存在一个状态序列$r_0,…,r_n$使得第一个状态是初始状态，最后一个状态是接受状态，并且序列中的每个状态都是由前一个状态和从输入中读取的对应符号决定的，就像转移函数的描述：如果我们处于状态$q$，读取符号$a$，新的状态就是$p=\delta(q,a)$。定义条件中的第一条用于处理空字符串这种特殊情况。<br>　　很自然能想到为什么比起可读定义我们更喜欢正式定义。当然，可读定义用来解释DFA的概念是很有效的，但是正式定义的优点在于它将接受这个概念转化成了基本的关于集合和函数的数学表述。并且它也相当简洁和精确，对于DFA接受和拒绝的含义没有什么含糊的地方。<br>　　有时候定义一个新函数</p>
-<script type="math/tex; mode=display">\delta^{\*}:Q\times\Sigma^{\*}\rightarrow Q</script><p>会很有帮助，它基于给定的转移函数$\delta:Q\times \Sigma\rightarrow Q$，存在如下递归方法：</p>
+<script type="math/tex; mode=display">\delta^{*}:Q\times\Sigma^{*}\rightarrow Q</script><p>会很有帮助，它基于给定的转移函数$\delta:Q\times \Sigma\rightarrow Q$，存在如下递归方法：</p>
 <ol>
 <li>对于每个$q\in Q$有$\delta^{*}(q,\varepsilon)=q$，以及</li>
 <li>对于所有$q\in Q、a\in\Sigma$和$w\in\Sigma^{*}$有$\delta^{*}(q,wa)=\delta^{*}(\delta^{*}(q,w),a)$</li>
@@ -401,9 +401,9 @@
 <p>只要这个充要条件被证明，那么表述$\delta^{*}(q_0,w)\in F$和$M$接受$w$就是等价的。</p>
 <p><strong>注意2.6.</strong> 到目前为止我们没有证明过本课程中提出的表述。如果我们去证明，那将是很拖沓的，甚至我们会不停的回顾，感觉是不是有哪些地方还不够正式。如果我们坚持越来越正式地证明每件事，原则上我们会将每个数学声明约化到公理集合论 — 但那时我们一学期的课程只能附带一点点关于计算材料，而且可能会包含你期望那么多会在汇编语言编写的复杂的未测试的程序中的错误。<br>　　自然地我们不会这么做，但我们是不是会讨论证明的本质，如果我们有时间的话怎么去证明，某些高级的表述和论证如何被简化成更节本和具体的步骤，导向可以被计算机验证的完整形式的证明的一般方向。此时如果你还没确定一个证明的结构，或者在你的证明中你应该瞄准那些细节和正式，别担心 — 理清这些问题是本课程的主要目标之一。</p>
 <h3 id="被DFA识别的语言和正规语言"><a href="#被DFA识别的语言和正规语言" class="headerlink" title="被DFA识别的语言和正规语言"></a>被DFA识别的语言和正规语言</h3><p>假设$M=(Q,\Sigma,\delta,q_0,F)$是一个DFA。那么我们会想到被$M$所接受的所有字符串的集合。这个语言被记作$L(M)$，所以</p>
-<script type="math/tex; mode=display">L(M)=\{w\in\Sigma^{\*}: M接受w\}.</script><p>我们这是一个被$M$识别的语言。认清这是一个单一的定义明确的语言，精确包含了被$M$包含所接受的那些字符串以及不包含任何被$M$所拒绝的字符串，是很重要的。<br>　　比如，这里有一个基于二进制字母表$\Sigma=\{0,1\}$的简单DFA：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cnt_dfa/cnt_dfa2.png" alt="image"><br>如果我们成这个是DFA $M$，那么被$M$所识别的语言很容易描述；那就是</p>
-<script type="math/tex; mode=display">L(M)=\Sigma^{\*}.</script><p>这是因为$M$接受所有$\Sigma^{*}$中的字符串。现在，如果我们考虑另一个不同的基于$\Sigma$的语言，比如</p>
-<script type="math/tex; mode=display">A=\{w\in\Sigma^{\*}: |w|是质数\},</script><p>那么当然$M$接受$A$中的所有字符串。然而$M$也接受属于$A$的字符串，所以$A$不是一个能被$M$所识别的语言。<br>　　我们还有一个定义，他介绍了一些重要的术语。</p>
+<script type="math/tex; mode=display">L(M)=\{w\in\Sigma^{*}: M接受w\}.</script><p>我们这是一个被$M$识别的语言。认清这是一个单一的定义明确的语言，精确包含了被$M$包含所接受的那些字符串以及不包含任何被$M$所拒绝的字符串，是很重要的。<br>　　比如，这里有一个基于二进制字母表$\Sigma=\{0,1\}$的简单DFA：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cnt_dfa/cnt_dfa2.png" alt="image"><br>如果我们成这个是DFA $M$，那么被$M$所识别的语言很容易描述；那就是</p>
+<script type="math/tex; mode=display">L(M)=\Sigma^{*}.</script><p>这是因为$M$接受所有$\Sigma^{*}$中的字符串。现在，如果我们考虑另一个不同的基于$\Sigma$的语言，比如</p>
+<script type="math/tex; mode=display">A=\{w\in\Sigma^{*}: |w|是质数\},</script><p>那么当然$M$接受$A$中的所有字符串。然而$M$也接受属于$A$的字符串，所以$A$不是一个能被$M$所识别的语言。<br>　　我们还有一个定义，他介绍了一些重要的术语。</p>
 <p><strong>定义2.7.</strong> $Simga$是一个字母表，$A\subseteq\Sigma^{*}$是基于$\Sigma$的一种语言。语言$A$是合格的当且仅当存在一个DFA $M$使得$A=L(M)$。</p>
 <p>目前为止我们还没见过多少DFA，所以我们没有合格语言的例子来探讨，但是我们往后会见到足够多的DFA。<br>　　结束本节课之前，先来看一个问题。</p>
 <p><strong>问题1.</strong> 对于一个已知的字母表$\Sigma$，基于字母表$\Sigma$的合格语言的数量是否可数？</p>
