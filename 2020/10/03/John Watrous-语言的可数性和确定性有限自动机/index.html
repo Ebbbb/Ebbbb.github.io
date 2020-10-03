@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言以后《前言》这部分还是属于文章翻译，我自己的心得体会心在《结语》中。这节课的主要目的是介绍有限自动机模型，但是我们要先完成字母表、字符串和语言与可数性概念的讨论。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 语言的可数性和确定性有限自动机">
+<meta property="og:url" content="http://yoursite.com/2020/10/03/John Watrous-语言的可数性和确定性有限自动机/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言以后《前言》这部分还是属于文章翻译，我自己的心得体会心在《结语》中。这节课的主要目的是介绍有限自动机模型，但是我们要先完成字母表、字符串和语言与可数性概念的讨论。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cnt_dfa/cnt_dfa1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cnt_dfa/cnt_dfa2.png">
+<meta property="og:updated_time" content="2020-10-03T14:15:50.021Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 语言的可数性和确定性有限自动机">
+<meta name="twitter:description" content="前言以后《前言》这部分还是属于文章翻译，我自己的心得体会心在《结语》中。这节课的主要目的是介绍有限自动机模型，但是我们要先完成字母表、字符串和语言与可数性概念的讨论。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cnt_dfa/cnt_dfa1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/10/03/John Watrous-语言的可数性和确定性有限自动机/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》 -- 语言的可数性和确定性有限自动机 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/03/John Watrous-语言的可数性和确定性有限自动机/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》 -- 语言的可数性和确定性有限自动机</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-03T22:03:43+08:00">
+                2020-10-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/10/03/John Watrous-语言的可数性和确定性有限自动机/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/10/03/John Watrous-语言的可数性和确定性有限自动机/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/10/03/John Watrous-语言的可数性和确定性有限自动机/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》 -- 语言的可数性和确定性有限自动机">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>以后《前言》这部分还是属于文章翻译，我自己的心得体会心在《结语》中。这节课的主要目的是介绍有限自动机模型，但是我们要先完成字母表、字符串和语言与可数性概念的讨论。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="可数性和语言"><a href="#可数性和语言" class="headerlink" title="可数性和语言"></a>可数性和语言</h3><p>上次我们讨论了一些语言的例子，并且思考过哪些语言是否有限。现在我们想一想语言背景下的可数性概念。</p>
+<h4 id="语言是可数的"><a href="#语言是可数的" class="headerlink" title="语言是可数的"></a>语言是可数的</h4><p>我们以下面的命题开始。</p>
+<p><strong>命题2.1.</strong> 对于任意字母表$\Sigma$，语言$\Sigma^{*}$是可数的。</p>
+<p>为了方便，我们主要关注对于二进制字母表$\Sigma=\{0,1\}$，如果证明这个命题；这个论证也很容易泛化成别的字母表。为了证明$\Sigma^{*}$是可数的，需要定义一个满射函数</p>
+<script type="math/tex; mode=display">f:\mathbb{N}\rightarrow \Sigma^{\*}</script><p>事实上，从字符串的字典式排序出发，我们很容易得到一个以上形式的单射且满射的函数$f$。我们通过字符串长度来排序，然后对同等长度的字符串使用“字典”排序。$\Sigma^{*}$的字典式排序如下：</p>
+<script type="math/tex; mode=display">\varepsilon,0,1,00,01,10,11,000,001,...</script><p>根据这个顺序我们可以定义一个满足形式的函数$f$，将$f(n)$设置为$\Sigma^{*}$的字典式序列中的第n个字符串，从0开始。这样，我们有</p>
+<script type="math/tex; mode=display">f(0)=\varepsilon,f(1)=0,f(2)=1,f(3)=00,f(4)=01,...</script><p>等等。有一个精确的计算$f(n)$的方法是将$n+1$写成二进制形式，然后丢掉最高位的1。<br>　　不难看出我们刚定义的函数$f$是满射的；每个二进制字符串都会作为函数$f$一个输出值。因此也就是说$\Sigma^{*}$是可数的。$f$也是一个单射函数。<br>　　我们很容易将这个论证泛化到其他的字母表。首先要做的事是决定这个字母表符号的顺序。对于二进制字母表，我们所接受的符号顺序是：先0，后1。如果我们使用其他的字母表，比如$\Gamma=\{\Game,\flat,\natural,\sharp\}$，排序的规则可能不太明显，但是只要我们选择一种或者保持不变就行。一旦我们确定了已知字母表$\Gamma$的排序，$\Gamma^{*}$的字典式排序就和我们上面做的一样了，使用字母表的顺序来决定“字典”顺序。根据得出的字典是排序，我们得到了一个单射且满射的函数$f:\mathbb{N}\rightarrow \Gamma^{*}$。</p>
+<p><strong>说明2.2.</strong> 关于术语“字典式排序”有一个简短的说明，有人用这个术语来表示一些不同的东西：根据长度而不是首字母的字典顺序。然后他们使用类似字典式排序来知道我们已知的字典式排序；这里完全没有必要担心这种矛盾。在科学和数学领域上有很多人们在术语上意见不一致的案例。重要的是每个人在使用时都清楚这个术语的含义。记住这一点，在本课程中字典式排序的意思就是字符串先按长度排序，等长的字符串再按“字典”顺序排列。</p>
+<p>　　对于任意字母表$\Sigma$，从事实上来看语言$\Sigma^{*}$是可数的，而且每个$A\subseteq \Sigma^{*}$也是可数的。这是因为每个可数集合的子集也是可数的。</p>
+<h4 id="基于任意字母表的所有语言的集合是不可数的"><a href="#基于任意字母表的所有语言的集合是不可数的" class="headerlink" title="基于任意字母表的所有语言的集合是不可数的"></a>基于任意字母表的所有语言的集合是不可数的</h4><p>接下来我们讨论基于一个已知字母表的所有语言的集合。如果$\Sigma$是一个字母表，让$A$表示基于$\Sigma$的语言，也可以说$A$是$\Sigma^{*}$的子集，而且$\Sigma^{*}$的子集也就是$\Sigma^{*}$的幂集中的元素。因此对于任意字母表$\Sigma$，以下三个声明是相等的：</p>
+<ol>
+<li>$A$是基于字母表$\Sigma$的一种语言。</li>
+<li>$A\subseteq \Sigma^{*}$。</li>
+<li>$A\in \mathcal{P}(\Sigma^{*})$。</li>
+</ol>
+<p>　　对于任意字母表$\Sigma$，我们观察到每个语言$A\subseteq \Sigma^{*}$都是可数的，自然接下来就会问到是否所有基于$\Sigma$的语言集合是可数的。答案是否定的。</p>
+<p><strong>命题2.3.</strong> 已知一个字母表$\Sigma$，集合$\mathcal{P}(\Sigma^{*})$是不可数的。</p>
+<p>　　为了证明这个命题，我们不需要重复$\mathcal{P}(\mathbb{N})$的对角化论证。相反，我们可以简单地将那个定理和和这个事实，存在一个从$\mathbb{N}$到$\Sigma^{*}$的单射且满射的函数，联系起来。<br>　　详细一点，已知</p>
+<script type="math/tex; mode=display">f:\mathbb{N}\rightarrow \Sigma^{\*}</script><p>是一个单射且满射的函数，正如我们之前得自于$\Sigma^{*}$的字典式排序的那个函数。打个比方，我们可以如下将这个函数扩展到$\mathbb{N}$和$\Sigma^{*}$的幂集。已知</p>
+<script type="math/tex; mode=display">g:\mathcal{P}(\mathbb{N})\rightarrow \mathcal{P}(\Sigma^{\*})</script><p>是一个函数，定义为</p>
+<script type="math/tex; mode=display">g(A)=\{f(n):n\in A\}</script><p>对于所有$A\in \mathbb{N}$。用文字表达就是函数$g$简单地将$f$使用在了$\mathbb{N}$的子集的每个元素上。不难看出$g$是单射且满射的；我们可以直接使用$f$的反函数来表示$g$的反函数，如下：</p>
+<script type="math/tex; mode=display">g^{-1}(B)=\{f^{-1}(w):w\in B\}</script><p>对于每个$B\subseteq \Sigma^{*}$。<br>　　现在，因为存在一个形如$g:\mathcal{P}(\mathbb{N})\rightarrow \mathcal{P}(\Sigma^{*})$的单射且满射的函数，我们得出$\mathcal{P}(\mathbb{N})$和$\mathcal{P}(\Sigma^{*})$是“数量相同”的。因为$\mathcal{P}(\mathbb{N})$是不可数的，所以$\mathcal{P}(\Sigma^{*})$也是。为了让表述更正式，有人可能会相反地假设$\mathcal{P}(\Sigma^{*})$是可数的，也就是说存在一个满射函数，像这样</p>
+<script type="math/tex; mode=display">f:\mathbb{N}\rightarrow \mathcal{P}(\Sigma^{\*})</script><p>使用$g$的反函数来改造一下上面这个函数，我们得到另一个满射函数</p>
+<script type="math/tex; mode=display">g^{-1}\circ h:\mathbb{N}\rightarrow \mathcal{P}(\mathbb{N})</script><p>就我们所知这是矛盾的，因为$\mathcal{P}(\mathbb{N})$是不可数的。</p>
+<h3 id="确定性有限自动机"><a href="#确定性有限自动机" class="headerlink" title="确定性有限自动机"></a>确定性有限自动机</h3><p>我们要讨论的第一个计算模型叫作<strong>确定性有限自动机</strong>模型。你应该早就学过有限自动机了，所以我们没必要从最简单的地方开始了 — 但是当然我们还是需要一个正式定义来进行数学计算。<br>　　当你思考确定性有限自动机模型时，请记住以下两点：</p>
+<ol>
+<li>它的定义是基于集合的（还有函数，可以用集合属于来正式表达，你也可能在离散数学中学过了）。这并不奇怪：集合理论是很多数学研究的基础，而且我们下定义的时候很自然就会想到集合。</li>
+<li>尽管确定性有限自动机在计算方面并不是很强大，但这个模型很重要，而且它仅仅是个开始。别看他好像是个弱小无用的模型；在这个阶段，我们并没有视图为通用计算机建模，而有限自动机的概念也绝非无用。</li>
+</ol>
+<p><strong>定义2.4.</strong> 一个确定性有限自动机（或者简称DFA）是一个5-元组</p>
+<script type="math/tex; mode=display">M=(Q,\Sigma,\delta,q_0,F),</script><p>$Q$是一个有限非空集合（其中我们元素称为状态），$\Sigma$是一个字母表，$\delta$是一个函数（称作转移函数），形式为</p>
+<script type="math/tex; mode=display">\delta:Q\times \Sigma \rightarrow Q,</script><p>$q_0\in Q$是一个状态（称作初始状态），以及$F\subseteq Q$是一个状态子集（其中所有的元素我们称为接受状态）。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cnt_dfa/cnt_dfa1.png" alt="image"></p>
+<h4 id="状态图"><a href="#状态图" class="headerlink" title="状态图"></a>状态图</h4><p>使用状态图来表示DFA是和常见的，正如图2.1所示。状态图表达了DFA正式定义中的五个部分：</p>
+<ol>
+<li>圆圈表示状态。</li>
+<li>带标签的箭头表示字母表。</li>
+<li>箭头和与之相连的圆圈表示转移函数。</li>
+<li>后方没有圆圈的箭头指向的初始状态。</li>
+<li>双圆圈表示接受状态。</li>
+</ol>
+<p>　　比如对于状态图2.1，它的状态集合是</p>
+<script type="math/tex; mode=display">Q=\{q_0,q_1,q_2,q_3,q_4,q_5\},</script><p>字母表示</p>
+<script type="math/tex; mode=display">\Sigma=\{0,1\},</script><p>初始状态是$q_0$，接受状态集合是</p>
+<script type="math/tex; mode=display">F=\{q_0,q_2,q_5\}</script><p>转移函数$\delta:Q\times\Sigma\rightarrow Q$如下：</p>
+<script type="math/tex; mode=display">\begin{align}\delta(q_0,0)=q_0,&&\delta(q_1,0)=q_3,&&\delta(q_2,0)=q_5,\\\delta(q_0,1)=q_1,&&\delta(q_1,1)=q_2,&&\delta(q_2,1)=q_5,\\\delta(q_3,0)=q_3,&&\delta(q_4,0)=q_4,&&\delta(q_5,0)=q_4,\\\delta(q_3,1)=q_3,&&\delta(q_4,1)=q_1,&&\delta(q_5,1)=q_2,\end{align}</script><p>为了让一个状态图对应上一个DFA，更具体的说为了确定一个有效的转移函数，对于每个状态和每个符号，必须存在标有这个符号的一个箭头从这个状态离开。注意当一个箭头标有多个符号时，比如图2.1中有个箭头标有“0,1”，这应该被理解为存在多个箭头，每个都标有一个符号；使用同一个箭头表示多个转换，只是为了让图看起来更简洁。</p>
+<h4 id="DFA计算"><a href="#DFA计算" class="headerlink" title="DFA计算"></a>DFA计算</h4><p>你可能已经知道对于一个DFA $M=(Q,\Sigma,\delta,q_0,F)$拒绝或者接受一个输入字符串$w\in \Sigma^{*}$是什么意思，从定义上是可以猜出来的。可以简单地用语言来描述，特别是当我们打算用状态图的时候：我们从初始状态开始，根据$w$的符号进行状态转移，我们接受结果当且仅当我们结束在一个接受状态上（相反我们就拒绝）。<br>　　这些都是有意义的，但是考虑它是如何正式表达的还是有用的。也就是说，我们如何用精确地定义DFA接受或拒绝给定字符串的数学术语？特别是，像“进行转移”和“结束在一个接受状态”可以用更精确的数学概念替代。<br>　　这里有一种更正式地定义接受和拒绝的方式。也要注意这个定义集中在集合和函数。</p>
+<p><strong>定义2.5.</strong> $M=(Q,\Sigma,\delta,q_0,F)$是一个DFA，$w\in \Sigma^{*}$是一个字符串。这个DFA $M$接受字符串$w$，如果以下条件中的一个得到满足：</p>
+<ol>
+<li>$w=\varepsilon$和$q_0\in F$。</li>
+<li>对于任意正整数n和符号$a_1,…,a_n\in \Sigma$有$w=a_1\cdot\cdot\cdot a_n$，存在状态$r_0,…,r_n\in Q$，使得对于所有$k\in \{0,…,n-1\}$有$r_0=q_0、r_n\in F$和$r_{k+1}=\delta(r_k,a_{k+1})$。</li>
+</ol>
+<p>如果$M$不接受$w$，那么$M$就拒绝$w$。</p>
+<p>用文字描述，接受的正式定义就是存在一个状态序列$r_0,…,r_n$使得第一个状态是初始状态，最后一个状态是接受状态，并且序列中的每个状态都是由前一个状态和从输入中读取的对应符号决定的，就像转移函数的描述：如果我们处于状态$q$，读取符号$a$，新的状态就是$p=\delta(q,a)$。定义条件中的第一条用于处理空字符串这种特殊情况。<br>　　很自然能想到为什么比起可读定义我们更喜欢正式定义。当然，可读定义用来解释DFA的概念是很有效的，但是正式定义的优点在于它将接受这个概念转化成了基本的关于集合和函数的数学表述。并且它也相当简洁和精确，对于DFA接受和拒绝的含义没有什么含糊的地方。<br>　　有时候定义一个新函数</p>
+<script type="math/tex; mode=display">\delta^{\*}:Q\times\Sigma^{\*}\rightarrow Q</script><p>会很有帮助，它基于给定的转移函数$\delta:Q\times \Sigma\rightarrow Q$，存在如下递归方法：</p>
+<ol>
+<li>对于每个$q\in Q$有$\delta^{*}(q,\varepsilon)=q$，以及</li>
+<li>对于所有$q\in Q、a\in\Sigma$和$w\in\Sigma^{*}$有$\delta^{*}(q,wa)=\delta^{*}(\delta^{*}(q,w),a)$</li>
+</ol>
+<p>直观上说，如果你从状态$q$开始，根据字符串$w$进行转换，$\delta^{*}(q,w)$就是你结束的状态。<br>　　DFA $M=(Q,\Sigma,\delta,q_0,F)$接受字符串$w\in\Sigma^{*}$当且仅当$\delta^{*}(q_0,w)\in F$。有一种自然的方法来正式讨论这种情况，但是我们并不会具体去讲，是通过对$w$的长度归纳证明$\delta^{*}(q,w)=q$当且仅当下面两个两件有一个得到满足：</p>
+<ol>
+<li>$w=\varepsilon$并且$p=q$。</li>
+<li>对于一个正整数$n$有$w=a_1,\cdot\cdot\cdot,a_n$，并且符号$a_1,…,a_n\in\Sigma$，存在状态$r_0,…,r_n\in Q$使得对于所有$k\in\{0,…,n-1\}$有$r_0=q、r_n=p$和$r_{k+1}=\delta(r_k,a_{k+1})$。</li>
+</ol>
+<p>只要这个充要条件被证明，那么表述$\delta^{*}(q_0,w)\in F$和$M$接受$w$就是等价的。</p>
+<p><strong>注意2.6.</strong> 到目前为止我们没有证明过本课程中提出的表述。如果我们去证明，那将是很拖沓的，甚至我们会不停的回顾，感觉是不是有哪些地方还不够正式。如果我们坚持越来越正式地证明每件事，原则上我们会将每个数学声明约化到公理集合论 — 但那时我们一学期的课程只能附带一点点关于计算材料，而且可能会包含你期望那么多会在汇编语言编写的复杂的未测试的程序中的错误。<br>　　自然地我们不会这么做，但我们是不是会讨论证明的本质，如果我们有时间的话怎么去证明，某些高级的表述和论证如何被简化成更节本和具体的步骤，导向可以被计算机验证的完整形式的证明的一般方向。此时如果你还没确定一个证明的结构，或者在你的证明中你应该瞄准那些细节和正式，别担心 — 理清这些问题是本课程的主要目标之一。</p>
+<h3 id="被DFA识别的语言和正规语言"><a href="#被DFA识别的语言和正规语言" class="headerlink" title="被DFA识别的语言和正规语言"></a>被DFA识别的语言和正规语言</h3><p>假设$M=(Q,\Sigma,\delta,q_0,F)$是一个DFA。那么我们会想到被$M$所接受的所有字符串的集合。这个语言被记作$L(M)$，所以</p>
+<script type="math/tex; mode=display">L(M)=\{w\in\Sigma^{\*}: M接受w\}.</script><p>我们这是一个被$M$识别的语言。认清这是一个单一的定义明确的语言，精确包含了被$M$包含所接受的那些字符串以及不包含任何被$M$所拒绝的字符串，是很重要的。<br>　　比如，这里有一个基于二进制字母表$\Sigma=\{0,1\}$的简单DFA：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cnt_dfa/cnt_dfa2.png" alt="image"><br>如果我们成这个是DFA $M$，那么被$M$所识别的语言很容易描述；那就是</p>
+<script type="math/tex; mode=display">L(M)=\Sigma^{\*}.</script><p>这是因为$M$接受所有$\Sigma^{*}$中的字符串。现在，如果我们考虑另一个不同的基于$\Sigma$的语言，比如</p>
+<script type="math/tex; mode=display">A=\{w\in\Sigma^{\*}: |w|是质数\},</script><p>那么当然$M$接受$A$中的所有字符串。然而$M$也接受属于$A$的字符串，所以$A$不是一个能被$M$所识别的语言。<br>　　我们还有一个定义，他介绍了一些重要的术语。</p>
+<p><strong>定义2.7.</strong> $Simga$是一个字母表，$A\subseteq\Sigma^{*}$是基于$\Sigma$的一种语言。语言$A$是合格的当且仅当存在一个DFA $M$使得$A=L(M)$。</p>
+<p>目前为止我们还没见过多少DFA，所以我们没有合格语言的例子来探讨，但是我们往后会见到足够多的DFA。<br>　　结束本节课之前，先来看一个问题。</p>
+<p><strong>问题1.</strong> 对于一个已知的字母表$\Sigma$，基于字母表$\Sigma$的合格语言的数量是否可数？</p>
+<p>答案是“可数”。原因是基于任意字母表$\Sigma$的DFA的数量是可数的，而且我们可以将这个事实与一个观测结果联系，有一个将每个DFA映射到它所识别的合格语言的函数，根据定义，它是满射函数。<br>　　当我们说到DFA可数的时候，我们确实应该更精确一点。特别是，如果两个DFA除了状态取名之外都相同，我们认为它们没有不同。这是有原因的，因为我们给状态取的名字并不影响DFA识别语言 — 对于某个正整数$m$我们可能会假设DFA的状态集合$Q=\{q_0,…,q_{m-1}\}$。事实上，人们通常在画状态图时不会担心状态的名称，因为状态名称和DFA的运行方式无关。<br>　　为了弄清基于一个已知字母表$\Sigma$的DFA数量是可数的，我们使用类似于证明有理数集合$\mathbb{Q}$可数的策略。首先假设只有一种状态$Q=\{q_0\}$。基于只有一个状态的字母表$\Sigma$的DFA数量是有限的。（事实上只有两个，一个中$q_0$是接受状态,另一个中$q_0$是拒绝状态）现在考虑基于两个状态：$Q=\{q_0,q_1\}$的所有DFA的集合。DFA的数量也是有限的。像这样继续下去，对于任意正整数$m$，基于有$m$个状态的字母表$\Sigma$的DFA数量都是有限的。有$m$个状态的DFA数量呈现$m$的指数级增长，但目前这并不重要 — 我们只需要知道这个数量是有限的。如果你用某种方式列出DFA的有限列表，然后将这些列表穿起来，开始时1个状态的DFA，接着是2个状态的DFA，以此类推，你会得到一个包含了每个DFA的单一列表。从这个列表你能获得一个从$\mathbb{N}$到基于$\Sigma$的所有DFA集合的满射函数，使用的方式和我们前面证明有理数集合可数的类似。<br>　　因为语言$A\subseteq\Sigma^{*}$是不可数的，而且只有合格语言$A\subseteq\Sigma^{*}$才是可数的，我们立刻就得出结论：某些语言不是合格的。这只是一个存在证明，它并没有指明那些语言不合格 — 它只是告诉我们不合格语言是存在的。后面我们会讲到允许我们得出确定不合格语言的方法。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>做理论研究的人讲话都很严谨，从这些课程讲义中我有深刻地体会。但作者在注意项中告诉我们过于追求严谨反而会让我们偏离主题。就好比我自己学习某个知识点中引用了另一个新知识点，当前知识点没看完就投入到另一个中。这样会造成一个循环，导致我们最初的目的无法达成。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/CS360/Lectures/02.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/CS360/Lectures/02.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/10/03/John Watrous-课程概览和数学基础/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》 -- 课程概览和数学基础">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》 -- 课程概览和数学基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可数性和语言"><span class="nav-number">2.1.</span> <span class="nav-text">可数性和语言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#语言是可数的"><span class="nav-number">2.1.1.</span> <span class="nav-text">语言是可数的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于任意字母表的所有语言的集合是不可数的"><span class="nav-number">2.1.2.</span> <span class="nav-text">基于任意字母表的所有语言的集合是不可数的</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#确定性有限自动机"><span class="nav-number">2.2.</span> <span class="nav-text">确定性有限自动机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#状态图"><span class="nav-number">2.2.1.</span> <span class="nav-text">状态图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DFA计算"><span class="nav-number">2.2.2.</span> <span class="nav-text">DFA计算</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#被DFA识别的语言和正规语言"><span class="nav-number">2.3.</span> <span class="nav-text">被DFA识别的语言和正规语言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">4.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/10/03/John Watrous-语言的可数性和确定性有限自动机/';
+          this.page.identifier = '2020/10/03/John Watrous-语言的可数性和确定性有限自动机/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》 -- 语言的可数性和确定性有限自动机';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
