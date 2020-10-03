@@ -88,7 +88,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cnt_dfa/cnt_dfa1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cnt_dfa/cnt_dfa2.png">
-<meta property="og:updated_time" content="2020-10-03T14:15:50.021Z">
+<meta property="og:updated_time" content="2020-10-03T14:27:56.306Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 语言的可数性和确定性有限自动机">
 <meta name="twitter:description" content="前言以后《前言》这部分还是属于文章翻译，我自己的心得体会心在《结语》中。这节课的主要目的是介绍有限自动机模型，但是我们要先完成字母表、字符串和语言与可数性概念的讨论。">
@@ -339,7 +339,7 @@
 <h4 id="语言是可数的"><a href="#语言是可数的" class="headerlink" title="语言是可数的"></a>语言是可数的</h4><p>我们以下面的命题开始。</p>
 <p><strong>命题2.1.</strong> 对于任意字母表$\Sigma$，语言$\Sigma^{*}$是可数的。</p>
 <p>为了方便，我们主要关注对于二进制字母表$\Sigma=\{0,1\}$，如果证明这个命题；这个论证也很容易泛化成别的字母表。为了证明$\Sigma^{*}$是可数的，需要定义一个满射函数</p>
-<script type="math/tex; mode=display">f:\mathbb{N}\rightarrow \Sigma^{\*}</script><p>事实上，从字符串的字典式排序出发，我们很容易得到一个以上形式的单射且满射的函数$f$。我们通过字符串长度来排序，然后对同等长度的字符串使用“字典”排序。$\Sigma^{*}$的字典式排序如下：</p>
+<script type="math/tex; mode=display">f:\mathbb{N}\rightarrow \Sigma^{**}</script><p>事实上，从字符串的字典式排序出发，我们很容易得到一个以上形式的单射且满射的函数$f$。我们通过字符串长度来排序，然后对同等长度的字符串使用“字典”排序。$\Sigma^{*}$的字典式排序如下：</p>
 <script type="math/tex; mode=display">\varepsilon,0,1,00,01,10,11,000,001,...</script><p>根据这个顺序我们可以定义一个满足形式的函数$f$，将$f(n)$设置为$\Sigma^{*}$的字典式序列中的第n个字符串，从0开始。这样，我们有</p>
 <script type="math/tex; mode=display">f(0)=\varepsilon,f(1)=0,f(2)=1,f(3)=00,f(4)=01,...</script><p>等等。有一个精确的计算$f(n)$的方法是将$n+1$写成二进制形式，然后丢掉最高位的1。<br>　　不难看出我们刚定义的函数$f$是满射的；每个二进制字符串都会作为函数$f$一个输出值。因此也就是说$\Sigma^{*}$是可数的。$f$也是一个单射函数。<br>　　我们很容易将这个论证泛化到其他的字母表。首先要做的事是决定这个字母表符号的顺序。对于二进制字母表，我们所接受的符号顺序是：先0，后1。如果我们使用其他的字母表，比如$\Gamma=\{\Game,\flat,\natural,\sharp\}$，排序的规则可能不太明显，但是只要我们选择一种或者保持不变就行。一旦我们确定了已知字母表$\Gamma$的排序，$\Gamma^{*}$的字典式排序就和我们上面做的一样了，使用字母表的顺序来决定“字典”顺序。根据得出的字典是排序，我们得到了一个单射且满射的函数$f:\mathbb{N}\rightarrow \Gamma^{*}$。</p>
 <p><strong>说明2.2.</strong> 关于术语“字典式排序”有一个简短的说明，有人用这个术语来表示一些不同的东西：根据长度而不是首字母的字典顺序。然后他们使用类似字典式排序来知道我们已知的字典式排序；这里完全没有必要担心这种矛盾。在科学和数学领域上有很多人们在术语上意见不一致的案例。重要的是每个人在使用时都清楚这个术语的含义。记住这一点，在本课程中字典式排序的意思就是字符串先按长度排序，等长的字符串再按“字典”顺序排列。</p>
