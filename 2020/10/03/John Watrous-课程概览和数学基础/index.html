@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言本书是介绍计算理论的21篇课程讲义。那么为什么会选这本书来翻译呢？因为我看完上一本书《Algorithm》后，内心有很多疑问。这本书就是我在寻找Cook-Levin定理证明的过程中发现的。我简单看了下第一课，理解起来没什么问题，然后我就大胆决定翻译全书了。That’s why。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 课程概览和数学基础">
+<meta property="og:url" content="http://yoursite.com/2020/10/03/John Watrous-课程概览和数学基础/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言本书是介绍计算理论的21篇课程讲义。那么为什么会选这本书来翻译呢？因为我看完上一本书《Algorithm》后，内心有很多疑问。这本书就是我在寻找Cook-Levin定理证明的过程中发现的。我简单看了下第一课，理解起来没什么问题，然后我就大胆决定翻译全书了。That’s why。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-10-03T14:18:14.029Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 课程概览和数学基础">
+<meta name="twitter:description" content="前言本书是介绍计算理论的21篇课程讲义。那么为什么会选这本书来翻译呢？因为我看完上一本书《Algorithm》后，内心有很多疑问。这本书就是我在寻找Cook-Levin定理证明的过程中发现的。我简单看了下第一课，理解起来没什么问题，然后我就大胆决定翻译全书了。That’s why。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/10/03/John Watrous-课程概览和数学基础/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》 -- 课程概览和数学基础 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/03/John Watrous-课程概览和数学基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》 -- 课程概览和数学基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-03T22:03:37+08:00">
+                2020-10-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/10/03/John Watrous-课程概览和数学基础/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/10/03/John Watrous-课程概览和数学基础/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/10/03/John Watrous-课程概览和数学基础/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》 -- 课程概览和数学基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本书是介绍计算理论的21篇课程讲义。那么为什么会选这本书来翻译呢？因为我看完上一本书《Algorithm》后，内心有很多疑问。这本书就是我在寻找Cook-Levin定理证明的过程中发现的。我简单看了下第一课，理解起来没什么问题，然后我就大胆决定翻译全书了。That’s why。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="课程概览"><a href="#课程概览" class="headerlink" title="课程概览"></a>课程概览</h3><p>这个课程是关于计算理论的，用于处理抽象计算模型的数学属性以及它所解决的问题。在我们开始课程之前需要谨记一点：</p>
+<blockquote>
+<p>计算问题、设备和进程可以被视为数学对象。</p>
+</blockquote>
+<p>比如，我们可以将每个以某种程序语言编写的程序视为所有以这种语言编写的程序中的一个元素，并且我们可以研究不只我们感兴趣的那些程序，还有所有程序都适用的属性。我们也可以思考某些计算模型可以解决但其他却不行的问题。<br>　　计算的概念是非常普遍的。一些能被看做或者描述成计算的事物例子如下：</p>
+<ul>
+<li>计算机运行的程序（这个当然）。</li>
+<li>运行协议的计算机网络。</li>
+<li>人用纸和笔执行计算。</li>
+<li>定理证明（在某种意义上，这门课会不时地讨论）。</li>
+<li>某些生物过程。</li>
+</ul>
+<p>人们可以争论计算的定义（这不是我们将要做的事情），但是一个合理定义的起点是计算是一种根据一组固定规则符号的操作。<br>　　计算和数学之间的一种有趣的关联，从本课程的观点来看相当重要的，就是数学证明和在本课程讨论到的通过模型执行的计算有低级别相似性：他们都包含了根据固定规则的符号操作。确实，关于证明和数学逻辑的基本问题在理论计算机科学的发展中扮演决定性的角色。<br>　　我们会研究一些简单的计算模型来开启这门课（有限自动机、正则表达式、上下文无关语法和相关模型），完后我们会讨论更强大的计算模型（堆栈机器和图灵机模型计算）。然而在我们讨论这些模型之前，先讨论一些相关的数学基础和定义比较合适。</p>
+<h3 id="集合和可数性"><a href="#集合和可数性" class="headerlink" title="集合和可数性"></a>集合和可数性</h3><p>在所有的注释中都假定读者已经熟悉了朴素集合论和基本的命题逻辑。<br>　　朴素集合论认为集合的概念是不证自明的。对于本课程的目标这将是没有问题的，但它的确会导致一些问题和悖论 — 比如Rssell悖论 — 在极端情况下。如果你感兴趣，这里有Russell的悖论的描述：</p>
+<p><strong>Russell’s paradox</strong>. 让S表示所有元素不属于自身的集合的总集合。</p>
+<script type="math/tex; mode=display">S=\{T:T\notin T\}</script><p>那么是否存在S是自身的一个元素这种情况呢？<br>　　如果$S\in S$，那么根据条件一个集合要满足不包含在S中，也就是$S\notin S$。另外，如果$S\notin S$，那么S的定义告诉我们S被包含在了S中。因此得出$S\in S$当且仅当$S\notin S$，但这个结论是矛盾的。</p>
+<p>　　如果你想要避免这种悖论，你需要将朴素集合论替换为公理集合论，公理集合论更加正式，而且不允许“所有集合的集合”（就是它开启了Russell悖论的大门）这种对象。集合理论是数学建立的根基，所以公理集合论让根基稳固的更好选择。此外，如果你实在想要将数学证明约化成计算机可以处理的符号形式，一些类似公理集合论的东西是必要的。<br>　　另外，公理集合论比朴素集合论复杂得多，并且它还是本书范围之外的。幸运的是本课程不会出现讨论公理集合论相较于朴素集合论的优点的特殊情况，由于这个原因，我们可以安全地从朴素观点来考虑集合理论 — 同时我们也可以相信，如果使用公理集合论，一切都会以同样的方式解决。<br>　　一个有限集合的大小是它所包含的元素数量。如果A是一个优先集合，那么用|A|表示这个数量。比如，空集没有元素记作$\varnothing$，所以$|\varnothing| = 0$。举一些例子</p>
+<script type="math/tex; mode=display">|\{a,b,c\}| = 3\ and\ |\{1,...,n\}|=n</script><p>在第二个例子中，我们假设n是一个正整数，$\{1,…,n\}$是一个集合，包含了从1到n的整数。<br>　　集合也可能是无限的，比如，自然数集合</p>
+<script type="math/tex; mode=display">\mathbb{N}=\{0,1,2,...\}</script><p>是无限的，整数集合也是</p>
+<script type="math/tex; mode=display">\mathbb{Z}=\{...,-2,-1,0,1,2,...\}</script><p>以及有理数集合也是</p>
+<script type="math/tex; mode=display">\mathbb{Q}=\{\frac{n}{m}:n,m\in \mathbb{Z},m\neq 0\}</script><p>实数和复数集合也是无限的，但在这里我们不会继续去定义这写集合了，因为他们不是本课程的主角，而且这些定义也会比有些人预想的复杂。<br>　　当我们条件足够确定一个集合是无限的时候，我们需要一个更精确的概念，这个集合是否可数。</p>
+<p><strong>定义1.1.</strong> 一个集合A是可数的仅当A是空集，或者存在一个形如$f:\mathbb{N}\rightarrow A$的满射函数。否则，我们就说这个集合不可数。</p>
+<p>以下对于集合A的三种描述是等价的：</p>
+<ol>
+<li>A是可数的。</li>
+<li>存在一个形如$g:A\rightarrow \mathbb{N}$的单射函数。</li>
+<li>A是有限的，或者存在一个形如$h:\mathbb{N}\rightarrow A$的双射函数。</li>
+</ol>
+<p>虽然不能明显看出这三个描述是等价的，但它可以被证明。然而我们不会讨论具体证明。</p>
+<p><strong>例子1.2.</strong> 自然数集合$\mathbb{N}$是可数的。当然这并没有什么好奇怪的，但有时候从这个例子开始着手很棒。$\mathbb{N}$是可数的，它得自于将$f:\mathbb{N}\rightarrow \mathbb{N}$视为恒等函数，根据定义1.1也就是对于所有$n\in \mathbb{N}$存在$f(n)=n$。注意将描述2中的函数$g$替换成$f$使得描述正确，并且将描述3中的函数$h$替换成$f$也是这样。<br>　　函数$f(n)=n$并不是仅有的确定$\mathbb{N}$的可数性的函数。比如，这个函数</p>
+<script type="math/tex; mode=display">\begin{equation}f(n)=\begin{cases}n+1 && if\ n\ is\ even \\ n-1 && if\ n\ is\ odd\end{cases}\end{equation}</script><p>也可以。这个函数的前几个值是</p>
+<script type="math/tex; mode=display">f(0)=1\ \ \ \ f(1)=0\ \ \ \ f(2)=3\ \ \ \ f(3)=2</script><p>不难看出这个函数同时满足单射和满射。当然还有很多可供选择的函数同样可以确立$matnbb{N}$是可数的。</p>
+<p><strong>例子1.3.</strong> 整数集合$\mathbb{Z}$是可数的。为了证明这个，找到一个如下形式的满射函数就够了：</p>
+<script type="math/tex; mode=display">f:\mathbb{N}\rightarrow \mathbb{Z}</script><p>正如上一个例子，有很多满足条件的$f$可供选择，其中一个就是：</p>
+<script type="math/tex; mode=display">\begin{equation}f(n)=\begin{cases}0 && if\ n=0 \\ \frac{n+1}{2} && if \ n\ is\ odd \\ -\frac{n}{2} && if\ n\ is\ even\end{cases}\end{equation}</script><p>这样，我们就有</p>
+<script type="math/tex; mode=display">f(0)=0\ \ \ \ f(1)=1\ \ \ \ f(2)=-1\ \ \ \ f(3)=2\ \ \ \ f(4)=-2</script><p>等等。这是一个$f:\mathbb{N}\rightarrow \mathbb{Z}$形式的定义明确的函数，并且它是满射的；对于每个整数m，存在一个自然数$n\in \mathbb{N}$使得$f(n)=m$，在上面的列举模式中，这是非常明显的。</p>
+<p><strong>例子1.4.</strong> 有理数集合$\mathbb{Q}$是可数的，通过定义一个形如$f:\mathbb{N}\rightarrow \mathbb{Q}$的函数，我们可以证明它。同样地，有很多满足条件的函数可供选择，我们选一个来用。<br>　　首先，试想我们构造一系列数字的有序列表，如下：</p>
+<script type="math/tex; mode=display">\begin{align}&List0: 0 \\ &List1: -1,1 \\ &List2: -2,-\frac{1}{2},\frac{1}{2},2 \\ &List3: -3,-\frac{3}{2},-\frac{2}{3},-\frac{1}{3},\frac{1}{3},\frac{2}{3},\frac{3}{2},3 \\ &List4: -4,-\frac{4}{3},-\frac{3}{4},-\frac{1}{4},\frac{1}{4},\frac{3}{4},\frac{4}{3},4 \\ &List5: -5,-\frac{5}{2},-\frac{5}{3},-\frac{5}{4},-\frac{4}{5},-\frac{3}{5},-\frac{2}{5},-\frac{1}{5},\frac{1}{5},\frac{2}{5},\frac{3}{5},\frac{4}{5},\frac{5}{4},\frac{5}{3},\frac{5}{2},5\end{align}</script><p>等等。普遍来说，对于所有$n\geq 1$，我们用$\frac{k}{m}$来表示第n个列表中数字，$k,m\in\{-n,…,n\}, m\neq 0$，而且k/m的值还没出现在前面的列表中。这些列表会变得越来越长，但是每个自然数n所对应的列表式有限的。<br>　　现在考虑一种将List0、List1等等都连接起来的合成列表。因为每个列表都是有限的，我们将它们连接起来是没问题的，每个列表中出现过的数字也会出现在合成列表中。这个合成列表看起来是这样的：</p>
+<script type="math/tex; mode=display">0,-1,1,-2,-\frac{1}{2},\frac{1}{2},2,-3,-\frac{3}{2},-\frac{2}{3},-\frac{1}{3},\frac{1}{3},\frac{2}{3},\frac{3}{2},3,-4,-\frac{4}{3},-\frac{3}{4},-\frac{1}{4},\frac{1}{4},\frac{3}{4},\frac{4}{3},4,...</script><p>完整的列表长度是无限的。最后，从第0个位置开始，通过将$f(n)$映射到我们刚才定义的列表中的第n个元素，得到函数$f:\mathbb{N}\rightarrow \mathbb{Q}$。比如：$f(0)=0,f(1)=-1,f(8)=-3/2$。<br>　　即便我们没有写出函数的明确表达式，但它的确是$f:\mathbb{N}\rightarrow \mathbb{Q}$形式的定义明确的函数。此外，它还是个满射函数：你所选的任意实数都能在上面的List列表中找到。因此有理数集合$\mathbb{Q}$是可数的。函数$f$也是单射的，尽管我们不需要知道这个也能得出$Q$是可数的。<br>　　到了这个点上，自然而然就会有一个问题：是不是所有集合都是可数的？答案是“不是”，很宽我们就会看到不可数集合的例子，不过我们先要了解下面这个定义。</p>
+<p><strong>定义1.5.</strong> 对于任意一个集合A，它的幂集记作$\mathcal{P}(A)$，它包含了所有A的子集：</p>
+<script type="math/tex; mode=display">\mathcal{P}(A)=\{B:B\subseteq A\}</script><p>比如集合$\{1,2,3\}$的幂集就是</p>
+<script type="math/tex; mode=display">\mathcal{P}(\{1,2,3\})=\{\varnothing,\{1\},\{2\},\{3\},\{1,2\},\{1,3\},\{2,3\},\{1,2,3\}\}</script><p>注意，特别是，$\varnothing$和$\{1,2,3\}$都包含在幂集$\mathcal{P}(\{1,2,3\})$中。对于任意有限集合A，幂集$\mathcal(A)$总共包含了$2^{|A|}$个元素，这就是称之为幂集的原因。<br>　　还要注意，没有规定说我们不能求一个无限集合的幂集。例如，$\mathcal{P}(\mathbb{N})$，自然数的幂集，它包含了所有$\mathbb{N}$的所有子集。事实上这个集合就是我们不可数集合的第一个例子。</p>
+<p><strong>定理1.6(Cantor).</strong> 自然数的幂集$\mathcal{P}(\mathbb{N})$是不可数的。</p>
+<p>证明：与结论相反，我们假设$\mathcal{P}(\mathbb{N})$是可数的，也就是说存在一个形如$f:\mathbb{N}\rightarrow \mathcal{P}(\mathbb(N))$的满射函数。从这个函数我们可以定义一个自然数子集如下：</p>
+<script type="math/tex; mode=display">S=\{n\in \mathbb{N}:n\notin f(n)\}</script><p>因为S是$\mathbb{N}$的子集，那么就有$S\in \mathcal{P}(\mathbb{N})$。我们已经假设了$f$是满射的，所以一定存在一个自然数$m\in \mathbb{N}$使得$f(m)=S$。那么这个m将提供剩余的证明。<br>　　现在我们也许会问一个问题：是否m被包含在S中？因为$S=f(m)$，我们有</p>
+<script type="math/tex; mode=display">[m\in S]\Leftrightarrow [m\in f(m)]</script><p>另外，根据集合S的定义，我们又有</p>
+<script type="math/tex; mode=display">[m\in S]\Leftrightarrow [m\notin f(m)]</script><p>因此出现了以下情况</p>
+<script type="math/tex; mode=display">[m\in f(m)]\Leftrightarrow [m\notin f(m)]</script><p>以及</p>
+<script type="math/tex; mode=display">[m\in S]\Leftrightarrow [m\notin S]</script><p>这当然是矛盾的。<br>　　由此我们得出假设$\mathcal{P}(\mathbb{N})$是可数的是错的，所以定理得证。</p>
+<p>　　在上述证明中我们用到的方法称为对角化，其原因我们将在课程的后面讨论。这是计算理论的一个重要的基础证明技术。使用这个技术，人们可以证明实数和负数集合$\mathbb{R}$和$\mathbb{C}$是不可数的 — 证明的核心思路和上面类似，但事实上有些实数有很多种小数表达式（和进制相关），这使得证明起来比较复杂。</p>
+<h3 id="字母表、字符串和语言"><a href="#字母表、字符串和语言" class="headerlink" title="字母表、字符串和语言"></a>字母表、字符串和语言</h3><p>这节课最后要做的是介绍一些你可能在别的课程中已经了解过的术语。<br>　　首先让我们定义一个字母表。直观来说，当我们提到字母表，我们指的是用来书写、编码信息或者执行计算的符号集合。从数学上来说，没什么好说的 — 在本文中没有必要定义符号、书写、信息编码或者计算的意思，所以相反我们保持事物尽可能简单，坚持数学概念的本质。</p>
+<p><strong>定义1.7.</strong> 一个字母表是一个有限非空的集合。</p>
+<p>本课程中用来表示字母表的典型名称是大写希腊字母，比如$\Sigma、\Gamma和\Delta$。当提到符号是，通常我们会使用罗马字母靠前的小写字母，比如$a、b、c和d$，来表示变量名称。<br>　　本课程中我们最常用的字母表是二进制字母表$\Sigma=\{0,1\}$。有时候我们也会提到一进制字母表$\Sigma=\{0\}$，其中只有一个符号。如果你被困在监狱想要计算天数，这并不是编码信息的高效选择。我们也可以想象一个抽象的字母表$\Sigma=\{0,1,…,n-1\}$，n是一个大正整数，比如$n=1000000$。当然，我们并不需要实际相处一百万个不同的符号来从数学意义上思考这个字母表。字母表可能是由其他的符号构成,比如$\Sigma=\{A,B,C,…,Z\}$、$\Sigma=\{\heartsuit,\diamondsuit,\spadesuit,\clubsuit\}$或者$\Sigma=\{\Game,\flat,\natural,\sharp\}$，但我们并不认为实际出现在字母表中的符号有多重要。从数学观点上看，字母表$\Sigma=\{\heartsuit,\diamondsuit,\spadesuit,\clubsuit\}$和$\Sigma=\{\Game,\flat,\natural,\sharp\}$相较于字母表$\Sigma=\{0,1,2,3\}$并没什么特别。由于这个原因，为了不使普遍性我们会假设一个已知的字母表为$\Sigma=\{0,…,n-1\}$，n是某个正整数。<br>　　接下来的是字符串，它由根据一个特定的字母表来定义的。</p>
+<p><strong>定义1.8.</strong> 让$\Sigma$表示一个字母表，一个基于$\Sigma$的字符串是有限的，它根据$\Sigma$中的符号排列。字符串的长度就是符号序列的数量。</p>
+<p>比如，根据二进制字母表$\Sigma=\{0,1\}$排列的字符串$11010$的长度是5。它也是根据字母表$\Gamma=\{0,1,2\}$来排列的，只不过没有出现符号2。另外，</p>
+<script type="math/tex; mode=display">0101010101\cdot\cdot\cdot(repeating\ forever)</script><p>不是一个字符串，因为它是无限的。在某些情况下，考虑这些无限长序列是有趣或有用的，打我们不会将他们称为字符串。<br>　　有一种特殊字符串，叫做空字符串并且记作$\varepsilon$，它里面没有符号（因此长度为0）。它是基于每个字母表的字符串。<br>　　一般我们会用罗马字母表后面的小写字母，比如$u、v、w、x、y、z$，来指代字符串。指代的意思就是我们不会把它们当作这个上下文中罗马字母表的符号。因为我们本质上是用符号和字符串来传达关于符号和字符串的思想，存在一种假定条件下的混淆，但只要我们约定一些简单的规则，这将不会是什么问题。如果$w$是一个字符串，我们将$w$的长度记作$|w|$。<br>　　最后，术语“语言”指的是基于某个字母表的任意字符串集合。</p>
+<p><strong>定义1.9.</strong> 让$\Sigma$表示一个字母表。一种语言就是基于$\Sigma$的字符串集合，每个字符串的符号都来自$\Sigma$。</p>
+<p>注意，一种语言一定会有一种相关的字母表。比如我们不会将包含了无限个符号的字符串集合视为语言。<br>　　一个简单却重要的例子，一种语言的所有字符串都是基于一个已知的字母表$\Sigma$。我们将这个语言记作$\Sigma^{*}$。另外一个例子是空语言，他不包含任何字符串。空语言被记作$\varnothing$，因为它和空集是一样的；没必要在介绍更多概念了，因为我们早就了解空集了。空语言是一种基于任意字母表选择的语言。<br>　　在本课程中我们一般会用罗马字母表前面的大写字母，比如$A、B、C、D$，来指代语言。有时候我们也会给语言取特殊名称，比如PAL和DIAG，后面你就知道了。<br>　　通过本课你能看到很多语言的例子，这里有一些涉及二进制字母表$\Sigma=\{0,1\}$的例子：</p>
+<script type="math/tex; mode=display">\begin{align}&A=\{0010,110110,011000010110,111110000110100010010\} \\ &B=\{x\in\Sigma^{\*}:x以0开始,以1结尾\} \\ &C=\{x\in\Sigma^{\*}:x是二进制表示的质数\} \\ &D=\{x\in\Sigma^{\*}:|x|和|x+2|都是质数\}\end{align}</script><p>语言A是有限的，B和C都是无限的，至于D，没人知道是否有限（因为这个叫做孪生素数，至今还未证明）。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>最近我又一种错觉：英文的计算机论文比英文的文学作品好理解。因为这段时间我也在读《小王子》；网上推荐这本书作为入门级的英文书籍，词汇要求大概在3-5千左右。我就在想难道我做的这些翻译的词汇量还低于3千吗？不过，也有可能我看的难度比较低吧。或者论文这种东西重点在于逻辑，涉及的词汇量不会太多，而文学作品源自生活，里面描述的各种事物的对应词汇量很大。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/CS360/Lectures/01.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/CS360/Lectures/01.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/09/08/JeffErickson-NP问题/" rel="next" title="Jeff Erickson 《Algorithms》 -- NP问题">
+                <i class="fa fa-chevron-left"></i> Jeff Erickson 《Algorithms》 -- NP问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#课程概览"><span class="nav-number">2.1.</span> <span class="nav-text">课程概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合和可数性"><span class="nav-number">2.2.</span> <span class="nav-text">集合和可数性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字母表、字符串和语言"><span class="nav-number">2.3.</span> <span class="nav-text">字母表、字符串和语言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">4.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/10/03/John Watrous-课程概览和数学基础/';
+          this.page.identifier = '2020/10/03/John Watrous-课程概览和数学基础/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》 -- 课程概览和数学基础';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
