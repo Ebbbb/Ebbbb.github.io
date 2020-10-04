@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nfa/nfa1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nfa/nfa2.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nfa/nfa3.png">
-<meta property="og:updated_time" content="2020-10-03T14:43:52.536Z">
+<meta property="og:updated_time" content="2020-10-04T00:58:45.485Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 非确定性有限自动机">
 <meta name="twitter:description" content="前言这节课的重点在于非确定性优先自动机（NFA）模型以及它与DFA模型的关系。　　非确定性是计算理论中极为重要的概念。他指的是在一个计算中，不同的阶段可能会有多种选择的可能性。那么我们会思考这些选择的可能得到的输出，通常集中在是否存在一系列选择，它会导向一个特别的输出（比如一个有限自动机的接受状态）。　　这听起来像是一种幻想的涉及，不太可能与实际观点相关，因为现实的计算机不会做非确定性选择：在每一">
@@ -367,14 +367,14 @@
 </ol>
 <p>直观上来说，$\delta^{*}(q,w)$是你从状态$q$读取$w$做任意次$\varepsilon$-转移后可能到达的所有状态的集合。称一个NFA $N=(Q,\Sigma,\delta,q_0,F)$接受字符串$w\in\Sigma^{*}$等同于条件$\delta^{*}(q_0,w)\cap F\neq\varnothing$。<br>　　还有和DFA类似的是，$L(N)$表示NFA $N$所识别的语言：</p>
 <script type="math/tex; mode=display">L(N)=\{w\in\Sigma^{*}:N接受w\}</script><h3 id="NFA和DFA的等价关系"><a href="#NFA和DFA的等价关系" class="headerlink" title="NFA和DFA的等价关系"></a>NFA和DFA的等价关系</h3><p>看起来NFA可能比DFA更强大，因为NFA有使用不确定性的选择。大概你已经在以前的课程中学习过，但接下来的理论声明会有所不同。</p>
-<p><strong>定理3.3.</strong> $\Sigma$是一个字母表，$A\subseteq\Sigma^{*}$是一个语言。语言$A$是合格的当且仅当对于某个NFA $N$有$A=L(N)$。</p>
+<p><strong>定理3.3.</strong> $\Sigma$是一个字母表，$A\subseteq\Sigma^{*}$是一个语言。语言$A$是正规的当且仅当对于某个NFA $N$有$A=L(N)$。</p>
 <p>　　我们开始对这个定理进行拆分，看看能列出来那些需要证明的。 首先，看到“当且仅当”的陈述，所以这里有两件事需要证明：</p>
 <ol>
-<li>如果$A$是合格的，那么对于某个NFA $N$有$A=L(N)$。</li>
-<li>如果对于某个NFA $N$有$A=L(N)$，那么$A$是合格的。</li>
+<li>如果$A$是正规的，那么对于某个NFA $N$有$A=L(N)$。</li>
+<li>如果对于某个NFA $N$有$A=L(N)$，那么$A$是正规的。</li>
 </ol>
-<p>　　如果你需要从中选一个出来先证明，选择第一个是很明智的：它是两个语句中较简单的。特别是，假设$A$是合格的，所以根据定义存在一个DFA $M=(Q,\Sigma,\delta,q_0,F)$可以识别A。我们的目标是定义一个NFA $N$也能识别$A$。着很简单，我们选取$N$作为这个NFA，它的状态图和$M$一样。正式水平上来看，$N$不完全和$M$一样；因为$N$是一个NFA，它的转移函数的形式与DFA的不同，但在这种情况下不同之处仅在表面。更正式地说，我们可以定义一个$N=(Q,\Sigma,\mu,q_0,F)$，它的转移函数$\mu:Q\times(\Sigma\cup\{\varepsilon\})\rightarrow\mathcal{P}(Q)$的定义对于所有的$q\in Q$和$a\in\Sigma$有</p>
-<script type="math/tex; mode=display">\mu(q,a)=\{\delta(q,a)\}\ \ \ 和 \ \ \ \mu(q,\varepsilon)=\varnothing,</script><p>到这里我们得到$L(N)=L(M)=A$，证明就完成了。<br>　　现在我们考虑上面列的第二个语句。我们假设对于某个NFA $N=(Q,\Sigma,\delta,q_0,F)$有$A=L(N)$，我们的目标是说明$A$是合格的。也就是我们一定要证明存在一个DFA $M$使得$L(M)=A$。最直接的方式就是讨论，通过使用$N$的描述，我们可以提出一个等价的DFA $M$。如果我们能说明如何使用任意一个NFA $N$来定义一个DFA $M$使得$L(M)=L(N)$，那么这个证明就完成了。<br>　　我们将会使用NFA $N$的描述来定义一个等价的DFA $M$，通过一个简单的想法：每个$M$的状态都记录着一个$N$的状态子集。在读取输入字符串的任意部分后，总会有一些$N$可能处于的状态子集，然后我们将$M$设计成在读取字符串的任意部分后，它的状态就是$N$所对应的状态子集。</p>
+<p>　　如果你需要从中选一个出来先证明，选择第一个是很明智的：它是两个语句中较简单的。特别是，假设$A$是正规的，所以根据定义存在一个DFA $M=(Q,\Sigma,\delta,q_0,F)$可以识别A。我们的目标是定义一个NFA $N$也能识别$A$。着很简单，我们选取$N$作为这个NFA，它的状态图和$M$一样。正式水平上来看，$N$不完全和$M$一样；因为$N$是一个NFA，它的转移函数的形式与DFA的不同，但在这种情况下不同之处仅在表面。更正式地说，我们可以定义一个$N=(Q,\Sigma,\mu,q_0,F)$，它的转移函数$\mu:Q\times(\Sigma\cup\{\varepsilon\})\rightarrow\mathcal{P}(Q)$的定义对于所有的$q\in Q$和$a\in\Sigma$有</p>
+<script type="math/tex; mode=display">\mu(q,a)=\{\delta(q,a)\}\ \ \ 和 \ \ \ \mu(q,\varepsilon)=\varnothing,</script><p>到这里我们得到$L(N)=L(M)=A$，证明就完成了。<br>　　现在我们考虑上面列的第二个语句。我们假设对于某个NFA $N=(Q,\Sigma,\delta,q_0,F)$有$A=L(N)$，我们的目标是说明$A$是正规的。也就是我们一定要证明存在一个DFA $M$使得$L(M)=A$。最直接的方式就是讨论，通过使用$N$的描述，我们可以提出一个等价的DFA $M$。如果我们能说明如何使用任意一个NFA $N$来定义一个DFA $M$使得$L(M)=L(N)$，那么这个证明就完成了。<br>　　我们将会使用NFA $N$的描述来定义一个等价的DFA $M$，通过一个简单的想法：每个$M$的状态都记录着一个$N$的状态子集。在读取输入字符串的任意部分后，总会有一些$N$可能处于的状态子集，然后我们将$M$设计成在读取字符串的任意部分后，它的状态就是$N$所对应的状态子集。</p>
 <h4 id="一个简单的例子"><a href="#一个简单的例子" class="headerlink" title="一个简单的例子"></a>一个简单的例子</h4><p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nfa/nfa2.png" alt="image"><br>在我们详细描述之前，先来看一个简单的例子。已知一个NFA $N$如图3.2所示。如果我们根据定义正式地描述这个NFA，那就是</p>
 <script type="math/tex; mode=display">N=(Q,\Sigma,\delta,q_0,F),</script><p>其中$Q=\{q_0,q_1\}、\Sigma=\{0,1\}$，以及$\delta:Q\times(\Sigma\cup\{\varepsilon\})\rightarrow\mathcal{P}(Q)$，定义如下：</p>
 <script type="math/tex; mode=display">\begin{align}&\delta(q_0,0)=\{q_0,q_1\}&&\delta(q_0,1)=\{q_1\}&&\delta(q_0,\varepsilon)=\varnothing\\&\delta(q_1,0)=\varnothing&&\delta(q_1,1)=\{q_0\}&&\delta(q_1,\varepsilon)=\varnothing\end{align}</script><p>我们将要定义个DFA $M$，对于每个$N$的状态集合他都有一个状态。我们可以根据自己的喜好来命名这些状态，也可以直接使用$Q$子集来表示。换句话说，$M$的状态集合就是幂集$\mathcal{P}(Q)$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nfa/nfa3.png" alt="image"><br>　　看一下状态图3.3，然后想一下如果它是$M$的有意义的不错选择。正式地讲，这个DFA就是</p>
