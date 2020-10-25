@@ -90,7 +90,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/rexp/rexp2.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/rexp/rexp3.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/rexp/rexp4.png">
-<meta property="og:updated_time" content="2020-10-25T10:12:45.263Z">
+<meta property="og:updated_time" content="2020-10-25T10:17:40.931Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 正则运算和正则表达式">
 <meta name="twitter:description" content="前言这节课我们会讨论正则运算和正则表达式，以及它们和合规语言之间的关系。">
@@ -367,7 +367,7 @@
 <p>如果A是一个有限语言，那么A*也是一个有限语言。</p>
 </blockquote>
 <p>一般而言这个陈述是错的。比如，$A=\{0\}$是有限的，但是</p>
-<script type="math/tex; mode=display">A^{*}=\{\varepsilon,0,00,000,...\}</script><p>是无限的。另外，的确两个有限语言的并集是有限的，并且两个有限语言的拼接还是有限的，所以当你将这些结论组合起来得出$A^{*}$是无限集合的时候，一定有什么地方出错了。当你将特性“有限”替换成合规后，情况也是一样的。</p>
+<script type="math/tex; mode=display">A^{*}=\{\varepsilon,0,00,000,...\}</script><p>是无限的。另外，的确两个有限语言的并集是有限的，并且两个有限语言的拼接还是有限的，所以当你将这些结论组合起来得出$A^{*}$是无限集合的时候，一定有什么地方出错了。当你将特性“有限”替换成“合规”后，情况也是一样的。</p>
 <h3 id="合规语言的其他特性闭包"><a href="#合规语言的其他特性闭包" class="headerlink" title="合规语言的其他特性闭包"></a>合规语言的其他特性闭包</h3><p>对于闭合的合规语言，除了正则运算外还有很多其他运算。比如，一个合规语言的补集（complement）也是合规的。为了保证术语是清楚的，这里有语言补集的定义。</p>
 <p><strong>定义4.3.</strong> 已知$A\subseteq\Sigma^{*}$是一个基于字母表$\Sigma$的语言。$A$的补集，记作$\overline{A}$，是一个使用$\Sigma$中字母组成的所有不包含于A的字符串构成的语言：</p>
 <script type="math/tex; mode=display">\overline{A}=\Sigma^{*}\backslash A</script><p><strong>命题4.4.</strong> 已知$\Sigma$是一个字母表，$A\subseteq \Sigma^{*}$是一个基于$\Sigma$的合规语言。语言$\overline{A}$也是合规的。</p>
