@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="前言这节课的重点在于非确定性优先自动机（NFA）模型以及它与DFA模型的关系。　　非确定性是计算理论中极为重要的概念。他指的是在一个计算中，不同的阶段可能会有多种选择的可能性。那么我们会思考这些选择的可能得到的输出，通常集中在是否存在一系列选择，它会导向一个特别的输出（比如一个有限自动机的接受状态）。　　这听起来像是一种幻想的涉及，不太可能与实际观点相关，因为现实的计算机不会做非确定性选择：在每一">
+<meta name="description" content="前言这节课的重点在于非确定性优先自动机（NFA）模型以及它与DFA模型的关系。　　非确定性是计算理论中极为重要的概念。他指的是在一个计算中，不同的阶段可能会有多种选择的可能性。那么我们会思考这些选择的可能得到的输出，通常集中在是否存在一系列选择，它会导向一个特别的输出（比如一个有限自动机的接受状态）。　　这听起来像是一种幻想的设计，不太可能与实际观点相关，因为现实的计算机不会做非确定性选择：在每一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 非确定性有限自动机">
 <meta property="og:url" content="http://yoursite.com/2020/10/03/John Watrous-非确定性有限自动机/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="前言这节课的重点在于非确定性优先自动机（NFA）模型以及它与DFA模型的关系。　　非确定性是计算理论中极为重要的概念。他指的是在一个计算中，不同的阶段可能会有多种选择的可能性。那么我们会思考这些选择的可能得到的输出，通常集中在是否存在一系列选择，它会导向一个特别的输出（比如一个有限自动机的接受状态）。　　这听起来像是一种幻想的涉及，不太可能与实际观点相关，因为现实的计算机不会做非确定性选择：在每一">
+<meta property="og:description" content="前言这节课的重点在于非确定性优先自动机（NFA）模型以及它与DFA模型的关系。　　非确定性是计算理论中极为重要的概念。他指的是在一个计算中，不同的阶段可能会有多种选择的可能性。那么我们会思考这些选择的可能得到的输出，通常集中在是否存在一系列选择，它会导向一个特别的输出（比如一个有限自动机的接受状态）。　　这听起来像是一种幻想的设计，不太可能与实际观点相关，因为现实的计算机不会做非确定性选择：在每一">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nfa/nfa1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nfa/nfa2.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nfa/nfa3.png">
-<meta property="og:updated_time" content="2020-10-04T00:58:45.485Z">
+<meta property="og:updated_time" content="2020-10-25T10:01:07.173Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 非确定性有限自动机">
-<meta name="twitter:description" content="前言这节课的重点在于非确定性优先自动机（NFA）模型以及它与DFA模型的关系。　　非确定性是计算理论中极为重要的概念。他指的是在一个计算中，不同的阶段可能会有多种选择的可能性。那么我们会思考这些选择的可能得到的输出，通常集中在是否存在一系列选择，它会导向一个特别的输出（比如一个有限自动机的接受状态）。　　这听起来像是一种幻想的涉及，不太可能与实际观点相关，因为现实的计算机不会做非确定性选择：在每一">
+<meta name="twitter:description" content="前言这节课的重点在于非确定性优先自动机（NFA）模型以及它与DFA模型的关系。　　非确定性是计算理论中极为重要的概念。他指的是在一个计算中，不同的阶段可能会有多种选择的可能性。那么我们会思考这些选择的可能得到的输出，通常集中在是否存在一系列选择，它会导向一个特别的输出（比如一个有限自动机的接受状态）。　　这听起来像是一种幻想的设计，不太可能与实际观点相关，因为现实的计算机不会做非确定性选择：在每一">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nfa/nfa1.png">
 
 
@@ -335,7 +335,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这节课的重点在于非确定性优先自动机（NFA）模型以及它与DFA模型的关系。<br>　　非确定性是计算理论中极为重要的概念。他指的是在一个计算中，不同的阶段可能会有多种选择的可能性。那么我们会思考这些选择的可能得到的输出，通常集中在是否存在一系列选择，它会导向一个特别的输出（比如一个有限自动机的接受状态）。<br>　　这听起来像是一种幻想的涉及，不太可能与实际观点相关，因为现实的计算机不会做非确定性选择：在每一步中显示计算机做出的选择由已给定的配置决定。然而相反我们对非确定性最大的兴趣不在于给出建议。我们将会发现非确定性是一个强大的分析工具（从某种意义上，他帮助我们设计事物和证明事实），它与证明和验证的密切联系具有基本的重要性。<br><a id="more"></a></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这节课的重点在于非确定性优先自动机（NFA）模型以及它与DFA模型的关系。<br>　　非确定性是计算理论中极为重要的概念。他指的是在一个计算中，不同的阶段可能会有多种选择的可能性。那么我们会思考这些选择的可能得到的输出，通常集中在是否存在一系列选择，它会导向一个特别的输出（比如一个有限自动机的接受状态）。<br>　　这听起来像是一种幻想的设计，不太可能与实际观点相关，因为现实的计算机不会做非确定性选择：在每一步中显示计算机做出的选择由已给定的配置决定。然而相反我们对非确定性最大的兴趣不在于给出建议。我们将会发现非确定性是一个强大的分析工具（从某种意义上，他帮助我们设计事物和证明事实），它与证明和验证的密切联系具有基本的重要性。<br><a id="more"></a></p>
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="非确定性有限自动机基础"><a href="#非确定性有限自动机基础" class="headerlink" title="非确定性有限自动机基础"></a>非确定性有限自动机基础</h3><p>关于NFA模型的讨论，我们从定义开始。这个定义和DFA模型类似，但有一个关键的不同点。</p>
 <p><strong>定义3.1.</strong> 一个非确定性有限自动机（或者简称NFA）是一个5-元组</p>
 <script type="math/tex; mode=display">N=(Q,\Sigma,\delta,q_0,F),</script><p>$Q$是一个有限非空的状态集合，$\Sigma$是一个字母表，$\delta$是一个转移函数，它的形式为</p>
@@ -430,6 +430,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2020/10/25/John Watrous-正则运算和正则表达式/" rel="prev" title="John Watrous 《Introduction to the Theory of Computing》 -- 正则运算和正则表达式">
+                John Watrous 《Introduction to the Theory of Computing》 -- 正则运算和正则表达式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -515,7 +519,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言这节课我们会讨论正则运算和正则表达式，以及它们和合规语言之间的关系。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 正则运算和正则表达式">
+<meta property="og:url" content="http://yoursite.com/2020/10/25/John Watrous-正则运算和正则表达式/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言这节课我们会讨论正则运算和正则表达式，以及它们和合规语言之间的关系。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/rexp/rexp1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/rexp/rexp2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/rexp/rexp3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/rexp/rexp4.png">
+<meta property="og:updated_time" content="2020-10-25T10:12:45.263Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 正则运算和正则表达式">
+<meta name="twitter:description" content="前言这节课我们会讨论正则运算和正则表达式，以及它们和合规语言之间的关系。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/rexp/rexp1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/10/25/John Watrous-正则运算和正则表达式/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》 -- 正则运算和正则表达式 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/25/John Watrous-正则运算和正则表达式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》 -- 正则运算和正则表达式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-10-25T17:56:55+08:00">
+                2020-10-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/10/25/John Watrous-正则运算和正则表达式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/10/25/John Watrous-正则运算和正则表达式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/10/25/John Watrous-正则运算和正则表达式/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》 -- 正则运算和正则表达式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这节课我们会讨论正则运算和正则表达式，以及它们和合规语言之间的关系。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="正则运算"><a href="#正则运算" class="headerlink" title="正则运算"></a>正则运算</h3><p>正则运算是用于语言的三种操作，下面的定义会解释清楚。</p>
+<p><strong>定义4.1.</strong> 已知$\Sigma$表示一个字母表，$A,B\subseteq \Sigma^{*}$表示语言。以下就是正则运算：</p>
+<ol>
+<li>Union（并集）。语言$A\cup B\subseteq\Sigma^{*}$的定义是<script type="math/tex">A\cup B=\{w:w\in A 或者 w\in B\}.</script>用文字表达就是两个集合的并集，只是将集合换成语言而已。</li>
+<li>Concatenation（拼接）。语言$AB\subseteq\Sigma^{*}$的定义是<script type="math/tex">AB=\{wx:w\in A 并且 x\in B\}.</script>用文字表达，这个语言包含了每个A中的字符串拼接上每个B中的字符串获得的所有字符串，并且A中的字符串在左边，而B中的字符串在右边。（注意，对于字符串$wx$的形式没有标记说明$w$在哪儿结束以及$x$在哪儿开始；它仅仅是将$w$和$x$放在一起的符号序列）</li>
+<li>Kleene star（克林星，或者简称星）。语言$A^{*}$的定义是<script type="math/tex">A^{*}=\{\varepsilon\}\cup A\cup AA\cup AAA\cup \cdot\cdot\cdot</script>用文字表达，$A^{*}$就是从$A$中选取任意有限数量的字符串拼接而成的字符串所组成的语言。（这包括了不选取字符串，也就是空字符串）</li>
+</ol>
+<p>注意正则运算（regular operations）与合规语言（regular languages）两个名字只是巧合。而且正则运算也确实和合规语言有着紧密的联系，只是名字的选取并没有什么数学意义。</p>
+<h4 id="正则运算下的合规语言闭包"><a href="#正则运算下的合规语言闭包" class="headerlink" title="正则运算下的合规语言闭包"></a>正则运算下的合规语言闭包</h4><p>接下来我们证明一个关联正则运算和合规语言的理论。</p>
+<p><strong>定理4.2.</strong> 对于合规语言的正则运算是封闭的：如果$A,B\subseteq \Sigma^{*}$是合规语言，那么语言$A\cup B、AB、A^{*}$也是合规的。</p>
+<p>证明：首先我们观察到，因为$A$和$B$是合规的，所以存在DFA</p>
+<script type="math/tex; mode=display">M_A=(P,\Sigma,\delta,p_0,F)\ \ \ 和\ \ \ M_B(Q,\Sigma,\mu,q_0,G)</script><p>使得$L(M_A)=A$和$L(M_B)=B$。接下来我们的证明需要用到这些DFA。因为我们可以在不影响语言识别的情况下自由命名状态，假设$P和Q$是不相交集合不会失去普遍性（这意味着$P\cap Q=\varnothing$）。<br>　　让我们从$A\cup B$开始。从上一节课中我们知道如果存在一个NFA $N$使得$L(N)=A\cup B$，那么$A\cup B$则是合规的。记住这一点，我们的目标就变成了定义这样一个NFA。我们将会定义这个NFA $N$，它的状态包含了$P$和$Q$的所有元素，同时还包含一个既不属于$P$也不属于$Q$的状态$r_0$。这个新状态$r_0$是$N$的初始状态。然后定义$N$的转移函数，$P$中所有的状态转移函数是$\delta$和$Q$中所有状态的转移函数$\mu$都是已知的，再加上两个$\varepsilon$-转移，一个是从$r_0$到$p_0$，另一个是从$r_0$到$q_0$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/rexp/rexp1.png" alt="image"><br>　　图4.1展示NFA $N$状态图概况。你应该将标有$M_A$和$M_B$的阴影方框想象为$M_A$和$M_B$的状态图。（图中的两个DFA是假设的，$M_A$和$M_B$的真实状态图当然是任意的）<br>　　我们正式指定$N$如下：</p>
+<script type="math/tex; mode=display">N=(R,\Sigma,\eta,r_0,F\cup G)，</script><p>其中$R=P\cup Q\cup\{r_0\}$（在我们的假设中$P,Q,\{r_0\}$是不相交集合）和转移函数</p>
+<script type="math/tex; mode=display">\eta:R\times(\Sigma\cup\{\varepsilon\})\rightarrow\mathcal{P}(R)</script><p>的定义如下：</p>
+<script type="math/tex; mode=display">\begin{align}&\eta(p,a)=\{\delta(p,a)\} &&（对于所有p\in P和a\in \Sigma）\\&\eta(p,\varepsilon)=\varnothing &&（对于所有p\in P）\\&\eta(q,a)=\{\mu(q,a)\} &&（对于所有q\in Q和a\in\Sigma）\\&\eta(q,\varepsilon)=\varnothing &&（对于所有q\in Q）\\&\eta(r_0,a)=\varnothing &&（对于所有a\in \Sigma）\\&\eta(r_0,\varepsilon)=\{p_0,q_0\}.\end{align}</script><p>$N$的接受状态实是$F\cup G$。<br>　　每个能被$M_A$接受的字符串也能被$N$接受，因为我们可以采用一个步从$r_0$到$p_0$的$\varepsilon$-转换，接下来的转移就和$M_A$一样了。同样的道理每个能被$M_B$接受的字符串也能被$N$接受。最后每个能被$N$接受的字符串都能被$M_A$或者$M_B$接受（或者同时接受），因为每个被接受的计算都是以两个$\varepsilon$-转换之一开始的，然后由此决定采用$M_A$或者$M_B$的接受计算。因此也就有了</p>
+<script type="math/tex; mode=display">L(N)=L(M_A)\cup L(M_B)=A\cup B,</script><p>我们得出$A\cup B$是合规的。<br>下一步我们证明$AB$是合规的。思路和上面一样：我们理由DFA $M_A$和$M_B$定义一个语言$AB$的NFA $N$。这次$N$的状态集合是并集$P\cup Q$，$M_A$的初始状态$p_0$将会是$N$的初始状态，另外我们还要给每个$M_A$的接受状态添加一个$\varepsilon$-转换到$M_B$的初始状态。最后，$N$的接受状态就是$M_B$的接受状态$G$。图4.2展示了基于$M_A$和$M_B$的$N$结构。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/rexp/rexp2.png" alt="image"><br>使用正式术语，NFA $N$的定义是</p>
+<script type="math/tex; mode=display">N=(P\cup Q,\Sigma,\eta,p_0,G),</script><p>其中转移函数</p>
+<script type="math/tex; mode=display">\eta:(P\cup Q)\times(\Sigma\cup\{\varepsilon\})\rightarrow\mathcal{P}(P\cup Q)</script><p>的定义是</p>
+<script type="math/tex; mode=display">\begin{align}&\eta(p,a)=\{\delta(p,a)\} &&（对于所有p\in P和a\in \Sigma）\\&\eta(q,a)=\{\mu(q,a)\} &&（对于所有q\in Q和a\in\Sigma）\\&\eta(p,\varepsilon)=\{q_0\} &&（对于所有p\in F）\\&\eta(p,\varepsilon)=\varnothing &&（对于所有p\in P\backslash F）\\&\eta(q,\varepsilon)=\varnothing &&（对于所有q\in Q）.\end{align}</script><p>和我们前面证明$A\cup B$是合规的一样，你们可以论证$N$识别语言$AB$，由此腿短$AB$是合规的。<br>　　最后我们将要证明$A^{*}$是合规的，证明过程也是类似的。但这次我们只考虑$M_A$，因为语言$B$并不涉及其中。这次我们直接正式指定$N$；定义是</p>
+<script type="math/tex; mode=display">N=(R,\Sigma,\eta,r_0,\{r_0\}),</script><p>其中$R=P\cup\{r_0\}$以及转移函数</p>
+<script type="math/tex; mode=display">\eta:R\times(\Sigma\cup\{\varepsilon\})\rightarrow\mathcal{P}(R)</script><p>的定义是</p>
+<script type="math/tex; mode=display">\begin{align}&\eta(r_0,a)=\varnothing &&（对于所有a\in \Sigma）\\&\eta(r_0,\varepsilon)=p_0\\&\eta(p,a)=\{\delta(p,a)\} &&（对于所有p\in P和a\in \Sigma）\\&\eta(p,\varepsilon)=\{r_0\} &&（对于所有p\in F）\\&\eta(p,\varepsilon)=\varnothing &&（对于所有p\in P\backslash F）.\end{align}</script><p>用文字描述，$N$的状态就$M_A$的状态加上一个$r_0$，而$r_0$即是初始状态也是接受状态。而$N$的转移包含了所有$M_A$的转移，加上从$r_0$到$M_A$初始状态$p_0$的$\varepsilon$-转移和从$M_A$的接受状态回到$r_0$的$\varepsilon$-转移。图4.3展示了$N$和$M_A$的关系。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/rexp/rexp3.png" alt="image"><br>　　很明显$N$可以识别语言$A^{*}$。这是因为所有这些字符串明确导致了$N$从状态$r_0$出发后又回到$r_0$零次或者多次，每次循环都对应这个某个可以被$M_A$接受的字符串。当$L(N)=A^{*}$，也就得出$A^{*}$是合规的，如此证明就完成了。</p>
+<p>　　很自然我们会想到为什么不用并集和拼接操作来证明$A^{|*}$是合规的。具体一点，我们有</p>
+<script type="math/tex; mode=display">A=\{\varepsilon\}\cup A\cup AA\cup AAA\cup \cdot\cdot\cdot</script><p>很简单可以看出语言$\{\varepsilon\}$是合规的 — 这里有一个识别语言$\{\varepsilon\}$的NFA（对于任意字母表）：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/rexp/rexp4.png" alt="image"><br>语言$\{\varepsilon\}\cup A$是合规的，因为两个合规语言的并集也是合规的。我们也知道$AA$是合规的，因为两个合规语言的拼接也是合规的。依次类推我们会发现语言</p>
+<script type="math/tex; mode=display">\{\varepsilon\}\cup A\cup AA\cup AAA</script><p>是合规的，语言</p>
+<script type="math/tex; mode=display">\{\varepsilon\}\cup A\cup AA\cup AAA\cup AAAA</script><p>也是合规的，等等都是如此。是不是这就意味着$A^{*}$合规呢？<br>　　答案是“不是”。尽管只要$A$是合规的，$A^{*}$就是合规的，正如我们前面所证明的，但是仅靠并集和拼接却并不能证明它。这是因为我们不能从这个论证得出此无限集合是合规的，而只能得到有限集合是合规的。<br>　　如果你仍然怀疑或者不确定，考虑一下这个陈述：</p>
+<blockquote>
+<p>如果A是一个有限语言，那么A*也是一个有限语言。</p>
+</blockquote>
+<p>一般而言这个陈述是错的。比如，$A=\{0\}$是有限的，但是</p>
+<script type="math/tex; mode=display">A^{*}=\{\varepsilon,0,00,000,...\}</script><p>是无限的。另外，的确两个有限语言的并集是有限的，并且两个有限语言的拼接还是有限的，所以当你将这些结论组合起来得出$A^{*}$是无限集合的时候，一定有什么地方出错了。当你将特性“有限”替换成合规后，情况也是一样的。</p>
+<h3 id="合规语言的其他特性闭包"><a href="#合规语言的其他特性闭包" class="headerlink" title="合规语言的其他特性闭包"></a>合规语言的其他特性闭包</h3><p>对于闭合的合规语言，除了正则运算外还有很多其他运算。比如，一个合规语言的补集（complement）也是合规的。为了保证术语是清楚的，这里有语言补集的定义。</p>
+<p><strong>定义4.3.</strong> 已知$A\subseteq\Sigma^{*}$是一个基于字母表$\Sigma$的语言。$A$的补集，记作$\overline{A}$，是一个使用$\Sigma$中字母组成的所有不包含于A的字符串构成的语言：</p>
+<script type="math/tex; mode=display">\overline{A}=\Sigma^{*}\backslash A</script><p><strong>命题4.4.</strong> 已知$\Sigma$是一个字母表，$A\subseteq \Sigma^{*}$是一个基于$\Sigma$的合规语言。语言$\overline{A}$也是合规的。</p>
+<p>这个命题很容易证明：因为$A$是合规的，一定存在一个DFA $M=(Q,\Sigma,\delta,q_0,F)$使得$L(M)=A$。通过将交换$M$的接受和拒绝状态，我们就得到了$\overline{A}$的DFA。也就是DFA $K=(Q,\Sigma,\delta,q_0,Q\backslash F)$能够识别$\overline{A}$。<br>　　如果已知一个语言的DFA，通过交换接受和拒绝状态我们就能轻松获取它的补集语言的DFA，但是这个方法对于NFA无效。比如你也许能将一个NFA的接受和拒绝状态交换，但你得到的NFA能识别的却不是它语言的补集。这是因为非确定性模型的接受与拒绝的非对称性质。<br>　　接下来的课程中我们会看到闭合合规语言的运算的更多例子。这节课还有一个例子。</p>
+<p><strong>命题4.5.</strong> 已知$\Sigma$是一个字母表，$A$和$B$是基于$\Sigma$的合规语言。交集$A\cap B$也是合规的。</p>
+<p>　　这次我们通过联合已知的闭包属性来证明。由德摩根定律可知</p>
+<script type="math/tex; mode=display">A\cap B= \overline{\overline{A}\cup \overline{B}}</script><p>如果$A$和$B$是合规的，那么$\overline{A}$和$\overline{B}$就是合规的，因此$\overline{A}\cup\overline{B}$是合规的，又因为这个合规语言的补集是$A\cap B$，我们得到$A\cap B$是合规的。<br>　　这里有另一种方式可以证明$A\cap B$是合规的，它是可以直接论证的。因为语言$A$和$B$是合规的，一定存在DFA</p>
+<script type="math/tex; mode=display">M_A=(P,\Sigma,\delta,p_0,F)\ \ \ 和\ \ \ M_B=(Q,\Sigma,\mu,q_0,G)</script><p>使得$L(M_A)=A$和$L(M_B)=B$。我们使用笛卡尔积构造一个DFA $M$：</p>
+<script type="math/tex; mode=display">M=(P\times Q,\Sigma,\eta,(p_0,q_0),F\times G)</script><p>其中对于每个$p\in P、q\in Q、a\in\Sigma$有</p>
+<script type="math/tex; mode=display">\eta((p,q),a)=(\delta(p,a),\mu(q,a)).</script><p>本质上，DFA $M$就像是在同时运行$M_A$和$M_B$，接受时机当且仅当$M_A$和$M_B$同时接受。用同样的思路你也可以获得$A\cup B$的DFA（但是接受时机当且仅当$M_A$或者$M_B$接受）。</p>
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p>我希望你已经对正则表达式有过了解；它们在编程语言和其他指定模式的搜索和字符串匹配中应用广泛。当实际使用正则表达式时，我们代表性地赋予他们丰富的运算集合，但在这里我们仅采用最低限度的正则表达式定义，只允许三种正则运算（没有其他类似于否定运算或者标记输入的起始或者结束字符的特殊符号）<br>　　下面有我们将会采用的正则表达式的正式定义。这个定义是归纳定义的一个例子，有一些关于归纳定义的解释紧随其后。</p>
+<p><strong>定义4.6.</strong> 已知$\Sigma$是一个字母表。$R$是基于字母表$\Sigma$的正则表达式当且仅当它拥有以下性质中的任意一个：</p>
+<ol>
+<li>$R=\varnothing$.</li>
+<li>$R=\varepsilon$.</li>
+<li>对于某个$a\in\Sigma$有$R=a$.</li>
+<li>对于正则表达式$R_1$和$R_2$有$R=(R_1\cup R_2)$.</li>
+<li>对于正则表达式$R_1$和$R_2$有$R=(R_1R_2)$.</li>
+<li>对于正则表达式$R_1$有$R=(R_1^{*})$.</li>
+</ol>
+<p>　　当你看到类似与这样的归纳定义，你应该用最通俗的方式来说明它，而不能把它看成是某种循环的或者似是而非的东西。比如，当我们看到对于任意任意正则表达式$R_1$有$R=(R_1^{*})$，这应该被理解为$R_1$已经是一个定义明确的正则表达式了。比如我们不能将$R_1$当做正则表达式$R$，否则我们将会得到$R=(R^{*})$，这将会被解释成一个奇怪的、分形表达式，看起来就是这样：</p>
+<script type="math/tex; mode=display">R=(((\cdot\cdot\cdot(\cdot\cdot\cdot)^{*}\cdot\cdot\cdot)^{*})^{*})^{*}.</script><p>像这样的东西根本就不是一个正则表达式，根据定义的通俗解释这不是有效的。这里有一些基于二进制字母表$\Sigma=\{0,1\}$的有效正则表达式的例子：</p>
+<script type="math/tex; mode=display">\varnothing</script><script type="math/tex; mode=display">\varepsilon</script><script type="math/tex; mode=display">0</script><script type="math/tex; mode=display">1</script><script type="math/tex; mode=display">(0\cup 1)</script><script type="math/tex; mode=display">((0\cup 1)^{*})</script><script type="math/tex; mode=display">(((0\cup\varepsilon)^{*})1)</script><p>当我们说到基于字母表$\Sigma$的正则表达式，你应该把他们想象成一个字符串，它基于字母表</p>
+<script type="math/tex; mode=display">\Sigma\cup\{(,),*,\cup,\varepsilon,\varepsilon\}</script><p>（假设$\Sigma$和$\{(,),*,\cup,\varepsilon,\varnothing\}$不相交）。有些人会用不同的字体来写正则表达式，这样让它们看起来更明显，但我不会这样做（一部分原因是因为我的板书只有一种字体，另外就是我不认为那有必要）。<br>　　接下来我们将会通过一个已知的正则表达式定义识别语言（或者匹配）。这次又是递归定义，它和本身正则表达式的定义是直接并行的。如果它看起来像是在陈述一些显而易见的事情，那么你的感觉是对的；我们要求一个正式定义，但本质上说我们应该用最直接和自然的方式定义一个被正则表达式匹配的语言。</p>
+<p><strong>定义4.7.</strong> 已知$R$是一个基于字母表$\Sigma$的正则表达式。$R$的识别语言被记作$L(R)$，定义如下：</p>
+<ol>
+<li>如果$R=\varnothing$，那么$L(R)=\varnothing$.</li>
+<li>如果$R=\varepsilon$，那么$L(R)=\{\varepsilon\}$.</li>
+<li>如果对于任意$a\in\Sigma$有$R=a$，那么$L(R)=\{a\}$.</li>
+<li>如果对于任意正则表达式$R_1$和$R_2$有$R=(R_1\cup R_2)$，那么$L(R)=L(R_1)\cup L(R_2)$.</li>
+<li>如果对于任意正则表达式$R_1$和$R_2$有$R=(R_1R_2)$，那么$L(R)=L(R_1)L(R_2)$.</li>
+<li>如果对于任意正则表达式$R_1$有$R=(R_1^{*})$，那么$L(R)=L(R_1)^{*}$.</li>
+</ol>
+<h4 id="正则运算的优先级"><a href="#正则运算的优先级" class="headerlink" title="正则运算的优先级"></a>正则运算的优先级</h4><p>在定义4.6的正则表达中我们看到了很多括号。比如正则表达式$(((0\cup\varepsilon)^{*})1)$的括号多于非括号的符号。括号保证了每个正则表达式的含义明确。<br>　　然而根据一种引入的正则运算优先级顺序，我们就不在需要这么多括号了。顺序如下：</p>
+<ol>
+<li>星号（最高优先级）</li>
+<li>拼接</li>
+<li>并集（最低优先级）</li>
+</ol>
+<p>为了更明确，我们不会改变正式定义中的正则表达式，只是引入一种约定允许一些括号被省略，这会让正则表达式看起来更简单。比如，我们会写</p>
+<script type="math/tex; mode=display">10^{*}\cup 1</script><p>而不是</p>
+<script type="math/tex; mode=display">((1(0^{*}))\cup 1).</script><p>认同以上优先级顺序后，看起来简单的正则表达式就被视为第二表达形式。<br>　　一种简单的记忆优先级顺序的方式就是将它们类比于你所熟知的代数运算：星号看起来求幂，拼接看起来像乘法，并集就像加法。所以就像表达式$xy^2+z$与$((x(y^2))+z)$有相同的含义，表达式$10^{*}\cup 1$和$((1(0^{*}))\cup 1)$也一样。</p>
+<h3 id="正则表达式描述合规语言"><a href="#正则表达式描述合规语言" class="headerlink" title="正则表达式描述合规语言"></a>正则表达式描述合规语言</h3><p>到了这个点上很自然会想到哪些语言有正则表达式。答案是具有正则表达式的语言类就是合规语言类。（如果不是你就会想为什么合规语言这样命名。注：合规语言的英文名是regular languages，正则表达式的英文名是regular expressions）<br>　　要确定合规语言和具有正则表达式的语言是一致的，需要考虑两个问题。让我们从第一个开始，他的内容就是下面这个命题。</p>
+<p><strong>命题4.8.</strong> 已知$\Sigma$是一个字母表，$R$是一个基于字母表$\Sigma$的正则表达式。语言$L(R)$是合规的。</p>
+<p>证明这个命题的思路很简单：我们可以轻松的构造基于语言$\varnothing$、$\{\varepsilon\}$、$\{a\}$（对于任意符号$a\in\Sigma$）的DFA，通过重复使用定理4.2的结构，我们可以联合这些DFA构造一个NFA，它能识别同样具有这种语言的任意正则表达式。<br>　　另外一个问题的内容是下面这个定理，它上面这个证明起来要难一些。要是你感兴趣的化我已经提供了一个证明，不然你可以跳过它；这堂课的考试或者家庭作业中不会要求你学习这个证明。</p>
+<p><strong>定理4.9.</strong> 已知$\Sigma$是一个字母表，$A\subseteq\Sigma^{*}$是一个合规语言。存在一个基于字母表$\Sigma$的正则表达式使得$L(R)=A$。</p>
+<p>证明：因为$A$是合规的，一定存在一个DFA $M=(Q,\Sigma,\delta,q_0,F)$使得$L(M)=A$。我们可以自由使用任意名称来代表DFA的状态，所以假设对于某个正整数$n$有$Q=\{1,…,n\}$不会失去普遍性。<br>　　我们现在将要定义一种语言$B_{p,q}^k\subseteq\Sigma^{*}$，其中状态$p,q\in\{1,…,n\}$和整数$k\in\{0,…,n\}$。语言$B_{p,q}^k$所有字符串$w$的集合，$w$导致$M$的运行如下：</p>
+<p>如果我们让$M$从状态$p$开始，那么读取$w$使得$M$转移到状态$q$。此外，除了初始状态$p$和结束状态$q$，当DFA $M$这样读取$w$时只经过了集合$\{1,…,k\}$中的状态。</p>
+<p>比如，语言$B_{p,q}^n$中的所有字符串造成了$M$从状态$p$到$q$（此处限制中间状态没任何意义了）。在另一种极端情况下，集合$B_{p,q}^0$一定是一个有限集合；如果没有从$p$到$q$的直接转移，它可能是一个空集，在$p=q$的情况下它不包含任何字符串，通常它包含长度为1的字符串，这些字符串所对应的字符导致$M$从$p$转移到$q$。<br>　　现在我们将会对于k做归纳来证明存在一个正则表达式$R_{p,q}^k$使得$L(R_{p,q}^k)=B_{p,q}^k$，其中$p,q\in\{1,…,n\}$和$k\in\{0,…,n\}$。基本情况是$k=0$。对于每一对$p,q\in\{1,…,n\}$语言$B_{p,q}^0$是有限的，包含的字符串长度是0或者1，所以可以直接定义一个对应的正则表达式$R_{p,q}^0$匹配$B_{p,q}^0$。<br>　　至于归纳步骤，我们假设$k\geq 1$，并且存在一个正则表达式$R_{p,q}^{k-1}$使得对于每一对$p,q\in\{1,…,n\}$有$L(R_{p,q}^{k-1})=B_{p,q}^{k-1}$。有这样一种情况</p>
+<script type="math/tex; mode=display">B_{p,q}^k=B_{p,q}^{k-1}\cup B_{p,k}^{k-1}(B_{k,k}^{k-1})^{*}B_{k,q}^{k-1}.</script><p>这个等价关系反映了通过状态集合$\{1,…,k\}$导致$M$从$p$到$q$的字符串要么没有经过状态$k$，要么经过了状态$k$一次或者多次。因此我们可以定义一个正则表达式$R_{p,q}^k$使得对于每一对$p,q\in\{1,…,n\}$有$L(R_{p,q}^k=B_{p,q}^k$如下</p>
+<script type="math/tex; mode=display">R_{p,q}^k=R_{p,q}^{k-1}\cup R_{p,k}^{k-1}(R_{k,k}^{k-1})^{*}R_{k,q}^{k-1}.</script><p>　　最后，我们获得了一个正则表达式$R$满足$L(R)=A$，定义是</p>
+<script type="math/tex; mode=display">R=\bigcup_{q\in F}R_{q_0,q}^n.</script><p>（用文字表达，$R$是所有正则表达式$R_{q_0,q}^n$的并集，其中$q$是一个接受状态）如此证明就完成了。</p>
+<p>　　有一种程序可以将一个已知的DFA转换成一个等价的正则表达式。这个转换的思路就类似于我们上面的证明。一个相对简单地DFA可能会生成一个巨大且复杂的正则表达式，但它的确是有效的 — 就像将一个NFA转换成等价的DFA，它可以通过计算机来实现。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>整篇给我的感觉：正则表达式就是一种自动机。那我所知的正则表达式的使用方式几乎都是用在字符串匹配上；比如说用来校验电话号码或者邮箱格式。看了几篇计算理论课，我不禁有个疑问：是否自动机和程序语言有着关系，估计再看几篇就能揭晓了。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/CS360/Lectures/04.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/CS360/Lectures/04.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/10/03/John Watrous-非确定性有限自动机/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》 -- 非确定性有限自动机">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》 -- 非确定性有限自动机
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正则运算"><span class="nav-number">2.1.</span> <span class="nav-text">正则运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#正则运算下的合规语言闭包"><span class="nav-number">2.1.1.</span> <span class="nav-text">正则运算下的合规语言闭包</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合规语言的其他特性闭包"><span class="nav-number">2.2.</span> <span class="nav-text">合规语言的其他特性闭包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式"><span class="nav-number">2.3.</span> <span class="nav-text">正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#正则运算的优先级"><span class="nav-number">2.3.1.</span> <span class="nav-text">正则运算的优先级</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则表达式描述合规语言"><span class="nav-number">2.4.</span> <span class="nav-text">正则表达式描述合规语言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">4.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/10/25/John Watrous-正则运算和正则表达式/';
+          this.page.identifier = '2020/10/25/John Watrous-正则运算和正则表达式/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》 -- 正则运算和正则表达式';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
