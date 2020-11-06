@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言我们已经知道对于任意字母表$\Sigma$存在语言$A\subseteq \Sigma^{*}$是非正则的。这是因为基于$\Sigma$的语言数量是不可数的，但是基于$\Sigma$的正则语言是可数的。然而这个观察结果不足以让我们推导出某个非正则语言是非正则的。本节课我们会讨论一种方法，它可以证明相当广泛的语言是非正则的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 证明非正则语言">
+<meta property="og:url" content="http://yoursite.com/2020/11/06/John Watrous-证明非正则语言/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言我们已经知道对于任意字母表$\Sigma$存在语言$A\subseteq \Sigma^{*}$是非正则的。这是因为基于$\Sigma$的语言数量是不可数的，但是基于$\Sigma$的正则语言是可数的。然而这个观察结果不足以让我们推导出某个非正则语言是非正则的。本节课我们会讨论一种方法，它可以证明相当广泛的语言是非正则的。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nrexp/nrexp1.png">
+<meta property="og:updated_time" content="2020-11-06T13:27:52.109Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 证明非正则语言">
+<meta name="twitter:description" content="前言我们已经知道对于任意字母表$\Sigma$存在语言$A\subseteq \Sigma^{*}$是非正则的。这是因为基于$\Sigma$的语言数量是不可数的，但是基于$\Sigma$的正则语言是可数的。然而这个观察结果不足以让我们推导出某个非正则语言是非正则的。本节课我们会讨论一种方法，它可以证明相当广泛的语言是非正则的。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nrexp/nrexp1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/11/06/John Watrous-证明非正则语言/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》 -- 证明非正则语言 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/06/John Watrous-证明非正则语言/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》 -- 证明非正则语言</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-11-06T21:08:18+08:00">
+                2020-11-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/11/06/John Watrous-证明非正则语言/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/11/06/John Watrous-证明非正则语言/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/11/06/John Watrous-证明非正则语言/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》 -- 证明非正则语言">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们已经知道对于任意字母表$\Sigma$存在语言$A\subseteq \Sigma^{*}$是非正则的。这是因为基于$\Sigma$的语言数量是不可数的，但是基于$\Sigma$的正则语言是可数的。然而这个观察结果不足以让我们推导出某个非正则语言是非正则的。本节课我们会讨论一种方法，它可以证明相当广泛的语言是非正则的。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="正则语言的泵引理"><a href="#正则语言的泵引理" class="headerlink" title="正则语言的泵引理"></a>正则语言的泵引理</h3><p>首先我们来证明一个简单的事实 — 称之为泵引理 — 它确立了正则语言所拥有的一种必然属性。稍后在接下来的小节中，我们将会用这个引理来推导某个语言是非正则的。</p>
+<p><strong>引理5.1（正则语言的泵引理）.</strong> 已知$\Sigma$是一个字母表，$A\subseteq\Sigma^{*}$是一个正则语言。存在一个正整数$n$（叫做$A$的泵长度）具有以下属性。对于每个字符串$w\in A$并且$|A|\geq n$，可以写成$w=xyz$，其中所选择的$x,y,z\in\Sigma^{*}$满足</p>
+<ol>
+<li>$y\neq \varepsilon$,</li>
+<li>$|xy|\leq n$,并且</li>
+<li>对于所有$i\in\mathbb{N}$有$xy^iz\in A$.</li>
+</ol>
+<p>泵引理基本上是一个精确的技术性方法，用来表示以下事实的简单结果：</p>
+<p>如果一个有$n$个或者更少状态的DFA从一个输入字符串中读取了$n$个或者更多符号，那么至少一个状态会被访问超过一次。</p>
+<p>这表示如果一个有$n$个状态的DFA读取了某个长度至少是$n$的字符串，那么输入字符串中一定存在一个子串造成了一个循环，也就是说DFA从一个状态出发又回到了这个状态。如果这个DFA接受原来的字符串，那么重复添加造成循环的子串或者移除子串，我们得到不同的字符串也能被这个DFA接受。尝试将这种直觉和随后的证明搭配也许会有帮助。</p>
+<p>引理5.1的证明：已知$M=(Q,\Sigma,\delta,q_0,F)$是一个识别A的DFA，$n=|Q|$是$M$的状态数量。我们将会证明这个$n$满足泵引理中的属性。<br>　　注意如果$A$中没有长度超过$n$的字符串，那么就没我们什么事了：引理中声明的属性在这种情况下是满足的。因此我们将转到$A$包含至少一个长度超过$n$的字符串的情况上来。特别地假设$w\in A$是一个字符串并且$|w|&gt;n$。我们写出</p>
+<script type="math/tex; mode=display">w=a_1\cdot\cdot\cdot a_m,</script><p>其中$m=|w|$并且$a_1,…,a_m\in\Sigma$。由$w\in A$可知$M$接受$w$，并且存在状态</p>
+<script type="math/tex; mode=display">r_0,r_1,...,r_m\in Q</script><p>使得$r_0=q_0,r_m\in F$并且对于每个$k\in\{0,…,m-1\}$</p>
+<script type="math/tex; mode=display">r_{k+1}=\delta(r_k,a_{k+1}).</script><p>　　现在，序列$r_0,r_1,…,r_n$有$n+1$个成员，但是$Q$中只有$n$个不同的元素，所以在这个序列中至少$Q$中至少有一个状态出现超过一次。这样，一定存在索引$s,t\in\{0,…,n\}$满足$s&lt;t$使得$r_s=r_t$。<br>　　接下来，定义字符串$x,y,z\in\Sigma^{*}$如下：</p>
+<script type="math/tex; mode=display">x=a_1\cdot\cdot\cdot a_s,\ \ \ \ y=a_{s+1}\cdot\cdot\cdot a_t,\ \ \ \ z=a_{t+1}\cdot\cdot\cdot a_m.</script><p>选择这些字符串让$w=xyz$，接着为了完成证明，我们只需要说明这些字符串满足引理所列的三种条件就行。前两个条件很明显：因为$s&lt;t$我们知道$y$的长度$t-s$至少为1，因此$y\neq \varepsilon$；然后因为$t$选自集合$\{0,…,n\}$我们知道$xy$的长度$t$最大是$n$。现在只需要验证$xy^iz\in A$即可，他等价于对于每个$i\in\mathbb{N}$都有$M$接受$xy^iz$。$xy^iz$被$M$接受这个事实通过核实状态序列</p>
+<script type="math/tex; mode=display">r_0,...,r_s,\underbrace{r_{s+1},...,r_t,}_{重复i次}r_{t+1},...,r_m</script><p>能被DFA $M$接受来推断。</p>
+<h4 id="泵引理的样例DFA"><a href="#泵引理的样例DFA" class="headerlink" title="泵引理的样例DFA"></a>泵引理的样例DFA</h4><p>如果泵引理的证明或者背后的思路不太明确，也许看看一个实际的DFA运作和一个足长的字符串被它接受会有所帮助。比如，让我们将$M$当做是状态图5.1中的DFA。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/nrexp/nrexp1.png" alt="image"><br>现在考虑任意长度至少为6而且可以被$M$接受的字符串$w$。比如，我们让$w=0110111$。它造成了$M$通过了状态序列：</p>
+<script type="math/tex; mode=display">q_0\xrightarrow{0}q_1\xrightarrow{1}q_2\xrightarrow{1}q_5\xrightarrow{0}q_4\xrightarrow{1}q_1\xrightarrow{1}q_2\xrightarrow{1}q_5</script><p>（箭头表示转移，箭头上的符号表示造成转移的输入符号）很明显，这个序列中至少有一个状态会出现多次，而且实际上这个特殊例子中有三个这样的状态：$q_1、q_2、q_5$，每个都出现了两次。让我们集中在状态$q_1$上，因为这个状态首次重复出现。子串$1101$造成了$M$在状态$q_1$上循环。换成泵引理的表达方式对应采用</p>
+<script type="math/tex; mode=display">x=0,\ \ \ \ y=1101,\ \ \ \ z=11.</script><p>因为子串$y$造成了$M$从状态$q_1$回到状态$q_1$，看起来当$M$处于状态$q_1$时读取$y$没有任何作用。所以$x$导致$M$从初始状态$q_0$到达状态$q_1$，$z$导致$M$从状态$q_1$到达一个接受状态，我们可以看出$M$不止接受$w=xyz$，而且还接受$xy、xyyz、xyyyz$等等。<br>　　刚才所描述的例子没什么特殊的地方；一些类似的情况总会发生。随便选取任意DFA，以及任意超过DFA状态数量并且能被接受的字符串，然后你就能找到一个我们上面发现的循环。通过多次或者零次重复循环部分的输入字符你就能得到不同的能被DFA接受的字符串。这就是泵引理本质上想要表达的。</p>
+<h3 id="使用泵引理证明非正则性"><a href="#使用泵引理证明非正则性" class="headerlink" title="使用泵引理证明非正则性"></a>使用泵引理证明非正则性</h3><p>记住泵引理是一种关于正则语言的陈述会很有帮助：它建立了一种每个已知正则语言都拥有的属性。<br>　　尽管泵引理一种关于正则语言的陈述，通过反证法，我们可以用它来证明某个语言是非正则的。特别是，我们采用以下步骤：</p>
+<ol>
+<li>对于我们想要证明非正则性的语言$A$，我们假设$A$是正则的。基于这个假设我们采用泵引理证明它。</li>
+<li>使用泵引理为$A$建立的属性，我们得出矛盾。这个矛盾就是我们得出某个字符串本来应该包含于$A$但实际上却没有。</li>
+<li>已经得出矛盾，我们推断假设$A$是正则导致了这个矛盾，所以我们得出$A$是非正则的。</li>
+</ol>
+<h4 id="通过泵引理证明非正则性的例子"><a href="#通过泵引理证明非正则性的例子" class="headerlink" title="通过泵引理证明非正则性的例子"></a>通过泵引理证明非正则性的例子</h4><p>让我们用一些例子来说明这个方法。这些例子将会被声明为命题，随后的证明会告诉你如何论证。</p>
+<p><strong>命题5.2.</strong> 已知$\Sigma=\{0,1\}$是一个二进制字母表，定义一个基于$\Sigma$的语言如下：</p>
+<script type="math/tex; mode=display">SAME=\{0^m1^m:m\in\mathbb{N}\}.</script><p>语言$SAME$是非正则的。</p>
+<p><strong>注意5.3.</strong> 当我们像这样赋予一个语言特殊名称时，这个语言在后续课程中出现时也是这样定义的。所以看到有特殊名称的语言就记住它是个不错的注意 — 作为样例他们很有帮助。另外两个特殊名称语言也会出现在本节课中。</p>
+<p>证明：反向假设$SAME$是正则的。由正则语言的泵引理可知，对于$SAME$一定存在一个泵长度$n\geq 1$满足引理中的属性。接下来的证明中我们会假设这样一个泵长度$n$。<br>　　定义$w=0^n1^n$，$w\in SAME$并且$|w|=2n\geq n$，所以泵引理告诉我们存在字符串$x、y、z\in\Sigma^{*}$使得$w=xyz$满足以下条件：</p>
+<ol>
+<li>$y\neq \varepsilon,$</li>
+<li>$|xy|\leq n,$</li>
+<li>对于所有$i\in\mathbb{N}$有$xy^iz\in SAME.$</li>
+</ol>
+<p>现在因为$xyz=0^n1^n$并且$|xy|\leq n$，子串$y$中没有1，因为$xy$的长度够不着$xyz$中的1。也就是说对于某个$k\in\mathbb{N}$有$y=0^k$，并且因为$y\neq \varepsilon$，我们得知$k\geq 1$。我还能得出</p>
+<script type="math/tex; mode=display">xy^2z=xyyz=0^{n+k}1^n</script><p>这是因为$xyyz$是在$xyz$中插入$y=0^k$，而且是在没有1出现之前插入，普遍来说还可以得出对于每个$i\in\mathbb{N}$有</p>
+<script type="math/tex; mode=display">xy^iz=o^{n+(i-1)k}1^n.</script><p>　　然而，因为$k\geq 1$，我们知道字符串$xy^2z=0^{n+k}1^n$不包含于$SAME$。这与泵引理的第三个条件矛盾，它要求对于所有$i\in\mathbb{N}$有$xy^iz\in SAME$。<br>　　得到这个矛盾后，我们推断假设$SAME$是正则的是错误的。因此语言$SAME$是非正则的，证毕。</p>
+<p><strong>命题5.4.</strong> 已知$\Sigma=\{0,1\}$是一个二进制字母表，定义一个基于$\Sigma$的语言如下：</p>
+<script type="math/tex; mode=display">A=\{0^m1^r:m,r\in\mathbb{N},m>r\}</script><p>语言$A$是非正则的。</p>
+<p>证明：反向假设$A$是正则的。由正则语言的泵引理可知，对于$A$一定存在一个泵长度$n\geq 1$满足引理中的属性。接下来的证明中我们会假设这样一个泵长度$n$。<br>　　定义$w=0^{n+1}1^n$。我们知道$w\in A$并且$|w|=2n+1\geq n$，所以泵引理告诉我们存在字符串$x、y、z\in\Sigma^{*}$使得$w=xyz$，以及以下条件得到满足：</p>
+<ol>
+<li>$y\neq \varepsilon,$</li>
+<li>$|xy|\leq n,$</li>
+<li>对于所有$i\in\mathbb{N}$有$xy^iz\in A.$</li>
+</ol>
+<p>现在，因为$xyz=0^{n+1}1^n$并且$|xy|\leq n$，对于某个$k\geq 1$一定有$y=0^k$。（这里的原因和上个命题类似）这次我们获得对于每个$i\in\mathbb{N}$有</p>
+<script type="math/tex; mode=display">xy^iz=0^{n+1+(i-1)k}1^n.</script><p>特别是，如果我们选择$i=0$，那么我们获得</p>
+<script type="math/tex; mode=display">xy^0z=xz=0^{n+1-k}1^n</script><p>然而$k\geq 1$，因此$n+1-k\leq n$，我们发现$xy^0z$不包含于$n$。这泵引理的第三个条件矛盾，他要求对于所有$i\in\mathbb{N}$都有$xy^iz\in A$<br>　　得到了这个矛盾，我们推断假设$A$是正则的是错误的。因此$A$是非正则的，证毕。</p>
+<p><strong>注意5.5.</strong> 在上面的证明中，很重要的一点是，选择$i=0$才能得出矛盾，其他的选择都不行。</p>
+<p><strong>命题5.6</strong> 已知$\Sigma=\{0\}$，定义一个基于$\Sigma$的语言如下：</p>
+<script type="math/tex; mode=display">SQUARE=\{0^{m^2}:m\in\mathbb{N}\}.</script><p>语言$SQUARE$是非正则的。</p>
+<p>证明：反向假设$SQUARE $是正则的。由正则语言的泵引理可知，对于$SQUARE $一定存在一个泵长度$n\geq 1$满足引理中的属性。接下来的证明中我们会假设这样一个泵长度$n$。<br>　　定义$w=0^{n^2}$。我们知道$w\in SQUARE$并且$|w|=n^2\geq n$，所以泵引理告诉我们存在字符串$x、y、z\in\Sigma^{*}$使得$w=xyz$，以及以下条件得到满足：</p>
+<ol>
+<li>$y\neq \varepsilon,$</li>
+<li>$|xy|\leq n,$</li>
+<li>对于所有$i\in\mathbb{N}$有$xy^iz\in SQUARE.$</li>
+</ol>
+<p>字母表$\Sigma$中只有一个符号，所以马上可以看出对于任意$k\in\mathbb{N}$有$y=0^k$。因为$y\neq\varepsilon$并且$|y|\leq|xy|\leq n$，可知$1\leq k\leq n$，因此对于每个$i\in\mathbb{N}$都有</p>
+<script type="math/tex; mode=display">xy^iz=0^{n^2+(i-1)k}.</script><p>特别是，如果我们选择$i=2$，那么我们获得</p>
+<script type="math/tex; mode=display">xy^2z=xyyz=0^{n^2+k}.</script><p>　　然而因为$1\leq k\leq n$，$n^2+k$不可能是一个完全平方；$n^2+k$大于$n^2$，$n^2$的下一个完全平方是</p>
+<script type="math/tex; mode=display">(n+1)^2=n^2+2n+1,</script><p>明显大于$n^2+k$，因为$k\leq n$。因此字符串$xy^2z$不包含于$SQUARE$，这与泵引理的第三个条件矛盾，它要求对于所有$i\in\mathbb{N}$有$xy^iz\in SQUARE$。<br>　　得到了这个矛盾，我们推断假设$SQUARE$是正则的是错误的，因此语言$SQUARE$是非正则的，证毕。</p>
+<p>　　在进入下一个例子前，让我们介绍一个本课程中很有用的概念。对于一个已知字符串$w$,字符串$w^R$表示$w$的反转。一般来说，假设$w$是一个基于字母表$\Sigma$的字符串，反转操作的递归定义如下：</p>
+<ol>
+<li>$\varepsilon^R=\varepsilon,$</li>
+<li>对于每个$w\in\Sigma^{*}$和$a\in\Sigma$都有$(aw)^R=w^Ra.$</li>
+</ol>
+<p>让我们定义一个基于二进制字母表$\Sigma=\{0,1\}$的语言</p>
+<script type="math/tex; mode=display">PAL=\{w\in\Sigma^{*}:w=w^R\}.</script><p>这个语言的名字叫做$PAL$，因为他是回文（palindrome）的缩写，这种字符串你从前往后读或者从后往前读是一样的。</p>
+<p><strong>命题5.7.</strong> 语言$PAL$是非正则的。</p>
+<p>证明：反向假设$PAL $是正则的。由正则语言的泵引理可知，对于$PAL $一定存在一个泵长度$n\geq 1$满足引理中的属性。接下来的证明中我们会假设这样一个泵长度$n$。<br>　　定义$w=0^n10^n$。我们知道$w\in PAL $并且$|w|=2n+1\geq n$，所以泵引理告诉我们存在字符串$x、y、z\in\Sigma^{*}$使得$w=xyz$，以及以下条件得到满足：</p>
+<ol>
+<li>$y\neq \varepsilon,$</li>
+<li>$|xy|\leq n,$</li>
+<li>对于所有$i\in\mathbb{N}$有$xy^iz\in PAL.$</li>
+</ol>
+<p>我们再次发现对于$k\geq 1$有$y=0^k$。这次我们获得对于每个$i\in\mathbb{N}$有</p>
+<script type="math/tex; mode=display">xy^iz=0^{n+(i-1)k}10^n.</script><p>特别是，如果我们选择$i=2$，那么我们获得</p>
+<script type="math/tex; mode=display">xy^2z=xyyz=0^{n+k}10^n</script><p>因为$k\geq 1$，这个字符串和它的反转并不相等，因此$xy^2z$不包含于$PAL$。这与泵引理的第三个条件矛盾，他要求对于所有$i\in\mathbb{N}$有$xy^iz\in PAL.$。</p>
+<p>　　得到了这个矛盾，我们推断假设$PAL$是正则的是错误的。因此$PAL$是非正则的，证毕。</p>
+<p>　　上面这个四个命题应该能给你提供泵引理证明语言非正则性的思路。开头总是一样的：我们反向假设某个语言是正则的，观察泵引理提供的泵长度$n$。此时选择一个字符串$w$，试图通过一些推论，得出一个矛盾。有时候如何选择字符串或者怎样得出矛盾并不太明确；这些步骤取决于你所选择的语言，也许$w$有很多不错的选择，也许还需要一些创造性的取舍才能成功。<br>　　如果你选择什么样的字符串$w$，针对矛盾做一点猜想。如果不行，你会发现你获得了一些更好选择的直接。当然，你应该彻底信服自己的论证，并且积极地检查一些可能出错的地方；如果你不能被自己的证明说服，那么别人也不会相信它。</p>
+<h3 id="得自闭包属性的费正则性"><a href="#得自闭包属性的费正则性" class="headerlink" title="得自闭包属性的费正则性"></a>得自闭包属性的费正则性</h3><p>有时候通过关联正则语言的闭包属性我们可以证明某个语言是非正则的。这里有两个例子，同样地先声明命题。</p>
+<p><strong>命题5.8.</strong> 已知$\Sigma=\{0,1\}$，定义一个基于$\Sigma$的语言如下：</p>
+<script type="math/tex; mode=display">B=\{w\in\Sigma^{*}:w\neq w^R\}.</script><p>语言$B$是非正则的。</p>
+<p>证明：反向假设$B$是正则的。正则语言的取余操作是闭合的，因此$\overline{B}$是正则的。然而$\overline{B}=PAL$，我们已经证明$PAL$是非正则的。这是一个矛盾，因此我们假设$B$是正则的是错误的。我们得出$B$是非正则的，证毕。</p>
+<p><strong>命题5.9.</strong> 已知$\Sigma=\{0,1\}$，定义一个基于$\Sigma$的语言如下：</p>
+<p>$C=\{w\in\Sigma^{*}:w中的0比1多\}.$</p>
+<p>语言$C$是非正则的。</p>
+<p>证明：反向假设$C$是正则的。我们知道语言$L(0^{*}1^{*})$是正则的，因为这个语言能匹配上一个正则表达式。正则语言的交集操作是闭合的，所以$C\cap L(0^{*}1^{*})$是正则的。然而我们获得了</p>
+<script type="math/tex; mode=display">C\cap L(0^{*}1^{*})=A,</script><p>这个语言的定义在命题5.4中，我们已经证明过它是非正则的了。这是一个矛盾，因此我们假设$C$是正则的是错误的。我们得出$C$是非正则的。</p>
+<p>　　一定要记住当我们使用这个方法时，是正则语言在交集、并集等等操作下是闭合的，而不是非正则语言。比如，两个非正则语言的交集并不总是非正则的 — 所以基于这个声明的证明将不是有效的。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.05.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.05.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/10/25/John Watrous-正则运算和正则表达式/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》 -- 正则运算和正则表达式">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》 -- 正则运算和正则表达式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正则语言的泵引理"><span class="nav-number">2.1.</span> <span class="nav-text">正则语言的泵引理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#泵引理的样例DFA"><span class="nav-number">2.1.1.</span> <span class="nav-text">泵引理的样例DFA</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用泵引理证明非正则性"><span class="nav-number">2.2.</span> <span class="nav-text">使用泵引理证明非正则性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过泵引理证明非正则性的例子"><span class="nav-number">2.2.1.</span> <span class="nav-text">通过泵引理证明非正则性的例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#得自闭包属性的费正则性"><span class="nav-number">2.3.</span> <span class="nav-text">得自闭包属性的费正则性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/11/06/John Watrous-证明非正则语言/';
+          this.page.identifier = '2020/11/06/John Watrous-证明非正则语言/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》 -- 证明非正则语言';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
