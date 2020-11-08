@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言这节课我们会讨论一些额外的运算，它们对于正则语言是闭合的，并且复习一些关于正则语言的案例问题。这是本堂课着重讲正则语言的最后一节课，但是我们会频繁回顾这些知识点，在往后的课程中它们将与不同的计算模型和语言类关联。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 正则语言的进一步证明">
+<meta property="og:url" content="http://yoursite.com/2020/11/06/John Watrous-正则语言的进一步证明1/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言这节课我们会讨论一些额外的运算，它们对于正则语言是闭合的，并且复习一些关于正则语言的案例问题。这是本堂课着重讲正则语言的最后一节课，但是我们会频繁回顾这些知识点，在往后的课程中它们将与不同的计算模型和语言类关联。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/frexp/frexp1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/frexp/frexp2.png">
+<meta property="og:updated_time" content="2020-11-06T13:34:36.329Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 正则语言的进一步证明">
+<meta name="twitter:description" content="前言这节课我们会讨论一些额外的运算，它们对于正则语言是闭合的，并且复习一些关于正则语言的案例问题。这是本堂课着重讲正则语言的最后一节课，但是我们会频繁回顾这些知识点，在往后的课程中它们将与不同的计算模型和语言类关联。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/frexp/frexp1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/11/06/John Watrous-正则语言的进一步证明1/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》 -- 正则语言的进一步证明 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/06/John Watrous-正则语言的进一步证明1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》 -- 正则语言的进一步证明</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-11-06T21:08:16+08:00">
+                2020-11-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/11/06/John Watrous-正则语言的进一步证明1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/11/06/John Watrous-正则语言的进一步证明1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/11/06/John Watrous-正则语言的进一步证明1/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》 -- 正则语言的进一步证明">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这节课我们会讨论一些额外的运算，它们对于正则语言是闭合的，并且复习一些关于正则语言的案例问题。这是本堂课着重讲正则语言的最后一节课，但是我们会频繁回顾这些知识点，在往后的课程中它们将与不同的计算模型和语言类关联。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="语言的其他运算"><a href="#语言的其他运算" class="headerlink" title="语言的其他运算"></a>语言的其他运算</h3><p>我们已经讨论过一些语言的基本运算，包括正则运算（并集，拼接，克林星）以及另外的运算（比如补集和交集）。其实还有很多其他的运算 — 只要你愿意，你可以坐下来一整天都讨论那些越来越多而且晦涩难懂的案例 — 但是现在我们只会再多讨论一些。</p>
+<h4 id="反转"><a href="#反转" class="headerlink" title="反转"></a>反转</h4><p>假设$\Sigma$是一个字母表，$w\in\Sigma^{*}$是一个字符串。字符串$w$的反转就是讲$w$中的符号反向排列得到新的字符串，记作$w^R$。正如我们上节课看到的，一个字符串的反转可以递归定义如下：</p>
+<ol>
+<li>如果$w=\varepsilon$，那么$w^R=\varepsilon$。</li>
+<li>如果对于任意$a\in\Sigma$和$x\in\Sigma^{*}$有$w=ax$，那么$w^R=x^Ra$。</li>
+</ol>
+<p>现在假设$A\subseteq\Sigma^{*}$是一个语言。我们定义$A$的反转是通过将$A$中的每一个元素反转后得到的语言，记作$A^R$。我们定义</p>
+<script type="math/tex; mode=display">A^R=\{w^R:w\in A\}.</script><p>你可以检查下面的关于反转运算的正则运算的恒等式：</p>
+<script type="math/tex; mode=display">(A\cup B)^R=A^R\cup B^R\ \ \ \ \ \ (AB)^R=B^RA^R\ \ \ \ \ \ (A^{\*})^R=(A^R)^{\*}</script><p>很自然能想到一个关于反转语言的问题是：如果语言$A$是正则的，那么$A^R$也是正则的吗？</p>
+<p>这个问题的答案是肯定的，让我们用命题来陈述这个事实，然后思考两种方式来证明它。</p>
+<p><strong>命题6.1.</strong> 已知$\Sigma$是一个字母表，$A\subseteq\Sigma^{*}$是一个正则语言。语言$A^R$也是正则的。</p>
+<p>第一个证明：很容易想到的是根据正则表达式的定义对称地定义一个反转正则表达式。特别是，如果$S$是一个正则表达式，那么它的反转正则表达式的递归定义如下：</p>
+<ol>
+<li>如果$S=\varnothing$那么$S^R=\varnothing$。</li>
+<li>如果$S=\varepsilon$那么$S^R=\varepsilon$。</li>
+<li>如果对于某个$a\in\Sigma$有$S=a$，那么$S^R=a$。</li>
+<li>如果对于正则表达式$S_1、S_2$有$S=(S_1\cup S_2)$，那么$S_R=(S^R_1\cup S^R_2)$。</li>
+<li>如果对于正则表达式$S_1、S_2$有$S=(S_1S_2)$，那么$S_R=(S^R_2S^R_1)$。</li>
+<li>如果对于正则表达式$S_1$有$S=(S^{*}_1)$，那么$S_R=((S^R_1)^{*})$。</li>
+</ol>
+<p>这里明显能看出$L(S^R)=L(S)^R$；对于任意正则表达式$S$，反转正则表达式$S^R$匹配$S$所匹配语言的反转。<br>　　现在，在这个假设下$A$是正则的，一定存在一个正则表达式$S$使得$L(S)=A$，因为每个正则语言都与某个正则表达式匹配。正则表达式$S$的反转是$S^R$，它是一个有效的正则表达式。被正则表达式匹配的语言是正则的，因此$L(S^R)$是正则的。因为$L(S^R)=L(S)^R=A^R$，我们得出$A^R$是正则的，证毕。</p>
+<p>第二个证明（梗概）：这个证明之所以被称为“梗概”是因为它只概述了主要思路，却没有详细说什么为什么会这样。<br>　　假设$A$是正则，一定存在一个DFA</p>
+<script type="math/tex; mode=display">M=(Q,\Sigma,\delta,q_0,F)</script><p>是的$L(M)=A$。我们可以设计一个NFA $N$使得$L(N)=A^R$，从而表明$A^R$是正则的，方案就是适时有效地让$M$逆向运行（使用非确定性机制来做是因为确定性计算普遍是不可逆的）。<br>　　这里有一种方式来定义NFA $N$，而且的确是我们想要的：</p>
+<script type="math/tex; mode=display">N=(Q\cup\{r_0\},\Sigma,\mu,r_0,\{q_0\}),</script><p>这里$r_0$不包含于$Q$（我们让$N$和$M$拥有同样的状态，外加一个初始状态$r_0$），我们采用的转移函数$\mu$的定义如下：</p>
+<script type="math/tex; mode=display">\begin{align}\mu(r_0,\varepsilon)&=F \\ \mu(r_0,a)&=\varnothing \\ \mu(q,\varepsilon)&=\varepsilon \\ \mu(q,a)&=\{p\in Q:\delta(p,a)=q\},\end{align}</script><p>其中$q\in Q$和$a\in\Sigma$。<br>　　$N$运行的方法是先非确定性地猜测一个$M$的接受状态，然后从输入中读取符号并且非确定性地选择移动到一个状态，这个状态对于$M$是读取同样的符号反向移动到达的，最后这个NFA到达$M$的初始状态就接受了。<br>　　证明$L(N)=L(M)^R$最自然的方式是参考$N$和$M$的接受，并且检查一个状态序列满足$M$接受字符串$w$的定义当且仅当这个序列的反转满足$N$接受$w^R$的定义。</p>
+<h4 id="对称差"><a href="#对称差" class="headerlink" title="对称差"></a>对称差</h4><p>已知两个集合$A$和$B$，我们定义$A$和$B$的对称差为</p>
+<script type="math/tex; mode=display">A\Delta B=(A\backslash B)\cup(B\backslash A)</script><p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/frexp/frexp1.png" alt="image"><br>用文字表达就是对称差$A\Delta B$的元素就是只包含于$A$或$B$中的一个的那些对象。图6.1用维恩图的形式说明了对称差。<br>　　不难得出如果$\Sigma$是一个字母表，$A,B\subseteq\Sigma^{*}$是正则语言，那么这两个语言的对称差$A\Delta B$也是正则的。这是因为正则语言在并集、交集和补集运算下是闭合的，而且堆成可以用这些运算来表示。更具体地说，如果我们假设$A$和$B$是正则的，那么它们的补集$\overline{A}$和$\overline{B}$也是正则的；这表明交集$A\cap\overline{B}$和$\overline{A}\cap B$也是正则的；因此两个交集的并集$(A\cap\overline{B})\cup(\overline{A}\cap B)$同样是正则的。观察到这里我们发现</p>
+<script type="math/tex; mode=display">A\Delta B=(A\cap\overline{B})\cup(\overline{A}\cap B),</script><p>我们得出$A$和$B$的对称差是正则的。</p>
+<h4 id="前缀、后缀和子串"><a href="#前缀、后缀和子串" class="headerlink" title="前缀、后缀和子串"></a>前缀、后缀和子串</h4><p>已知$\Sigma$是一个字母表，$w\in\Sigma^{*}$是一个字符串。$w$的前缀是任意从$w$的右手边移除零个或者多个符号后获得的字符串；$w$的后缀是任意从$w$的左手边移除零个或者多个符号后获得的字符串；$w$的子串是任意从$w$的两边或者一边移除零个或者多个字符串后获得的字符串。我们可以正式声明如下定义：（i)字符串$x\in\Sigma^{*}$是$w\in\Sigma^{*}$的前缀仅当存在$v\in\Sigma^{*}$使得$w=xv$，（ii)字符串$x\in\Sigma^{*}$是$w\in\Sigma^{*}$的后缀仅当存在$u\in\Sigma^{*}$使得$w=ux$，以及（iii)字符串$x\in\Sigma^{*}$是$w\in\Sigma^{*}$的子串仅当存在$u、v\in\Sigma^{*}$使得$w=uxv$。<br>　　对于任意语言$A\subseteq\Sigma^{*}$，我们用$Prefix(A)、Suffix(A)、Substring(A)$来表示从每个字符串$w\in A$中所有前缀、后缀和子串构成的语言。也就是我们定义</p>
+<script type="math/tex; mode=display">\begin{align}Prefix(A)&=\{x\in\Sigma^{*}:存在v\in\Sigma^{*}使得xv\in A\} \\ Suffix(A)&=\{x\in\Sigma^{*}:存在u\in\Sigma^{*}使得ux\in A\} \\ Substring(A)&=\{x\in\Sigma^{*}:存在u、v\in\Sigma^{*}使得uxv\in A\}.\end{align}</script><p>我们自然而然地又想到了关于这些概念的一个问题：如果语言$A$是正则的，那么语言$Prefix(A)、Suffix(A)、Substring(A)$也是正则的吗？</p>
+<p>答案是肯定的，构建命题如下。</p>
+<p><strong>命题6.2.</strong> 已知$\Sigma$是一个字母表，$A\subseteq\Sigma^{*}$是一个基于$\Sigma$的正则语言。语言$Prefix(A)、Suffix(A)、Substring(A)$都是正则的。</p>
+<p>证明：因为$A$是正则的，一定存在一个DFA $M=(Q,\Sigma,\delta,q_0,F)$使得$L(M)=A$。$Q$中有一部分状态是能从初始状态$q_0$到达的，通过转移函数$\delta$进行零次或者多次转移。我们可以把这个集合叫做$R$，也就是</p>
+<script type="math/tex; mode=display">R=\{q\in Q:存在w\in\Sigma^{*}使得\delta^{*}(q_0,w)=q\}.</script><p>同时从$Q$中的一些状态能够到达$M$的接受状态，通过转移函数$\delta$经过零次或者多次转移。我们可以把这个集合叫做$P$，也就是</p>
+<script type="math/tex; mode=display">P=\{q\in Q:存在w\in\Sigma^{*}使得\delta^{*}(q,w)\in F\}</script><p>（图6.2有一个简单的例子来阐述这个集合的定义。）<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/frexp/frexp2.png" alt="image"><br>　　首先，定义一个DFA $K=(Q,\Sigma,\delta,q_0,P)$。用文字表达：$K$和$M$是一样的，除了某些在$M$中能到达接受状态的状态在$K$中变成了接受状态。我们发现$L(K)=Prefix(A)$，因此$Prefix(A)$是正则的。<br>　　接下来定义一个NFA $N=(Q\cup\{r_0\},\Sigma,\eta,r_0,F)$，其中转移函数$\eta$的定义是</p>
+<script type="math/tex; mode=display">\begin{align}\eta(r_0,\varepsilon)&=R \\ \eta(q,a)&=\{\delta(q,a)\}（对于每个q\in Q和a\in\Sigma）,\end{align}</script><p>其他情况下$\eta$的返回值都是$\varnothing$。用文字表达就是我们用$M$来定义$N$，额外添加一个新的初始状态$r_0$，$r_0$通过$\varepsilon$-转移到$M$中的可到达状态。这里可以看出$L(N)=Suffix(A)$，因此$Suffix(A)$是正则的。<br>　　最后，根据$Substring(A)=Suffix(Prefix(A))$（或者$Substring(A)=Prefix(Suffix(A))$）得出$Substring(A)$是正则的。</p>
+<h3 id="关于正则语言的案例问题"><a href="#关于正则语言的案例问题" class="headerlink" title="关于正则语言的案例问题"></a>关于正则语言的案例问题</h3><p>我们将会讨论一些关于正则语言的案例问题以及它们的解决方法。</p>
+<p><strong>问题6.1.</strong> 已知$\Sigma=\{0,1\}$，$A\subseteq\Sigma^{*}$是一个正则语言。证明语言</p>
+<script type="math/tex; mode=display">B=\{uv:u,v\in\Sigma^{*}并且对于某个a\in\Sigma 存在uav\in A\}</script><p>是正则的。</p>
+<p>语言$B$的可以直观描述如下：它是一种通过从$A$的每一个非空字符串$w$中删除恰好一个符号后获得的所有字符串组成的语言。</p>
+<p><strong>解答：</strong> 通常解决这个问题的方式是为$B$描述一个基于$A$的DFA（此DFA一定存在，因为$A$是正则的）的NFA。如果可以那么$B$就是正则的，因为每个能被NFA识别的语言一定是正则的。<br>　　根据这个思路，我们假设</p>
+<script type="math/tex; mode=display">M=(Q,\Sigma,\delta,q_0,F)</script><p>是一个DFA，并且$A=L(M)$。定义一个NFA</p>
+<script type="math/tex; mode=display">N=(P,\Sigma,\eta,p_0,G).</script><p>这里我们将定义</p>
+<script type="math/tex; mode=display">P=\{0,1\}\times Q,</script><p>然后我们将$N$的初始状态取值为</p>
+<script type="math/tex; mode=display">p_0=(0,q_0).</script><p>$N$的接受状态就是</p>
+<script type="math/tex; mode=display">G=\{(1,q):q\in F.\}</script><p>剩下的就是$N$的转移函数了，它的描述如下：</p>
+<ol>
+<li>对于每个$q\in Q$和$a\in\Sigma$有$\eta((0,q),a)=\{(0,\delta(q,a))\}$。</li>
+<li>对于每个$q\in Q$有$\eta((0,q),\varepsilon)=\{(1,\delta(q,0)),(1,\delta(q,1))\}$。</li>
+<li>对于每个$q\in Q$和$a\in\Sigma$有$\eta((1,q),a)=\{(1,\delta(q,a))\}$。</li>
+<li>对于每个$q\in Q$有$\eta((1,q),\varepsilon)=\varnothing$。</li>
+</ol>
+<p>$N$的运行方式背后的思路是这样的。NFA $N$在状态$(0,q_0)$开始然后在一定次数内模仿$M$的转移。这就是上面第一条中的转移。在某个情况下，做出非确定性选择，$N$执行$\varepsilon$-转移从状态$(0,q)$到状态$(1,\delta(q,0))$或者$(1,\delta(q,1))$。直观来说，$N$没有从输入中读取符号，它相当于“假设”$M$读取了某个符号$a$（0或者1）。这就是第二条中的转移。然后$N$继续模仿$M$读取剩余的输入字符串，也就是上面第三条中的转移。当然对于状态$(1,q)$不存在$\varepsilon$-转移了，所以这就是为什么我们有上面第四条转移。<br>　　如果你稍微思考一下NFA $N$，你就会发现很明显它能够识别$B$。</p>
+<p><strong>额外解答：</strong> 这里对于同样的问题还有一种不同的解答。这种解答中包含了一种通用方法，它在其他情况也很有用。这种方案下我们也会详细讨论证明的正确性（部分原因是这种方案比较简单）。<br>　　同样，让</p>
+<script type="math/tex; mode=display">M=(Q,\Sigma,\delta,q_0,F)</script><p>表示一个DFA，而且$L(M)=A$。对于每一对$p、q\in Q$，定义一个新的DFA</p>
+<script type="math/tex; mode=display">M_{p,q}=(Q,\Sigma,\delta,p,\{q\}),</script><p>并且$A_{p,q}=L(M_{p,q})$。用文字表述：$A_{p,q}$是一个正则语言，它由所有导致$M$从状态$p$转移到$q$的字符串组成。对于任意的$p、q、r$，我们一定能获得$A_{p,r}A_{r,q}\subseteq A_{p,q}$。的确，$A_{p,r}、A_{r,q}$代表了所有造成$M$从$p$转移到$q$同时还经过了$r$的字符串。<br>　　现在考虑语言</p>
+<script type="math/tex; mode=display">\bigcup_{(p,a,r)\in Q\times\Sigma\times F}A_{q_0,p}A_{\delta(p,a),r}.</script><p>这是一个正则语言，因为每个$A_{p,q}$是正则的而且正则语言在优先的并集和拼接操作下是闭合的。为了完成这个解答，我们注意到这个语言和$B$没有区别：</p>
+<script type="math/tex; mode=display">B=\bigcup_{(p,a,r)\in Q\times\Sigma\times F}A_{q_0,p}A_{\delta(p,a),r}</script><p>　　为了证明这个等价性，我们自然要把它分成集合包含关系。我们先证明</p>
+<script type="math/tex; mode=display">B\subseteq\bigcup_{(p,a,r)\in Q\times\Sigma\times F}A_{q_0,p}A_{\delta(p,a),r}</script><p>对于每一对$u、v\in\Sigma^{*}$和$a\in\Sigma$，$uav\in A$，而且$B$中的字符串都采用$uv$形式。$p\in Q$表示$u\in A_{q_0,p}$的唯一状态，换句话说，它是一个$M$在初始状态读取输入$u$后到达的状态，$r\in F$表示$uav\in A_{q_0,r}$的唯一状态。因为$a$造成$M$从$p$转移到$\delta(p,a)$，也就是说$v$导致了$M$从$\delta(p,a)$转移到$r$，$v\in A_{\delta(p,a),r}$。因此$uv\in A_{q_0,p}A_{\delta(p,a),r}$，如此包含关系得证。<br>　　接下来我们证明</p>
+<script type="math/tex; mode=display">\bigcup_{(p,a,r)\in Q\times\Sigma\times F}A_{q_0,p}A_{\delta(p,a),r}\subseteq B</script><p>这个论证和上面讨论的包含关系类似。选取任意$p\in Q$，$a\in\Sigma$，和$r\in F$。$A_{q_0,p}A_{\delta(p,a),r}$中的元素形式为$uv$，其中$u\in A_{q_0,p}$和$v_{\delta(p,a),r}$。找到$uav\in A_{p_0,r}\subseteq A$，因此得到$uv\in B$，证毕。</p>
+<p><strong>问题6.2</strong> 已知$\Sigma=\{0,1\}$，$A\subseteq\Sigma^{*}$是任意一个正则语言。证明语言</p>
+<script type="math/tex; mode=display">C=\{vu:u,v\in\Sigma^{*}并且uv\in A\}</script><p>是正则的。</p>
+<p><strong>解答：</strong> 同样，解决这个问题最自然的方式就是给出一个$C$的NFA。让我们假设</p>
+<script type="math/tex; mode=display">M=(Q,\Sigma,\delta,q_0,F)</script><p>是一个DFA，并且$L(M)=A$，和我们之前做的一样。这次我们NFA将会稍微复杂一点。特别是，让我们定义</p>
+<script type="math/tex; mode=display">N=(P,\Sigma,\eta,p_0,G).</script><p>其中我们再定义</p>
+<script type="math/tex; mode=display">P=(\{0,1\}\times Q\times Q)\cup \{p_0\},</script><p>至于$p_0$是一个特殊的初始状态，不包含于$\{0,1\}\times Q\times Q$。$N$的接受状态将变成</p>
+<script type="math/tex; mode=display">G=\{(1,q,q):q\in Q\}.</script><p>剩下的就只有$N$的转移函数$\eta$了，它的描述如下：</p>
+<ol>
+<li>$\eta(p_0,\varepsilon)=\{(0,q,q):q\in Q\}$。</li>
+<li>对于所有$q、r\in Q$和$a\in\Sigma$有$\eta((0,r,q),a)=\{(0,\delta(r,a),q)\}$。</li>
+<li>对于所有$q\in Q$和$r\in F$有$\eta((0,r,q),\varepsilon)=\{(1,q_0,q)\}$。</li>
+<li>对于所有$q、r\in Q$和$a\in\Sigma$有$\eta((1,r,q),a)=\{(1,\delta(r,a),q)\}$。</li>
+</ol>
+<p>其他没有别列出来的情况$\eta$的返回值都是$\varepsilon$。<br>　　让我们仔细思考一下这个定义，了解它是如何运行的。$N$从状态$p_0$出发，然后唯一能做的事情是猜测某个将要进入的形如$(0,q,q)$的状态。思路是这样的，0表示$N$进入了计算的第一个阶段，它会读取对应$C$的定义中$v$的字符串部分。它在第一次会转移到任意$M$的状态$q$，而且会记住这个状态。从这里开始$N$转移到的状态形式都是$(a,r,q)$，其中$a\in\{0,1\}$，$r\in Q$，而$q$是首次转移的状态；第三个坐标$q$代表首次转移的缓存，而且不会改变或者移除这个状态。直观来说，$N$猜测的状态$q$本来应该是$M$在读取$u$转移到的状态（因为$N$还没读取到，所以只能猜测）。<br>　　接着，$N$开始读取符号，而且基本上是模仿$M$对于这些符号的处理 — 这就是上面第二条列出的转移。在某种情况下，做出非确定性选择，$N$决定进入计算的第二个阶段，读取它输入的第二部分，所对应的字符串就是$C$定义中的$u$。当处于$(0,r,q)$，$r$是一个$M$的接受状态时，它只能做出这个非确定性转移从$(0,r,q)$到$(1,q_0,q)$。原因是当$M$接受$uv$时，$N$必须接受$vu$，所以$M$在读取$u$之前处于初始状态，读取$v$之后处于接受状态。这就是上面第三条列出的转移。最后，在第二阶段的计算中，$N$模仿$M$读取第二部分输入，对应的是字符串$u$。它的接受状态的形式为$(1,q,q)$，因为这个状态表明$N$在第一步对于$M$读取字符串$u$后的状态做出了正确的猜测。<br>　　以上只是直观上的描述，不是正式的证明。然而这在低水平的情况下说明了$L(N)=C$，也就是说$C$是正则的。</p>
+<p><strong>额外解答：</strong> 这个额外解答和上一个问题的额外解答相似。这次这个解答确实更简单。让$M$表示$A$的DFA，和前面一样，对于没一对$p、q\in Q$定义$A_{p,q}$。语言</p>
+<script type="math/tex; mode=display">\bigcup_{(p,r)\in Q\times F}A_{p,r}A_{q_0,p}</script><p>是正则的，由于正则语言在有限次数的并集和拼接运算下是闭合的。因此我们要做的就是证明</p>
+<script type="math/tex; mode=display">C=\bigcup_{(p,r)\in Q\times F}A_{p,r}A_{q_0,p}.</script><p>　　根据定义，对于每对$u、v\in\Sigma{*}$满足$uv\in A$，将每个$C$的元素表示为$vu$。对于$u\in A_{q_0,p}$和$uv\in A_{q_0,r}$，让$p\in Q$和$r\in F$表示唯一状态。可以看出$v\in A_{p,r}$，因此$vu\in A_{p,r}A_{q_0,p}$表明</p>
+<script type="math/tex; mode=display">C\subseteq\bigcup_{(p,r)\in Q\times F}A_{p,r}A_{q_0,p}.</script><p>用类似的方法，对于任意的$p\in Q$，$r\in F$，$u\in A_{q_0,p}$和$v\in A_{p,r}$我们有$uv\in A_{q_0,p}A_{p,r}\subseteq A$，因此$vu\in C$，得出包含关系</p>
+<script type="math/tex; mode=display">\bigcup_{(p,r)\in Q\times F}A_{p,r}A_{q_0,p}\subseteq C.</script><p>　　最后这个问题展示了闭包属性只适用于正则语言，对于非正则语言会失效。特别是，非正则语言在正则运算下不是闭合的。</p>
+<p><strong>问题6.3.</strong> 对于以下陈述，基于字母表$\Sigma$给出特定案例满足一下陈述。</p>
+<p>（a）存在非正则语言$A、B\in\Sigma^{*}$使得$A\cup B$是正则的。<br>（b）存在非正则语言$A、B\in\Sigma^{*}$使得$AB$是正则的。<br>（c）存在非正则语言$A\in\Sigma^{*}$使得$A^{*}$是正则的。</p>
+<p><strong>解答：</strong> 对于陈述（a），我们让$\Sigma=\{0\}$，$A\subseteq\Sigma^{*}$是任意非正则语言，比如$A=\{0^n:n是一个完全平方数\}$，$B=\overline{A}$。我们知道$B$也是非正则的（因为如果它是正则的，那么它的补集$A$也应该是正则的）。另一方面，$A\cup B=、Sigma^{*}$却是正则的。<br>　　至于陈述（b），我们让$\Sigma=\{0\}$，用$C\subseteq\Sigma^{*}$表示任意非正则语言（比如$C=\{0^n:n是一个完全平方数\}$）。然后我们再用</p>
+<script type="math/tex; mode=display">A=C\cup\{\varepsilon\}\ \ \ \ 和\ \ \ \ B=\overline{C}\cup\{\varepsilon\}.</script><p>语言$A$和$B$是非正则的，这点可以从$C$是非正则的开出来。另一方面，$AB=\Sigma^{*}$却是正则的。<br>　　最后到了陈述（c），我们让$\Sigma=\{0\}$，用$A\subseteq\Sigma^{*}$表示任意只包含单一符号0的字符串的非正则语言。（这里让$A=\{0^n:n是一个完全平方数\}$也是可以的）我们已知$A$是非正则的，但是$A^{*}=\Sigma^{*}$却是正则的。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.06.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.06.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/10/25/John Watrous-正则运算和正则表达式/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》 -- 正则运算和正则表达式">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》 -- 正则运算和正则表达式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/11/06/John Watrous-证明非正则语言/" rel="prev" title="John Watrous 《Introduction to the Theory of Computing》 -- 证明非正则语言">
+                John Watrous 《Introduction to the Theory of Computing》 -- 证明非正则语言 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语言的其他运算"><span class="nav-number">2.1.</span> <span class="nav-text">语言的其他运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#反转"><span class="nav-number">2.1.1.</span> <span class="nav-text">反转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对称差"><span class="nav-number">2.1.2.</span> <span class="nav-text">对称差</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#前缀、后缀和子串"><span class="nav-number">2.1.3.</span> <span class="nav-text">前缀、后缀和子串</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于正则语言的案例问题"><span class="nav-number">2.2.</span> <span class="nav-text">关于正则语言的案例问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/11/06/John Watrous-正则语言的进一步证明1/';
+          this.page.identifier = '2020/11/06/John Watrous-正则语言的进一步证明1/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》 -- 正则语言的进一步证明';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
