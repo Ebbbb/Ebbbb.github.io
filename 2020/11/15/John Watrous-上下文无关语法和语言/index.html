@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="CYberseERker">
 <meta property="og:description" content="前言接下来在本课程中我们将要学习的语言类是上下文无关语言类，它是由上下文无关语法的概念来定义的，简称CFG。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-11-15T12:10:26.232Z">
+<meta property="og:updated_time" content="2020-11-15T12:15:26.603Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法和语言">
 <meta name="twitter:description" content="前言接下来在本课程中我们将要学习的语言类是上下文无关语言类，它是由上下文无关语法的概念来定义的，简称CFG。">
@@ -379,9 +379,9 @@
 <script type="math/tex; mode=display">N_m=N_{m-1}+N_1.</script><p>因为$N_m=0$，并且$N_1$不等于0，那么$N_{m-1}$也一定不是0，更重要的是$N_1$和$N_{m-1}$的正负是相反的。然而，因为$N_k$的值是连续相差1的整数，我们得出一定存在某个$k$在范围$\{2,…,m-2\}$中使得$N_k=0$，否则$N_1$和$N_m-1$的正负不可能是相反的。然而这与我们对$m$的设定相矛盾。因此我们证明了$a_1\neq a_m$。<br>　　到了这个点上，我们可以描述一个$w$的推导。我们有$w=a_1\cdot\cdot\cdot a_n$，还有</p>
 <script type="math/tex; mode=display">|a_1\cdot\cdot\cdot a_m|_0=|a_1\cdot\cdot\cdot a_m|_1\ \ \ 和\ \ \ \ a_1\neq a_m,</script><p>其中$m\in\{1,…,n\}$。我们得出</p>
 <script type="math/tex; mode=display">|a_2\cdot\cdot\cdot a_{m-1}|_0=|a_2\cdot\cdot\cdot a_{m-1}|_1\ \ \ 和\ \ \ |a_{m+1}\cdot\cdot\cdot a_n|_0=|a_{m+1}\cdot\cdot\cdot a_n|_1.</script><p>根据归纳假设可知</p>
-<script type="math/tex; mode=display">S\stackrel{\*}{\Rightarrow}_G a_2\cdot\cdot\cdot a_{m-1}\ \ \ 和\ \ \ S\stackrel{\*}{\Rightarrow}_G a_{m+1}\cdot\cdot\cdot a_n.</script><p>因此字符串$w$满足</p>
-<script type="math/tex; mode=display">S\Rightarrow_G 0S1S\stackrel{\*}{\Rightarrow}_G 0a_2\cdot\cdot\cdot a_{m-1}1a_{m+1}\cdot\cdot\cdot a_n=w</script><p>(这种情况下$a_1=0、a_m=1$)或者</p>
-<script type="math/tex; mode=display">S\Rightarrow_G 1S0S\stackrel{\*}{\Rightarrow}_G 1a_2\cdot\cdot\cdot a_{m-1}0a_{m+1}\cdot\cdot\cdot a_n=w</script><p>(这种情况下$a_1=1、a_m=0$）。如此我们证明了$w\in L(G)$。</p>
+<script type="math/tex; mode=display">S\stackrel{*}{\Rightarrow}_G a_2\cdot\cdot\cdot a_{m-1}\ \ \ 和\ \ \ S\stackrel{*}{\Rightarrow}_G a_{m+1}\cdot\cdot\cdot a_n.</script><p>因此字符串$w$满足</p>
+<script type="math/tex; mode=display">S\Rightarrow_G 0S1S\stackrel{*}{\Rightarrow}_G 0a_2\cdot\cdot\cdot a_{m-1}1a_{m+1}\cdot\cdot\cdot a_n=w</script><p>(这种情况下$a_1=0、a_m=1$)或者</p>
+<script type="math/tex; mode=display">S\Rightarrow_G 1S0S\stackrel{*}{\Rightarrow}_G 1a_2\cdot\cdot\cdot a_{m-1}0a_{m+1}\cdot\cdot\cdot a_n=w</script><p>(这种情况下$a_1=1、a_m=0$）。如此我们证明了$w\in L(G)$。</p>
 <p>这里有另外一个例子与前面这个有关。而且贯穿整个课程我们会多次参考到它。</p>
 <p><strong>案例7.12.</strong> 已知字母表$\Sigma=\{(,)\}$。这个字母表中我们有两个符号：左括号和右括号。<br>　　我们说基于$\Sigma$的字符串$w$是平衡配对的，那就意味着我们通过重复移除子串$()$，最后你会得到$\varepsilon$。更直观来说，一个基于$\Sigma$的字符串是平衡配对的仅当这个字符串用作一个普通算数表达式的括号模式时是有意义的。这里有一些平衡配对的例子：</p>
 <script type="math/tex; mode=display">(()())(),\ \ \ ((()())),\ \ \ (()),\ \ \ 和\ \ \ \varepsilon.</script><p>还有一些字符串不是平衡配对的例子：</p>
