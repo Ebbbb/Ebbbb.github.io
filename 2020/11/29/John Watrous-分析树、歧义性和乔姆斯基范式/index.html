@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言这节课我们会讨论一些有关于上下文无关语法的重要概念，包括分析树、歧义性，还有一种特殊形式的上下文无关语法，被称为乔姆斯基范式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 分析树、歧义性和乔姆斯基范式">
+<meta property="og:url" content="http://yoursite.com/2020/11/29/John Watrous-分析树、歧义性和乔姆斯基范式/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言这节课我们会讨论一些有关于上下文无关语法的重要概念，包括分析树、歧义性，还有一种特殊形式的上下文无关语法，被称为乔姆斯基范式。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt7.png">
+<meta property="og:updated_time" content="2020-11-29T12:36:23.706Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 分析树、歧义性和乔姆斯基范式">
+<meta name="twitter:description" content="前言这节课我们会讨论一些有关于上下文无关语法的重要概念，包括分析树、歧义性，还有一种特殊形式的上下文无关语法，被称为乔姆斯基范式。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/11/29/John Watrous-分析树、歧义性和乔姆斯基范式/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》 -- 分析树、歧义性和乔姆斯基范式 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/29/John Watrous-分析树、歧义性和乔姆斯基范式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》 -- 分析树、歧义性和乔姆斯基范式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-11-29T20:31:29+08:00">
+                2020-11-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/11/29/John Watrous-分析树、歧义性和乔姆斯基范式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/11/29/John Watrous-分析树、歧义性和乔姆斯基范式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/11/29/John Watrous-分析树、歧义性和乔姆斯基范式/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》 -- 分析树、歧义性和乔姆斯基范式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这节课我们会讨论一些有关于上下文无关语法的重要概念，包括分析树、歧义性，还有一种特殊形式的上下文无关语法，被称为乔姆斯基范式。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="最左侧推导和分析树"><a href="#最左侧推导和分析树" class="headerlink" title="最左侧推导和分析树"></a>最左侧推导和分析树</h3><p>上一节课中我们降到了上下文无关语法的定义以及通过上下文无关于的字符串推导。让我们考虑上节课中的一个上下文无关语法：</p>
+<script type="math/tex; mode=display">S\rightarrow 0S1S\ |\ 1S0S\ |\ \varepsilon\tag{8.1}</script><p>这次我们称这个CFG为$G$，正如我们上次证明的，我们得到</p>
+<script type="math/tex; mode=display">L(G)=\{w\in\Sigma^{*}:|w|_0=|w|_1\},\tag{8.2}</script><p>其中$\Sigma=\{0,1\}$是一个二进制字母表，$|w|_0$和$|w|_1$表示符号0和1分别在$w$中出现的次数一样。</p>
+<h4 id="最左侧推导"><a href="#最左侧推导" class="headerlink" title="最左侧推导"></a>最左侧推导</h4><p>这里有一个字符串$0101$的推导样例：</p>
+<script type="math/tex; mode=display">S\Rightarrow 0S1S\Rightarrow 01S0S1S\Rightarrow 010S1S\Rightarrow 0101S\Rightarrow 0101.\tag{8.3}</script><p>这是一个<strong>最左侧推导</strong>的样例，意思是每次都是从最左侧的变量开始替换。对于第一步，只存在一个可被替换的变量；不管是在这个例子中还是在普遍情况下都是这样的。然而第二步中我们就可以选择任意一个$S$来替换，在上面的推导中就是最左侧的那个被替换了。如果我们把替换前和替换后的部分画上下划线，就是这样的：</p>
+<script type="math/tex; mode=display">0\underline{S}1S\Rightarrow 0\underline{1S0S}1S.\tag{8.4}</script><p>没有每个其他的步骤也是一样的：总是选择出现在最左侧的变量进行替换，这就是为什么我们称它为最左侧推导。同样的术语也普遍适用于任意上下文无关语法。<br>　　如果你多想一会儿，你会很快发现每个能被某个指定上下文无关语法生成的字符串，也能被同样的语法通过最左侧推导生成。这是因为在任意上下文无关语法的推导中，多个变量和符号之间没有“相互影响”；如果我们知道哪条规则可以用来替换每个变量，那么采用何种顺序来替换并没有什么影响，所以你也许可以在每一步中都总是选择最左侧变量。<br>　　我们也可以定义一个最右侧推导的定义，也就是每次总是计算最右侧的变量，但是这个最右侧推导并没有重要价值，至少在本课程中它完全可以用最左侧推导。由于这个原因，我们不在对最右侧推导进行更进一步的讨论了。</p>
+<h4 id="分析树"><a href="#分析树" class="headerlink" title="分析树"></a>分析树</h4><p>对于任意通过上下文无关语法的字符串推导，我们可以将它和一棵树关联起来，叫做<strong>分析树</strong>，它遵从以下规则：</p>
+<ol>
+<li>对于每个新出现的变量、符号或者$\varepsilon$都有一个节点，根节点则对应着初始变量。我们仅当有形式为$V\rightarrow \varepsilon$的规则被使用时才会有标记了$\varepsilon$的节点。</li>
+<li>每个对应着符号或者$\varepsilon$的节点都是一个叶子节点，而每个对应着变量的节点都有它被替换后对应着的符号、变量或者$\varepsilon$的孩子节点。每个变量被替换后的孩子的顺序和替换这个变量所使用的的规则中的变量和符号的顺序相同。</li>
+</ol>
+<p>比如，推导（8.3）产生的分析树如图8.1。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt1.png" alt="image"></p>
+<p>这里分析树和最左侧推导之间是一个单射且满射的对应关系，它意味着每个分析树唯一确定了一个最左侧推导并且每个最左侧推导唯一确定了一个分析树。</p>
+<h3 id="歧义性"><a href="#歧义性" class="headerlink" title="歧义性"></a>歧义性</h3><p>有时候一个上下文无关语法允许它所生成的某个字符串有多个分析树。比如，由图8.1的CFG通过最左侧推导生成的字符串$0101$，字符串$0101$通过CFG最左侧推导还有一种不同于（8.3）方式是</p>
+<script type="math/tex; mode=display">S\Rightarrow 0S1S\Rightarrow 01S\Rightarrow 010S1S\Rightarrow 0101S\Rightarrow 0101.\tag{8.5}</script><p>这个推导对应的分析树如图8.2所示。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt2.png" alt="image"></p>
+<p>　　在这种情况下，对于一个已知的上下文无关语法$G$，至少有一个字符串$w\in L(G)$至少有两个不同的分析树，那么CFG $G$就是有歧义的。即使只有一个字符串拥有多个分析树也是如此；为了消除歧义，一个CFG对于每个它所生成的字符串只能有一个唯一的分析树。<br>　　消除歧义已经普遍被当做是一个CFG的积极性质，而且这也是某些上下文无关语法应用的明确要求。</p>
+<h4 id="设计无歧义的CFG"><a href="#设计无歧义的CFG" class="headerlink" title="设计无歧义的CFG"></a>设计无歧义的CFG</h4><p>在某些情况下，一个无歧义的语法生成的语言和一个有歧义的语法生成的语言是一样的。比如，我们可以为（8.2）的语言$L(G)$提出一个不同的上下文无关语法，和CFG（8.1）不同，这个语法是无歧义的。这个语法是这样的：</p>
+<script type="math/tex; mode=display">\begin{align}&S\rightarrow 0X1S\ |\ 1\Upsilon0S\ |\ \varepsilon \\ &X\rightarrow 0X1X\ |\ \varepsilon \\ &\Upsilon\rightarrow 1\Upsilon 0\Upsilon \ |\ \varepsilon\end{align}\tag{8.6}</script><p>我们不会花时间来证明这个CFG是无歧义的了，如果你多想一会儿应该能够说服自己它确实是无歧义的。变量$X$生成的字符串中的0和1的数量相同，当你从左往右读的时候1的数量绝对不会超过0的数量，至于变量$\Upsilon$也是类似的，只不过0和1的顺序反过来了。如果你尝试用这个语法通过最左侧推导生成指定的字符串，每次不会有超过一条规则供你采用。<br>　　另外有一个例子讲解如何将一个有歧义的语法修改为无歧义的。让我们定义一个字母表</p>
+<script type="math/tex; mode=display">\Sigma=\{a,b,+,*,(,)\}\tag{8.7}</script><p>以及一个CFG</p>
+<script type="math/tex; mode=display">S\rightarrow S+S\ |\ S*S\ |\ (S)\ |\ a\ |\ b.\tag{8.8}</script><p>这个语法生成的字符串就像一个算数表达式，其中变量是$a$和$b$，我们允许的运算符是$*$和$+$，还有括号。<br>　　例如，字符串$(a+b)* a+b$对应着一个表达式，这个字符串的一个推导如下：</p>
+<script type="math/tex; mode=display">\begin{align}S\Rightarrow S*S &\Rightarrow (S)*S\Rightarrow (S+S)*S\Rightarrow (a+S)*S\Rightarrow (a+b)*S \\ &\Rightarrow (a+b)*S+S\Rightarrow (a+b)*a+S\Rightarrow (a+b)*a+b.\end{align}\tag{8.9}</script><p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt3.png" alt="image"><br>这是恰好是一个最左侧推导，因为每次都是最左侧的变量被替换。这个推导对应的分析树如图8.3所示。你当然可以构思一个此语法的更为复杂的版本，允许使用其他的算数运算符，变量等等，为了方便我们坚持使用（8.8）中的语法。<br>　　CFG（8.8）是有歧义的。例如，同样的字符串$(a+b)* a+b$还有一个不同的（最左侧）推导版本是</p>
+<script type="math/tex; mode=display">\begin{align}&S\Rightarrow S+S\Rightarrow S*S+S\Rightarrow (S)*S+S \\ &\Rightarrow (S+S)*S+S\Rightarrow (a+S)*S+S\Rightarrow (a+b)*S+S \\ &\Rightarrow (a+b)*a+S\Rightarrow (a+b)*a+b,\end{align}\tag{8.10}</script><p>这个推导的分析树如图8.4所示。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt4.png" alt="image"></p>
+<p>　　注意图8.4中的这个分析树是引人注目的，因为它实际解释了表达式$(a+b)* +b$的含义，从某种意义上来说，这个树反映了算术运算符的标准优先级顺序。想法，图8.3的分析树似乎是在表现一种加法比乘法优先级更高的运算。<br>　　语法（8.8）的歧义在某种情况是确实是个问题，它的分析树没有清楚表达我们刚才所描述的算数表达式。比如，如果我们设计一个编译器，并且想要使用这个语法来表达算数表达式（实际情况下要求的语法比这个更为复杂），（8.8）这个CFG完全就不适用。<br>　　然而对于同样的语言我们可以提出一个新的CFG，这个就好很多了，从某种意义上来说，它是无歧义的，并且抓住了算数表达式的正确含义（乘法的优先级高于加法）。它就是：</p>
+<script type="math/tex; mode=display">\begin{align}&S\rightarrow T\ |\ S+T \\ &T\rightarrow F\ |\ T*F \\ &F\rightarrow I\ |\ (S) \\ &I\rightarrow a\ |\ b.\end{align}\tag{8.11}</script><p>例如，字符串$(a+b)* +b$所对应的唯一分析树如图8.5所示。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt5.png" alt="image"></p>
+<p>　　为了更好地理解CFG（8.11），关联不同变量的含义也许会有帮助。在这个CFG中，变量$T$生成<strong>项（terms）</strong>，变量$F$生成<strong>因子（factors）</strong>，然后变量$I$生成<strong>标识符（identifiers）</strong>。一个表达式不是一个项就是项之和，一个项不是一个因子就是因子的产物，一个因子不是一个标识符就是一个在括号内的完整表达式。</p>
+<h4 id="固有歧义性语言"><a href="#固有歧义性语言" class="headerlink" title="固有歧义性语言"></a>固有歧义性语言</h4><p>当我们见过一个无歧义的CFG和一个有歧义的CFG可能会生成同样的语言后，但这种情况并不总是可能的。有一些上下文无关语言只能由有歧义的CFG生成。这种语言我们称为<strong>固有歧义性语言</strong>。举一个固有歧义性语言的例子就是：</p>
+<script type="math/tex; mode=display">\{0^n1^m2^k:n=m或者m=k\}.\tag{8.12}</script><p>我们不会证明这个语言是固有歧义性的，但是直觉告诉我们不管你想到什么CFG，对于足够大的$n$字符串$0^n1^n2^n$总会有多个分析树。</p>
+<h3 id="乔姆斯基范式"><a href="#乔姆斯基范式" class="headerlink" title="乔姆斯基范式"></a>乔姆斯基范式</h3><p>有些上下文无关语法很奇怪。例如，CFG</p>
+<script type="math/tex; mode=display">S\rightarrow SSSS\ |\ \varepsilon\tag{8.13}</script><p>简单地生成语言$\{\varepsilon\}$；但是他明显是有歧义的，而且更糟的是它所生成字符串$\varepsilon$有无限个分析树。如果我们知道不能成功消除一些CFG的歧义，那是因为这些上下文无关语言是固有歧义性的，我们甚至不能消除它对于已知字符串拥有无限个分析树的可能性。也许更重要的是，对于任意已知CFG $G$，我们总会提出一个新的CFG $H$使得$L(H)=L(G)$，我们保证每个已知字符串$w\in L(H)$的分析树有一个同等大小的非常简单的类似于二叉树的结构。<br>　　为了使我们所讨论的这样的CFG和分析树更明确一点，将这样的行为称为定义上下文无关无法的乔姆斯基范式更为合适。</p>
+<p><strong>定义8.1.</strong> 一个上下文无关语法$G$是乔姆斯基范式仅当$G$的没条规都是如下三种形式之一：</p>
+<ol>
+<li>对于变量$X、\Upsilon、Z$，其中$\Upsilon、Z$都不是初始变量，有$X\rightarrow \Upsilon Z$。</li>
+<li>对于变量$X$和符号$a$，有$X\rightarrow a$。</li>
+<li>对于初始变量$S$，有$S\rightarrow \varepsilon$。</li>
+</ol>
+<p>　　现在，乔姆斯基范式的CFG看起来很漂亮的原因是因为这个语法的每个分析树有一个简单的外形：变量节点形成了一个二叉树，每个变量节点都有两个变量孩子节点或者一个符号节点。有一个假想的例子用来表现我们所讨论的这种结构在图8.6中。注意初始变量只会在根节点出现一次，因为它被允许出现在任何规则的右边。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt6.png" alt="image"></p>
+<p>如果规则$S\rightarrow \varepsilon$出现在一个CFG的乔姆斯基范式中，那么我们就得到了一个不是上述结构的特殊情况。这种情况下，对于$\varepsilon$我们有一个非常简单的分析树如图8.7所示，这是这个字符串的唯一可能的分析树。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt7.png" alt="image"></p>
+<p>　　由于一个CFG $G$的乔姆斯基范式的分析树采用了特殊形式，每个已知字符串$w\in L(G)$的分析树一定恰好有$2|w|-1$个变量节点和$|w|$个叶子节点（除了特殊情况$w=\varepsilon$，只有一个变量节点和一个叶子节点）。一个等价的陈述是每个（非空）字符串$w$的乔姆斯基范式推导要求恰好$2|w|-1$次替换。<br>　　接下来这个定理确立了每个上下文无关语言都由一个乔姆斯基范式的CFG生成。</p>
+<p><strong>定理8.2.</strong> 已知$\Sigma$是一个字母表，$A\subseteq \Sigma^{*}$是一个上下文无关语言。存在一个乔姆斯基范式CFG $G$使得$A=L(G)$。</p>
+<p>证明这个定义通常的方式是构造一个转换，将任意CFG $G$转换成乔姆斯基范式CFG $H$使得$L(H)=L(G)$。实际上我们应该基于一个任意CFG $G=(V,\Sigma,R,S)$来说明转换步骤。为了详细说明具体的步骤，让我们用一个具体的CFG来讲，他生成了我们上节课的括号配对语言$BAL$：</p>
+<script type="math/tex; mode=display">S\rightarrow (S)S\ |\ \varepsilon\tag{8.14}</script><ol>
+<li>增加一个新的初始变量$S_0$和规则$S_0\rightarrow S$。这样做可以保证初始变量$S_0$不会出现在任何规则的右边。CFG（8.14）应用这个步骤后变成<script type="math/tex; mode=display">\begin{align}&S_0\rightarrow S \\ &S\rightarrow (S)S\ |\ \varepsilon\end{align}\tag{8.15}</script></li>
+<li>为每个符号$a\in\Sigma$引入一个新的变量$X_a$。首先包括一个新的规则$X_a\rightarrow a$。然后对于每个$a$出现在右边的规则，只有$a$出现在右边的情况除外，将每个$a$替换成$X_a$。继续我们的例子，CFG（8.15）就会成（我们使用$L$和$R$来表示$X_($和$X_)$）<script type="math/tex; mode=display">\begin{align}&S_0\rightarrow S \\ &S\rightarrow LSRS\ |\ \varepsilon \\ &L\rightarrow ( \\ &R\rightarrow )\end{align}\tag{8.16}</script></li>
+<li>拆分形如$X\rightarrow \Upsilon_1 \cdot\cdot\cdot\Upsilon_m$的规则，其中$m\geq 3$，直接加入辅助变量来实现。特别是，$X\rightarrow \Upsilon_1 \cdot\cdot\cdot\Upsilon_m$能够被拆分为<script type="math/tex; mode=display">\begin{align}X&\rightarrow \Upsilon_1 Z_2 \\ Z_2&\rightarrow \Upsilon_2 Z_3 \\ &\vdots \\ Z_{m-2}&\rightarrow \Upsilon_{m-2} Z_{m-1} \\ Z_{m-1}&\rightarrow \Upsilon_{m-1} \Upsilon_m\end{align}\tag{8.17}</script>注意对于每条规则我们必须分开使用辅助变量，这样才不会导致规则之间的相互作用 — 不要重用同样的辅助变量破坏这个性质。用这种方式转换CFG（8.16）后得到<script type="math/tex; mode=display">\begin{align}S_0&\rightarrow S \\ S&\rightarrow LZ_2\ |\ \varepsilon \\ Z_2&\rightarrow SZ_3 \\ Z_3&\rightarrow RS \\ L&\rightarrow ( \\ R&\rightarrow )\end{align}\tag{8.18}</script></li>
+<li>消除形如$X\rightarrow \varepsilon$的$\varepsilon$-规则，然后“修复这个损坏”。除了特殊情况$S_0\rightarrow \varepsilon$以外，其他地方不需要形如$X\rightarrow \varepsilon$的规则；通过简单地重复$X$出现在右边的规则，然后直接将每一种可能关联下的$X$替换成$\varepsilon$，我们就能到达同样的效果。你也许会通过这种方式引入新的$\varepsilon$-规则，但是他们能够被循环处理掉 — 任何一个新的$\varepsilon$-规则生成后就已经被消除掉了，并且不会被加回去。像这样转换CFG（8.18）后得到<script type="math/tex; mode=display">\begin{align}S_0&\rightarrow S\ |\ \varepsilon \\ S&\rightarrow LZ_2 \\ Z_2&\rightarrow SZ_3\ |\ Z_3 \\ Z_3&\rightarrow RS\ |\ R \\ L&\rightarrow ( \\ R&\rightarrow )\end{align}\tag{8.18}</script>注意我们最后得到的$\varepsilon$-规则是$S_0\rightarrow \varepsilon$，但是我们不会消除这个，因为$S_0\rightarrow \varepsilon$是被允许存在的$\varepsilon$-规则。</li>
+<li>消除单元规则，形式就像$X\rightarrow \Upsilon$。像这样的规则是没必要的，当我们发现规则$\Upsilon\rightarrow w$后就可以直接替换成$X\rightarrow w$。当你消除获得新规则以后，它就不会被加回去了。用这种方式转换CFG（8.19）得到<script type="math/tex; mode=display">\begin{align}S_0&\rightarrow S\ |\ \varepsilon \\ S&\rightarrow LZ_2 \\ Z_2&\rightarrow SZ_3\ |\ RS\ |\ ) \\ Z_3&\rightarrow RS\ |\ ) \\ L&\rightarrow ( \\ R&\rightarrow )\end{align}\tag{8.18}</script>到此我们就结束了；这个上下文无关语法就是一个乔姆斯基范式了。</li>
+</ol>
+<p>上面这段藐视只是给出了你一个如何转换乔姆斯基范式的基本思路，并没有构造定理8.2的正式证明。然后如果更为正式和清楚地描述这个转换就可以得到一个定理8.2的正式证明。<br>　　当我们在证明有关上下文无关语言的东西时会经常用到这个定理，有时候它很有帮助，我们总是可以假设一个已知的上下文无关语言是通过一个乔姆斯基范式CFG生成的。<br>　　最后，着重强调一下乔姆斯基范式没有关于歧义性相关的内容。一个乔姆斯基范式的CFG可能是有歧义也可能没有，正如任意CFG一样。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.08.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.08.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/11/15/John Watrous-上下文无关语法和语言/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法和语言">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法和语言
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#最左侧推导和分析树"><span class="nav-number">2.1.</span> <span class="nav-text">最左侧推导和分析树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最左侧推导"><span class="nav-number">2.1.1.</span> <span class="nav-text">最左侧推导</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析树"><span class="nav-number">2.1.2.</span> <span class="nav-text">分析树</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#歧义性"><span class="nav-number">2.2.</span> <span class="nav-text">歧义性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#设计无歧义的CFG"><span class="nav-number">2.2.1.</span> <span class="nav-text">设计无歧义的CFG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#固有歧义性语言"><span class="nav-number">2.2.2.</span> <span class="nav-text">固有歧义性语言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#乔姆斯基范式"><span class="nav-number">2.3.</span> <span class="nav-text">乔姆斯基范式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/11/29/John Watrous-分析树、歧义性和乔姆斯基范式/';
+          this.page.identifier = '2020/11/29/John Watrous-分析树、歧义性和乔姆斯基范式/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》 -- 分析树、歧义性和乔姆斯基范式';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
