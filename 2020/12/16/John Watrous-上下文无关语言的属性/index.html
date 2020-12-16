@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="CYberseERker">
 <meta property="og:description" content="前言这节课我们会检验上下文无关语言类的一些属性，包括它在正则运算下是闭合的，每个正则语言都是上下文无关的，以及一个上下文无关语言和一个正则语言的交集总是上下文无关的。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-12-16T13:07:33.490Z">
+<meta property="og:updated_time" content="2020-12-16T13:10:52.599Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性">
 <meta name="twitter:description" content="前言这节课我们会检验上下文无关语言类的一些属性，包括它在正则运算下是闭合的，每个正则语言都是上下文无关的，以及一个上下文无关语言和一个正则语言的交集总是上下文无关的。">
@@ -360,7 +360,7 @@
 <p>在每种情况下，我们都观察到$L(G)=L(R)$。<br>　　现在，假设A是正则的，一定存在一个正则表达式使得$L(R)=A$。由上面所描述通过$R$可以获取到CFG $G$，我们发现$L(G)=A$，因此$A$是上下文无关的。</p>
 <p>第二个证明：因为$A$是正则的，一定存在一个DFA</p>
 <script type="math/tex; mode=display">M=(Q,\Sigma,\delta,q_0,F)\tag{9.12}</script><p>使得$L(M)=A$。<br>　　我们将会定义一个CFG $G$，它能有效模拟$M$，生成的字符串恰好能被$M$接受。特别地，我们将会定义</p>
-<script type="math/tex; mode=display">G=(V,\Sigma,R,X_{q_0},\tag{9.13}</script><p>其中变量是$V=\{X_q:q\in Q\}$（一个变量对应$M$中的一个状态）和$R$中包含的一下规则：</p>
+<script type="math/tex; mode=display">G=(V,\Sigma,R,X_{q_0}),\tag{9.13}</script><p>其中变量是$V=\{X_q:q\in Q\}$（一个变量对应$M$中的一个状态）和$R$中包含的一下规则：</p>
 <ol>
 <li>对于满足$\delta(p,a)=q$的每个选择$p,q\in Q$和$a\in \Sigma$，都有规则<script type="math/tex; mode=display">X_p\rightarrow aX_q\tag{9.14}</script>包含在$R$中。</li>
 <li>对于每个状态$q\in F$，都有规则<script type="math/tex; mode=display">X_q\rightarrow \varepsilon\tag{9.15}</script>包含在$R$中。</li>
