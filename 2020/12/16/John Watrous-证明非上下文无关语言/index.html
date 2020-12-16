@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言这节课我们会学习一种方法，通过它我们可以证明非上下文无关语言。这个方法你会觉得非常熟悉，因为它和我们在第5节课证明非正则语言的方法是类似的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 证明非上下文无关语言">
+<meta property="og:url" content="http://yoursite.com/2020/12/16/John Watrous-证明非上下文无关语言/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言这节课我们会学习一种方法，通过它我们可以证明非上下文无关语言。这个方法你会觉得非常熟悉，因为它和我们在第5节课证明非正则语言的方法是类似的。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/ncfl/ncfl1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/ncfl/ncfl2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/ncfl/ncfl3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/ncfl/ncfl4.png">
+<meta property="og:updated_time" content="2020-12-16T13:14:26.535Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 证明非上下文无关语言">
+<meta name="twitter:description" content="前言这节课我们会学习一种方法，通过它我们可以证明非上下文无关语言。这个方法你会觉得非常熟悉，因为它和我们在第5节课证明非正则语言的方法是类似的。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/ncfl/ncfl1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/12/16/John Watrous-证明非上下文无关语言/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》 -- 证明非上下文无关语言 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/16/John Watrous-证明非上下文无关语言/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》 -- 证明非上下文无关语言</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-16T21:11:26+08:00">
+                2020-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/12/16/John Watrous-证明非上下文无关语言/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/12/16/John Watrous-证明非上下文无关语言/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/12/16/John Watrous-证明非上下文无关语言/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》 -- 证明非上下文无关语言">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这节课我们会学习一种方法，通过它我们可以证明非上下文无关语言。这个方法你会觉得非常熟悉，因为它和我们在第5节课证明非正则语言的方法是类似的。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="上下文无关语言的泵引理"><a href="#上下文无关语言的泵引理" class="headerlink" title="上下文无关语言的泵引理"></a>上下文无关语言的泵引理</h3><p>沿着我们在第五节课证明非正则语言的讨论时的思路，我们提出一个适用于上下文无关语言的泵引理变体。<br>　　这个引理的证明自然不同于正则语言的泵引理证明，但是基本思路是相似的。主要思路是如果你有通过某个上下文无关语法生成的特定字符串，知道推导出它的分析树，这个树的有足够的深度，那么一定存在某个变量在从根节点到叶节点的路径上多次出现，我们找到了一种类似于正则语言泵引理的泵效应。</p>
+<p><strong>引理10.1(上下文无关语言的泵引理).</strong> 已知$\Sigma$是一个字母表，$A\in\Sigma^{*}$是一个上下文无关语言。存在一个正整数$n$（称作泵长度）拥有以下属性。对于每个字符串$w\in A$并且$|w|\geq n$，选择一些字符串$u,v,x,y,z\in\Sigma^{*}$可以写出$w=uvxyz$使得</p>
+<ol>
+<li>$vy\neq \varepsilon$,</li>
+<li>$|vxy|\leq n$,</li>
+<li>对于所有$i\in\mathbb{N}$有$uv^ixy^iz\in A$.</li>
+</ol>
+<p>证明：已知$A$是上下文无关的，我们知道一定存在一个乔姆斯基范式的CFG $G$使得$A=L(G)$。让$m$表示$G$中变量的数量。我们将证明$n=2^m$时所有引理中声明的属性都有效。<br>　　假设字符串$w\in A$满足$|w|\geq n=2^n$。因为$G$是乔姆斯基范式，每个$w$的分析树有恰好$2|w|-1$个变量和$|w|$个叶子节点。在此之后我们选择这些分析树中的任意一个，把它叫做树$T$。为了方便证明，关于$T$的大小有很重要的一点是它至少有$2^m$个变量节点。这是对的，因为$2|w|-1\geq 2\cdot 2^m-1\geq 2^m$。事实上，最后一个不等是严格的，因为$m\geq 1$，但是这对证明没有任何影响。因为变量节点的数量至少是$2^m$，$T$中一定存在一条从根节点到叶节点的路径至少有$m+1$个变量节点 — 因为如果这些路径只有$m$或者更少的变量节点，那么整个树种最多只会有$2^m-1$个变量节点。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/ncfl/ncfl1.png" alt="image"><br>　　接下来选择任意$T$中从根节点到叶节点长度最大的路径。（也许有很多选择，但是任选一个就行）我们知道至少有$m+1$个变量会出现在这个路径中，正如上面所讨论的 — 而且因为总共只有$m$个不同的变量，那么至少有一个变量在这个路径中出现了多次。事实上，我们知道某个变量（称作$X$）一定会我们选择的路径中的最靠近叶节点的位置第二次出现。让$T_1$和$T_2$表示最底部出现的$X$作为根节点的子树，$T_2$是两个中较小的。顺便说说我们选择的这两个树，我们$T_2$是$T_1$的真子树，而且$T_1$不是很大：每个从$T_1$根节点出发到叶节点的路径中变量节点不超过$m+1$个，因此$T_1$的叶节点不超过$2^m=n$个。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/ncfl/ncfl2.png" alt="image"><br>　　现在，用$x$表示$T_2$（从$X$开始的分析树）生成的字符串，$x$和$y$表示$T_1$生成的字符串分别在$T_2$左边和右边的部分，$vxy$则表示$T_1$（也是从$X$开始的分析树）生成的字符串。最后，$u$和$z$表示$T$生成的字符串分别在$T_1$左边和右边的部分，那么$w=uvxyz$。图10.2阐述了字符串$u,v,x,y,z$和$T,T_1,T_2$的关系。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/ncfl/ncfl3.png" alt="image"><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/ncfl/ncfl4.png" alt="image"><br>　　剩下的就是要证明$u,v,x,y,z$具有引理声明中要求的属性。让我们先来证明对于所有$i\in\mathbb{N}$有$uv^ixy^iz\in A$。为了弄清$uxz=uv^0xy^0z\in A$，我们观察到通过将$T_1$替换成$T_2$，能得到一个有效的分析树，如图10.3所示。这个替换是可行的，因为$T_1$和$T_2$的根节点都是变量$X$。同样的思路，我们可以得出$uv^2xy^2z\in A$，因为我们可以通过复制一个$T_2$来替换$T_1$得到一个有效的的分析树，如图10.4所示。通过重复复制$T_1$来替换$T_2$，我们就能获得$uv^ixy^iz$的分析树。<br>　　接下来，$vy\neq \varepsilon$这个事实源自于一个字符串的每个分析树所对应的乔姆斯基范式CFG的大小都是相同的。因此图10.3和图10.2生成的字符串不可能相同，因为两个树的变量节点的数量不同。这说明$uvxyz\neq uxz$，也就是说$vy\neq \varepsilon$。<br>　　最后，因为$T_1$的叶节点数量最多是$2^m=n$，那么$|vxy|\leq n$，综上证明就完成了。</p>
+<h3 id="使用上下文无关语言的泵引理"><a href="#使用上下文无关语言的泵引理" class="headerlink" title="使用上下文无关语言的泵引理"></a>使用上下文无关语言的泵引理</h3><p>现在我们手中有了上下文无关语言的泵引理，我们可以证明某个语言是非上下文无关的。这个方法和我们第5节课中证明某个语言是非正则的类似。比如下面这个命题。</p>
+<p><strong>命题10.2.</strong> 已知$\Sigma=\{0,1,2\}$，语言$A$的定义如下：</p>
+<script type="math/tex; mode=display">A=\{0^m1^m2^m:m\in\mathbb{N}\}.\tag{10.1}</script><p>语言$A$是非上下文无关的。</p>
+<p>证明：我们使用反证法，假设$A$是上下文无关的。由上下文无关语言的泵引理可知，$A$一定存在一个泵长度$n$。接下来的证明中我们会假设一个泵长度$n$。让</p>
+<script type="math/tex; mode=display">w=0^n1^n2^n.\tag{10.2}</script><p>其中$w\in A$并且$|w|=3n\geq n$，然后泵引理确保了一定存在字符串$u,v,x,y,z\in\Sigma^{*}$使得$w=uvxyz$，而且引理中的三个属性都生效：（i)$vy\neq\varepsilon$，（ii)$|vxy|\leq n$，并且（iii)对于所有$i\in\mathbb{N}$有$uv^ixy^iz\in A$。<br>　　现在，已知$|vxy|\leq n$，那么符号0和1不可能同时出现在$vy$中；0和1之间的距离太远了。另外，$\Sigma$中至少有一个符号出现在$vy$中，因为这个字符串是非空的。这表示字符串</p>
+<script type="math/tex; mode=display">uv^0xy^0z=uxz\tag{10.3}</script><p>中要么是1或者2的数量少于0，要么是0或者1的数量少于2。也就是，如果符号0没出现在$vy$中，那么一定有</p>
+<script type="math/tex; mode=display">|uxz|_1<|uxz|_0\ \ \ \ 或者\ \ \ \ |uxz|_2<|uxz|_1,\tag{10.4}</script><p>而如果符号2没出现在$vy$中，那么一定有</p>
+<script type="math/tex; mode=display">|uxz|_0<|uxz|_2\ \ \ \ 或者\ \ \ \ |uxz|_1<|uxz|_2.\tag{10.5}</script><p>然而这时有矛盾的，因为根据引理的第三个属性$uv^0xy^0z=uxz$是属于$A$的。<br>　　由于这个矛盾，我们得出$A$是费上下文无关的，证毕。</p>
+<p>在某些情况下，就像下面这个命题，一个语言能被证明非上下文无关的方式和它被证明非正则的方式一模一样。</p>
+<p><strong>命题10.3.</strong> 已知$\Sigma=\{0\}$，回想一下这个语言</p>
+<script type="math/tex; mode=display">SQUARE=\{0^{m^2}:m\in\mathbb{N}\},\tag{10.6}</script><p>它在第5节课中定义过。这个语言是非上下文无关的。</p>
+<p>证明：我们使用反证法，假设$SQUARE$是上下文无关的。根据上下文无关语言的泵引理，$SQUARE$一定存在一个泵长度$n\geq 1$使得引理中的三个属性有效。接下来的证明中我们会假设一个泵长度$n$。定义</p>
+<script type="math/tex; mode=display">w=0^{n^2}.\tag{10.7}</script><p>我们知道$w\in SQUARE$和$|w|=n^2\geq n$，那么泵引理告诉我们一定存在$u,v,x,y,z\in\Sigma^{*}$使得$w=uvxyz$，而且一下三个条件生效：</p>
+<ol>
+<li>$vy\neq \varepsilon$,</li>
+<li>$|vxy|\leq n$,</li>
+<li>对于所有$i\in\mathbb{N}$有$uv^ixy^iz\in SQUARE$.</li>
+</ol>
+<p>　　字母表$\Sigma^{*}$中只有一个符号，所以$vy=0^k$，其中$k\in\mathbb{N}$。因为$vy\neq \varepsilon$而且$|vy|\leq |vxy|\leq n$，那么就有$1\leq k\leq n$。观察这个</p>
+<script type="math/tex; mode=display">uv^ixy^iz=0^{n^2+(i-1)k},\tag{10.8}</script><p>其中$i\in\mathbb{N}$。特别地，如果我们选择$i=2$，那么我们有</p>
+<script type="math/tex; mode=display">uv^2xy^2z=0^{n^2+k}.\tag{10.9}</script><p>然而因为$1\leq k\leq n$，$n^2+k$不是一个完全平方。这是因为$n^2+k$大于$n^2$，但是$n^2$的下一个完全平方数是</p>
+<script type="math/tex; mode=display">(n+1)^2=n^2+2n+1,\tag{10.10}</script><p>这个数明显大于$n^2+k$，因为$k\leq n$。字符串不包含于$SQUARE$，这与泵引理的第三个条件矛盾，它要求对于所有$i\in\mathbb{N}$有$uv^ixy^iz\in SQUARE$。<br>　　得到这个矛盾后，我们得出$SQUARE$是非上下文无关的，证毕。</p>
+<p><strong>注意10.4</strong> 我们不会具体证明，但是这个结果看起来每个基于单字符字母表的上下文无关语言一定是正则的。通过这个事实与$SQUARE$是一个非正则语言联系起来，我们得到了$SQUARE$是费上下文无关的另一种证明。</p>
+<p>　　这里还有一个使用泵引理证明非上下文无关语言的例子。这个例子中会有点混乱，因为它有很多种情况需要考虑。当然，这就需要我们在所有情况下都得到一个矛盾才能完成一个有效的反证，所以要牢记这一点。</p>
+<p><strong>命题10.5.</strong> 已知$\Sigma\{0,1,\sharp\}$，定义一个基于$\Sigma$的语言$B$如下：</p>
+<script type="math/tex; mode=display">B=\{r\sharp s:r,s\in\{0,1\}^{*},r是s的一个子串\}.\tag{10.11}</script><p>语言$B$是非上下文无关的。</p>
+<p>证明：我们使用反证法，假设$B$是上下文无关的。根据上下文无关语言的泵引理，$B$一定存在一个泵长度$n$。在余下的证明中我们会假定这么一个泵长度$n$。让</p>
+<script type="math/tex; mode=display">w=0^n1^n\sharp0^n1^n.\tag{10.12}</script><p>我们知道$w\in B$（因为$0^n1^n$是它自身的一个子串），还有$|w|=4n+1\geq n$。因此泵引理保证了一定存在字符串$u,v,x,y,z\in\Sigma^{*}$使得$w=uvxyz$，而且引理中的三个属性有效：（i）$vy\neq\varepsilon$，（ii)$|vxy|\leq n$，和（iii)对于所有$i\in\mathbb{N}$有$uv^ixy^iz\in B$。<br>　　符号$\sharp$只会在$w$中出现一次，所以他一定是出现在字符串$u,v,x,y,z$中的一个。我们分别考虑每种情况：</p>
+<ol>
+<li>$\sharp$出现在$u$中。这种情况下$v$和$y$的所有字符都出现在$\sharp$的右边。那么<script type="math/tex; mode=display">uv^0xy^0z=0^n1^n\sharp0^{n-j}1^{n-k},\tag{10.13}</script>对于整数$j,k$一定有$j+k\geq 1$，因为从$w$中移除$v$和$y$我们至少要从$\sharp$的右边移除一个符号（但是左边的符号数量不变）。字符串（10.13）没有包含在$B$中，这与我们第三个属性冲突，所以在这种情况下我们得到了一个矛盾。</li>
+<li>$\sharp$出现在$v$中。这种情况很简单：因为$\sharp$在$v$中，字符串$uv^0xy^0z=uxz$不包含符号$\sharp$，所以他不可能在$B$中。这与第三个属性冲突，所以在这种情况下我们得到了一个矛盾。</li>
+<li>$\sharp$出现在$x$中。这种情况下，我们知道$vxy=1^j\sharp 0^k$，其中整数$j,k$一定有$j+k\geq 1$。而$vxy$采用这种形式的原因是因为$|vxy|\leq n$，所以这个子串不可能在包含$\sharp$的情况下，即接触到第一个0的区块，有接触到最后一个1的区块，而为什么$j+k\geq 1$的原因则是$vy\neq \varepsilon$。如果$n\geq 1$，我们选择$i=2$来获得矛盾。因为<script type="math/tex; mode=display">uv^2xy^2z=0^n1^{n+j}\sharp 0^{n+k}1^n,\tag{10.14}</script>它不包含在$B$中，因为$\sharp$左边的1比右边的多。如果$k\geq 1$，那么我们选择$i=0$来获得矛盾：我们有<script type="math/tex; mode=display">uv^0xy^0z=0^n1^{n-j}\sharp 0^{n-k}1^n,\tag{10.15}</script>他不包含于$B$中，因为$\sharp$左边的0比右边的多。</li>
+<li>$\sharp$出现在$x$中。这个情况获得矛盾的条件和情况2相同。</li>
+<li>$\sharp$出现在$z$中。这种情况下$v$和$y$的符号都出现在$\sharp$的左边。因为$vy\neq \varepsilon$，那么<script type="math/tex; mode=display">uv^2xy^2z=r\sharp 0^n1^n,\tag{10.16}</script>其中字符串$r$的长度明显超过了$2n$。字符串不包含在$B$中，这与第三个属性冲突，所以在这种情况下我们得到了一个矛盾。</li>
+</ol>
+<p>所有情况下我们都得到了矛盾，我们得出这个假设整体上是矛盾的 — $B$是非上下文无关的，证毕。</p>
+<h3 id="非上下文无关语言和闭包属性"><a href="#非上下文无关语言和闭包属性" class="headerlink" title="非上下文无关语言和闭包属性"></a>非上下文无关语言和闭包属性</h3><p>在上节课中我们说上下文无关语言在交集和补集运算下不是闭合的。也就是存在上下文无关语言$A$和$B$使得$A\cap B$和$\overline{A}$都不是上下文无关的。我们现在可以验证这些声明了。<br>　　首先，让我们考虑交集的情况。假设我们定义语言$A$和$B$如下：</p>
+<script type="math/tex; mode=display">\begin{align}A&=\{0^n1^n2^m:n,m\in\mathbb{N}\} \\ B&=\{0^n1^m2^m:n,m\in\mathbb{N}\}\end{align}\tag{10.17}</script><p>这的确是两个上下文无关语言 — 生成$A$的一个CFG是</p>
+<script type="math/tex; mode=display">\begin{align}S&\rightarrow X\Upsilon \\ X&\rightarrow 0X1\ |\ \varepsilon \\ \Upsilon &\rightarrow 2\Upsilon \ |\ \varepsilon\end{align}\tag{10.18}</script><p>而生成$B$的一个CFG是</p>
+<script type="math/tex; mode=display">\begin{align}S&\rightarrow X\Upsilon \\ X&\rightarrow 0X\ |\ \varepsilon \\ \Upsilon &\rightarrow 1\Upsilon 2 \ |\ \varepsilon\end{align}\tag{10.18}</script><p>另外，交集$A\cap B$是非上下文无关的，这个我们在命题10.2已经证明过了。</p>
+<p>　　现在我们已经证明了上下文无关语言在交集运算下不是闭合的，紧接着我们就知道上下文无关语言在补集运算下也不是闭合的。这是因为我们已经知道上下文无关语言在并集运算下是闭合的，如果它们在补集运算下也是闭合的，由德摩根定律可知交集运算也应该是闭合的。<br>　　最后，让我来看看有时候我们可以使用闭包属性来证明某个语言是非上下文无关的。比如，考虑这个语言</p>
+<script type="math/tex; mode=display">D=\{w\in\{0,1,2\}^{*}:|w|_0=|w|_1=|w|_2\}.\tag{10.20}</script><p>当然使用泵引理可以证明$D$是非上下文无关的，用法类似于命题10.2。不过还有一个更简单的方法来得出这个事实。我们假设$D$是上下文无关的。因为一个上下文无关语言和一个正则语言的交集一定是上下文无关的，也就是说$D\cap L(0^{*}1^{*}2^{*})$是上下文无关的（因为因为$L(0^{*}1^{*}2^{*})$是一个正则表达式所匹配的语言）。然而</p>
+<script type="math/tex; mode=display">D\cap L(0^{*}1^{*}2^{*})=\{0^m1^m2^m:m\in \mathbb{N}\},\tag{10.21}</script><p>我们已经知道它是非上下文无关的了。有了这个矛盾，我们得出$D$是非上下文无关的，证毕。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.10.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.10.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/16/John Watrous-上下文无关语言的属性/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#上下文无关语言的泵引理"><span class="nav-number">2.1.</span> <span class="nav-text">上下文无关语言的泵引理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用上下文无关语言的泵引理"><span class="nav-number">2.2.</span> <span class="nav-text">使用上下文无关语言的泵引理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非上下文无关语言和闭包属性"><span class="nav-number">2.3.</span> <span class="nav-text">非上下文无关语言和闭包属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/12/16/John Watrous-证明非上下文无关语言/';
+          this.page.identifier = '2020/12/16/John Watrous-证明非上下文无关语言/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》 -- 证明非上下文无关语言';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
