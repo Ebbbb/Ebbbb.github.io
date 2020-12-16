@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言这节课我们会检验上下文无关语言类的一些属性，包括它在正则运算下是闭合的，每个正则语言都是上下文无关的，以及一个上下文无关语言和一个正则语言的交集总是上下文无关的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性">
+<meta property="og:url" content="http://yoursite.com/2020/12/16/John Watrous-上下文无关语言的属性/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言这节课我们会检验上下文无关语言类的一些属性，包括它在正则运算下是闭合的，每个正则语言都是上下文无关的，以及一个上下文无关语言和一个正则语言的交集总是上下文无关的。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-12-16T13:07:33.490Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性">
+<meta name="twitter:description" content="前言这节课我们会检验上下文无关语言类的一些属性，包括它在正则运算下是闭合的，每个正则语言都是上下文无关的，以及一个上下文无关语言和一个正则语言的交集总是上下文无关的。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/12/16/John Watrous-上下文无关语言的属性/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/16/John Watrous-上下文无关语言的属性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-16T21:02:27+08:00">
+                2020-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/12/16/John Watrous-上下文无关语言的属性/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/12/16/John Watrous-上下文无关语言的属性/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/12/16/John Watrous-上下文无关语言的属性/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这节课我们会检验上下文无关语言类的一些属性，包括它在正则运算下是闭合的，每个正则语言都是上下文无关的，以及一个上下文无关语言和一个正则语言的交集总是上下文无关的。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="正则运算下的闭包"><a href="#正则运算下的闭包" class="headerlink" title="正则运算下的闭包"></a>正则运算下的闭包</h3><p>让我们先来证明上下文无关语言在正则运算下是闭合的。</p>
+<p><strong>定理9.1.</strong> 已知$\Sigma$是一个字母表和$A,B\subseteq \Sigma^{*}$是上下文无关语言。语言$A\cup B,AB$和$A^{*}$都是上下文无关的。</p>
+<p>证明：因为$A$和$B$是上下文无关语言，一定存在上下文无关语法</p>
+<script type="math/tex; mode=display">G_A=(V_A,\Sigma,R_A,S_A)\ \ \ \ 和\ \ \ \ G_B(V_B,\Sigma,R_B,S_B)\tag{9.1}</script><p>使得$L(G_A)=A$和$L(G_B)=B$。因为由于我们在上下文无关语法中采用的变量名称对它所生成的语言没有影响，假设$V_A$和$V_B$是不相交集不会失去普遍性。<br>　　首先让我们为语言$A\cup B$构造一个CFG $G$。这个CFG将会包含所有$G_A$和$G_B$的变量和规则，以及一个新的变量$S$（假设这个变量不包含在$V_A$和$V_B$，并且把它当做$G$的初始变量）和两个新的规则：</p>
+<script type="math/tex; mode=display">S\rightarrow S_A\ |\ S_B.\tag{9.2}</script><p>正式来说我们可以写成</p>
+<script type="math/tex; mode=display">G=(V,\Sigma,R,S),\tag{9.3}</script><p>其中$V=V_A\cup V_B\cup \{S\}$和$R=R_A\cup R_B\cup \{S\rightarrow S_A,S\rightarrow S_B\}$。用典型的方式来写CFG，语法$G$看起来是这样：</p>
+<script type="math/tex; mode=display">\begin{align}&S\rightarrow S_A\ |\ S_B \\ &\fbox{所有G_A的规则} \\ &\fbox{所有G_B的规则}\end{align}</script><p>明显可以看出$L(G)=A\cup B$；每个推导都是从$S\Rightarrow S_A$或者$S\Rightarrow S_B$开始，然后$S_A$生成的任意$A$中的字符串或者$S_B$生成任意$B$中的字符串。因为语言$A\cup B$是由CFG $G$生成的，所以它是上下文无关的。<br>　　接下来我们为语言$AB$构造一个CFG $H$。$H$的构造和上面$G$的类似。CFG $H$将会包含所有$G_A$和$G_B$的变量和规则，以及一个新的初始变量$S$和一个新的规则：</p>
+<script type="math/tex; mode=display">S\rightarrow S_AS_B.\tag{9.4}</script><p>正式来说我们可以写成</p>
+<script type="math/tex; mode=display">H=(V,\Sigma,R,S),\tag{9.5}</script><p>其中$V=V_A\cup V_B\cup \{S\}$和$R=R_A\cup R_B\cup \{S\rightarrow S_AS_B\}$。用典型的方式来写CFG，语法$H$看起来像这样：</p>
+<script type="math/tex; mode=display">\begin{align}&S\rightarrow S_AS_B \\ &\fbox{所有G_A的规则} \\ &\fbox{所有G_B的规则}\end{align}</script><p>明显可以看出$L(G)=AB$；每个推导都从$S\Rightarrow S_AS_B$开始，然后$S_A$生成任意$A$中的字符串，$S_B$生成任意$B$中的字符串。因为语言$AB$是由CFG $H$生成的，所以它是上下文无关的。<br>　　最后我们来为$A^{*}$构造一个CFG $K$，这次CFG $K$将会只包含$G_A$的变量和规则，以及一个新的初始变量$S$和两个新规则：</p>
+<script type="math/tex; mode=display">S\rightarrow SS_A\ |\ |varepsilon.\tag{9.6}</script><p>正式来说我们可以写成</p>
+<script type="math/tex; mode=display">K=(V,\Sigma,R,S),\tag{9.7}</script><p>其中$V=V_A\cup \{S\}$和$R=R_A\cup \{S\rightarrow SS_A,S\rightarrow \varepsilon$。用典型的方式来写CFG，语法$K$看起来像这样：</p>
+<script type="math/tex; mode=display">\begin{align}&S\rightarrow SS_A\ |\ \varepsilon \\ &\fbox{所有G_A的规则}\end{align}</script><p>通过$K$的最左侧推导生成的每个字符串都是从零次或者多次规则$S\rightarrow SS_A$和$S\rightarrow \varepsilon$的应用开始的。这表示每个最左侧推导中都是包含下面的一个序列关系：</p>
+<script type="math/tex; mode=display">\begin{align}S&\stackrel{*}{\Rightarrow} \varepsilon \\ S&\stackrel{*}{\Rightarrow} S_A \\ S&\stackrel{*}{\Rightarrow} S_AS_A \\ S&\stackrel{*}{\Rightarrow} S_AS_AS_A \\ &\vdots \end{align}\tag{9.8}</script><p>等等。在此之后，每个出现的$S_A$都生成任意$A$中的字符串。因此$L(K)=A^{*}$，那么$A^{*}$是上下文无关的。</p>
+<h3 id="与正则语言的关系"><a href="#与正则语言的关系" class="headerlink" title="与正则语言的关系"></a>与正则语言的关系</h3><p>这部分讨论上下文无关语言和正则语言的关系。特别是我们将证明每个正则语言都是上下文无关的，以及一个上下文无关语言和一个正则语言的交集总是上下文无关的。<br>让我们从以上事实的第一个开始，也就是每个正则语言都是上下文无关的。我们将会讨论两种不同的方式来证明这个事实。</p>
+<p><strong>定理9.2.</strong> 已知$\Sigma$是一个字母表，$A\subseteq \Sigma^{*}$是一个正则语言。语言$A$是上下文无关的。</p>
+<p>第一个证明：对于每个基于字母表$\Sigma$的正则表达式，通过我们递归使用以下简单的构造可以将它与一个CFG $G$关联起来：</p>
+<ol>
+<li>如果$R=\varnothing$，那么CFG $G$就是<script type="math/tex; mode=display">S\rightarrow S,\tag{9.9}</script>它生成空语言$\varnothing$。</li>
+<li>如果$R=\varepsilon$，那么CFG $G$就是<script type="math/tex; mode=display">S\rightarrow \varepsilon,\tag{9.10}</script>它生成语言$\{\varepsilon\}$。</li>
+<li>如果对于每个$a\in \Sigma$有$R=a$，那么CFG $G$就是<script type="math/tex; mode=display">S\rightarrow a,\tag{9.11}</script>它生成语言$\{a\}$。</li>
+<li>如果$R=(R_1\cup R_2)$，那么CFG $G$生成的语言是$L(G_1)\cup L(G_2)$，正如定理9.1证明中所描述的，$G_1$和$G_2$分别与正则表达式$R_1$和$R_2$相关联。</li>
+<li>如果$R=(R_1R_2)$，那么CFG $G$生成的语言是$L(G_1)L(G_2)$，正如定理9.1证明中所描述的，$G_1$和$G_2$分别与正则表达式$R_1$和$R_2$相关联。</li>
+<li>如果$R=(R_1^{*})$，那么CFG $G$生成语言$L(G_1)^{*}$，正如定理9.1证明中所描述的，$G_1$与正则表达式$R_1$相关联。</li>
+</ol>
+<p>在每种情况下，我们都观察到$L(G)=L(R)$。<br>　　现在，假设A是正则的，一定存在一个正则表达式使得$L(R)=A$。由上面所描述通过$R$可以获取到CFG $G$，我们发现$L(G)=A$，因此$A$是上下文无关的。</p>
+<p>第二个证明：因为$A$是正则的，一定存在一个DFA</p>
+<script type="math/tex; mode=display">M=(Q,\Sigma,\delta,q_0,F)\tag{9.12}</script><p>使得$L(M)=A$。<br>　　我们将会定义一个CFG $G$，它能有效模拟$M$，生成的字符串恰好能被$M$接受。特别地，我们将会定义</p>
+<script type="math/tex; mode=display">G=(V,\Sigma,R,X_{q_0},\tag{9.13}</script><p>其中变量是$V=\{X_q:q\in Q\}$（一个变量对应$M$中的一个状态）和$R$中包含的一下规则：</p>
+<ol>
+<li>对于满足$\delta(p,a)=q$的每个选择$p,q\in Q$和$a\in \Sigma$，都有规则<script type="math/tex; mode=display">X_p\rightarrow aX_q\tag{9.14}</script>包含在$R$中。</li>
+<li>对于每个状态$q\in F$，都有规则<script type="math/tex; mode=display">X_q\rightarrow \varepsilon\tag{9.15}</script>包含在$R$中。</li>
+</ol>
+<p>现在，通过检测上述假设的规则，我们发现一个字符串通过$G$的推导都是从初始变量开始，包含了零次或者多次上面第一条规则的使用，然后在采用第二条规则之后接受。在一个变量被消除前总是会出现在每个推导步骤之后。最重要的是最后一步只有一种可能，那就是$X_q$对应着接受状态$q\in F$。通过思考第一种类型的规则，明显可以看出</p>
+<script type="math/tex; mode=display">[X_{q0}\stackrel{*}{\Rightarrow}wX_q]\Leftrightarrow[\delta^{*}(q_0,w)=q].\tag{9.16}</script><p>因此我们得到$X_{q0}\stackrel{*}{\Rightarrow}w$当且仅当存在$q\in F$满足$\delta^{*}(q_0,w)=q$。换个说法就是$L(G)=L(M)$，到此证明就完成了。</p>
+<h3 id="正则语言和上下文无关语言的交集"><a href="#正则语言和上下文无关语言的交集" class="headerlink" title="正则语言和上下文无关语言的交集"></a>正则语言和上下文无关语言的交集</h3><p>上下文无关语言在某些运算下不是闭合的，但正则语言却是的。比如，上下文无关语言的补集也许不会是上下文无关的，两个上下文无关语言的交集也可能不是上下文无关的。我们在下节课中会来观察这两个事实。<br>　　然而有个例外是一个上下文无关语言和一个正则表达式的交集总是上下文无关的，我们马上来证明。这个证明比我们目前为止在本堂课中见到的都要复杂 — 如果你不能完全搞清楚，只要尽力最大的努力去理解背后的思路吧。</p>
+<p><strong>定理9.3.</strong> 已知$\Sigma$是一个字母表，$A,B\subseteq \Sigma^{*}$是语言，并且假设$A$是上下文无关的，而$B$是正则的。语言$A\cap B$是上下文无关的。</p>
+<p>证明：因为语言$A$是上下文无关的，所以一定存在一个$CFG$可以生成它。正如上节课所讨论的，事实上我们可以直接假设存在一个乔姆斯基范式的CFG生成了$A$。有了乔姆斯基范式的CFG，证明就会简单很多了。在这之后我们将会假设</p>
+<script type="math/tex; mode=display">G=(V,\Sigma,R,S)\tag{9.17}</script><p>是一个乔姆斯基范式使得$L(G)=A$。因为语言$B$是正则的，一定存在一个DFA</p>
+<script type="math/tex; mode=display">M=(Q,\Sigma,\delta,q_0,F)\tag{9.18}</script><p>使得$L(M)=B$。<br>　　这个证明的主要思想是定义一个新的CFG $H$使得$L(H)=A\cap B$。这个CFG $H$相对于$G$的每个变量都有$|Q|^2$个变量（$H$的变量数量是$G$的$|Q|^2$倍），也许会有点多，但不是什么问题 — 它是一个有限的数量，而且这就是我们所要求的所有变量了。特别地，对于每个变量$X\in V$和每一对$p,q\in Q$，我们都会包含一个变量$X_{p,q}$在$H$中。此外，我们还会加入一个新的初始变量$S_0$到$H$中。<br>　　每个变量$X_{p,q}$的意图是它所生成的所有字符串（i）都来自语法$G$中的$X$，并且（ii）造成$M$从状态$p$转移到$q$。完成这些我们还需要针对每条$G$中的规则添加一些规则到$H$中。因为语法$G$被假设为乔姆斯基范式，它的规则只有三种可能的形式，这些规则可以通过以下方式一次一个地处理：</p>
+<ol>
+<li>对于$G$中形如$X\rightarrow a$的规则，以及每对满足$\delta(p,a)=q$的状态$p,q\in Q$，将规则<script type="math/tex; mode=display">X_{p,q}\rightarrow a\tag{9.19}</script>加入到$H$中。</li>
+<li>对于$G$中形如$X\rightarrow \Upsilon X$的规则，以及状态$p,q,r\in Q$，将规则<script type="math/tex; mode=display">X_{p,q}\rightarrow \Upsilon_{p,r}Z_{r,q}\tag{9.20}</script>加入到$H$中。</li>
+<li>如果$G$中有$S\rightarrow \epsilon$的规则，并且$q_0\in F$（举例，$\epsilon\in A\cap B$），那么将规则<script type="math/tex; mode=display">S_0\rightarrow \epsilon\tag{9.21}</script>加入到$H$中，$S_0$就是上面提到的$H$的新初始状态。</li>
+</ol>
+<p>一旦我们将所有规则添加到$H$中，对于每个接受状态$p\in F$我们还要将规则</p>
+<script type="math/tex; mode=display">S_0\rightarrow S_{q_0,p}\tag{9.22}</script><p>添加到$H$中。<br>　　$H$中每个变量$X_{p,q}$含义已经在上面解释过了。更正式地来讲，对于每个非空字符串$w\in \Sigma^{*}$，每个变量$X\in V$和每对状态$p,q\in Q$，我们想证明以下等价关系：</p>
+<script type="math/tex; mode=display">[X_{p,q}\stackrel{*}{\Rightarrow}_{H}w]\Rightarrow [(X\stackrel{*}{\Rightarrow}_{G}w)\cap (\delta^{*}(p,w)=q)]\tag{9.23}</script><p>这个充要命题可以很自然地分开处理，其中有一个也会很自然地拆成两部分。<br>　　首先，我们马上就看出充分命题这个部分</p>
+<script type="math/tex; mode=display">[X_{p,q}\stackrel{*}{\Rightarrow}_H w]\Rightarrow[X\stackrel{*}{\Rightarrow}_G w]\tag{9.24}</script><p>是成立的，因为字符串$w$在$H$中通过$X_{p,q}$的推导可以移除所有下标获得一个$w$在$G$中通过$X$的推导。<br>　　接下来我们对$w$长度归纳可以证明充分命题的另外一个部分</p>
+<script type="math/tex; mode=display">[X_{p,q}\stackrel{*}{\Rightarrow}_H w]\Rightarrow [\delta^{*}(p,w)=q]\tag{9.25}</script><p>也是成立的。基础情况是$|w|=1$（因为我们假设了$w\neq\varepsilon$），在这个情况下我们得到的是对于某个$a\in \Sigma$有$X_{p,q}\Rightarrow_H a$。唯一允许这种推导的规则是上面的第一种，它要求$\delta(p,a)=q$。在普通情况下$|w|\geq 2$，那就一定是</p>
+<script type="math/tex; mode=display">X_{p,q}\Rightarrow \Upsilon_{p,r}Z_{r,q},\tag{9.26}</script><p>其中变量$\Upsilon_{p,r}$和$Z_{r,q}$满足</p>
+<script type="math/tex; mode=display">\Upsilon_{p,r}\stackrel{*}{\Rightarrow}_H y\ \ \ \ 和\ \ \ \ Z_{r,q}\stackrel{*}{\Rightarrow}_H z,\tag{9.27}</script><p>而对于字符串$y,z\in\Sigma^{*}$有$w=yz$。由归纳假设我们知道$\delta^{*}(p,y)=r$和$\delta^{*}(r,w)=q$，所以$\delta^{*}(p,w)=q$。<br>　　最后我们再对$w$的长度归纳证明</p>
+<script type="math/tex; mode=display">[(X\stackrel{*}{\Rightarrow}_G w\wedge(\delta^{*}(p,w)=q)]\Rightarrow [X_{p,q}\stackrel{*}{\Rightarrow}_H w],\tag{9.28}</script><p>基础情况是$|w|=1$，直接表达就是：如果$X\Rightarrow_G a$和$\delta(p,a)=q$都成立，那么一定有$X_{p,q}\Rightarrow_H a$，因为允许这个推导的规则都包含在了$H$的规则中。在普通情况下$|w|\geq 2$，关系$X\stackrel{*}{\Rightarrow}_G w$说明$X\Rightarrow_G \Upsilon Z$，其中变量$\Upsilon,X\in V$使得$\Upsilon\stackrel{*}{\Rightarrow}_G y$和$Z\stackrel{*}{\Rightarrow}_G z$，而字符串$y,z\in\Sigma^{*}$满足$w=yz$。选择$r\in Q$使得$\delta^{*}(p,y)=r$（因此$\delta^{*}(r,z)=q$），由归纳假设我们知道$\Upsilon_{p,r}\stackrel{*}{\Rightarrow} y$和$Z_{r,q}\stackrel{*}{\Rightarrow} z$，因此$X_{p,q}\Rightarrow_H \Upsilon_{p,r}Z_{r,q}\stackrel{*}{\Rightarrow}_H yz=w$。<br>　　因为每个非空字符串的推导都必须从</p>
+<script type="math/tex; mode=display">S_0\Rightarrow_H S_{q_0,p}\tag{9.29}</script><p>开始，其中$p\in F$，我们发现$H$所生成的非空字符串$w$明显就是那些由$G$所生成并且满足对于某个$p\in F$有$\delta^{*}(q_0,w)=p$的字符串。等于说，对于$w\neq\varepsilon$的情况有$w\in L(H)\Leftrightarrow w\in A\cap B$。空字符串当做特殊情况来处理，所以接下来我们得到$L(H)=A\cap B$。因此语言$A\cap B$是上下文无关的。</p>
+<p><strong>注意9.4.</strong> 定理9.3中包含了定理9.2；你可以让$A=\Sigma^{*}$（它是上下文无关的），为$B$选择任意正则语言，然后得到的就是$\Sigma^{*}\cap B = B$是上下文无关的。因为定理9.2的两种证明比我们上面这个看起来简单很多，所以把它们放在前面更好些。</p>
+<h3 id="前缀、后缀和子串"><a href="#前缀、后缀和子串" class="headerlink" title="前缀、后缀和子串"></a>前缀、后缀和子串</h3><p>让我们在结束本节课之前再来快速过一些例子。回想我们在第6节课中对于任意语言$A\subseteq\Sigma^{*}$我们定义</p>
+<script type="math/tex; mode=display">\begin{align}Prefix(A)&=\{x\in\Sigma^{*}:存在v\in\Sigma^{*}使得xv\in A\},\tag{9.30} \\ Suffix(A)&=\{x\in\Sigma^{*}:存在u\in\Sigma^{*}使得ux\in A\},\tag{9.31} \\ Substring(A)&=\{x\in\Sigma^{*}:存在u,v\in\Sigma^{*}使得uxv\in A\}.\tag{9.32}\end{align}</script><p>让我们证明如果$A$是上下文无关的，那么以上三个语言都是上下文无关的。未来了节省时间，我们只会解释如何写出这些语言的上下文无关语法，而且不会详细证明这些语法是正确的。在所有三种情况中我们会假设$G=(V,\Sigma,R,S)$是一个乔姆斯基范式的CFG使得$L(G)=A$。<br>　　我们语法$G$的基础上我们还需要一个假设，$G$中的任意变量都不会生成空语言。一个生成空语言的变量，我们称它为无用变量，说服自己无用变量是没用的应该并不难（有一种情况是例外）。然后如果你又任意生成非空语言的乔姆斯基范式CFG，你可以轻松写出一个新的乔姆斯基范式CFG，它不包含任何无用变量，只需要移除无效变量以及出现无效变量的规则。<br>　　唯一一种例外情况就是空语言本身，他要求初始变量就是无用的（你将会需要至少一个无效变量来确保语法的规则集合不是空的，而且遵守了乔姆斯基范式的条件）。然而，我们并不需要担心这种情况，因为$Prefix(\varnothing),Suffix(\varnothing),Substring(\varnothing)$都等同于空语言，因此也都是上下文无关的。<br>　　对于语言$Prefix(A)$，我们将会设计一个CFG $H$如下。首先，对于每个$G$使用的变量$X\in V$，我们将这个变量包含在$H$中，并且再添加一个变量$X_0$。这个思路是$H$中的$X$所生成的字符串和$G$中的一样，而$X_0$将会生成所有$G$中$X$所生成的字符串的前缀。我们加入$H$中的规则如下：</p>
+<ol>
+<li>对于$G$中每个形如$X\rightarrow\Upsilon Z$的规则，加入这些规则到$H$中：<script type="math/tex; mode=display">\begin{align}X&\rightarrow\Upsilon Z \\ X_0&\rightarrow\Upsilon Z_0\ |\ \Upsilon_0\end{align}\tag{9.33}</script></li>
+<li>对于$G$中每个形如$X\rightarrow $的规则，加入这些规则到$H$中：<script type="math/tex; mode=display">\begin{align}X&\rightarrow a \\ X_0&\rightarrow a\ |\ \varepsilon\end{align}\tag{9.34}</script></li>
+</ol>
+<p>最后我们使用$S_0$作为$H$的初始变量。<br>　　语言$Suffix(A)$的思路和上面类似，对于它我们将会构造一个CFG $K$。这次，对于每个$G$中使用的变量$X\in V$，我们也会把它加入到$K$中，而且也要添加一个变量$X_1$。这个思路是$K$中的$X$所生成的字符串和$G$中的一样，而$X_1$将会生成$G$中所有$X$所生成的字符串的前缀。我们加入$H$中的规则如下：</p>
+<ol>
+<li>对于$G$中每个形如$X\rightarrow\Upsilon Z$的规则，加入这些规则到$K$中：<script type="math/tex; mode=display">\begin{align}X&\rightarrow\Upsilon Z \\ X_1&\rightarrow\Upsilon_1 Z\ |\ Z_1\end{align}\tag{9.35}</script></li>
+<li>对于$G$中每个形如$X\rightarrow $的规则，加入这些规则到$H$中：<script type="math/tex; mode=display">\begin{align}X&\rightarrow a \\ X_1&\rightarrow a\ |\ \varepsilon\end{align}\tag{9.36}</script></li>
+</ol>
+<p>最后我们使用$S_1$作为$K$的初始变量。<br>　　为了获得子串$Substring(A)$的CFG $J$，我们可以简单地关联上述两个构造（先对$G$采用任意一种构造，然后再对得到的CFG采用另一种）。等于说，对于每个$X\in V$我们可以加入变量$X,X_0,X_1,X_2$到$J$中，并且加入如下规则：</p>
+<ol>
+<li>对于$G$中每个形如$X\rightarrow\Upsilon Z$的规则，加入这些规则到$J$中：<script type="math/tex; mode=display">\begin{align}X&\rightarrow\Upsilon Z \\ X_0&\rightarrow\Upsilon Z_0\ |\ \Upsilon_0 \\ X_1&\rightarrow\Upsilon_1 Z\ |\ Z_1 \\ X_2&\rightarrow \Upsilon_1 Z_0\ |\ \Upsilon_2\ |\ Z_2\end{align}\tag{9.37}</script></li>
+<li>对于$G$中每个形如$X\rightarrow $的规则，加入这些规则到$J$中：<script type="math/tex; mode=display">\begin{align}X&\rightarrow a \\ X_0&\rightarrow a\ |\ \varepsilon \\ X_1&\rightarrow a\ |\ \varepsilon \\ X_2&\rightarrow a\ |\ \varepsilon.\end{align}\tag{9.38}</script></li>
+</ol>
+<p>最后我们使用$S_2$作为$J$的初始变量。变量$X,X_0,X_1,X_2$的含义分别对应着$G$中$X$所生成的字符串，以及这些字符串的前缀、后缀和字符串。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.09.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.09.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/11/29/John Watrous-分析树、歧义性和乔姆斯基范式/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》 -- 分析树、歧义性和乔姆斯基范式">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》 -- 分析树、歧义性和乔姆斯基范式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#正则运算下的闭包"><span class="nav-number">2.1.</span> <span class="nav-text">正则运算下的闭包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#与正则语言的关系"><span class="nav-number">2.2.</span> <span class="nav-text">与正则语言的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正则语言和上下文无关语言的交集"><span class="nav-number">2.3.</span> <span class="nav-text">正则语言和上下文无关语言的交集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前缀、后缀和子串"><span class="nav-number">2.4.</span> <span class="nav-text">前缀、后缀和子串</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/12/16/John Watrous-上下文无关语言的属性/';
+          this.page.identifier = '2020/12/16/John Watrous-上下文无关语言的属性/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

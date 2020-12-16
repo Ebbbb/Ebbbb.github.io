@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt5.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt6.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/cfgpt/cfgpt7.png">
-<meta property="og:updated_time" content="2020-11-29T12:36:23.706Z">
+<meta property="og:updated_time" content="2020-11-29T12:55:04.512Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 分析树、歧义性和乔姆斯基范式">
 <meta name="twitter:description" content="前言这节课我们会讨论一些有关于上下文无关语法的重要概念，包括分析树、歧义性，还有一种特殊形式的上下文无关语法，被称为乔姆斯基范式。">
@@ -345,7 +345,7 @@
 <script type="math/tex; mode=display">L(G)=\{w\in\Sigma^{*}:|w|_0=|w|_1\},\tag{8.2}</script><p>其中$\Sigma=\{0,1\}$是一个二进制字母表，$|w|_0$和$|w|_1$表示符号0和1分别在$w$中出现的次数一样。</p>
 <h4 id="最左侧推导"><a href="#最左侧推导" class="headerlink" title="最左侧推导"></a>最左侧推导</h4><p>这里有一个字符串$0101$的推导样例：</p>
 <script type="math/tex; mode=display">S\Rightarrow 0S1S\Rightarrow 01S0S1S\Rightarrow 010S1S\Rightarrow 0101S\Rightarrow 0101.\tag{8.3}</script><p>这是一个<strong>最左侧推导</strong>的样例，意思是每次都是从最左侧的变量开始替换。对于第一步，只存在一个可被替换的变量；不管是在这个例子中还是在普遍情况下都是这样的。然而第二步中我们就可以选择任意一个$S$来替换，在上面的推导中就是最左侧的那个被替换了。如果我们把替换前和替换后的部分画上下划线，就是这样的：</p>
-<script type="math/tex; mode=display">0\underline{S}1S\Rightarrow 0\underline{1S0S}1S.\tag{8.4}</script><p>没有每个其他的步骤也是一样的：总是选择出现在最左侧的变量进行替换，这就是为什么我们称它为最左侧推导。同样的术语也普遍适用于任意上下文无关语法。<br>　　如果你多想一会儿，你会很快发现每个能被某个指定上下文无关语法生成的字符串，也能被同样的语法通过最左侧推导生成。这是因为在任意上下文无关语法的推导中，多个变量和符号之间没有“相互影响”；如果我们知道哪条规则可以用来替换每个变量，那么采用何种顺序来替换并没有什么影响，所以你也许可以在每一步中都总是选择最左侧变量。<br>　　我们也可以定义一个最右侧推导的定义，也就是每次总是计算最右侧的变量，但是这个最右侧推导并没有重要价值，至少在本课程中它完全可以用最左侧推导。由于这个原因，我们不在对最右侧推导进行更进一步的讨论了。</p>
+<script type="math/tex; mode=display">0\underlineline{S}1S\Rightarrow 0\underline{1S0S}1S.\tag{8.4}</script><p>没有每个其他的步骤也是一样的：总是选择出现在最左侧的变量进行替换，这就是为什么我们称它为最左侧推导。同样的术语也普遍适用于任意上下文无关语法。<br>　　如果你多想一会儿，你会很快发现每个能被某个指定上下文无关语法生成的字符串，也能被同样的语法通过最左侧推导生成。这是因为在任意上下文无关语法的推导中，多个变量和符号之间没有“相互影响”；如果我们知道哪条规则可以用来替换每个变量，那么采用何种顺序来替换并没有什么影响，所以你也许可以在每一步中都总是选择最左侧变量。<br>　　我们也可以定义一个最右侧推导的定义，也就是每次总是计算最右侧的变量，但是这个最右侧推导并没有重要价值，至少在本课程中它完全可以用最左侧推导。由于这个原因，我们不在对最右侧推导进行更进一步的讨论了。</p>
 <h4 id="分析树"><a href="#分析树" class="headerlink" title="分析树"></a>分析树</h4><p>对于任意通过上下文无关语法的字符串推导，我们可以将它和一棵树关联起来，叫做<strong>分析树</strong>，它遵从以下规则：</p>
 <ol>
 <li>对于每个新出现的变量、符号或者$\varepsilon$都有一个节点，根节点则对应着初始变量。我们仅当有形式为$V\rightarrow \varepsilon$的规则被使用时才会有标记了$\varepsilon$的节点。</li>
@@ -422,6 +422,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/12/16/John Watrous-上下文无关语言的属性/" rel="prev" title="John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性">
+                John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -508,7 +512,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
