@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言这节课使我们讲解上下文无关语言的最后一节了。但是往后的课程的内容中我们会不时地参考上下文无关语言，就行正则语言那样。　　本节课的第一部分我们讲下推自动机的计算模型，它为了我们提供了可供选择的基于CFG的上下文无关语言的定义描述。第二部分我们谈一下至今都还未讨论过的一些上下文无关语言的属性，而且他们有助于理解下推自动机。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 下推自动机">
+<meta property="og:url" content="http://yoursite.com/2020/12/28/John Watrous-下推自动机/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言这节课使我们讲解上下文无关语言的最后一节了。但是往后的课程的内容中我们会不时地参考上下文无关语言，就行正则语言那样。　　本节课的第一部分我们讲下推自动机的计算模型，它为了我们提供了可供选择的基于CFG的上下文无关语言的定义描述。第二部分我们谈一下至今都还未讨论过的一些上下文无关语言的属性，而且他们有助于理解下推自动机。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/pda/pda1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/pda/pda2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/pda/pda3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/pda/pda4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/pda/pda5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/pda/pda6.png">
+<meta property="og:updated_time" content="2020-12-28T10:58:49.340Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 下推自动机">
+<meta name="twitter:description" content="前言这节课使我们讲解上下文无关语言的最后一节了。但是往后的课程的内容中我们会不时地参考上下文无关语言，就行正则语言那样。　　本节课的第一部分我们讲下推自动机的计算模型，它为了我们提供了可供选择的基于CFG的上下文无关语言的定义描述。第二部分我们谈一下至今都还未讨论过的一些上下文无关语言的属性，而且他们有助于理解下推自动机。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/pda/pda1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/12/28/John Watrous-下推自动机/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》 -- 下推自动机 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/28/John Watrous-下推自动机/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》 -- 下推自动机</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-28T18:49:42+08:00">
+                2020-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/12/28/John Watrous-下推自动机/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/12/28/John Watrous-下推自动机/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/12/28/John Watrous-下推自动机/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》 -- 下推自动机">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这节课使我们讲解上下文无关语言的最后一节了。但是往后的课程的内容中我们会不时地参考上下文无关语言，就行正则语言那样。<br>　　本节课的第一部分我们讲下推自动机的计算模型，它为了我们提供了可供选择的基于CFG的上下文无关语言的定义描述。第二部分我们谈一下至今都还未讨论过的一些上下文无关语言的属性，而且他们有助于理解下推自动机。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="下推自动机"><a href="#下推自动机" class="headerlink" title="下推自动机"></a>下推自动机</h3><p>下推自动机（PDA）的计算模型本质上就是一个带有栈的NFA。正如我们将看到，PDA所识别的语言类正是上下文无关语言类，它提供了一个很有用的手段来推理这种语言类。</p>
+<h4 id="一些简单的例子"><a href="#一些简单的例子" class="headerlink" title="一些简单的例子"></a>一些简单的例子</h4><p>我们先来看一个PDA的简单例子，表达形式如图11.1的状态图所示。这个状态图看起来和NFA或者DFA的有点区别，因为它包含了一种操作栈的指令，但是基本思路是一样的。标有输入符号或者$\varepsilon$的转移表示我们读取了一个符号或者采用了$\varepsilon$-转移，就像一个NFA；标有$(\uparrow ,a)$的转移表示我们将符号$a$推入栈中；标有$(\downarrow ,a)$的转移表示我们将符号$a$弹出栈外。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/pda/pda1.png" alt="image"><br>　　这样，图11.1中PDA $P$阐述的运行方式是首先将符号$\diamondsuit$推入栈中（我们假设栈一开始是空的）然后进入状态$q_1$（此时没有从输入中读取符号）。从状态$q_1$可以读取一个左括号“(”移动到状态$r_0$或者读取一个右括号“)”移动到状态$r_1$。想要回到状态$q_1$就一定要在栈中推入符号$\star$（对应我们读取一个左括号之后）或者弹出符号$\star$（对应我们读取一个右括号之后）。最后为了从$q_1$到达接受状态$q_2$，我们必须弹出栈中的符号$\diamondsuit$。注意一个符号能被弹出栈外仅当它处在栈顶的时候。<br>　　不难看出这个PDA所识别的语言是括号配对语言BAL；很明显这个PDA会根据输入字符串执行要求的推入和弹出操作后进入接受状态，并且读取完输入字符串。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/pda/pda2.png" alt="image"><br>　　第二个例子图11.2中。这个PDA识别的语言是</p>
+<script type="math/tex; mode=display">SAME=\{0^n1^n:n\in\mathbb{N}\}.\tag{11.1}</script><p>这个情况下栈就被用来当一个计数器：我们为每个0推入一个星号，就得为每个1弹出一个星号，通过检测“栈底的标记”$\diamondsuit$来判断是否两种读入的符号数量相等。</p>
+<h4 id="下推自动机的定义"><a href="#下推自动机的定义" class="headerlink" title="下推自动机的定义"></a>下推自动机的定义</h4><p>下推自动机模型的正式定义和非确定性有限自动机类似，除了PDA需要指定一个栈的符号表和修改转移函数的形式加入栈操作。<br>　　在我们看定义之前，让我们引入一些对于我们讨论栈操作有帮助的概念。对于任意字母表$\Gamma$，我们用它来当做栈的字母表，栈的操作字母表$\updownarrow\Gamma$的定义是</p>
+<script type="math/tex; mode=display">\updownarrow\Gamma=\{\downarrow,\uparrow\}\times\Gamma.\tag{11.2}</script><p>字母表$\updownarrow\Gamma$代表所有使用字母表$\Gamma$的可能的栈操作；对于每个$a\in\Gamma$，符号$(\downarrow , a)$代表将$a$推入栈中，符号$(\uparrow ,a)$代表将$a$弹出栈外。</p>
+<p><strong>定义11.2.</strong> 一个下推自动机（PDA）是一个6-元组</p>
+<script type="math/tex; mode=display">P=(Q,\Sigma,\Gamma,\delta,q_0,F),\tag{11.3}</script><p>其中$Q$是一个有限非空状态集合，$\Sigma$是一个字母表（输入字母表）,$\Gamma$也是一个字母表（栈字母表），两个字母表必须满足$\Sigma \cap \updownarrow \Gamma=\varnothing$，$\delta$是形式为</p>
+<script type="math/tex; mode=display">\delta:Q\times (\Sigma\cup\updownarrow\Gamma\cup\{ \varepsilon \})\rightarrow \mathcal{P}(Q)\tag{11.4}</script><p>的函数，其中$q_0\in Q$是初始状态，$F\subseteq Q$是一个接受状态集合。</p>
+<p>　　上面这个转移函数执行转移使用的符号都在集合$\Sigma\cup\updownarrow\cup\{ \varepsilon \}$中，我们能选择的操作是读取一个$\Sigma$中的符号、往栈里推入一个$\Gamma$中的符号、往栈外弹出一个$\Gamma$中的符号或者执行一个$\varepsilon$-转移。</p>
+<h4 id="有效的栈操作字符串"><a href="#有效的栈操作字符串" class="headerlink" title="有效的栈操作字符串"></a>有效的栈操作字符串</h4><p>在我们讨论PDA接受输入的正式定义前，先来思考一下什么是有效的栈操作序列。已知一个任意栈字母表$\Gamma$，让$\updownarrow\Gamma$表示栈操作字母表。<br>　　我们来看一个字符串$v\in (\updownarrow\Gamma)^{*}$，它可能是一个有效的栈操作序列，也可能不是，假设我们从左往右读取它，而且栈一开始是空的。如果一个字符串代表一个有效栈操作序列，我们成它为有效栈字符串；如果一个字符串不能代表一个有效栈操作序列；我们成它为无效栈字符串。<br>　　比如，如果$\Gamma=\{0,1\}$，那么这些字符串是有效栈字符串：</p>
+<script type="math/tex; mode=display">\begin{align}(\downarrow ,0)(\downarrow ,1)(\uparrow ,1)(\downarrow ,0)(\uparrow ,0)(\uparrow ,0), \\ (\downarrow ,0)(\downarrow ,1)(\uparrow ,1)(\downarrow ,0)(\uparrow ,0).\end{align}\tag{11.5}</script><p>在第一种情况中栈的变化就像这样（最左侧的符号表示栈顶元素）：</p>
+<script type="math/tex; mode=display">\varepsilon\rightarrow 0\rightarrow 10\rightarrow 00\rightarrow 0\rightarrow\varepsilon.\tag{11.6}</script><p>第二种情况也是类似的，只不过最后栈没有清空：</p>
+<script type="math/tex; mode=display">\varepsilon\rightarrow 0\rightarrow 10\rightarrow 0\rightarrow 00\rightarrow 0.\tag{11.7}</script><p>另外，这里还有一些无效栈字符串：</p>
+<script type="math/tex; mode=display">\begin{align}(\downarrow ,0)(\downarrow ,1)(\uparrow ,0)(\downarrow ,0)(\uparrow ,1)(\uparrow ,0), \\ (\downarrow ,0)(\downarrow ,1)(\uparrow ,1)(\downarrow ,0)(\uparrow ,0)(\uparrow ,0)(\uparrow ,1).\end{align}\tag{11.8}</script><p>第一种情况我们先推入了一个0，再推入一个1，完成之后，我们尝试先把0弹出，但这时候0不是栈顶元素（1才是）。第二种情况中最后一个操作符号有问题，因为它在栈空的时候尝试从栈中弹出一个1。<br>　　基于字母表$\updownarrow\Gamma$并且由有效栈字符串组成的语言是一个上下文无关语言。为了弄明白这个，我们先考虑一种有效栈字符串的语言，它的所有字符串的最后一个操作符号都将栈清空。比如，（11.5）中的第一个序列就清空了栈，第二个却没有。我们可以模仿括号配对语言的CFG来为这个语言构造一个CFG，但是每个符号我们要想象成不同类型的括号。<br>　　具体一点，让我们定义一个CFG $G$，它的规则如下：</p>
+<script type="math/tex; mode=display">S\rightarrow(\downarrow, a)S(\uparrow ,a)S,\tag{11.9}</script><p>其中每个符号$a\in\Gamma$，还包含一条规则$S\rightarrow\varepsilon$。这个CFG生成的是一个基于栈字母表$\Gamma$的有效栈字符串语言，最后栈是清空状态。<br>　　如果我们丢掉-最后一个操作后栈为空-这个要求，那我们仍然能得到一个上下文无关语言。这是因为这个语言是上一段中CFG所生成语言的前缀，而上下文无关语言在前缀操作下是闭合的。</p>
+<h4 id="定义PDA的接受输入"><a href="#定义PDA的接受输入" class="headerlink" title="定义PDA的接受输入"></a>定义PDA的接受输入</h4><p>接着我们来思考一个PDA $P$接受一个或者拒绝一个字符串的$w$的定义。</p>
+<p><strong>定义11.2.</strong> 已知$P=(Q,\Sigma,\Gamma,\delta,q_0,F)$是一个PDA，$w\in\Sigma^{*}$是一个字符串。PDA $P$接受字符串仅当存在一个自然数$m\in\mathbb{N}$，存在一个状态序列$r_0,…,r_m$和序列</p>
+<script type="math/tex; mode=display">a_1,...,a_m\in\Sigma\cup\updownarrow\Gamma\cup\{ \varepsilon \}\tag{11.10}</script><p>满足以下四个条件：</p>
+<ol>
+<li>$r_0=q_0$并且$r_m\in F$。</li>
+<li>对于每个$k\in\{0,…,m-1\}$有$r_{k+1}\in\delta(r_k,a_{k+1})$。</li>
+<li>通过从$a_1,…,a_m$中移除每个字母表$\updownarrow\Gamma$的符号，得到输入字符串$w$。</li>
+<li>通过从$a_1,…,a_m$中移除每个字母表$\Sigma$的字符，得到一个有效栈字符串。</li>
+</ol>
+<p>如果$P$不接受$w$，那么$P$就会拒绝$w$。</p>
+<p>　　这个定义中大部分都是很浅显的。为了让$P$接受$w$，一定存在一个状态序列，在状态转移中同时满足输入字符串和转移函数。此外，栈的使用必须满足要求，也就是第四个条件必须满足。<br>　　一如既往，对于一个PDA $P$，我们使用$L(P)$来表示$P$所识别的语言，它的所有字符串都被$P$接受。</p>
+<h4 id="PDA状态图的一些简写表达"><a href="#PDA状态图的一些简写表达" class="headerlink" title="PDA状态图的一些简写表达"></a>PDA状态图的一些简写表达</h4><p>有时候PDA状态图的简写会很用，它可以用来表示一个单一的状态转移序列。特别是，如果一个转移标有</p>
+<script type="math/tex; mode=display">a\uparrow b\downarrow c,\tag{11.11}</script><p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/pda/pda3.png" alt="image"><br>它的含义是读取符号$a$，从栈中弹出$b$，往栈中推入$c$。图11.3说明了如何理解这类简写。这种简写看起来就像是隐藏了一些状态。比如，图11.3中的$r_1,r_2$就隐藏在了$p$到$q$的转移中，不能从其他任何状态转移到达它们。<br>　　这种简写表达可以用在多个符号推入或者弹出的情况。比如，一条边标有</p>
+<script type="math/tex; mode=display">a\uparrow b_1b_2b_3\downarrow c_1c_2c_3c_4\tag{11.12}</script><p>表示从输入中读取$a$，$b_1b_2b_3$从栈中弹出，然后将$c_1c_2c_3c_4$推入栈中。我们约定将箭头右边第一个符号当做推入或者弹出操作后的栈顶元素，这个转移要求栈顶的元素是$b_1$，它的下面是$b_2$，再往下是$b_3$ — 在整个操作执行完成之后，栈顶元素是$c_1$，然后是$c_2$，以此类推。你们可以按照图11.3来模拟这个转换过程，连通中间状态在正确的顺序下执行操作。<br>　　最后，我们可以简单地省略没有使用的部分。比如，标有</p>
+<script type="math/tex; mode=display">a\uparrow b\tag{11.13}</script><p>的转移表示“从输入中读取$a$，从栈中弹出$b$，不推入符号”，标有</p>
+<script type="math/tex; mode=display">\uparrow b\downarrow c_1c_2\tag{11.14}</script><p>的转移表示“不从输入读取符号，从栈中弹出$b$，然后推入$c_1c_1$”，等等。图11.4展示了图11.2中PDA的简写形式。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/pda/pda4.png" alt="image"></p>
+<h4 id="关于确定性下推自动机"><a href="#关于确定性下推自动机" class="headerlink" title="关于确定性下推自动机"></a>关于确定性下推自动机</h4><p>必须强调的是默认情况下下推自动机都被认为是非确定性的。<br>　　定义一个确定性PDA模型是可能的，但是这样做，我们得到的是一个严格的弱计算模型。也就是说，每个确定性PDA都会识别一个上下文无关语言，但是默写上下文无关语言不能被确定性PDA所识别。基于字母表$\Sigma=\{0,1\}$的回文语言PAL就是一个例子；这个语言能被图11.5中的PDA识别，但是不存在能识别它的确定性PDA。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/pda/pda5.png" alt="image"><br>　　我们将不会证明这个事实，主要是因为我们根本没讨论过确定性PDA的正式定义，但是靠感觉就足够的。确定性PDA不能检测到我们是否已经到达一个字符串的中间，由于这个原因使用一个栈不足以识别回文；不管你怎么做，这个自动机永远不会知道什么时候停止推入和开始弹出。然而一个非确定性自动机通过简单的猜测就能做到这一点。</p>
+<h3 id="进一步的例子"><a href="#进一步的例子" class="headerlink" title="进一步的例子"></a>进一步的例子</h3><p>接下来我们会考虑上下文无关语言更多的闭合运算。包括字符串的翻转，与有限语言的对称差，在字母表中插入和删除一个确定的符号。</p>
+<h4 id="翻转"><a href="#翻转" class="headerlink" title="翻转"></a>翻转</h4><p>我们在第六节课中已经讨论过字符串的反转了，也知道一个正则语言的翻转总是正则的。这个理论用在上下文无关语言也是正确的，来看看下面这个命题构造。</p>
+<p><strong>命题11.3.</strong> 已知$\Sigma$是一个字母表，$A\subseteq\Sigma^{*}$是一个上下文无关语言。语言$A^R$是上下文无关的。</p>
+<p>证明：因为$A$是上下文无关的，一定存在一个CFG $G$使得$A=L(G)$。定义一个新的CFG $H$如下：$H$包含和$G$中一样的的变量，对于$G$的每条规则$X\rightarrow w$，加入一条$X\rightarrow w^R$到$H$中。用文字表达就是$H$规则就是将$G$中的每条规则左右翻转得到。很明显$L(H)=L(G)^R=A^R$，因此$A^R$是上下文无关的。</p>
+<h4 id="与有限语言的对称差"><a href="#与有限语言的对称差" class="headerlink" title="与有限语言的对称差"></a>与有限语言的对称差</h4><p>接着我们来看对称差，这个也在第六节课中定义过。当然任意两个上下文无关语言的对称差并不总是上下文无关的，甚至一个上下文无关语言和一个正则语言的对称差也不总是上下文无关的。<br>　　比如，如果$A\subseteq\Sigma^{*}$是上下文无关的，但$\overline{A}$不是，那么$A$和$\Sigma^{*}$的对称差就不是上下文无关的，因为</p>
+<script type="math/tex; mode=display">A\Delta\Sigma^{*}=\overline{A}.\tag{11.15}</script><p>　　另外，一个上下文无关语言和一个有限语言的对称差总是上下文无关的，命题在后面。这就很有趣了，因为一个已知语言和一个有限语言的对称差有直观上的意义：它表示我们在更改一个语言中有限数量的字符串，要么包含，要么排除这些字符串。因此这个命题告诉我们修改一个语言中优先数量的字符串并不会破坏它的属性。</p>
+<p><strong>命题11.4.</strong> 已知$\Sigma$是一个字母表，$A\subseteq\Sigma^{*}$是一个上下文无关语言，$B\subseteq\Sigma^{*}$是一个有限语言。语言$A\Delta B$是上下文无关的。</p>
+<p>证明：首先，已知$B$是有限的，我们知道$B$是正则的，因此$\overline{B}$也是正则的因为正则语言在补集运算下是闭合的。这表示$A\cap \overline{B}$是上下文无关的，因为一个上下文无关语言和一个正则语言的交集是上下文无关的。<br>　　接下来，我们知道$\overline{A}\cap B$包含于$B$，因此它是有限的。每个有限语言都是上下文无关的，因此$\overline{A}\cap B$是上下文无关的。<br>　　最后，我们已经证明过$A\cap \overline{B}$和$\overline{A}\cap B$都是上下文无关的，那么$A\Delta B=(A\cap \overline{B})\cup (\overline{A}\cap B)$是上下文无关的，因为两个上下文无关语言的并集必须是上下文无关的。</p>
+<h4 id="字符串映射下的闭包"><a href="#字符串映射下的闭包" class="headerlink" title="字符串映射下的闭包"></a>字符串映射下的闭包</h4><p>假设$\Sigma$和$\Gamma$是不相交的字母表集合，我们有一个字符串$w\in(\Sigma\cup\Gamma)^{*}$，它包含的符号来自于这两个字母表。我们可以想象删除$w$中来自于$\Gamma$的符号，会留下一个基于$\Sigma$的字符串。我们将这个操作称作一个基于字母表$\Sigma\cup\Gamma$的字符串到字母表$\Sigma$的映射。<br>　　我们将会证明上下文无关语言关于这个概念的两个闭包属性。第一个讲的是如果你有一个基于字母表$\Sigma\cup\Gamma$的上下文无关语言，然后将这个语言$A$中的字符串映射到字母表$\Sigma$，你会得到一个上下文无关语言。</p>
+<p><strong>命题11.5.</strong> 已知$\Sigma$和$\Gamma$是不相交的字母表，$A\subseteq(\Sigma\cup\Gamma)^{*}$是一个上下文无关语言，定义</p>
+<script type="math/tex; mode=display">B=\{w\in\Sigma^{*}:存在一个字符串x\in A使得在删除所有属于\Gamma 的符号后得到w\}.\tag{11.16}</script><p>语言$B$是一个上下文无关的。</p>
+<p>证明： 因为$A$是上下文无关的，一定存在一个乔姆斯基范式CFG $G$使得$L(G)=A$。我们构造一个新的CFG $H$如下：</p>
+<ol>
+<li>对于$G$中每条形如$X\rightarrow \Upsilon Z$的规则，把它加入到$H$中。当然规则$S\rightarrow\varepsilon$也同样处理。</li>
+<li>对于$G$中每条形如$X\rightarrow a$的规则，其中$a\in \Sigma$，把它加入到$H$中。</li>
+<li>对于$G$中每条形如$X\rightarrow b$的规则，其中$b\in \Gamma$，加入规则$X\rightarrow \varepsilon$到$H$中。</li>
+</ol>
+<p>显然$L(H)=B$，因此$B$是上下文无关的。</p>
+<p>这个命题反过来也是对的，打个比方：如果$A$是一个基于字母表$\Sigma$的上下文无关语言，我们考虑一个基于字母表$\Sigma\cup\Gamma$的语言，它的字符串可以映射到字母表$\Sgima$，得到语言$A$，那么这个基于字母表$\Sigma\cup\Gamma$的语言也是上下文无关的。本质上，这个语言中的字符串就是通过选取一个$A$中的字符串，然后往任意位置插入任意数量的$\Gamma$中的符号得到。</p>
+<p><strong>命题11.6.</strong> 已知$\Sigma$和$\Gamma$是不相交的字母表，$A\subseteq\Sigma^{*}$是一个上下文无关语言，定义</p>
+<script type="math/tex; mode=display">B=\{x\in (\Sigma\cup\Gamma)^{*}:通过删除x中所有\Gamma的符号能够得到w\in A\}\tag{11.17}</script><p>语言$B$是上下文无关的。</p>
+<p>证明：因为$A$是上下文无关的，一定存在一个乔姆斯基范式CFG $G$使得$L(G)=A$。定义一个新的CFG $H$如下：</p>
+<ol>
+<li>对于每个$b\in\Gamma$加入规则<script type="math/tex; mode=display">W\rightarrow bW\tag{11.18}</script>到$H$中，对于还未在$G$中使用的新变量$W$再加入一条$W\rightarrow \varepsilon$。变量$W$生产符号来自$\Gamma$的字符串，包括空字符串。</li>
+<li>对于$G$中每条形如$X\rightarrow \Upsilon Z$的规则，不改动，把它加入到$H$中。</li>
+<li>对于$G$中每条形如$X\rightarrow a$的规则，加入规则<script type="math/tex; mode=display">X\rightarrow WaW\tag{11.19}</script>到$H$中。</li>
+<li>如果$G$中有$S\rightarrow \varepsilon$这条规则，加入规则<script type="math/tex; mode=display">S\rightarrow W\tag{11.20}</script>到$H$中。</li>
+</ol>
+<p>　　直观来说，$H$的运作方式和$G$一样，除了$G$在生成一个字符或者空字符串时，$H$也生成同样的字符串，但是会往里面插入任意数量的$\Gamma$中的符号。我们得到$L(H)=B$，因此$B$是上下文无关的。</p>
+<h3 id="PDA和CFG的等价"><a href="#PDA和CFG的等价" class="headerlink" title="PDA和CFG的等价"></a>PDA和CFG的等价</h3><p>正如我们在这节课早前提到的，一个语言是上下文无关的当且仅当它能被一个PDA识别。这部分我们会提供一种方式来证明这个等价。</p>
+<h4 id="每个上下文无关语言都能被一个PDA识别"><a href="#每个上下文无关语言都能被一个PDA识别" class="headerlink" title="每个上下文无关语言都能被一个PDA识别"></a>每个上下文无关语言都能被一个PDA识别</h4><p>为了证明每个上下文无关语言都能被一个PDA识别，我们为一个已知的CFG定义一个PDA。也就是，如果</p>
+<script type="math/tex; mode=display">G=(V,\Sigma,R,S)\tag{11.21}</script><p>是一个上下文无关语法，那我们我们能得到一个PDA $P$使得$L(P)=L(G)$，如图11.6所示。栈的字母表是$V\cup \Sigma$，加上一个栈底标识$\diamondsuit$，在计算过程中栈提供了一种方式来存储符号和变量来执行$G$的推导。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/pda/pda6.png" alt="image"><br>　　如果你在思考语法$G$的字符串是怎么推导以及操作所对应的PDA $P$又是如何工作的，那么很明显$P$能接受$G$所生成的字符串。我们一开始的栈顶元素是初始变量（另外栈底标识在下面）。一般而言，如果一个变量出现在栈顶，我们就将它弹出，然后推入它所处规则右边的符号和变量；如果一个符号出现在栈顶，我们就将它与一个输入符号比较 — 只要输入符号和这个符号一样，我们就将这个符号弹出栈外，然后移动到下一个输入符号，接着继续处理栈顶元素。我们可以移动到接受状态仅当栈为空的时候（就是只剩下一个栈底标识的时候），而且所有输入符号都被读取了。这种情况就是典型的输入字符串通过这个语法推导出来了。</p>
+<h4 id="每个能被PDA识别的语言都是上下文无关的"><a href="#每个能被PDA识别的语言都是上下文无关的" class="headerlink" title="每个能被PDA识别的语言都是上下文无关的"></a>每个能被PDA识别的语言都是上下文无关的</h4><p>现在我们来讨论每个被PDA识别的语言都是上下文无关的。有一个方法可以将一个已知PDA转变成一个等价的CFG，但它是很混乱，而且细节部分还会让人疑惑。这里我们会总结一种不同的方式来证明每个能被PDA识别的语言都是上下文无关的，而且相当简单，想想我们在学习上下文无关语言过程中所使用的方法。如果你想，你可以将这个证明转变为为一个已知PDA构造一个CFG，这和我们刚才所提到的方法没有太大的差别，但是我们将更着重于证明而不是明确的构造。<br>　　假设我们有一个PDA $P=(Q,\Sigma,\Gamma,\delta,q_0,F)$。转移函数$\delta$的形式为</p>
+<script type="math/tex; mode=display">\delta: Q\times(\Sigma\cup\updownarrow\Gamma\cup\{\varepsilon\})\rightarrow \mathcal{P}(Q),\tag{11.22}</script><p>所以如果我们想的话，我们能把$P$想成是某个基于$\Sigma\cup\updownarrow\Gamma$的语言的NFA。稍微正式一点，让$N$表示这个NFA，它的定义是</p>
+<script type="math/tex; mode=display">N=(Q,\Sigma\cup\updownarrow\Gamma,\delta,q_0,F);\tag{11.23}</script><p>我们都没有必要改变转移函数，因为NFA的转移函数正好是基于字母表$\Sigma\cup\updownarrow\Gamma$。还要定义能被$N$识别的语言$B=L(N)\subseteq(\Sigma\cup\updownarrow\Gamma)^{*}$。一般而言，$B$中的字符串同时包含了$\Sigma$和$\updownarrow\Gamma$的符号。即便所有出现$\updownarrow\Gamma$的符号的字符串都能被$N$接受，也不能说明这些字符串是有效栈字符串，因为$N$没有栈来检测这个条件。<br>　　现在让我们考虑第二个语言$C\subseteq(\Sigma\cup\updownarrow\Gamma)^{*}$。这个语言的字符串都基于字母表$\Sigma\cup\updownarrow\Gamma$，还有个条件删除任意字符串中所有$\Sigma$的符号，就会得到了一个有效栈字符串。我们已经知道由有效栈字符串构成的语言是上下文无关的，根据命题11.6，$C$也是上下文无关的。<br>　　接下来，我们考虑交集$D=B\cap C$。因为$D$是一个正则语言和一个上下文无关语言的交集，它是上下文无关的。而$D$中的字符串正好能满足PDA $P$到达接受状态；但是此外如果输入符号属于$\Sigma$则会被$P$读取，字符串中属于$\updownarrow\Gamma$的符号则代表着$P$转移过程中的栈操作。<br>　　将语言$D$中所有$\updownarrow\Gamma$的符号删除得到语言$A$，因为我们知道$D$是上下文无关的，根据命题11.5，$A$也是上下文无关的，我们想要的证明完成了。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.11.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.11.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/16/John Watrous-证明非上下文无关语言/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》 -- 证明非上下文无关语言">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》 -- 证明非上下文无关语言
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下推自动机"><span class="nav-number">2.1.</span> <span class="nav-text">下推自动机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一些简单的例子"><span class="nav-number">2.1.1.</span> <span class="nav-text">一些简单的例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下推自动机的定义"><span class="nav-number">2.1.2.</span> <span class="nav-text">下推自动机的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有效的栈操作字符串"><span class="nav-number">2.1.3.</span> <span class="nav-text">有效的栈操作字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义PDA的接受输入"><span class="nav-number">2.1.4.</span> <span class="nav-text">定义PDA的接受输入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PDA状态图的一些简写表达"><span class="nav-number">2.1.5.</span> <span class="nav-text">PDA状态图的一些简写表达</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于确定性下推自动机"><span class="nav-number">2.1.6.</span> <span class="nav-text">关于确定性下推自动机</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进一步的例子"><span class="nav-number">2.2.</span> <span class="nav-text">进一步的例子</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#翻转"><span class="nav-number">2.2.1.</span> <span class="nav-text">翻转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#与有限语言的对称差"><span class="nav-number">2.2.2.</span> <span class="nav-text">与有限语言的对称差</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串映射下的闭包"><span class="nav-number">2.2.3.</span> <span class="nav-text">字符串映射下的闭包</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PDA和CFG的等价"><span class="nav-number">2.3.</span> <span class="nav-text">PDA和CFG的等价</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#每个上下文无关语言都能被一个PDA识别"><span class="nav-number">2.3.1.</span> <span class="nav-text">每个上下文无关语言都能被一个PDA识别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#每个能被PDA识别的语言都是上下文无关的"><span class="nav-number">2.3.2.</span> <span class="nav-text">每个能被PDA识别的语言都是上下文无关的</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/12/28/John Watrous-下推自动机/';
+          this.page.identifier = '2020/12/28/John Watrous-下推自动机/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》 -- 下推自动机';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

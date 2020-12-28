@@ -91,7 +91,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion3.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion4.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion5.png">
-<meta property="og:updated_time" content="2020-07-19T14:32:30.297Z">
+<meta property="og:updated_time" content="2020-12-28T10:55:40.367Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jeff Erickson 《Algorithms》 -- 递归">
 <meta name="twitter:description" content="前言　　前段时间我读了Jeff教授算法文章后受益颇多，所以决定根据他的每个知识点做一些学习记录。一来我可以提升自己的翻译能力，再者记录一些重要知识点方便回顾。">
@@ -358,7 +358,7 @@
 <h3 id="递归树"><a href="#递归树" class="headerlink" title="递归树"></a>递归树</h3><p>递归树是一种用来解决分支问题的工具，具有简单、普遍、形象等特点。它的每个节点对应着一个递归子问题。节点的值就表示对应的子问题所花费的时间，不包括递归调用。这样所有节点的值加起来就是整个算法的运行时。<br>　　为了让这个概念变得具体，你可以想象一个还未计算递归的分治算法耗费时间为$O(f(n))$，接下来他做了r次递归调用，每一次的范围是n/c。如果忽略常数因子（隐藏$O()$这个记号），那么这个算法的运行时可以表示为如下的递推式：</p>
 <script type="math/tex; mode=display">T(n)=rT(n/c)+f(n)</script><p>　　递归树的根节点代表$T(n)$,它的节点值为$f(n)$，还带有r个子节点，这些子节点可以看做新的递归树的根节点$T(n/c)$。递归树是一棵r叉树，高度为d的节点的值为$f(n/c^d)$。递归树画出来是下面这样的：<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/recursion/recursion3.png" alt="image"><br>　　递归树的节点对应着递推式展开过程中的项。因为我们只需要找一个渐进的边界（递归的结束条件），假设对于所有的$n\leq n_0$有$T(n)=1$，那么$n_0$可以是任何一个正数常量。通常来说，我们会选择最适合分析的$n_0$。对于这个例子，$n_0=1$是最合适的。<br>　　现在$T(n)$就等于递归树所有子节点值相加之和。如果分层来看，对于每个正数i，第i层有$r^i$个节点，么个节点的值为$f(n/c^i)$。那么，</p>
 <script type="math/tex; mode=display">T(n)=\sum\limits_{i=0}^{L}r^i·f(n/c^i)</script><p>L是树的高度。由我们递归的结束条件$n_0=1$，可以退出$L=log_cn$，因为$n/c^L=n_0=1$。接下来便可得知叶节点的数量$r^L=r^{log_cn}=n^{log_cr}$。那么最后一层的和就是$n^{log_cr}·f(1)=O(n^{log_cr})$，因为$f(1)=O(1)$。<br>　　这里我通过逐层评估通项会发现有三种情况：<br> •递减：如果逐层比较通项出现指数级衰减（r &lt; c）—每个通项是常数因子且比前一项小—那么$T(n)=O(f(n))$。在这种情况，根节点的值在求和结果中占主导地位。<br> •相等：如果每个通项都相等（r = c），我们马上可以得出$T(n)=O(f(n)·L)$。（常数c就消失在$O()$记号中了）<br> •递增：如果逐层比较通项出现指数级增长（r &gt; c）—每个通项是常数因子且比前一项大—那么$T(n)=O(n^{log_cr})$。在这种情况，叶节点层的值在求和结果中占主导地位。<br>　　在第一和第三种情况下，只有几何级数最大的通项起到了作用；所有别的通项都被$O(·)$隐藏掉了。在递减的情况下，我们不需要计算L；如果递归树是无穷的，渐进的上界依然有效。<br>　　递归树技术也可以用在范围不同的循环子问题算法中。比如，快速排序的游标总是落有序数组的三分之一处，那么最坏运行时将会满足递推式</p>
-<script type="math/tex; mode=display">T(n)\leq T(n/3)+T(2n/3)+O(n)</script><p>这个递推式也许看起来可怕，但实际上还是很平常的。如果我们画几层递归树来看，就会很快发现每一层的节点值之和不超过n—越深的层将会失去一些节点—整棵树的高度为$log_{3/2} n=O(log n)$。那么马上可以得出$T(n)=O(n log n)$。（整棵递归树的层数应该是$log_3 n=Ω(log n)$，所以在这种保守分析只能增大一个常数因子，对于我们来说一点都不重要。）事实上递归树是否平衡并没有实际影响。<br>　　作为一个比较特殊的例子，快速排序最坏的递推式$T(n)=T(n-1)+T(1)+O(n)$给了我们一颗完全不平衡的递归树，所有非叶节点的子节点中有一个是叶节点，它逐层的和并不在我们前面提到的三种情况中，但是我们还是可以得出答案$T(n)=O(n^2)$，通过观察发现每层的值最大是n且最多只有n层。（我们再次发现保守分析并不重要，因为有n/2层的值是不低于n/2的）</p>
+<script type="math/tex; mode=display">T(n)\leq T(n/3)+T(2n/3)+O(n)</script><p>这个递推式也许看起来可怕，但实际上还是很平常的。如果我们画几层递归树来看，就会很快发现每一层的节点值之和不超过n — 越深的层将会失去一些节点 — 这棵树的高度为$log_{3/2} n=O(log n)$。那么马上可以得出$T(n)=O(n log n)$。（如果只算节点完整的层数应该是$log_3 n=Ω(log n)$，但是在这种保守分析只能增大一个常数因子，对于我们来说一点都不重要。）事实上递归树是否平衡对我们的分析并没有实际影响。<br>　　作为一个比较特殊的例子，快速排序最坏的递推式$T(n)=T(n-1)+T(1)+O(n)$给了我们一颗完全不平衡的递归树，所有非叶节点的子节点中有一个是叶节点，它逐层的和并不在我们前面提到的三种情况中，但是我们还是可以得出答案$T(n)=O(n^2)$，通过观察发现每层的值最大是n且最多只有n层。（我们再次发现保守分析并不重要，因为有n/2层的值是不低于n/2的）</p>
 <h3 id="忽略向上和向下取整"><a href="#忽略向上和向下取整" class="headerlink" title="忽略向上和向下取整"></a>忽略向上和向下取整</h3><p>细心的读者也许会反对我们的分析掩盖了一个重要的细节。归并排序的运行时并没有严格遵守递推式$T(n)=2T(n/2)+O(n)$；毕竟输入大小n可能是一个奇数，那么一个非整数大小的数组排序有什么意义呢？完整的归并排序递推式是比较难以处理的：</p>
 <script type="math/tex; mode=display">T(n)=T(\lceil n/2 \rceil)+T(\lfloor n/2 \rfloor)+O(n)</script><p>当然，我们可以通过归纳法来验证$T(n)=O(n log n)$，但是这将通过非常可怕的必要计算。幸运的是有一个简单的技术可以从地推始终移除向上和向下取整，它叫做领域变换。<br>•首先，因为我们是要得到一个上界，可以安全的高估T(n)，只要假装两个子问题的大小是相等的，然后再消除向上取整：<script type="math/tex">T(n)\leq 2T(\lceil n/2 \rceil)+n\leq 2T(n/2+1)+n</script><br>•其次，我们定义一个新的函数$S(n)=T(n+α)$，利用常数α让S(n)满足一个简单的递推式$S(n)\leq 2S(n/2)+O(n)$。为了找到一个合适的α，我们从已经给出的T递推式得到S递推式：</p>
 <script type="math/tex; mode=display">\begin{align*}S(n)&=T(n+α)\\ &\leq2T(n/2+α/2+1)+n+α\\ &=2S(n/2-α/2+1)+n+α\end{align*}</script><p>令α=2将递推式简化成$S(n)\leq 2S(n/2)+n+2$，这正是我们想要的。<br>•最后，由这个递推式可以得出$S(n)=O(n log n)$，因此</p>
@@ -499,7 +499,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
