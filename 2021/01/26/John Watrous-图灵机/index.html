@@ -91,7 +91,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/tmm/tmm3.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/tmm/tmm4.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/tmm/tmm5.png">
-<meta property="og:updated_time" content="2021-01-26T04:17:28.081Z">
+<meta property="og:updated_time" content="2021-01-26T04:23:42.163Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 图灵机">
 <meta name="twitter:description" content="前言在本节课中我们将会讨论图灵机计算模型。Alan Turing（1912-1954）在1963年提出了这个模型，并且以他的名字命名。Alan Turing对于本课程的影响怎么说都不会夸张 — 理论计算机科学的发展实际就是从图灵的工作开始的，并且由于这个原因他时常被称作理论计算机科学之父。">
@@ -388,7 +388,7 @@
 <li><p>向右移动。对于每个状态$q\in Q\setminus\{q_{acc}、q_{rej}\},q\in Q$，以及符号$a、b\in \Gamma$满足</p>
 <script type="math/tex; mode=display">\delta(p,a)=(q,b,\rightarrow),\tag{12.12}</script><p>对于所有$u\in\Gamma^{*}\setminus\{\sqcup\}\Gamma^{*}、v\in\Gamma^{*}\setminus\Gamma^{*}\{\sqcup\}和c\in\Gamma$，产出映射包含的成对关系是：</p>
 <script type="math/tex; mode=display">\begin{align}u(p,a)cv\vdash_M \gamma(ub(q,c)v) \\ u(p,a)\vdash_M \gamma(ub(q,\sqcup)).\end{align}\tag{12.13}</script></li>
-<li><p>向左移动。对于每个状态$pin\Q\setminus\{q_{acc},q_{rej}\}、q\in Q$，以及符号$a、b\in\Gamma$满足</p>
+<li><p>向左移动。对于每个状态$p\in Q\setminus\{q_{acc},q_{rej}\}、q\in Q$，以及符号$a、b\in\Gamma$满足</p>
 <script type="math/tex; mode=display">\delta(p,a)=(q,b,\leftarrow),\tag{12.14}</script><p>对于所有$u\in\Gamma^{*}\setminus\{\sqcup\}\Gamma^{*}、v\in\Gamma^{*}\setminus\Gamma^{*}\{\sqcup\}和c\in\Gamma$，产出映射包含的成对关系是：</p>
 <script type="math/tex; mode=display">\begin{align}uc(p,a),v\vdash_M \gamma(u(q,c)bv) \\ (p,a)v\vdash_M \gamma((q,\sqcup)bv).\end{align}\tag{12.15}</script></li>
 </ol>
@@ -414,7 +414,7 @@
 <script type="math/tex; mode=display">(q_0,\sqcup)w\vdash_M^{*} (q_{acc},\sqcup)f(w)\tag{12.22}</script><p>成立，其中每个字符串$w\in\Sigma^{*}$。这种情况我们也成DTM $M$计算了$f$。</p>
 <p>在这个定义中，$\Delta$可能是任意磁带字母表；根据定义它必须包含所有输入字母表$\Sigma$中的符号，也必须包含字母表$\Gamma$中的所有符号，这些符号会出现在任意输出字符串中以满足（12.22）的映射关系。<br>　　用文字表达就是，一个函数可以通过一个DTM来计算仅当，在这个函数中运行的任意字符串时，它最终会接受，然后在磁带上留在由空格环绕的正确输出，并且磁头正好在这个输出字符串左边第一个区块。</p>
 <h3 id="一个图灵机的简单例子"><a href="#一个图灵机的简单例子" class="headerlink" title="一个图灵机的简单例子"></a>一个图灵机的简单例子</h3><p>现在我们来看一个简单的DTM例子，我们将会用状态图来描述它。在DTM的情况中，我们可以满足转移函数$\delta(p,a)=(q,b,\rightarrow)$的转移表示为<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/tmm/tmm3.png" alt="image"><br>同样的满足$\delta(p,a)=(q,b,\leftarrow)$的转移表示为<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/tmm/tmm4.png" alt="image"><br>这个例子的状态图在下面图12.3中。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/tmm/tmm5.png" alt="image"><br>这个状态图中描述的DTM所识别的语言是</p>
-<script type="math/tex; mode=display">SAME=\{0^n1^n:n\in\mathbb{N}\}.\tag{12.23}</script><p>为了更明确一点，$M$接受每个字属于$SAME$的符串，并且拒绝每个输入$\overline{SAME}$的字符串，所以这个DTM不会永远运行下去。因此，$SAME$是可判定的。<br>　　DTM $M$运行的详细方式可以总结如下。DTM $M$刚开始正在扫描输入左侧的第一个空格。它向右移动磁头，如果它读入一个1就拒绝：因为这个输入的形式肯定不满足$0^n1^n$。另外，如果它读入另一个空格符号就接受：因为这个输入一定是一个空字符串，正好对应$SAME$中$n=0$的情况。否则，它一定会读入符号0，这个时候0会被擦除（替代的是一个空格符号），磁头重复向右移动，知道有一个空格出现，然后它会往回移动一个区块。如果这个区块中不是1，DTM就会拒绝：因为字符串的右边没有足够数量的1。相反，如果找到了一个1，将它擦除，磁头一路向左往回移动，然后我们对一个更短的字符串重复以上操作。<br>　　当然，这段概要只是用来启发，并没有告诉你具体DTM的运行 — 但是如果还没有12.3的状态图，这段概要也足够为你画出状态图提供思路了（可能画出来不太一样，但运行起来是类似的）。<br>　　事实上，有一个更高水平的概要可以传达DTM如何运作的基本思路。比如我们可以将DTM $M$的运行描述如下：</p>
+<script type="math/tex; mode=display">SAME=\{0^n1^n:n\in\mathbb{N}\}.\tag{12.23}</script><p>为了更明确一点，$M$接受每个字属于$SAME$的符串，并且拒绝每个输入$\overline{SAME}$的字符串，所以这个DTM不会永远运行下去。因此，$SAME$是可判定的。<br>　　DTM $M$运行的详细方式可以总结如下。DTM $M$刚开始正在扫描输入左侧的第一个空格。它向右移动磁头，如果它读入一个1就拒绝：因为这个输入的形式肯定不满足$0^n1^n$。另外，如果它读入另一个空格符号就接受：因为这个输入一定是一个空字符串，正好对应$SAME$中$n=0$的情况。否则，它一定会读入符号0，这个时候0会被擦除（替代的是一个空格符号），磁头重复向右移动，知道有一个空格出现，然后它会往回移动一个区块。如果这个区块中不是1，DTM就会拒绝：因为字符串的右边没有足够数量的1。相反，如果找到了一个1，将它擦除，磁头一路向左往回移动，然后我们对一个更短的字符串重复以上操作。<br>　　当然，这段概要只是用来启发，并没有告诉你具体DTM的运行 — 但是如果还没有12.3的状态图，这段概要也足够为你画出状态图提供思路了（可能画出来不太一样，但运行起来是类似的）。<br>　　事实上，有一个更高水平的概要可以描述DTM如何运作的基本思路。比如我们可以将DTM $M$的运行描述如下：</p>
 <ol>
 <li>如果输入字符串是空串就接受。</li>
 <li>确定最磁带上最左边的一个非空格符号是0，最右边的一个非空格符号是1。如果是情况属实，就擦除这两个符号回到第一步，否则就拒绝。</li>
