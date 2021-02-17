@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="前言这节课我们将会继续讨论图灵机模型，着重于讲改变模型而又不影响它们能力的方式。">
+<meta name="description" content="前言这节课我们将会继续讨论图灵机模型，着重于讲改变模型而又不影响它们能力的方法。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 图灵机的变种">
 <meta property="og:url" content="http://yoursite.com/2021/02/07/John Watrous-图灵机的变种/index.html">
 <meta property="og:site_name" content="CYberseERker">
-<meta property="og:description" content="前言这节课我们将会继续讨论图灵机模型，着重于讲改变模型而又不影响它们能力的方式。">
+<meta property="og:description" content="前言这节课我们将会继续讨论图灵机模型，着重于讲改变模型而又不影响它们能力的方法。">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/vtm/vtm1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/vtm/vtm2.png">
@@ -94,10 +94,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/vtm/vtm6.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/vtm/vtm7.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/vtm/vtm8.png">
-<meta property="og:updated_time" content="2021-02-07T02:33:44.211Z">
+<meta property="og:updated_time" content="2021-02-07T02:39:18.867Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 图灵机的变种">
-<meta name="twitter:description" content="前言这节课我们将会继续讨论图灵机模型，着重于讲改变模型而又不影响它们能力的方式。">
+<meta name="twitter:description" content="前言这节课我们将会继续讨论图灵机模型，着重于讲改变模型而又不影响它们能力的方法。">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/vtm/vtm1.png">
 
 
@@ -340,7 +340,7 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这节课我们将会继续讨论图灵机模型，着重于讲改变模型而又不影响它们能力的方式。<br><a id="more"></a></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这节课我们将会继续讨论图灵机模型，着重于讲改变模型而又不影响它们能力的方法。<br><a id="more"></a></p>
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="图灵机的简单变种"><a href="#图灵机的简单变种" class="headerlink" title="图灵机的简单变种"></a>图灵机的简单变种</h3><p>没必要过于纠结我们上节课提到的关于DTM的特殊定义。实际上，如果你看两本不同的计算理论书籍，你很有可能看到两个图灵机定义在一个或者多个方面不同。<br>　　比如，我们讨论的定义指定图灵机的磁带在两个方向上都是无限的，但是有时候人们定义模型时往往会指定磁带的右边是无限的。自然地，如果磁带上存在一个最左边的区块，那么定义要明确指定图灵机在这一点上如何往左移动。也许图灵机在磁头将要移出左边界时会立马拒绝，或者也只是简单地停留在最左边的磁带区块上。<br>　　另外一个例子是关于磁头移动的。我们的定义声明了中磁头只能往左或往右移动，而某些图灵机定义允许磁头保持不动。通常我们也会想到图灵机可能有多个磁带的情况，并且我们确实会简短地讨论这种图灵机变种。</p>
 <h4 id="允许磁头不动的DTM"><a href="#允许磁头不动的DTM" class="headerlink" title="允许磁头不动的DTM"></a>允许磁头不动的DTM</h4><p>让我们从上面提到的一个简单变种开始，它的设计者允许磁头经过一个步骤后位置保持不变。这是对图灵机定义的一个非常小的改动，但这也是我们第一个例子，所以我们尽量讲得详细一点（也许会超过它所需要的程度）。<br>　　如果一个DTM的磁头被允许位置不变，以前的转移函数形式</p>
 <script type="math/tex; mode=display">\delta:Q\setminus\{q_{acc},q_{rej}\}\times\Gamma\rightarrow Q\times\Gamma\times\{\leftarrow,\rightarrow\},\tag{13.1}</script><p>将不再使用，我们将其改变为</p>
@@ -404,6 +404,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/02/07/John Watrous-堆栈机/" rel="prev" title="John Watrous 《Introduction to the Theory of Computing》 -- 堆栈机">
+                John Watrous 《Introduction to the Theory of Computing》 -- 堆栈机 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -490,7 +494,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
