@@ -81,14 +81,14 @@
 
 <meta name="description" content="前言这节课我们会检验上下文无关语言类的一些属性，包括它在正则运算下是闭合的，每个正则语言都是上下文无关的，以及一个上下文无关语言和一个正则语言的交集总是上下文无关的。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》09 -- 上下文无关语法的属性">
 <meta property="og:url" content="http://yoursite.com/2020/12/16/John Watrous-上下文无关语言的属性/index.html">
 <meta property="og:site_name" content="CYberseERker">
 <meta property="og:description" content="前言这节课我们会检验上下文无关语言类的一些属性，包括它在正则运算下是闭合的，每个正则语言都是上下文无关的，以及一个上下文无关语言和一个正则语言的交集总是上下文无关的。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-12-16T13:10:52.599Z">
+<meta property="og:updated_time" content="2021-04-10T12:58:43.095Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》09 -- 上下文无关语法的属性">
 <meta name="twitter:description" content="前言这节课我们会检验上下文无关语言类的一些属性，包括它在正则运算下是闭合的，每个正则语言都是上下文无关的，以及一个上下文无关语言和一个正则语言的交集总是上下文无关的。">
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <title>John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性 | CYberseERker</title>
+  <title>John Watrous 《Introduction to the Theory of Computing》09 -- 上下文无关语法的属性 | CYberseERker</title>
   
 
 
@@ -259,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性</h1>
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》09 -- 上下文无关语法的属性</h1>
         
 
         <div class="post-meta">
@@ -300,7 +300,7 @@
 
           
           
-             <span id="/2020/12/16/John Watrous-上下文无关语言的属性/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性">
+             <span id="/2020/12/16/John Watrous-上下文无关语言的属性/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》09 -- 上下文无关语法的属性">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -342,7 +342,7 @@
 <script type="math/tex; mode=display">S\rightarrow S_AS_B.\tag{9.4}</script><p>正式来说我们可以写成</p>
 <script type="math/tex; mode=display">H=(V,\Sigma,R,S),\tag{9.5}</script><p>其中$V=V_A\cup V_B\cup \{S\}$和$R=R_A\cup R_B\cup \{S\rightarrow S_AS_B\}$。用典型的方式来写CFG，语法$H$看起来像这样：</p>
 <script type="math/tex; mode=display">\begin{align}&S\rightarrow S_AS_B \\ &\fbox{所有G_A的规则} \\ &\fbox{所有G_B的规则}\end{align}</script><p>明显可以看出$L(G)=AB$；每个推导都从$S\Rightarrow S_AS_B$开始，然后$S_A$生成任意$A$中的字符串，$S_B$生成任意$B$中的字符串。因为语言$AB$是由CFG $H$生成的，所以它是上下文无关的。<br>　　最后我们来为$A^{*}$构造一个CFG $K$，这次CFG $K$将会只包含$G_A$的变量和规则，以及一个新的初始变量$S$和两个新规则：</p>
-<script type="math/tex; mode=display">S\rightarrow SS_A\ |\ |varepsilon.\tag{9.6}</script><p>正式来说我们可以写成</p>
+<script type="math/tex; mode=display">S\rightarrow SS_A\ |\ \varepsilon.\tag{9.6}</script><p>正式来说我们可以写成</p>
 <script type="math/tex; mode=display">K=(V,\Sigma,R,S),\tag{9.7}</script><p>其中$V=V_A\cup \{S\}$和$R=R_A\cup \{S\rightarrow SS_A,S\rightarrow \varepsilon$。用典型的方式来写CFG，语法$K$看起来像这样：</p>
 <script type="math/tex; mode=display">\begin{align}&S\rightarrow SS_A\ |\ \varepsilon \\ &\fbox{所有G_A的规则}\end{align}</script><p>通过$K$的最左侧推导生成的每个字符串都是从零次或者多次规则$S\rightarrow SS_A$和$S\rightarrow \varepsilon$的应用开始的。这表示每个最左侧推导中都是包含下面的一个序列关系：</p>
 <script type="math/tex; mode=display">\begin{align}S&\stackrel{*}{\Rightarrow} \varepsilon \\ S&\stackrel{*}{\Rightarrow} S_A \\ S&\stackrel{*}{\Rightarrow} S_AS_A \\ S&\stackrel{*}{\Rightarrow} S_AS_AS_A \\ &\vdots \end{align}\tag{9.8}</script><p>等等。在此之后，每个出现的$S_A$都生成任意$A$中的字符串。因此$L(K)=A^{*}$，那么$A^{*}$是上下文无关的。</p>
@@ -429,8 +429,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/11/29/John Watrous-分析树、歧义性和乔姆斯基范式/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》 -- 分析树、歧义性和乔姆斯基范式">
-                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》 -- 分析树、歧义性和乔姆斯基范式
+              <a href="/2020/11/29/John Watrous-分析树、歧义性和乔姆斯基范式/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》08 -- 分析树、歧义性和乔姆斯基范式">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》08 -- 分析树、歧义性和乔姆斯基范式
               </a>
             
           </div>
@@ -439,8 +439,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/12/16/John Watrous-证明非上下文无关语言/" rel="prev" title="John Watrous 《Introduction to the Theory of Computing》 -- 证明非上下文无关语言">
-                John Watrous 《Introduction to the Theory of Computing》 -- 证明非上下文无关语言 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/12/16/John Watrous-证明非上下文无关语言/" rel="prev" title="John Watrous 《Introduction to the Theory of Computing》10 -- 证明非上下文无关语言">
+                John Watrous 《Introduction to the Theory of Computing》10 -- 证明非上下文无关语言 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -528,7 +528,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -730,7 +730,7 @@
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2020/12/16/John Watrous-上下文无关语言的属性/';
           this.page.identifier = '2020/12/16/John Watrous-上下文无关语言的属性/';
-          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》 -- 上下文无关语法的属性';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》09 -- 上下文无关语法的属性';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://fredciy.disqus.com/embed.js';

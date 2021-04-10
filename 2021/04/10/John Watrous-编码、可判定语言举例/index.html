@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言现在我们已经学习过图灵机模型的基本方面，报错图灵机的变体和在计算上等价的堆栈机模型，现在到了讨论一些可判定语言案例的时候了。在这节课中我们将会着重于讲基于有限自动机和上下文无关语法的例子。这些语言在某种程度上有别于我们在本课程前面讲过的大多数语言；它们的定义已基本的数学概念为中心，而不是简单的句法模式。　　然而在开始之前我们需要先讨论一下编码（encodings），它允许我们使用已知基于字母表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》15 -- 编码、可判定语言举例">
+<meta property="og:url" content="http://yoursite.com/2021/04/10/John Watrous-编码、可判定语言举例/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言现在我们已经学习过图灵机模型的基本方面，报错图灵机的变体和在计算上等价的堆栈机模型，现在到了讨论一些可判定语言案例的时候了。在这节课中我们将会着重于讲基于有限自动机和上下文无关语法的例子。这些语言在某种程度上有别于我们在本课程前面讲过的大多数语言；它们的定义已基本的数学概念为中心，而不是简单的句法模式。　　然而在开始之前我们需要先讨论一下编码（encodings），它允许我们使用已知基于字母表">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle7.png">
+<meta property="og:updated_time" content="2021-04-10T13:05:18.227Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》15 -- 编码、可判定语言举例">
+<meta name="twitter:description" content="前言现在我们已经学习过图灵机模型的基本方面，报错图灵机的变体和在计算上等价的堆栈机模型，现在到了讨论一些可判定语言案例的时候了。在这节课中我们将会着重于讲基于有限自动机和上下文无关语法的例子。这些语言在某种程度上有别于我们在本课程前面讲过的大多数语言；它们的定义已基本的数学概念为中心，而不是简单的句法模式。　　然而在开始之前我们需要先讨论一下编码（encodings），它允许我们使用已知基于字母表">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/04/10/John Watrous-编码、可判定语言举例/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》15 -- 编码、可判定语言举例 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/10/John Watrous-编码、可判定语言举例/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》15 -- 编码、可判定语言举例</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-04-10T20:46:11+08:00">
+                2021-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/04/10/John Watrous-编码、可判定语言举例/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/04/10/John Watrous-编码、可判定语言举例/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/04/10/John Watrous-编码、可判定语言举例/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》15 -- 编码、可判定语言举例">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>现在我们已经学习过图灵机模型的基本方面，报错图灵机的变体和在计算上等价的堆栈机模型，现在到了讨论一些可判定语言案例的时候了。在这节课中我们将会着重于讲基于有限自动机和上下文无关语法的例子。这些语言在某种程度上有别于我们在本课程前面讲过的大多数语言；它们的定义已基本的数学概念为中心，而不是简单的句法模式。<br>　　然而在开始之前我们需要先讨论一下编码（<strong>encodings</strong>），它允许我们使用已知基于字母表的字符串来表达复杂的数学对象。比如，我们也许希望让一个DTM接受一个数字，一个图，一个DFA，一个CFG，另一个DTM（甚至可能是它自身的描述），或者一个由不同类型的对象组成的列表作为输入。我们将会在本课程的剩余部分用到编码概念。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="有趣的数学对象编码"><a href="#有趣的数学对象编码" class="headerlink" title="有趣的数学对象编码"></a>有趣的数学对象编码</h3><p>我们编码不同种类对象的思考方式非常接近计算机学科的惯用思维，并且由于这个原因我们不会过度说明这个问题了 — 不管怎么说，这种思维会为我们提供便利，介绍一些关于编码不同对象的有用的思路。</p>
+<h4 id="将多个字符串编码成一个"><a href="#将多个字符串编码成一个" class="headerlink" title="将多个字符串编码成一个"></a>将多个字符串编码成一个</h4><p>我们来看看下面这个任务，有两个假象个体：Alice和Bob。Alice有两个字符串$x\in\{0,1\}^{*}$和$y\in\{0,1\}^{*}$，她想将这个两个字符串传输给Bob。然而由于某些原因，Alice只被允许传一个二进制字符串给Bob，所以$x$和$y$一定要打包成一个字符串$z\in\{0,1\}^{*}$，而且Bob收到它之后还能恢复$x$和$y$。所以在传输之前，他们两个人一定要对打包方法达成共识，而且Alice也能区别传输的$x$和$y$。有很多方法可以完成这个任务，但是我们只需要选一个就行了。<br>　　第一步是引入一个新符号，我们称之为$\sharp$。然后我们将一对$(x,y)$编码成一个字符串$x\sharp y\in\{0,1,\sharp\}^{*}$。很明显如果Alice将这个字符串传给Bob，他肯定能轻松恢复$x$和$y$，所以看起来它是一个不错的方法 — 但是它没有解决最根本的问题：传输字符表要求是$\{0,1\}$而不是$\{0,1,\sharp\}$。<br>　　第二步是就是回到二进制字母表：我们将字符串$x\sharp y$编码成二进制字符串，通过根据下面的模式代入独立的符号：</p>
+<script type="math/tex; mode=display">\begin{align}0&\rightarrow 00 \\ 1&\rightarrow 01 \\ \sharp&\rightarrow 1.\end{align}\tag{15.1}</script><p>得到的二进制字符串将会字符串$x$和$y$的编码信息，Alice将会把它传给Bob。<br>　　例如，如果有两个字符串$x=0110$和$y=01111$，我们首先会想到字符串$0110\sharp 01111$，然后执行上述的代入替换后得到</p>
+<script type="math/tex; mode=display">\langle 0110,01111\rangle=0001010010001010101\tag{15.2}</script><p>这里我们用到了一个记号，在本课程的后续部分也会用到：当我们有一个对象$X$，以及一个将$X$这类对象编码成字符串的编码方案，我们记作$\langle X\rangle$来表示$X$的编码字符串。在上面的等式中，记号$\langle 0110,01111\rangle$指的是字符串$0110$和$01111$的编码，被看作是一个有序对。<br>　　让我们观察一下刚才的描述：</p>
+<ol>
+<li>我们能很容易从编码$\langle x,y\rangle$中恢复字符串$x$和$y$。直白一点，只要我们在奇数位上发现了符号$0$，那么在偶数位上的符号是属于$x$的；当我们我们在奇数位上发现了一个1，我们就知道$x$已经确定了，现在需要通过类似的过程来恢复$y$。</li>
+<li>这个方案不仅适用于两个字符串$x$和$y$，也适用于任意数量的字符串$x_1\sharp x_2\sharp \cdots x_n\in\{0,1,\sharp\}^{*}$，然后执行上述的代入替换获得$\langle x_1,…,x_n\rangle\in\{0,1\}^{*}$。</li>
+<li>每个二进制字符串的n-元组$(x_1,…,x_n)$，都有一个唯一编码$\langle x_1,…,x_n\rangle$，但不是每个二进制字符串都能编码出二进制字符串的n-元组。换句话说，编码是单射但不是满射。比如，字符串$10$不能解码出任何任何基于字母表$\{0,1,\sharp\}$的字符串，因此也不能编码出二进制字符串的n-元组。这不是什么大问题；我们在本课程中用到的大多数编码方案都有这个性质：不是每个字符串都能有效编码出某个对象。</li>
+<li>你可以轻松将这个方案泛化到更大的字母表，通过增加一个新的符号来分割原始字母表的字符串，然后再选择一个合适的编码方案。</li>
+</ol>
+<p>从结果来看这个将多个字符串编码成一个的方法非常好用，而且通过重复使用它，我们为高度复杂的数学对象设计编码方案。</p>
+<h4 id="使用一个确定的字母表编码基于其他字母表的字符串"><a href="#使用一个确定的字母表编码基于其他字母表的字符串" class="headerlink" title="使用一个确定的字母表编码基于其他字母表的字符串"></a>使用一个确定的字母表编码基于其他字母表的字符串</h4><p>接下来，让我们考虑基于一个字母表$\Gamma$的编码任务，在编码一个基于已知字母表$\Sigma$的字符串之前它的大小我们不确定。为了方便，我们让$\Sigma=\{0,1\}$是一个二进制字母表。<br>　　在我们讨论某个能执行这个任务的具体方案之前，让我们花点时间来说明手上的任务。特别是，需要明确一点，我们不是在找一种任意基于你能想到的字母表$\Gamma$编码字符串的方法。例如，来看这个我们第一节课提到字母表</p>
+<script type="math/tex; mode=display">\Gamma=\{\diamondsuit,\heartsuit,\clubsuit,\spadesuit\}.\tag{15.3}</script><p>你们也许觉得这是个有趣的字母表，但是从某种意义上来它们也不特别 — 从计算理论角度来看这些就是四个符号，跟字母表$\Gamma=\{0,1,2,3\}$并没有多大的区别，当你在考虑计算模型的时候，真正重要的是我们的字母表符号中的符号数量，有时候也要考虑放入的顺序，而不是符号的大小、形状、颜色。<br>　　在了解了这些情况后，我们将会假设编码任务是用以下形式的字母表</p>
+<script type="math/tex; mode=display">\Gamma=\{0,1,...,n-1\}\tag{15.4}</script><p>来执行，其中$n$是正整数，我们把$0$和$n-1$之间的整数想象成单个的符号。<br>　　前面一个小节的方法为我们提供了一个简单方式，通过它我们就能完成手上的任务。首先，对于每个非负整数$k\in\mathbb{N}$，我们决定用二进制$\langle k\rangle$来编码这些数字：</p>
+<script type="math/tex; mode=display">\langle 0\rangle=0,\ \ \ \ \langle 1\rangle=1,\ \ \ \ \langle 2\rangle=10,\ \ \ \ \langle 3\rangle=11,\ \ \ \ \langle 4\rangle=100,\ \ \ \ etc.\tag{15.5}</script><p>然后为了编码已知字符串$k_1,k_2,\cdots,k_m$，我们只需要将这$m$个二进制字符串$\langle k_1\rangle,\langle k_2\rangle,…,\langle k_m\rangle$编码成一个二进制字符串</p>
+<script type="math/tex; mode=display">\langle\langle k_1\rangle,\langle k_2\rangle,...,\langle k_m\rangle\rangle,\tag{15.6}</script><p> 这个编码法正是我们上一个小节用的。<br>　　举个例子，让我们来看这个字符串$001217429$，这里我们假设它的字母表是$\{0,…,9\}$（尽管这个假设不会影响编码结果）。上一小节的方法告诉我们应该将这个字符串写成如下形式</p>
+<script type="math/tex; mode=display">0\sharp 0\sharp 1\sharp 10\sharp 1\sharp 111\sharp 100\sharp 10\sharp 1001,\tag{15.7}</script><p>　　然后使用（15.1）中的代入替换。我们得到二进制字符串</p>
+<script type="math/tex; mode=display">\langle 001217429\rangle=00100101101001011010101101000010100101000001.\tag{15.8}</script><p>　　最后，让我们简短讨论一下字母表$\Sigma$是一进制而不是二进制的情况。你仍然能够使用这个字母表编码字母表$\Gamma=\{0,…,n-1\}$，尽管它效率极低。想要编码的一种方式是首先将字符串进行二进制编码，正如我们上面所讨论的，然后再按照字典顺序将二进制字符串编码成一进制：</p>
+<script type="math/tex; mode=display">\begin{align}\epsilon&\rightarrow\epsilon \\ 0&\rightarrow 0, \\ 1&\rightarrow 00, \\ 10&\rightarrow 000, \\ 11&\rightarrow 0000, \\ 100&\rightarrow 00000,\tag{15.9}\end{align}</script><p> 等等。</p>
+<p>　　原则上你可以将一本书进行一进制编码。想想一本普通的书中一个句子包含了大小写字母、空格、标点符号，然后想象用一进制编码这个句子。你打看一本一进制编码的书籍，然后看到每一篇都是0，并且你读的时候根本看不懂内容。你所能做的就是判处这本书中0的数量比你现在所见过的少，就像当你排除3点的可能性时，市政厅的中已经敲了四次了。最后你看完这本书，整个世界都清净了，然后你说了一句“哇！好棒的一本书啊！”。</p>
+<h4 id="数字、向量、矩阵"><a href="#数字、向量、矩阵" class="headerlink" title="数字、向量、矩阵"></a>数字、向量、矩阵</h4><p>在前一个小节我们已经知道了非负整数可以用二进制符号编码成二进制字符串。你们也会用二进制来编码任意整数，只不过编码后的第一位表示正负号。有理数可以编码成一对整数（分别代表分子和分母），第一步先分别将整数用二进制表示，然后使用早前这节课中的方法将这两个字符串编码成一个。你们也可能会想到浮点表示法，在实际情况中这也是非常普遍的，但是也有缺点：它只能表示分母是二次幂的有理数。<br>　　知道了将数字编码成二进制的方法后，有的人就会简单地将整个向量编码成字一些符串，然后将再用这节课开始的方法把这些字符串编码成一个。矩阵可以用一些向量来表示。的确，一旦你知道了如何将字符串编码成字符串，你可以非常轻松地为某些数学对象设计高度复杂的编码方案。</p>
+<h4 id="DFA和NFA的编码方法"><a href="#DFA和NFA的编码方法" class="headerlink" title="DFA和NFA的编码方法"></a>DFA和NFA的编码方法</h4><p>现在让我们来设计DFA和NFA的编码方案。我们先从DFA开始，在我们完成之后就会知道怎么轻松效法获得一个NFA的编码方案。<br>　　我们的目标是找到一种将每个可能DFA</p>
+<script type="math/tex; mode=display">M=(Q,\Gamma,\delta,q_0,F)\tag{15.10}</script><p>编码成二进制字符串$\langle M\rangle$的方法。直观上来说，一直二进制字符串$\langle M\rangle\in\Sigma^{*}$，恢复一个恰好是关于$M$如何运作的藐视应该是可能的。当然人们能设计很多这样的编码方案 — 我们只要选择一个普通能用的就行。<br>　　和我们上面关于基于二进制字母表编码字符串的讨论类似，我们将会假设$M$的字母表$\Gamma$形式为</p>
+<script type="math/tex; mode=display">\Gamma=\{0,...,n-1\},\tag{15.11}</script><p>其中$n$是正整数。出于同样的原因，我们会假设$M$的状态集合形式为</p>
+<script type="math/tex; mode=display">Q=\{q_0,...,q_{m-1}\},\tag{15.12}</script><p>其中$m$是正整数。</p>
+<p>　　编码将会分为三个部分：</p>
+<ol>
+<li>正整数$n$代表着$|\Gamma|$。这个数字将会用二进制符号表示。</li>
+<li>集合$F$的详细描述和状态数量$m$是一起的。这两个东西可以用一个长度为$m$的二进制字符串$s$表示。具体一点，字符串<script type="math/tex; mode=display">s=b_0b_1\cdots b_{m-1}\tag{15.13}</script>指定了<script type="math/tex; mode=display">F=\{q_k:k\in\{0,...,m-1\},b_k=1\}\tag{15.14}</script>当然状态的数量$m$就是字符串$s$的长度。然后我们将会用$\langle F\rangle$来指代通过这种方式获得的子集$F$的编码。</li>
+<li>转移函数$\delta$将如下列出函数的输入和输出来描述。首先，对于$j、k\in\{0,…,m-1\}$和$a\in\Gamma =\{0,…,n-1\}$，字符串<script type="math/tex; mode=display">\langle\langle j\rangle,\langle a\rangle,\langle k\rangle\rangle\tag{15.15}</script>指定了<script type="math/tex; mode=display">\delta(q_j,a)=q_k.\tag{15.16}</script>这里，$\langle j\rangle、\langle k\rangle$和$a$指代获得的二进制符号字符串，这是没问题的，因为$j、k、a$都是非负整数。然后我们来编码这些字符串，用自然顺序枚举所有的$(j,a)$对，得到一个字符串$\langle \delta\rangle$。<br>比如，图15.1中描述的DFA的转移函数$\delta$的编码是<script type="math/tex; mode=display">\langle \delta\rangle =\langle\langle 0,0,1\rangle,\langle 0,1,0\rangle,\langle 1,0,1\rangle,\langle 1,1,0\rangle\rangle.\tag{15.17}</script>（这里我们就不把它展开成二进制字符串了）</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle1.png" alt="image"><br>最后我们我们将已知DFA $M$按照上面的三个部分编码如下：</p>
+<script type="math/tex; mode=display">M=\langle\langle n,\langle F\rangle,\langle\delta\rangle\rangle.\tag{15.18}</script><p>　　这个编码方案通过些许改动就能获得NFA的编码方案了。这次，转移函数的执行结果是$Q$的子集，不是$Q$的元素，而且我们也要考虑$\epsilon$-转移的可能性。幸运的是，我们已经知道了如何编码$Q$的子集；我们已经为集合$F$做过了，使用同样的方法我们就能这些子集之一的$\delta(q_j,a)$编码成二进制字符串$\langle\delta(q_j,a)\rangle$，它的长度等于$Q$的状态数量。也就是，字符串</p>
+<script type="math/tex; mode=display">\langle\langle j\rangle,\langle a\rangle,\langle\delta(q_j,a)\rangle\rangle\tag{15.19}</script><p>描述了一对$(q_j,a)$的转移函数的值。为了$M$说明$\epsilon$-转移，我们要使用到字符串</p>
+<script type="math/tex; mode=display">\langle\langle j\rangle,\epsilon,\langle\delta(q_j,\epsilon)\rangle\rangle,\tag{15.20}</script><p>它利用的一点是我们没有任何$a\in\Gamma$使得$\langle a\rangle=\epsilon$。正如之前，我们会简单地列出$\delta$的输入来编码$\delta$。</p>
+<h4 id="正则表达式、CFG、PDA等等的编码方案"><a href="#正则表达式、CFG、PDA等等的编码方案" class="headerlink" title="正则表达式、CFG、PDA等等的编码方案"></a>正则表达式、CFG、PDA等等的编码方案</h4><p>我们继续这样为正则表达式、CFG、PDA、DTM和DSM设计编码方案。由于一些重要原因，我们下节课才会讲到DTM，至于其他的我会留给你们自己去思考怎么设计编码方案。有数不尽的具体方式可以做到，但是结果表明具体程度并不是那么重要 — 我们之所以如此详细的讲DFA和NFA是为了能够说明在这些模型上同样是可以完成的，主要目的是阐明概念，而不是创造一个具体方面在概念上相关的编码方案。</p>
+<h3 id="正式语言问题的可判定性"><a href="#正式语言问题的可判定性" class="headerlink" title="正式语言问题的可判定性"></a>正式语言问题的可判定性</h3><p>现在让我们的注意力转移到课程前面部分学习的关于计算模型的语言上来。</p>
+<h4 id="基于DFA、NFA和正则表达式的语言"><a href="#基于DFA、NFA和正则表达式的语言" class="headerlink" title="基于DFA、NFA和正则表达式的语言"></a>基于DFA、NFA和正则表达式的语言</h4><p>首先我们来下面这个语言：</p>
+<script type="math/tex; mode=display">A_{DFA}=\{\langle\langle D\rangle,\langle w\rangle\rangle:D是一个DFA并且w\in L(D)\}.\tag{15.21}</script><p>这里我们假设$\langle D\rangle$是一直DFA $D$的编码，$\langle w\rangle$是一直字符串$w$的编码，以及$\langle\langle D\rangle,\langle w\rangle\rangle$是两个字符串$\langle D\rangle$和$\langle w\rangle$的编码，所有这些都在这节课的前面讲过了。这样$\langle D\rangle$、$\langle w\rangle$和$\langle\langle D\rangle,\langle w\rangle\rangle$都是二进制字符串。然而情况是这样的，$D$的字母表是任意的，形式为$\Gamma=\{0,…,n-1\}$，字符串$w$也是如此。<br>　　很自然会有这样一个问题：是否语言$A_{DFA}$是可判定的。的确是的。对于一个已知输入字符串$x\in\{0,1\}^{*}$，一个DFA $D$，一个字符串$w$，你们很容易就能验证它的形式$x=\langle\langle D\rangle,\langle w\rangle\rangle$，然后通过简单地模拟就能检验是否$D$能接受$w$，给你一支笔和一张纸就能自己验证了。图15.2给出了一个DTM的高水平描述，按照这些方法就能判定语言$A_{DFA}$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle2.png" alt="image"><br>　　现在，你可能会对图15.2描述的判定$A_{DFA}$的DTM提出质疑。它确实描述了$M$如何运行的主要思路，它模拟了在$D$中输入$w$，但它几乎没提供任何细节。它看起来更像是一个如何设计DTM的建议，而不是DTM的实际描述。<br>　　这是一个公正的评价，但随着我们课程的推进，我们将会对这些内容做一些改变。我们即将面临的计算会越来越复杂，为了节省时间和笔墨，我们必须抛弃DTM详细计算的描述实践。希望我们的讨论和DTM模型的开发已经说服你采用高水平的DTM描述，正如图15.2这样，产出一个执行计算的实际DTM或多或少会是一个日常工作。<br>　　因为图15.2关于DTM $M$的描述使我们第一个高水平DTM描述的例子，让我们花点时间来看看它是如何转变成一个正式具体的DTM。因为我们知道任何确定性堆栈机都能用一个DTM模拟，那么我们描述一个运行效果和图15.2一样的DSM $M$。</p>
+<ol>
+<li>DSM $M$的输入$x$存储在栈1中，我们也许会将这个栈命名为$\sf{X}$。图15.2中的第一步是验证输入$x=\langle\langle D\rangle,\langle w\rangle\rangle$。假设输入的形式是正确的，这样方便我们进入$M$的第二个步骤（意味着模拟在$D$中输入$w$），将输入分为两个部分，字符串$\langle D\rangle$存储在栈$\sf{D}$中，以及字符串$\langle w\rangle$存储在栈$\sf{D}$中。这个分离操作是比较简单的，而且可以作为验证形式$x=\langle\langle D\rangle,\langle w\rangle\rangle$的一部分。</li>
+<li>为了模拟在$D$中输入$w$，DSM $M$将会记录$D$的当前状态，所以我们需要引入一个栈$\sf{Q}$来做这件事。在模拟开始前，初始化$Q$，然后存储一个 $0$（这是$q_0$的编码）。</li>
+<li>实际的模拟过程是以自然的方式进行，也就是检查$\sf{W}$中$w$的符号编码，一次一个，相应地更新$\sf{Q}$中的状态。而一个DSM的状态和转移的详细描述会看起来非常复杂，所以只从概念上来讲就很简单。特别是，每个模拟步骤可以大概是在$\sf{Q}$更新后，$M$搜索$\sf{D}$中存储的$D$的转移，找到一个满足$\sf{Q}$中编码存储的当前状态和$\sf{W}$中下个编码存储输入符号的转移。自然地，$M$能使用额外的栈来复制字符串，这样$\langle D\rangle$的编码在每个步骤中都是可用的。</li>
+<li>一旦模拟完成，检查$\sf{Q}$的状态是否出现在$\langle F\rangle$的编码的接受状态中，相应地推断出$D$是接受还是拒绝。</li>
+</ol>
+<p>总的来说，写下一个DSM $M$的运行方式的描述是一个乏味的工作 — 但是我希望你们知道只要有一点时间、耐心、和规划，这个工作还是可以完成的。如果确实要用到设计这样的子程序，一个详尽的DSM $M$的描述时必须的，甚至还可能会超过这个程度（跟我们谢计算机程序执行模拟任务不同）。只要这个DSM的详细描述完成，它就能被我们上节课讲过的DTM模拟。<br>　　接下来我们来看一个变体版本，将$A_{DFA}$中的DFA换成NFA：</p>
+<script type="math/tex; mode=display">A_{NFA}=\{\langle\langle N\rangle,\langle w\rangle\rangle:N是一个NFA并且w\in L(N)\}.\tag{15.22}</script><p>再一次，我们的假设是，这个语言的编码方式定义在前面我们已经讨论过了。语言$A_{NFA}$也是可判定的。然而这次我们不能仅仅简单地描述一个DSM “模拟在$N$中输入$w$”，因为我们并不知道一个确定性计算如何模拟一个非确定性有限自动机计算。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle3.png" alt="image"><br>　　不过我们能做的是通过第3节课中内容将NFA转化成DFA；这是一个定义明确的确定性程序，而且它当然能被一个DTM执行。图15.3给出了一个判定$A_{NFA}$的DTM $M$的高水平描述。还是一样，尽管详细描述一个DTM如何执行计算是一个耗时任务，从概念上把它看成是一个简单任务却是合理的。<br>　　你们也可能会定义一个类似于$A_{DFA}$和$A_{NFA}$的语言，但如果是用正则表达式替换DFA和NFA：</p>
+<script type="math/tex; mode=display">A_{REX}=\{\langle\langle R\rangle,\langle w\rangle\rangle:R是一个正则表达式并且w\in L(R)\}.\tag{15.23}</script><p>我们并不是要时机讨论正则表达式的编码方案，所以这将是留给你去设计和想象的部分了 — 但是只要你选择了一个合理的编码方案，语言$A_{REX}$将会是可判定的。具体一点，一个DTM首先会将这个正则表达式转换成一个等价的DFA，然后模拟在DFA中输入字符串$w$。<br>　　这里有一个不同的语言案例，我们将会证明它也是可判定的：</p>
+<script type="math/tex; mode=display">E_{DFA}=\{\langle D\rangle: D是一个DFA并且L(D)=\varnothing\}.\tag{15.24}</script><p>在这个例子中，你们不能通过简单的“模拟DFA $D$”就能判定这个语言，因为这里有个前提是，我们没空可用的字符串来进行模拟；我们关注的是每个可能的字符串；它作为输入后会被$D$拒绝还是接受。因此判定语言$E_{DFA}$不是一个直接模拟能完成的任务。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle4.png" alt="image"><br>　　不过我们当成一个<strong>图连通性</strong>问题。图15.4DTM就是这么处理然后判定$D_{DFA}$。将这个DTM的思路和前面的例子结合一下，你们也可以证明类似定义的语言$E_{NFA}$和$E_{REX}$是可判定的：</p>
+<script type="math/tex; mode=display">\begin{align}&E_{NFA}=\{\langle N\rangle:N是一个NFA并且L(N)=\varnothing\} \\ &E_{REX}=\{\langle R\rangle:R是一个正则表达式并且L(R)=\varnothing\}.\end{align}\tag{15.25}</script><p>　　再来看一个关于DFA的可判定语言的例子：</p>
+<script type="math/tex; mode=display">EQ_{DFA}=\{\langle\langle A\rangle,\langle B\rangle\rangle:A和B都是DFA并且L(A)=L(B)\}.\tag{15.26}</script><p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle5.png" alt="image"><br>图15.5给出了一个关于这个语言的DTM的高水平描述。你们执行第二步最自然的结构是使用第4节课中将的笛卡尔积结构。</p>
+<h4 id="基于CFG的语言"><a href="#基于CFG的语言" class="headerlink" title="基于CFG的语言"></a>基于CFG的语言</h4><p>接下来让我们又来看看几个关于上下文无关语法的可判定语言的例子。遵循上面讨论示例的相同思路，我们考虑这些语言：</p>
+<script type="math/tex; mode=display">\begin{align}&A_{CFG}=\{\langle\langle G\rangle,\langle w\rangle\rangle:G是一个CFG并且w\in L(G)\} ,\\ &E_{CFG}=\{\langle G\rangle:G是一个CFG并且L(G)=\varnothing\}.\end{align}\tag{15.27}</script><p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle6.png" alt="image"><br>同样，尽管我们没有详细描述这些上下文无关语法的编码方案，但设计这样一个方案并不难（或者假设这个方案已经定义好了）。判定第一个语言的DTM在图15.6中有描述。这是一个没什么价值，而且冗长低效的判定语言$A_{CFG}$的方式，但是现在我们并不关心这个！我们仅仅是想要证明这个语言是可判定的。事实上有很多高效的方式来设计这个语言，但这里我们就不详细讨论了。<br>　　最后，语言$E_{CFG}$的判定可以通过对连通性技术做些改动就能实现。本质上，我们记录一个包含变量的集合，它至少能生成一个字符串，然后检查出事变量是否包含在这个集合中。判定这个语言的DTM如图15.7所示。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/dle/dle7.png" alt="image"><br>　　现在你可能会想到下面这个语言，它和前面的DFA案例类似：</p>
+<script type="math/tex; mode=display">EQ_{CFG}=\{\langle\langle G\rangle,\langle H\rangle\rangle:G和H都是CFG并且L(G)=L(H)\}.\tag{15.28}</script><p>结果是，这个语言是不可判定的。我们将不会证明它，因为这会偏离我们剩余课程的内容 — 但是下节课中的一些内容会想你说明这个语言为什么不可判定。还有一些其他的关于上下文无关语法的不可判定语言案例：</p>
+<script type="math/tex; mode=display">\begin{align}&\{\langle G\rangle:G是一个CFG并且它能生成所有基于它的字母表的字符串\}, \\ &\{\langle G\rangle:G是一个有歧义的CFG\}, \\ &\{\langle G\rangle:G是一个CFG并且L(G)是固有歧义的\}.\end{align}\tag{15.29}</script><h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.15.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.15.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/02/07/John Watrous-堆栈机/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》14 -- 堆栈机">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》14 -- 堆栈机
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有趣的数学对象编码"><span class="nav-number">2.1.</span> <span class="nav-text">有趣的数学对象编码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#将多个字符串编码成一个"><span class="nav-number">2.1.1.</span> <span class="nav-text">将多个字符串编码成一个</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用一个确定的字母表编码基于其他字母表的字符串"><span class="nav-number">2.1.2.</span> <span class="nav-text">使用一个确定的字母表编码基于其他字母表的字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数字、向量、矩阵"><span class="nav-number">2.1.3.</span> <span class="nav-text">数字、向量、矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DFA和NFA的编码方法"><span class="nav-number">2.1.4.</span> <span class="nav-text">DFA和NFA的编码方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#正则表达式、CFG、PDA等等的编码方案"><span class="nav-number">2.1.5.</span> <span class="nav-text">正则表达式、CFG、PDA等等的编码方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正式语言问题的可判定性"><span class="nav-number">2.2.</span> <span class="nav-text">正式语言问题的可判定性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于DFA、NFA和正则表达式的语言"><span class="nav-number">2.2.1.</span> <span class="nav-text">基于DFA、NFA和正则表达式的语言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于CFG的语言"><span class="nav-number">2.2.2.</span> <span class="nav-text">基于CFG的语言</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2021/04/10/John Watrous-编码、可判定语言举例/';
+          this.page.identifier = '2021/04/10/John Watrous-编码、可判定语言举例/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》15 -- 编码、可判定语言举例';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
