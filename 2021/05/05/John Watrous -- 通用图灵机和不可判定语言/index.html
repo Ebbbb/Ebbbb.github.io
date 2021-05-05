@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言这节课我们会讲到通用图灵机。这是一个确定性图灵机，当我们已知一个任意DTM编码时，它能够根据一个已知输入来模拟这个DTM。　　为了描述这样一个通用机器，我们自然而然会想到DTM的编码，这也是我们本节课要做的第一件事。这个DTM编码方案的概念让我们首次见到了非半可判定（因此也就是不可判定）语言的例子。通过这个语言的非半可判定性，就能证明许多其他的语言是不可判定或者非半可判定的。我们先来看两个简单">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》16 -- 通用图灵机和不可判定语言">
+<meta property="og:url" content="http://yoursite.com/2021/05/05/John Watrous -- 通用图灵机和不可判定语言/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言这节课我们会讲到通用图灵机。这是一个确定性图灵机，当我们已知一个任意DTM编码时，它能够根据一个已知输入来模拟这个DTM。　　为了描述这样一个通用机器，我们自然而然会想到DTM的编码，这也是我们本节课要做的第一件事。这个DTM编码方案的概念让我们首次见到了非半可判定（因此也就是不可判定）语言的例子。通过这个语言的非半可判定性，就能证明许多其他的语言是不可判定或者非半可判定的。我们先来看两个简单">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/udtm/udtm1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/udtm/udtm2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/udtm/udtm3.png">
+<meta property="og:updated_time" content="2021-05-05T13:52:30.629Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》16 -- 通用图灵机和不可判定语言">
+<meta name="twitter:description" content="前言这节课我们会讲到通用图灵机。这是一个确定性图灵机，当我们已知一个任意DTM编码时，它能够根据一个已知输入来模拟这个DTM。　　为了描述这样一个通用机器，我们自然而然会想到DTM的编码，这也是我们本节课要做的第一件事。这个DTM编码方案的概念让我们首次见到了非半可判定（因此也就是不可判定）语言的例子。通过这个语言的非半可判定性，就能证明许多其他的语言是不可判定或者非半可判定的。我们先来看两个简单">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/udtm/udtm1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/05/05/John Watrous -- 通用图灵机和不可判定语言/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》16 -- 通用图灵机和不可判定语言 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/05/John Watrous -- 通用图灵机和不可判定语言/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》16 -- 通用图灵机和不可判定语言</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-05-05T21:03:40+08:00">
+                2021-05-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/05/05/John Watrous -- 通用图灵机和不可判定语言/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/05/05/John Watrous -- 通用图灵机和不可判定语言/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/05/05/John Watrous -- 通用图灵机和不可判定语言/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》16 -- 通用图灵机和不可判定语言">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这节课我们会讲到通用图灵机。这是一个确定性图灵机，当我们已知一个任意DTM编码时，它能够根据一个已知输入来模拟这个DTM。<br>　　为了描述这样一个通用机器，我们自然而然会想到DTM的编码，这也是我们本节课要做的第一件事。这个DTM编码方案的概念让我们首次见到了非半可判定（因此也就是不可判定）语言的例子。通过这个语言的非半可判定性，就能证明许多其他的语言是不可判定或者非半可判定的。我们先来看两个简单的例子，后面还会有更多。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="DTM的编码方案"><a href="#DTM的编码方案" class="headerlink" title="DTM的编码方案"></a>DTM的编码方案</h3><p>在上节课中我们详细讨论过DFA的编码方案，并且我们发现通过这个方案也能设计出NFA的编码方案。尽管我们没有具体讨论正则表达式和上下文无关语法的编码方案，我们只是说你们可以轻松设计出这些模型的编码方案。<br>　　对于DTM我们的计划也是一样的，因为相较于刚才所提的其他模型，这个模型并没有什么新的概念难点。然而，考虑到编码DTM语言在后续课程中的重要性，我们有必要小心谨慎地花点时间在这个编码上。正如我们在每个编码方案中所想到的，在DTM的编码中有很多可供选择的地方需要我们决定 — 我们最关心的还是这个编码方案细节要清晰明确，而且并不是因为细节本身就是可计算性学习的本质。<br>　　纵观接下来的讨论，我们将会假设</p>
+<script type="math/tex; mode=display">M=(Q,\Sigma,\Gamma,\delta,q_0,q_{acc},q_{rej})\tag{16.1}</script><p>是一个用来进行编码的已知DTM。我们假设$M$的状态集合$Q$的形式为</p>
+<script type="math/tex; mode=display">Q=\{q_0,...,q_{m-1}\},\tag{16.2}</script><p>其中$m$是一个正整数，$M$的输入和磁带字母表形式为</p>
+<script type="math/tex; mode=display">\Sigma=\{0,...,k-1\}\ \ \ \ 和\ \ \ \ \Gamma=\{0,...,n-1\},\tag{16.3}</script><p>其中$k$和$n$都是正整数。已知$\Sigma$是$\Gamma$的整自己，那么$k&lt;n$；假设空格符号$\sqcup\in\Gamma$是$\Gamma$的最后一个符号$n-1$。<br>　　首先，一个状态$q\in Q$的编码应该被理解为用它的索引作为编码对象的二进制编码字符串$\langle q\rangle\in\{0,1\}^{*}$，所以</p>
+<script type="math/tex; mode=display">\langle q_0\rangle=0,\ \ \ \ \langle q_1\rangle=1,\ \ \ \ \langle q_2\rangle=10,\ \ \ \ etc.\tag{16.4}</script><p>磁带符号的编码方式类似，所以</p>
+<script type="math/tex; mode=display">\langle 0\rangle=0,\ \ \ \ \langle 1\rangle=1,\ \ \ \ \langle 2\rangle=10,\ \ \ \ etc.\tag{16.5}</script><p>我们可以把左右方向符号编码为</p>
+<script type="math/tex; mode=display">\langle \leftarrow\rangle=0\ \ \ \ 和\ \ \ \ \langle \rightarrow\rangle=1.\tag{16.6}</script><p>　　接下来我们需要一种方式编码转移函数$\delta$，它和我们上节课中DFA编码方式类似。对于状态$q\in Q\setminus \{q_{acc},q_{rej}\}$和$r\in Q$和磁带符号$a、b\in\Gamma$，以及方向$D\in\{\leftarrow,\rightarrow\}$，编码</p>
+<script type="math/tex; mode=display">\langle\langle q\rangle,\langle a\rangle,\langle r\rangle,\langle b\rangle,\langle D\rangle\rangle\in\{0,1\}^{*}\tag{16.7}</script><p>代表着</p>
+<script type="math/tex; mode=display">\delta(q,a)=(r,b,D).\tag{16.8}</script><p>转移函数$\delta$的编码通过按照字典顺序将每一对$(q,a)\in Q\setminus\{q_{acc},q_{rej}\}\times\Gamma$使用以上方法得到的二进制串列举出来即可获得。<br>　　最后，通过这些编码手段，我们从每个DTM $M$得到二进制字符串编码$\langle M\rangle\in\{0,1\}^{*}$如下：</p>
+<script type="math/tex; mode=display">\langle M\rangle=\langle\langle m\rangle,\langle k\rangle,\langle n\rangle,\langle \delta\rangle,\langle q_{acc}\rangle,\langle q_{rej}\rangle\rangle.\tag{16.9}</script><p><strong>案例16.1.</strong> 回想我们图12.3中的语言$SAME$的DTM $M$，我们有</p>
+<script type="math/tex; mode=display">\begin{align}\delta(q_0,0)&=(q_0,0,\leftarrow), \\ \delta(q_0,1)&=(q_0,1,\leftarrow), \\ \delta(q_0,\sqcup)&=(q_1,\sqcup,\rightarrow), \\ &\vdots \\\delta(q_3,0)&=(q_{rej},0,\leftarrow), \\ \delta(q_3,1)&=(q_0,\sqcup,\leftarrow), \\ \delta(q_3,\sqcup)&=(q_{rej},\sqcup,\leftarrow).\end{align}\tag{16.10}</script><p>我需要说明一下$q_{acc}=q_r$和$q_{rej}=q_5$，我们还明确知道有$m=6$个状态，$k=2$个输入符号，以及$n=3$个磁带符号，也就是空格符号$\sqcup$，它是最后一个磁带符号 $2$。<br>　　转移$\delta(q_0,0)=(q_0,0,\leftarrow)$的编码是</p>
+<script type="math/tex; mode=display">\langle\langle q_0\rangle,\langle 0\rangle,\langle q_0\rangle,\langle 0\rangle,\langle \leftarrow\rangle\rangle=\langle 0,0,0,0,0\rangle,\tag{16.11}</script><p>转移$\delta(q_0,1)=(q_0,1,\leftarrow)$的编码是</p>
+<script type="math/tex; mode=display">\langle\langle q_0\rangle,\langle 1\rangle,\langle q_0\rangle,\langle 1\rangle,\langle \leftarrow\rangle\rangle=\langle 0,1,0,1,0\rangle,\tag{16.12}</script><p>然后跳到最后一个，转移$\delta(q_3,2)=(q_5,2,\leftarrow)$的编码是</p>
+<script type="math/tex; mode=display">\begin{align}\langle\langle &q_3\rangle,\langle \sqcup\rangle,\langle q_{rej}\rangle,\langle \sqcup\rangle,\langle \leftarrow\rangle\rangle \\ &= \langle\langle q_3\rangle,\langle 2\rangle,\langle q_5\rangle,\langle 2\rangle,\langle \leftarrow\rangle\rangle =\langle 11,10,101,10,0\rangle.\end{align}\tag{16.13}</script><p>完整的转移函数$\delta$的编码是</p>
+<script type="math/tex; mode=display">\begin{align}\langle\delta\rangle &=\langle\langle\langle q_0\rangle,\langle 0\rangle,\langle q_0\rangle,\langle 0\rangle,\langle \leftarrow\rangle\rangle,\langle\langle q_0\rangle,\langle 1\rangle,\langle q_0\rangle,\langle 1\rangle,\langle \leftarrow\rangle\rangle, \\ ...,\langle\langle &q_3\rangle,\langle \sqcup\rangle,\langle q_{rej}\rangle,\langle \sqcup\rangle,\langle \leftarrow\rangle\rangle\rangle \\ &=\langle\langle 0,0,0,0,0\rangle,\langle 0,1,0,1,0\rangle,\langle 11,10,101,10,0\rangle\rangle.\end{align}\tag{16.14}</script><p>到了最后$M$的编码就是</p>
+<script type="math/tex; mode=display">\langle M\rangle=\langle\langle 6\rangle,\langle 2\rangle,\langle 3\rangle,\langle\delta\rangle,\langle 0\rangle,\langle 4\rangle,\langle 5\rangle\rangle.\tag{16.15}</script><h3 id="通用图灵机"><a href="#通用图灵机" class="headerlink" title="通用图灵机"></a>通用图灵机</h3><p>现在我们定义一个DTM的编码方案，我们能模拟在一个已知DTM中执行一个已知输入的计算任务了。通用图灵机就是能执行这样的模拟的一个DTM — 之所以称它通用是因为它有模拟所有其他DMT的能力。<br>　　回想我们第12节课中DTM的配置</p>
+<script type="math/tex; mode=display">M=(Q,\Sigma,\Gamma,\delta,q_0,q_{acc},q_{rej})\tag{16.16}</script><p>可以表达成这种形式</p>
+<script type="math/tex; mode=display">u(q,a)v,\tag{16.17}</script><p>其中状态$q\in Q$，磁带符号$a\in\Gamma$，磁带符号字符串$u、v\in\Gamma^{*}$，而且$u$不以空格符号开头，$v$不以空格符号结尾。这样一个配置可以编码为</p>
+<script type="math/tex; mode=display">\langle u(q,a)v\rangle=\langle\langle u\rangle,\langle\langle q\rangle,\langle a\rangle\rangle,\langle v\rangle\rangle,\tag{16.18}</script><p>这里$\langle u\rangle、\langle q\rangle、\langle a\rangle$和$\langle v\rangle$指代合适的编码方案，这个我们在本节课已经讨论过了。<br>　　现在，如果你想要的模拟在一个已知DTM $M$中输入字符串$w$的计算，一个很自然的方式就是记录$M$的配置，并且适时地进行更新，就像计算本身那样要求的。具体一点，我们将从$M$的初始配置开始输入$w$，也就是</p>
+<script type="math/tex; mode=display">(q_0,\sqcup)w.\tag{16.19}</script><p>然后我们重复地计算$M$下一个配置，反复进行，知道我们得到某个配置，它的状态是$q_{acc}$或者$q_{rej}$，如此我们才可以停止。我们也许永远得不到这样一个配置；如果$M$永远在输入$w$上执行下去，我们的模拟也会永远进行。不难看出，这是不可避免的。<br>　　有了这样一个办法，让我们来重点关注决定<strong>下一个配置</strong>的任务，也就是每个计算步骤得到的结果，对于一个已知DTM $M$和$M$的一个已知配置。我们来看看这个函数的定义</p>
+<script type="math/tex; mode=display">next:\{0,1\}^{*}\rightarrow\{0,1\}^{*}.\tag{16.20}</script><p>对于每个DTM$ M=(Q,\Sigma,\Gamma,\delta,q_0,q_{acc},q_{rej})$和$M$的非停止配置$u(q,a)v$，我们定义</p>
+<script type="math/tex; mode=display">next(\langle\langle M\rangle,\langle u(q,a)v\rangle\rangle)=\langle x(p,b)y\rangle,\tag{16.21}</script><p>其中$x(p,b)y$是$M$处于配置$u(q,a)u$时运行一步得到的配置，也就是</p>
+<script type="math/tex; mode=display">u(q,a)v\vdash_M x(p,b)y\tag{16.22}</script><p>的唯一配置。我们可以回忆一下12.2定义的精确术语。对于每个$M$停止配置$u(q,a)v$，让我们定义（方便起见）</p>
+<script type="math/tex; mode=display">next(\langle\langle M\rangle,\langle u(q,a)v\rangle\rangle) =\langle u(q,a)v\rangle.\tag{16.23}</script><p>如果输入$x\in\{0,1\}^{*}$的形式不是$\langle\langle M\rangle,\langle u(q,a)v\rangle\rangle$，按要求$M$是一个DTM，$u(q,a)v$是一个配置，我们应该返回$next(x)=\varepsilon$。<br>　　让我们想想这个函数如何用堆栈机来计算。自然而然第一步应该是处理输入，基于这个过程结束后，我们有一个栈$\sf{M}$存储$\langle M\rangle$，还有四个栈$\sf{S}、\sf{T}、\sf{L}$和$\sf{R}$，它们初始化后分别存储着编码$\langle q\rangle、\langle a\rangle、\langle u\rangle$和$\langle v\rangle$。在这个处理中，如果遇到不是我们期望的编码就停止然后输出$\epsilon$。<br>　　接下来，编码$\langle M\rangle$中的编码$\langle \delta\rangle$存储的转移函数，它可以用来检测决定$\delta(q,a)=(p,b,D)$。这需要扫描一次$\langle\delta\rangle$来获得，在找到一个包含$\sf{S}$和$\sf{T}$中存储的字符串$\langle q\rangle$和$\langle a\rangle$，以及编码$\langle p\rangle、\langle b\rangle$和$\langle D\rangle$的匹配后。这些编码会被存进相应地栈中，我们就不再点名了。$\sf{S}、\sf{T}、\sf{L}$和$\sf{R}$的操作就是更新它们的内容$\langle p\rangle、\langle b\rangle、\langle x\rangle$和$\langle y\rangle$，其中$p、b、x$和$y$要满足(16.22)，才会执行更新。<br>　　最后，这些字符串连起来就是输出字符串</p>
+<script type="math/tex; mode=display">\langle\langle x\rangle,\langle\langle p\rangle,\langle b\rangle\rangle,\langle y\rangle\rangle.\tag{16.24}</script><p>用这种方式详细说明一个DSM的运作是个耗时过程，但是在概念水平上，这个计算就能合理地简洁说明。字符串匹配的子程序当然会很有帮助。<br>　　有$next$函数在手，你们就可以用上述方式模拟在已知DTM $M$上输入已知的$w$了，通过从将$M$初始化配置设置为$(q_0,\sqcup)w$，然后重复执行$next$函数即可。<br>　　现在考虑下面这个语言，它类似于我们上节课讨论的关于$A_{DFA}、A_{NFA}、A_{REG}$和$A_{CFG}$的语言：</p>
+<script type="math/tex; mode=display">A_{DTM}=\{\langle\langle M\rangle,\langle w\rangle\rangle: M是一个DTM并且w\in L(M)\}.\tag{16.25}</script><p>我们得出$A_{DTM}$是半可判定的：图16.1中的DSM $\mathfrak{U}$使得$L(\mathfrak{U})=A_{DTM}$。这个DSM命名为$\mathfrak{U}$的原因是为了表示它是一个<strong>通用（universal）</strong>DSM。就像我们第14节课中讲的，DSM $\mathfrak{U}$可以被一个DTM模拟。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/udtm/udtm1.png" alt="image"><br><strong>命题16.2.</strong> 语言$A_{DTM}$是半可判定的。</p>
+<p>　　在我们进入下一小节之前，让我们注意一下下面这个可判定语言：</p>
+<script type="math/tex; mode=display">S_{DTM}=\left\{\langle\langle M\rangle,\langle w\rangle,\langle t\rangle\rangle:\begin{align}&M是一个DTM，w是M的一个输入，\\ &t\in\mathbb{N}，并且M能接t步之内接受w\end{align}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \right\}.\tag{16.26}</script><p>这个语言能够由按照前面描述的基本相同的模拟来判定，但是如果$M$在输入$w$的$t$步之后还没停止，那么模拟就会中断然后拒绝。</p>
+<h3 id="一些不可判定语言"><a href="#一些不可判定语言" class="headerlink" title="一些不可判定语言"></a>一些不可判定语言</h3><p>到了现在自然大家都会问到：$A_{DTM}$是不是可判定的，现在已知它是半可判定的。我们将会证明答案是不可判定的。然而在此之前，我们将会先看一看另外一个语言，它甚至都不是半可判定的。这个语言是</p>
+<script type="math/tex; mode=display">DIAG=\{\langle M\rangle:M是一个DTM并且\langle M\rangle\notin L(M)\}.\tag{16.27}</script><p>也就是语言$DIAG$包含了所有遵守了我们本节课开头讲的编码规则的二进制字符串$M$，但是DTM $M$不能接受它自身的编码。注意如果字符串$\langle M\rangle$编码是一个输入字母表只有一个字符的DTM，也就是不包含0和1，那么确实$\langle M\rangle\notin L(M)$。</p>
+<p><strong>定理16.3.</strong> 语言$DIAG$是非半可判定的。</p>
+<p>证明：通过反证法，假设语言$DIAG$是半可判定的。那么一定存在一个DTM $M$s使得$L(M)=DIAG$。<br>　　现在，考虑$M$的编码$\langle M\rangle$。由语言$DIAG$的定义可知</p>
+<script type="math/tex; mode=display">\langle M\rangle\in DIAG \Leftrightarrow \langle M\rangle\notin L(M).\tag{16.28}</script><p>另外，因为$M$能够识别$DIAG$，那么</p>
+<script type="math/tex; mode=display">\langle M\rangle\in DIAG\Leftrightarrow \langle M\rangle\in L(M).\tag{16.29}</script><p>结果是</p>
+<script type="math/tex; mode=display">\langle M\rangle\notin L(M)\Leftrightarrow \langle M\rangle\in L(M),\tag{16.30}</script><p>这是矛盾的，我们得出$DIAG$是非半可判定的。</p>
+<p><strong>备注16.4.</strong> 注意这个证明和我们第一节课将的$\mathcal{P}(\mathbb{N})$是不可数的证明类似。$DIAG$的非半可判定性质是非常简单；几乎没有用到我们定义的具体DTM模型或者编码方案。</p>
+<p>　　现在我们知道$DIAG$是非半可判定的，我们将会证明$A_{DTM}$是不可判定的。</p>
+<p><strong>定理16.5.</strong> 语言$A_{DTM}$是不可判定的。</p>
+<p>证明：通过反证法，假设$A_{DTM}$是可判定的。因此一定存在一个DTM $T$能够判定$A_{DTM}$。定义一个新的DTM $K$如图16.2所示。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/udtm/udtm2.png" alt="image"></p>
+<p>　　对于已知的DTM $M$，我们也许想问对于输入$\langle M\rangle$，$K$的作用是什么。如果$\langle M\rangle\in DIAG$，那么根据定义$\langle M\rangle\notin L(M)$，因此$\langle\langle M\rangle,\langle M\rangle\rangle\notin A_{DTM}$（因为$M$不接受$\langle M\rangle$）。这说明$T$拒绝了输入$\langle\langle M\rangle,\langle M\rangle\rangle$，因此$K$一定接受输入$\langle M\rangle$。如果情况相反，$\langle M\rangle\notin DIAG$，那么$\langle M\rangle\in L(M)$，因此$\langle\langle M\rangle,\langle M\rangle\rangle \in A_{DTM}$。这说明$T$接受输入$\langle\langle M\rangle,\langle M\rangle\rangle$，因此$K$一定拒绝输入$\langle M\rangle$。最后一种可能性就是$K$的输入根本不是一个DTM编码，这种情况它直接拒绝。<br>　　考虑了所有的可能性，我们发现$K$判定了语言$DIAG$。然而这与实际情况矛盾，$DIAG$是非半可判定的（因此也是不可判定的）。有了这个矛盾，我们得出$A_{DTM}$是不可判定的。</p>
+<p>　　这里有另外一个例子，它是$A_{DTM}$的一个著名的亲戚。</p>
+<script type="math/tex; mode=display">HALT=\{\langle\langle M\rangle,\langle w\rangle\rangle:M是一个DTM，并且输入w一定会停止\}.\tag{16.31}</script><p>这里的停止意味着$M$输入$w$后一定会接受或者拒绝。让我们先达成一个共识，“$M$输入$w$一定会停止”在某种情况下不成立，如果$w$包含了不属于$M$输入字母表的字符 — 纯粹是一个术语上的问题。<br>　　很容易可以证明$HALT$是半可判定的，我们只需要运行一个改版的通用图灵机$\mathfrak{U}$输入$\langle\langle M\rangle,\langle w\rangle\rangle$，除了我们接受的情况模拟结果是接受或者拒绝外 — 当出现$M$输入$w$不停止的情况，这个改版的$\mathfrak{U}$将会永远运行在输入$\langle\langle M\rangle,\langle w\rangle\rangle$上。</p>
+<p><strong>定理16.6.</strong> 语言$HALT$是不可判定的。</p>
+<p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/udtm/udtm3.png" alt="image"><br>证明：通过反证法，假设$HALT$是可判定的，所以一定存在一个$DTM$能够判定它，定义一个新的DTM $K$如图16.3所示。DTM $K$能够判定$A_{DTM}$，来看下面的情况分析</p>
+<ol>
+<li>如果$M$接受$w$，那么$T$就会接受$\langle\langle M\rangle,\langle w\rangle\rangle$（因为$M$输入$w$停止了），这个$M$输入$w$的模拟结果就是接受。</li>
+<li>如果$M$拒绝$w$，那么$T$就会拒绝$\langle\langle M\rangle,\langle w\rangle\rangle$（因为$M$输入$w$停止了），这个$M$输入$w$的模拟结果就是拒绝。</li>
+<li>如果$M$输入$w$一直运行，那么$T$就会拒绝$\langle\langle M\rangle,\langle w\rangle\rangle$，因此$K$在模拟$M$输入$w$之前就会拒绝。</li>
+</ol>
+<p>然而这是矛盾的，因为$A_{DTM}$是不可判定的。有了这个矛盾，我们得出$HALT$是不可判定的。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.16.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.16.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/04/10/John Watrous-编码、可判定语言举例/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》15 -- 编码、可判定语言举例">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》15 -- 编码、可判定语言举例
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DTM的编码方案"><span class="nav-number">2.1.</span> <span class="nav-text">DTM的编码方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通用图灵机"><span class="nav-number">2.2.</span> <span class="nav-text">通用图灵机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些不可判定语言"><span class="nav-number">2.3.</span> <span class="nav-text">一些不可判定语言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2021/05/05/John Watrous -- 通用图灵机和不可判定语言/';
+          this.page.identifier = '2021/05/05/John Watrous -- 通用图灵机和不可判定语言/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》16 -- 通用图灵机和不可判定语言';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
