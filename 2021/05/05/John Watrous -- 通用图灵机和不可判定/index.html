@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/udtm/udtm1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/udtm/udtm2.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/udtm/udtm3.png">
-<meta property="og:updated_time" content="2021-05-05T13:09:14.342Z">
+<meta property="og:updated_time" content="2021-05-05T13:16:52.292Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》16 -- 通用图灵机和不可判定语言">
 <meta name="twitter:description" content="前言这节课我们会讲到通用图灵机。这是一个确定性图灵机，当我们已知一个任意DTM编码时，它能够根据一个已知输入来模拟这个DTM。　　为了描述这样一个通用机器，我们自然而然会想到DTM的编码，这也是我们本节课要做的第一件事。这个DTM编码方案的概念让我们首次见到了非半可判定（因此也就是不可判定）语言的例子。通过这个语言的非半可判定性，就能证明许多其他的语言是不可判定或者非半可判定的。我们先来看两个简单">
@@ -363,7 +363,7 @@
 <script type="math/tex; mode=display">\langle\langle x\rangle,\langle\langle p\rangle,\langle b\rangle\rangle,\langle y\rangle\rangle.\tag{16.24}</script><p>用这种方式详细说明一个DSM的运作是个耗时过程，但是在概念水平上，这个计算就能合理地简洁说明。字符串匹配的子程序当然会很有帮助。<br>　　有$next$函数在手，你们就可以用上述方式模拟在已知DTM $M$上输入已知的$w$了，通过从将$M$初始化配置设置为$(q_0,\sqcup)w$，然后重复执行$next$函数即可。<br>　　现在考虑下面这个语言，它类似于我们上节课讨论的关于$A_{DFA}、A_{NFA}、A_{REG}$和$A_{CFG}$的语言：</p>
 <script type="math/tex; mode=display">A_{DTM}=\{\langle\langle M\rangle,\langle w\rangle\rangle: M是一个DTM并且w\in L(M)\}.\tag{16.25}</script><p>我们得出$A_{DTM}$是半可判定的：图16.1中的DSM $\mathfrak{U}$使得$L(\mathfrak{U})=A_{DTM}$。这个DSM命名为$\mathfrak{U}$的原因是为了表示它是一个<strong>通用（universal）</strong>DSM。就像我们第14节课中讲的，DSM $\mathfrak{U}$可以被一个DTM模拟。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/udtm/udtm1.png" alt="image"><br><strong>命题16.2.</strong> 语言$A_{DTM}$是半可判定的。</p>
 <p>　　在我们进入下一小节之前，让我们注意一下下面这个可判定语言：</p>
-<script type="math/tex; mode=display">S_{DTM}=\Bigg \{\langle\langle M\rangle,\langle w\rangle,\langle t\rangle\rangle:\begin{align}&M是一个DTM，w是M的一个输入，\\&t\in\mathbb{N}，并且M能接t步之内接受w\end{align}\Bigg \}.\tag{16.26}</script><p>这个语言能够由按照前面描述的基本相同的模拟来判定，但是如果$M$在输入$w$的$t$步之后还没停止，那么模拟就会中断然后拒绝。</p>
+<script type="math/tex; mode=display">S_{DTM}=\{\langle\langle M\rangle,\langle w\rangle,\langle t\rangle\rangle:M是一个DTM，w是M的一个输入，t\in\mathbb{N}，并且M能接t步之内接受w \}.\tag{16.26}</script><p>这个语言能够由按照前面描述的基本相同的模拟来判定，但是如果$M$在输入$w$的$t$步之后还没停止，那么模拟就会中断然后拒绝。</p>
 <h3 id="一些不可判定语言"><a href="#一些不可判定语言" class="headerlink" title="一些不可判定语言"></a>一些不可判定语言</h3><p>到了现在自然大家都会问到：$A_{DTM}$是不是可判定的，现在已知它是半可判定的。我们将会证明答案是不可判定的。然而在此之前，我们将会先看一看另外一个语言，它甚至都不是半可判定的。这个语言是</p>
 <script type="math/tex; mode=display">DIAG=\{\langle M\rangle:M是一个DTM并且\langle M\rangle\notin L(M)\}.\tag{16.27}</script><p>也就是语言$DIAG$包含了所有遵守了我们本节课开头讲的编码规则的二进制字符串$M$，但是DTM $M$不能接受它自身的编码。注意如果字符串$\langle M\rangle$编码是一个输入字母表只有一个字符的DTM，也就是不包含0和1，那么确实$\langle M\rangle\notin L(M)$。</p>
 <p><strong>定理16.3.</strong> 语言$DIAG$是非半可判定的。</p>
