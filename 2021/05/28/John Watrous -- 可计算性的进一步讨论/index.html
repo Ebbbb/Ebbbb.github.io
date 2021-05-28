@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言这节课我们将会讨论一些关于图灵机和可计算性的知识点，内容是超出上节课范围的。我们先谈一谈可判定和半可判定语言的一些基本的封闭性质。然后我们再简短地讨论一下非确定性图灵机，以及它与可判定和半可判定语言的关系。最后我们将会证明半可判定性的一个有趣特征，关于一个非空语言是半可判定的当且仅当它等于一个可计算函数的值域。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》18 -- 可计算性的进一步讨论">
+<meta property="og:url" content="http://yoursite.com/2021/05/28/John Watrous -- 可计算性的进一步讨论/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言这节课我们将会讨论一些关于图灵机和可计算性的知识点，内容是超出上节课范围的。我们先谈一谈可判定和半可判定语言的一些基本的封闭性质。然后我们再简短地讨论一下非确定性图灵机，以及它与可判定和半可判定语言的关系。最后我们将会证明半可判定性的一个有趣特征，关于一个非空语言是半可判定的当且仅当它等于一个可计算函数的值域。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc9.png">
+<meta property="og:updated_time" content="2021-05-28T13:19:30.712Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》18 -- 可计算性的进一步讨论">
+<meta name="twitter:description" content="前言这节课我们将会讨论一些关于图灵机和可计算性的知识点，内容是超出上节课范围的。我们先谈一谈可判定和半可判定语言的一些基本的封闭性质。然后我们再简短地讨论一下非确定性图灵机，以及它与可判定和半可判定语言的关系。最后我们将会证明半可判定性的一个有趣特征，关于一个非空语言是半可判定的当且仅当它等于一个可计算函数的值域。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/05/28/John Watrous -- 可计算性的进一步讨论/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》18 -- 可计算性的进一步讨论 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/28/John Watrous -- 可计算性的进一步讨论/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》18 -- 可计算性的进一步讨论</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-05-28T21:16:10+08:00">
+                2021-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/05/28/John Watrous -- 可计算性的进一步讨论/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/05/28/John Watrous -- 可计算性的进一步讨论/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/05/28/John Watrous -- 可计算性的进一步讨论/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》18 -- 可计算性的进一步讨论">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这节课我们将会讨论一些关于图灵机和可计算性的知识点，内容是超出上节课范围的。我们先谈一谈可判定和半可判定语言的一些基本的封闭性质。然后我们再简短地讨论一下非确定性图灵机，以及它与可判定和半可判定语言的关系。最后我们将会证明半可判定性的一个有趣特征，关于一个非空语言是半可判定的当且仅当它等于一个可计算函数的值域。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="可判定和半可判定语言的封闭性质"><a href="#可判定和半可判定语言的封闭性质" class="headerlink" title="可判定和半可判定语言的封闭性质"></a>可判定和半可判定语言的封闭性质</h3><p>我们目前学过的可判定和半可判定语言在很多运算下都是封闭的。这一小节我们来讲一些例子。</p>
+<h4 id="可判定语言的封闭性质"><a href="#可判定语言的封闭性质" class="headerlink" title="可判定语言的封闭性质"></a>可判定语言的封闭性质</h4><p>首先来观察一下可判定语言在常规运算下都是封闭的。下面有直接证明。</p>
+<p><strong>命题18.1.</strong> 已知$\Sigma$是一个字母表，$A、B\subseteq \Sigma^{*}$是可判定语言。语言$A\cup B、AB$和$A^{*}$都是可判定的。</p>
+<p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc1.png" alt="image"><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc2.png" alt="image"><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc3.png" alt="image"></p>
+<p>证明：因为语言$A$和$\B$都是可判定的，一定存在DTM $M_A$可以判定$A$和DTM $M_B$可以判定$B$。这些DTM的描述如图18.1、18.2，以及18.3分别判定了语言$A\cup B、AB$和$A^{*}$。也就是说这些语言都是可判定的。</p>
+<p>　　可判定语言的补集运算也是封闭的，正如下一个命题所陈述的。这个证明非常简单，以至于我们可以直接跳过；很明显如果一个DTM $M$判定了$A$，我们只需要简单地交换一下$M$的接受和拒绝状态，就能得到一个新的DTM来判定$\overline{A}$。</p>
+<p><strong>命题18.2.</strong> 已知$\Sigma$是一个字母表，$A\subseteq\Sigma^{*}$是一个可判定语言。语言$\overline{A}$是可判定的。</p>
+<p>　　还有很多其他的运算对于可判定语言来说也是封闭的。比如，因为可判定语言在并集和补集运算下都是封闭的，我们立马得出它们在交集对称差运算下也是封闭的。还是有一个例子是字符串翻转：如果语言$A$是可判定的，那么$A^{R}$也是可判定的，因为利用一个能判定$A$的DTM只需要通过翻转输入字符串就能判断这个字符串是否包含于$A$。<br>　　然而有一些自然运算对于可判定语言来说却不是封闭的。接下来的例子我们来看看前缀运算。</p>
+<p><strong>案例18.3.</strong> 即便$A$是可判定的，语言$Prefix(A)$也可能不可判定。为了说明这个问题，我们需要构造一个例子，让我们选取一个DTM $H$满足$L(H)=HALT$。然后我们可以定义一个语言$A\subseteq\{0,1,\sharp\}^{*}$如下：</p>
+<script type="math/tex; mode=display">A=\{w\sharp 0^t:H在t步之内接受w\}.\tag{18.1}</script><p>这是一个可判定语言，但是$Prefix(A)$却不是 — 因为如果$Prefix(A)$是可判定的，那么我们就可以轻松判定$HALT$，通过事实：字符串$w\in\{\0,1\}^{*}$包含于$HALT$当且仅当$w\sharp\in Prefix(A)$；区别在于一个整数$t$的存在使得$w\sharp 0^t\in A$可以判定。</p>
+<h4 id="半可判定语言的封闭性质"><a href="#半可判定语言的封闭性质" class="headerlink" title="半可判定语言的封闭性质"></a>半可判定语言的封闭性质</h4><p>半可判定语言在一些不同的运算下也是封闭的，尽管这些运算可能不完全和可判定语言的封闭运算一样。<br>　　让我们从常规运算开始，它们对于半可判定语言也是封闭的。这种情况下，相对于可判定语言的类似命题证明，我们要更谨慎一些；半可判定语言的DTM对于不输入这些语言的输入可能会永远运行。然而，这种情况我们使用上节课限制无限空间搜索的技巧还是能处理的。</p>
+<p><strong>命题18.4.</strong> 已知$\Sigma$是一个字母表，$A、B$是半可判定语言。语言$A\cup B、AB$和$A^{*}$都是半可判定的。</p>
+<p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc4.png" alt="image"><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc5.png" alt="image"><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc6.png" alt="image">  </p>
+<p>证明：因为语言$A$和$B$都是半可判定的，一定存在DTM $M_A$和$M_B$使得$L(M_A)=A$以及$L(M_B)=B$。描述在图18.4、18.5和18.6中的DTM分别半可判定了语言$A\cup B、AB$和$A^{*}$。也就是说这些语言都是半可判定的。</p>
+<p>　　半可判定语言在交集运算下也是封闭的。这个证明和并集运算类似，但这个情况下我们不用担心永远运行的问题。</p>
+<p><strong>命题18.5.</strong> 已知$\Sigma$是一个字母表，$A、B\subseteq\Sigma^{*}$是半可判定语言。语言$A\cap B$是半可判定的。</p>
+<p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc7.png" alt="image">  </p>
+<p>证明：因为语言$A$和$B$是半可判定的，一定存在DTM $M_A$和$M_B$使得$L(M_A)=A$以及$L(M_B)=B$。图18.7中描述的DTM半可判定了$A\cap B$，也就是说$A\cap B$是半可判定的。</p>
+<p>半可判定语言在补集运算下不是封闭的。这个可以从上节课的定理17.1得出。具体一点，如果每个半可判定语言$A$d的补集$\overline{A}$也是半可判定的，那么由这个定理可知每个半可判定语言也是可判定的，然而情况却不是这样的。比如，HALT是半可判定的，但不是可判定的。<br>　　最后，有一些其他的运算对于半可判定语言是封闭的，但对于可判定语言则不是。比如，如果$A$是半可判定的，那么语言$Prefix(A)$、$Suffix(A)$和$Substring(A)$也是半可判定的。</p>
+<h3 id="非确定性图灵机"><a href="#非确定性图灵机" class="headerlink" title="非确定性图灵机"></a>非确定性图灵机</h3><p>我们之前一直重点在讲确定性版本的图灵机模型，但是定义一个非确定性的版本也是可行的。方式和相较于确定性有限自动机定义一个非确定性有限自动机类似。</p>
+<p><strong>定义18.6.</strong> 一个非确定性图灵机（简称NTM）是一个7-元组</p>
+<script type="math/tex; mode=display">N=(Q,\Sigma,\Gamma,\delta,q_0,q_{acc},q_{rej}),\tag{18.2}</script><p>其中$Q$是一个有限非空的状态集合，$\Sigma$是输入字母表，它可能不包含空格符号，$\Gamma$是磁带字母表，它满足$\Sigma\cup\{\sqcup\}\subseteq\Gamma$，$\delta$是转移函数，形式为</p>
+<script type="math/tex; mode=display">\delta:Q\backslash\{q_{acc},q_{rej}\}\times\Gamma\rightarrow\mathcal{P}(Q\times\Gamma\times\{\leftarrow,\rightarrow\}),\tag{18.3}</script><p>其中$q_0\in Q$是初始状态，$q_{acc}、q_{rej}\in Q$是接受和拒绝状态，且满足$q_{acc}\neq q_{rej}$。</p>
+<p>　　你们自然而然能猜到，非确定性图灵机在每个执行步骤可能会有多个行动选择。详细一点，对于一个已知的非停止状态$q\in Q\backslash\{q_{acc},q_{rej}\}$和磁带符号$a$，转移函数$\delta(q,a)$的值是$Q\times\Gamma\times\{\leftarrow,\rightarrow\}$，而不是一个单一元素的集合，它标识当机器处于状态$q$正在读取符号$a$时能够选择的行动。<br>　　比如，如果一个NTM $N$的转移函数满足</p>
+<script type="math/tex; mode=display">\delta(p,a)=\{(q,b,\leftarrow),(r,c,\rightarrow)\},\tag{18.4}</script><p>那么当$N$处于状态$p$且正在扫描的磁带区块中的符号是$a$时，那么它可能会将状态改变为$q$，将$a$重写为$b$，然后将磁头向左移动；或者它也可能将状态改变为$r$，将$a$重写为$c$，然后将磁头向右移动。</p>
+<h4 id="产出关系和NTM的接受"><a href="#产出关系和NTM的接受" class="headerlink" title="产出关系和NTM的接受"></a>产出关系和NTM的接受</h4><p>NTM的产出关系定义方式类似于DTM，允许一个配置可以有多个转变选择。具体一些，这个定义恰好类似于定义12.2，除了条件</p>
+<script type="math/tex; mode=display">\delta(p,a)=(q,b,\rightarrow)\ \ \ \ 和\ \ \ \ \delta(q,b,\leftarrow)\tag{18.5}</script><p>要分别替换成</p>
+<script type="math/tex; mode=display">(q,b,\rightarrow\in\delta(p,a)\ \ \ \ 和\ \ \ \ (q,b,\leftarrow)\in\delta(p,a).\tag{18.6}</script><p>　　NTM的接受定义就类似于NFA（还有PDA）。也就是如果存在一系列的计算步骤能够到达接受配置，那么NTM就接受，否则就不接受。正式来说，一个NTM $N$接受输入字符串$w$的条件是存在字符串$u、v\in\Gamma^{*}$和一个符号$a\in\Gamma$使得</p>
+<script type="math/tex; mode=display">(q_0,\sqcup)w\vdash_N^{*}u(q_{acc},a)v.\tag{18.7}</script><p>通常，我们记作$L(N)$来表示包含所有被NTM $N$接受的字符串$w$的语言，也就是说这个语言被$N$识别。</p>
+<h4 id="计算树"><a href="#计算树" class="headerlink" title="计算树"></a>计算树</h4><p>当我们考虑一个NTM $N$输入字符串$w$的计算时，很自然能想到一个计算树（<strong>computation tree</strong>）。这是一棵树（可能是有限的），它每个节点标有一个配置：这棵树的根节点就是$N$输入$w$的初始配置，并且每个节点的配置能在一步到达的配置都对应着一个子节点。需要澄清一点，树中不同的节点可能标有同样的配置。也就是说，到达一个已知配置可以通过不止一条计算路径（<strong>computational path</strong>）。最后，注意计算树的每个叶子节点都标有一个停止配置。<br>　　也许我们还是注意一下确定性图灵机对于已知输入的计算树的定义也是类似的，但是这棵树并么有什么意思，他是笔直的，有限的或者无限的，没有分支。<br>　　根据$N$输入$w$的计算树，如果说$N$接受$w$就等同于说计算树中存在一条路径可以到达接受配置。这棵树中也许存在或者不存在拒绝配置，也有可能存在或者不存在无限长的分支，但都没有关系：最重要的是接受的定义值得是存不存在一个可以从初始配置到达的接受配置。</p>
+<h4 id="通过NTM证明半可判定性和可判定性"><a href="#通过NTM证明半可判定性和可判定性" class="headerlink" title="通过NTM证明半可判定性和可判定性"></a>通过NTM证明半可判定性和可判定性</h4><p>如下面这个定理所说，能被NTM所识别的语言类也能被DTM所识别。</p>
+<p><strong>定理18.7.</strong> 已知$\Sigma$是一个字母表，$A\subseteq \Sigma^{*}$是一个语言。语言$A$是半可判定的当且仅当存在一个NTM $N$使得$L(N)=A$。</p>
+<p>证明这个定理并不困难，但这里我们只会简短讨论一下这个证明背后的思路。<br>　　很明显每个半可判定语言都能被某个NTM所识别，因为我们可以将一个DTM视为一个NTM就像将一个DFA视为一个NFA。剩下的就是证明每个能被NTM识别的语言都是半可判定的。也就是说，我们要证明对于一个NTM $N$如果$A=L(N)$，那么$A$是半可判定的。证明这一点的关键思路是试用一个DTM执行一个$N$输入计算树的广度优先搜索（<strong>breadth-first search</strong>）。如果存在这棵树中存在一个接受配置，广度优先搜索就会找到它。当然，因为计算树可能是无限的，这个搜索也许不会终止 — 这是不可避免的，但它并不阻碍我们证明这个定理。<br>　　也许我们还应该注意一点，另外一种执行深度优先搜索的方式不可取：有可能这个搜索会进入到一个无限的路径，因而错过了这棵树中其他地方的一个接受配置。<br>　　我们也可以通过非确定性图灵机来表示可判定语言，尽管可判定语言的分确定性计算的必要条件不太容易说清楚。接下来这个定理就提供了这样一个表述。</p>
+<p><strong>定理18.8.</strong> 已知$\Sigma$是一个字母表，$A\subseteq\Sigma^{*}$是一个语言。语言$A$是可判定的当且仅当存在一个NTM $N$使得如下两个条件有效：</p>
+<ol>
+<li>$A=L(N)$。</li>
+<li>对于每个输入字符串$w\in\Sigma^{*}$，$N$输入$w$的计算树是有限的。</li>
+</ol>
+<p>同上一个定义，这个定理的证明也是通过广度优先搜索。在这情况下，DTM执行搜索，当整棵树都搜索完成都没找到一个接受配置则拒绝。</p>
+<h3 id="可计算函数的值域"><a href="#可计算函数的值域" class="headerlink" title="可计算函数的值域"></a>可计算函数的值域</h3><p>最后，我们将会观察半可判定性语言的另一种有趣特征（除了空语言），也就是他们恰好等于可计算函数的值域。回想一个函数$f:\Gamma^{*}\rightarrow\Sigma^{*}$的定义如下：</p>
+<script type="math/tex; mode=display">range(f)=\{f(w):w\in\Gamma^{*}\}.\tag{18.8}</script><p><strong>定理18.9.</strong> 已知$\Sigma$和$\Gamma$是字母表，$A\subseteq\Sigma^{*}$是一个非空语言。下面两个陈述是等价的：</p>
+<ol>
+<li>$A$是半可判定的。</li>
+<li>存在一个可计算函数$f:\Gamma^{*}\rightarrow\Sigma^{*}$使得$A=range(f)$。</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc8.png" alt="image"><br>证明：让先证明第二个陈述推导第一个。也就是，我们将要证明如果存在一个可计算函数$f:\Gamma^{*}\rightarrow\Sigma^{*}$使得$A=range(f)$，那么$A$是半可判定的。考虑如图18.8所描述的DTM $M$。本质上，这个DTM是搜索$\Gamma^{*}$寻找一个字符串通过$f$可以映射到字符串$w$。如果情况是$w\in range(f)$，那么$M$最终会找到$x\in\Gamma^{*}$使得$f(x)=w$然后接受，但如果$w\notin range(f)$则会永远运行。这样，我们得到$L(M)=range(f)=A$，也就说明$A$是半可判定的。<br>　　至于另外一个推导，相对来说要困难一点，假设$A$是半可判定的。这样就存在一个DTM $M$使得$L(M)=A$。当然我们也要假设$A$是非空的 — 它至少包含一个字符串，所以我们让$w_0$来表示这样一个字符串。如果你喜欢，可以将$w_0$定义成$A$中遵循$\Sigma^{*}$的字典顺序的第一个字符串，当然如何选择这个字符串跟我们的证明没啥关系。<br>　　现在定义一个函数$f:\Gamma^{*}\rightarrow\Sigma^{*}$如下：</p>
+<script type="math/tex; mode=display">f(x)=\begin{cases}w & 如果x=\langle\langle w\rangle,\langle t\rangle\rangle，其中w\in\Sigma^{*}和t\in\mathbb{N}， \\ &而且M还能再t步内接受w \\ w_0 & 否则，\end{cases}\tag{18.9}</script><p>这里我们假设$\langle\langle w\rangle,\langle t\rangle\rangle$指代任意使用字母表$\Gamma$将$w\in\Sigma^{*}$和$t\in\mathbb{N}$编码的方案。正如我们课程早起所讨论的，这对任意字母表$\Gamma$都是可行的，即便它只包含一个符号。<br>　　明显可以看出函数$f$是可计算的：一个DTM $M_f$就能计算$f$，通过先检查输入的形式是否为$\langle\langle w\rangle,\langle t\rangle\rangle$，如果正确再用$M$输入$w$执行$t$步，根据输入相应地输出$w$或者$w_0$。如果$M$接受某个字符串$w$，那么一定是因为$w=f(\langle\langle w\rangle,\langle t\rangle\rangle)$，而且$t$还要足够大，所以$A\subseteq range(f)$。换个方向，$f$的每个输出不是能被$M$接受的$w$就是$w_0$，因此$range(f)\subseteq A$。因此也就得到了$A=range(f)$，证毕。</p>
+<p><strong>注意18.9.</strong> 在前一个定理中假设$A$非空是有必要的，因为对于一个可计算函数$f$而言，不可能存在$range(f)=\varnothing$。确实，无论怎样任何函数都不可能存在$range(f)=\varnothing$。</p>
+<p>　　定理18.9为我们提供了一个半可判定语言的有用特征。比如，我们可以使用这个定理提供第一个小节提到的半可判定语言封闭性质的另一种证明。<br>　　比如，假设$A、B\subseteq\Sigma^{*}$是非空半可判定语言。通过定理18.9，我们选择任意字母表$\Gamma$，一定存在可计算函数$f:\Gamma^{*}\rightarrow\Sigma^{*}$和$g:\Gamma^{*}\rightarrow\Sigma^{*}$使得$range(f)=A$以及$range(g)=B$。定义一个新的函数</p>
+<script type="math/tex; mode=display">h:(\Gamma\cup\{\sharp\})^{*}\rightarrow\Sigma^{*}\tag{18.10}</script><p>如下：</p>
+<script type="math/tex; mode=display">h(x)=\begin{cases}f(y)g(z) && 如果x=y\sharp z，其中有y\in\Gamma^{*}并且z\in\Gamma^{*} \\ f(\varepsilon)g(\varepsilon) && 否则.\end{cases}\tag{18.11}</script><p>这里，我们自然应当假设$\sharp\notin\Gamma$。大家能够看出来$h$是可计算的，并且$range(h)=AB$，也就是说$AB$是半可判定的。</p>
+<p>　　这里还有一个定理18.9的应用，证实每个无限的半可判定语言必须有一个无限的可判定语言作为子集。</p>
+<p><strong>推论18.11</strong> 已知$\Sigma$是一个字母表，$A\subseteq\Sigma^{*}$是任意无限的半可判定语言。存在一个无限的可判定语言$B\subseteq A$。</p>
+<p>证明：因为$A$是无限的（因此也是非空的），存在一个可计算函数$f:\Sigma^{*}\rightarrow\Sigma^{*}$使得$A=range(f)$。<br>　　现在我们定义一个语言$B$，通过先定义一个DTM $M$，然后让$B=L(M)$。为了确保$B$满足推论的要求，还要证明$M$不会永远执行（那么$B$才是可判定的），而且$M$只接受包含于$A$的字符串（那么$B\subseteq A$），以及$M$可以接受的字符串是无限的（那么$B$才是无限的）。这样的DTM $M$的描述如图18.9所示。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc9.png" alt="image"><br>　　事实$M$不会永远执行由假设$A$是可无限的可以推断。因为$A$是无限的，函数$f$的一定会输出无限多个不同的字符串，不管输入$M$的字符串$w$是什么，里面的循环最终会找到一个字符串$x$以至$f(x)=w$或者$f(x)&gt;w$，造成$M$停止。<br>　　事实$M$只接受$A$中的字符串由接受条件，输入字符串$w$要等于$y$，而且这个字符串包含于$range(f)=A$，可以推断。<br>　　最后，我们可以观察到$M$接受的字符串包含在了这个集合：</p>
+<script type="math/tex; mode=display">\big\{w\in\Sigma^{*}:\begin{align}&存在x\in\Sigma^{*}使得w=f(x) \\ &并且对于所有z<x都有w>f(z)\end{align}\big\}.\tag{18.12}</script><p>事实这个集合由无限的可以从假设$A=range(f)$是无限的推断 — 否则如果这个集合是有限的，那么按照$\Sigma^{*}$的字典顺序计算，$f$一定存在一个最大输出，这就和$range(f)$是无限的相悖了。<br>　　语言$B=L(M)$因此满足了推论的要求，我们的证明也就完成了。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.18.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.18.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/05/22/John Watrous -- 更多不可判定语言&约化/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》17 -- 更多不可判定语言&约化">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》17 -- 更多不可判定语言&约化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可判定和半可判定语言的封闭性质"><span class="nav-number">2.1.</span> <span class="nav-text">可判定和半可判定语言的封闭性质</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#可判定语言的封闭性质"><span class="nav-number">2.1.1.</span> <span class="nav-text">可判定语言的封闭性质</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#半可判定语言的封闭性质"><span class="nav-number">2.1.2.</span> <span class="nav-text">半可判定语言的封闭性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非确定性图灵机"><span class="nav-number">2.2.</span> <span class="nav-text">非确定性图灵机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#产出关系和NTM的接受"><span class="nav-number">2.2.1.</span> <span class="nav-text">产出关系和NTM的接受</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计算树"><span class="nav-number">2.2.2.</span> <span class="nav-text">计算树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过NTM证明半可判定性和可判定性"><span class="nav-number">2.2.3.</span> <span class="nav-text">通过NTM证明半可判定性和可判定性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可计算函数的值域"><span class="nav-number">2.3.</span> <span class="nav-text">可计算函数的值域</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2021/05/28/John Watrous -- 可计算性的进一步讨论/';
+          this.page.identifier = '2021/05/28/John Watrous -- 可计算性的进一步讨论/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》18 -- 可计算性的进一步讨论';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
