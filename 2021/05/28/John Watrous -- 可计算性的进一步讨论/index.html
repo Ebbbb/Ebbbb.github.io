@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc7.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc8.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc9.png">
-<meta property="og:updated_time" content="2021-05-28T13:19:30.712Z">
+<meta property="og:updated_time" content="2021-05-28T13:39:27.688Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》18 -- 可计算性的进一步讨论">
 <meta name="twitter:description" content="前言这节课我们将会讨论一些关于图灵机和可计算性的知识点，内容是超出上节课范围的。我们先谈一谈可判定和半可判定语言的一些基本的封闭性质。然后我们再简短地讨论一下非确定性图灵机，以及它与可判定和半可判定语言的关系。最后我们将会证明半可判定性的一个有趣特征，关于一个非空语言是半可判定的当且仅当它等于一个可计算函数的值域。">
@@ -346,12 +346,12 @@
 <h4 id="可判定语言的封闭性质"><a href="#可判定语言的封闭性质" class="headerlink" title="可判定语言的封闭性质"></a>可判定语言的封闭性质</h4><p>首先来观察一下可判定语言在常规运算下都是封闭的。下面有直接证明。</p>
 <p><strong>命题18.1.</strong> 已知$\Sigma$是一个字母表，$A、B\subseteq \Sigma^{*}$是可判定语言。语言$A\cup B、AB$和$A^{*}$都是可判定的。</p>
 <p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc1.png" alt="image"><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc2.png" alt="image"><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc3.png" alt="image"></p>
-<p>证明：因为语言$A$和$\B$都是可判定的，一定存在DTM $M_A$可以判定$A$和DTM $M_B$可以判定$B$。这些DTM的描述如图18.1、18.2，以及18.3分别判定了语言$A\cup B、AB$和$A^{*}$。也就是说这些语言都是可判定的。</p>
+<p>证明：因为语言$A$和$B$都是可判定的，一定存在DTM $M_A$可以判定$A$和DTM $M_B$可以判定$B$。这些DTM的描述如图18.1、18.2，以及18.3分别判定了语言$A\cup B、AB$和$A^{*}$。也就是说这些语言都是可判定的。</p>
 <p>　　可判定语言的补集运算也是封闭的，正如下一个命题所陈述的。这个证明非常简单，以至于我们可以直接跳过；很明显如果一个DTM $M$判定了$A$，我们只需要简单地交换一下$M$的接受和拒绝状态，就能得到一个新的DTM来判定$\overline{A}$。</p>
 <p><strong>命题18.2.</strong> 已知$\Sigma$是一个字母表，$A\subseteq\Sigma^{*}$是一个可判定语言。语言$\overline{A}$是可判定的。</p>
 <p>　　还有很多其他的运算对于可判定语言来说也是封闭的。比如，因为可判定语言在并集和补集运算下都是封闭的，我们立马得出它们在交集对称差运算下也是封闭的。还是有一个例子是字符串翻转：如果语言$A$是可判定的，那么$A^{R}$也是可判定的，因为利用一个能判定$A$的DTM只需要通过翻转输入字符串就能判断这个字符串是否包含于$A$。<br>　　然而有一些自然运算对于可判定语言来说却不是封闭的。接下来的例子我们来看看前缀运算。</p>
 <p><strong>案例18.3.</strong> 即便$A$是可判定的，语言$Prefix(A)$也可能不可判定。为了说明这个问题，我们需要构造一个例子，让我们选取一个DTM $H$满足$L(H)=HALT$。然后我们可以定义一个语言$A\subseteq\{0,1,\sharp\}^{*}$如下：</p>
-<script type="math/tex; mode=display">A=\{w\sharp 0^t:H在t步之内接受w\}.\tag{18.1}</script><p>这是一个可判定语言，但是$Prefix(A)$却不是 — 因为如果$Prefix(A)$是可判定的，那么我们就可以轻松判定$HALT$，通过事实：字符串$w\in\{\0,1\}^{*}$包含于$HALT$当且仅当$w\sharp\in Prefix(A)$；区别在于一个整数$t$的存在使得$w\sharp 0^t\in A$可以判定。</p>
+<script type="math/tex; mode=display">A=\{w\sharp 0^t:H在t步之内接受w\}.\tag{18.1}</script><p>这是一个可判定语言，但是$Prefix(A)$却不是 — 因为如果$Prefix(A)$是可判定的，那么我们就可以轻松判定$HALT$，通过事实：字符串$w\in\{0,1\}^{*}$包含于$HALT$当且仅当$w\sharp\in Prefix(A)$；区别在于一个整数$t$的存在使得$w\sharp 0^t\in A$可以判定。</p>
 <h4 id="半可判定语言的封闭性质"><a href="#半可判定语言的封闭性质" class="headerlink" title="半可判定语言的封闭性质"></a>半可判定语言的封闭性质</h4><p>半可判定语言在一些不同的运算下也是封闭的，尽管这些运算可能不完全和可判定语言的封闭运算一样。<br>　　让我们从常规运算开始，它们对于半可判定语言也是封闭的。这种情况下，相对于可判定语言的类似命题证明，我们要更谨慎一些；半可判定语言的DTM对于不输入这些语言的输入可能会永远运行。然而，这种情况我们使用上节课限制无限空间搜索的技巧还是能处理的。</p>
 <p><strong>命题18.4.</strong> 已知$\Sigma$是一个字母表，$A、B$是半可判定语言。语言$A\cup B、AB$和$A^{*}$都是半可判定的。</p>
 <p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc4.png" alt="image"><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc5.png" alt="image"><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/fdc/fdc6.png" alt="image">  </p>
@@ -368,8 +368,8 @@
 <p>　　你们自然而然能猜到，非确定性图灵机在每个执行步骤可能会有多个行动选择。详细一点，对于一个已知的非停止状态$q\in Q\backslash\{q_{acc},q_{rej}\}$和磁带符号$a$，转移函数$\delta(q,a)$的值是$Q\times\Gamma\times\{\leftarrow,\rightarrow\}$，而不是一个单一元素的集合，它标识当机器处于状态$q$正在读取符号$a$时能够选择的行动。<br>　　比如，如果一个NTM $N$的转移函数满足</p>
 <script type="math/tex; mode=display">\delta(p,a)=\{(q,b,\leftarrow),(r,c,\rightarrow)\},\tag{18.4}</script><p>那么当$N$处于状态$p$且正在扫描的磁带区块中的符号是$a$时，那么它可能会将状态改变为$q$，将$a$重写为$b$，然后将磁头向左移动；或者它也可能将状态改变为$r$，将$a$重写为$c$，然后将磁头向右移动。</p>
 <h4 id="产出关系和NTM的接受"><a href="#产出关系和NTM的接受" class="headerlink" title="产出关系和NTM的接受"></a>产出关系和NTM的接受</h4><p>NTM的产出关系定义方式类似于DTM，允许一个配置可以有多个转变选择。具体一些，这个定义恰好类似于定义12.2，除了条件</p>
-<script type="math/tex; mode=display">\delta(p,a)=(q,b,\rightarrow)\ \ \ \ 和\ \ \ \ \delta(q,b,\leftarrow)\tag{18.5}</script><p>要分别替换成</p>
-<script type="math/tex; mode=display">(q,b,\rightarrow\in\delta(p,a)\ \ \ \ 和\ \ \ \ (q,b,\leftarrow)\in\delta(p,a).\tag{18.6}</script><p>　　NTM的接受定义就类似于NFA（还有PDA）。也就是如果存在一系列的计算步骤能够到达接受配置，那么NTM就接受，否则就不接受。正式来说，一个NTM $N$接受输入字符串$w$的条件是存在字符串$u、v\in\Gamma^{*}$和一个符号$a\in\Gamma$使得</p>
+<script type="math/tex; mode=display">\delta(p,a)=(q,b,\rightarrow)\ \ \ \ 和\ \ \ \ \delta(p,a)=(q,b,\leftarrow)\tag{18.5}</script><p>要分别替换成</p>
+<script type="math/tex; mode=display">(q,b,\rightarrow)\in\delta(p,a)\ \ \ \ 和\ \ \ \ (q,b,\leftarrow)\in\delta(p,a).\tag{18.6}</script><p>　　NTM的接受定义就类似于NFA（还有PDA）。也就是如果存在一系列的计算步骤能够到达接受配置，那么NTM就接受，否则就不接受。正式来说，一个NTM $N$接受输入字符串$w$的条件是存在字符串$u、v\in\Gamma^{*}$和一个符号$a\in\Gamma$使得</p>
 <script type="math/tex; mode=display">(q_0,\sqcup)w\vdash_N^{*}u(q_{acc},a)v.\tag{18.7}</script><p>通常，我们记作$L(N)$来表示包含所有被NTM $N$接受的字符串$w$的语言，也就是说这个语言被$N$识别。</p>
 <h4 id="计算树"><a href="#计算树" class="headerlink" title="计算树"></a>计算树</h4><p>当我们考虑一个NTM $N$输入字符串$w$的计算时，很自然能想到一个计算树（<strong>computation tree</strong>）。这是一棵树（可能是有限的），它每个节点标有一个配置：这棵树的根节点就是$N$输入$w$的初始配置，并且每个节点的配置能在一步到达的配置都对应着一个子节点。需要澄清一点，树中不同的节点可能标有同样的配置。也就是说，到达一个已知配置可以通过不止一条计算路径（<strong>computational path</strong>）。最后，注意计算树的每个叶子节点都标有一个停止配置。<br>　　也许我们还是注意一下确定性图灵机对于已知输入的计算树的定义也是类似的，但是这棵树并么有什么意思，他是笔直的，有限的或者无限的，没有分支。<br>　　根据$N$输入$w$的计算树，如果说$N$接受$w$就等同于说计算树中存在一条路径可以到达接受配置。这棵树中也许存在或者不存在拒绝配置，也有可能存在或者不存在无限长的分支，但都没有关系：最重要的是接受的定义值得是存不存在一个可以从初始配置到达的接受配置。</p>
 <h4 id="通过NTM证明半可判定性和可判定性"><a href="#通过NTM证明半可判定性和可判定性" class="headerlink" title="通过NTM证明半可判定性和可判定性"></a>通过NTM证明半可判定性和可判定性</h4><p>如下面这个定理所说，能被NTM所识别的语言类也能被DTM所识别。</p>
