@@ -242,6 +242,154 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/06/22/John Watrous -- 时间界限计算/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/06/22/John Watrous -- 时间界限计算/" itemprop="url">John Watrous 《Introduction to the Theory of Computing》19 -- 时间界限计算</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-06-22T20:09:08+08:00">
+                2021-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/06/22/John Watrous -- 时间界限计算/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/06/22/John Watrous -- 时间界限计算/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/06/22/John Watrous -- 时间界限计算/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》19 -- 时间界限计算">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最后两节课我们将会讨论话题是计算复杂性理论，它涉及计算问题的内在难度和资源约束对计算模型的影响。我们的时间只能够浅尝辄止；复杂度理论是一门内容丰富的学科，世界上很多学者都致力于研究这个领域。不同于形式语言理论和可计算性理论，许多复杂度理论的重要问题至今仍未解决。<br>　　在这节课中我们将会更关注最重要的资源（从计算复杂性理论角度来看），时间。从某种意义上，这个动机是明显的：为了有用，通常我们期望计算能在一个合理的时间能完成。在极端情况下，如果我们有某个需要执行的计算任务，而且有人提供一个能执行这个任务的计算设备，但是需要在十亿年之后才能得到结果，那么这个设备就没有用处。除了时间，你们可能会考虑到其他资源，比如空间（或者内存占用），在分布式场景中的沟通，或者关于资源使用的各种其他抽象概念。<br>　　那么我们就从一个DTM的运行时定义开始吧。</p>
+<p><strong>定义19.1.</strong> 已知$M$是一个DTM，它的输入字母表是$\Sigma$。对于每个字符串$w\in\Sigma^{*}$，用$T(w)$表示$M$执行输入$w$的步数（可能是有限的）。$M$的运行时函数$t:\mathbb{N}\rightarrow\mathbb{N}\cup\{\infty\}$的定义如下</p>
+<script type="math/tex; mode=display">t(n)=max\{T(w):w\in\Sigma^{*},\mid w\mid=n\},\tag{19.1}</script><p>其中每个$n\in\mathbb{N}$。用文字表达，$t(n)$是$M$输入长度为$n$的字符串计算停止所需的最大步数。<br>　　我们将会把关注点限制对于所有输入长度的运行时都是有限的DTM上。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/06/22/John Watrous -- 时间界限计算/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/28/John Watrous -- 可计算性的进一步讨论/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1552,157 +1700,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/16/John Watrous-上下文无关语言的属性/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Cai Yuan">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CYberseERker">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/12/16/John Watrous-上下文无关语言的属性/" itemprop="url">John Watrous 《Introduction to the Theory of Computing》09 -- 上下文无关语法的属性</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-16T21:02:27+08:00">
-                2020-12-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/12/16/John Watrous-上下文无关语言的属性/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2020/12/16/John Watrous-上下文无关语言的属性/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2020/12/16/John Watrous-上下文无关语言的属性/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》09 -- 上下文无关语法的属性">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">Visitors&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这节课我们会检验上下文无关语言类的一些属性，包括它在正则运算下是闭合的，每个正则语言都是上下文无关的，以及一个上下文无关语言和一个正则语言的交集总是上下文无关的。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/12/16/John Watrous-上下文无关语言的属性/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1748,7 +1750,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

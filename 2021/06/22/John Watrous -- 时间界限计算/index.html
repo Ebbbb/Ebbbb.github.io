@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言最后两节课我们将会讨论话题是计算复杂性理论，它涉及计算问题的内在难度和资源约束对计算模型的影响。我们的时间只能够浅尝辄止；复杂度理论是一门内容丰富的学科，世界上很多学者都致力于研究这个领域。不同于形式语言理论和可计算性理论，许多复杂度理论的重要问题至今仍未解决。　　在这节课中我们将会更关注最重要的资源（从计算复杂性理论角度来看），时间。从某种意义上，这个动机是明显的：为了有用，通常我们期望计算">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》19 -- 时间界限计算">
+<meta property="og:url" content="http://yoursite.com/2021/06/22/John Watrous -- 时间界限计算/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言最后两节课我们将会讨论话题是计算复杂性理论，它涉及计算问题的内在难度和资源约束对计算模型的影响。我们的时间只能够浅尝辄止；复杂度理论是一门内容丰富的学科，世界上很多学者都致力于研究这个领域。不同于形式语言理论和可计算性理论，许多复杂度理论的重要问题至今仍未解决。　　在这节课中我们将会更关注最重要的资源（从计算复杂性理论角度来看），时间。从某种意义上，这个动机是明显的：为了有用，通常我们期望计算">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/tbc/tbc1.png">
+<meta property="og:updated_time" content="2021-06-22T12:12:24.437Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》19 -- 时间界限计算">
+<meta name="twitter:description" content="前言最后两节课我们将会讨论话题是计算复杂性理论，它涉及计算问题的内在难度和资源约束对计算模型的影响。我们的时间只能够浅尝辄止；复杂度理论是一门内容丰富的学科，世界上很多学者都致力于研究这个领域。不同于形式语言理论和可计算性理论，许多复杂度理论的重要问题至今仍未解决。　　在这节课中我们将会更关注最重要的资源（从计算复杂性理论角度来看），时间。从某种意义上，这个动机是明显的：为了有用，通常我们期望计算">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/tbc/tbc1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/06/22/John Watrous -- 时间界限计算/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》19 -- 时间界限计算 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/06/22/John Watrous -- 时间界限计算/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》19 -- 时间界限计算</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-06-22T20:09:08+08:00">
+                2021-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/06/22/John Watrous -- 时间界限计算/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/06/22/John Watrous -- 时间界限计算/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/06/22/John Watrous -- 时间界限计算/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》19 -- 时间界限计算">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最后两节课我们将会讨论话题是计算复杂性理论，它涉及计算问题的内在难度和资源约束对计算模型的影响。我们的时间只能够浅尝辄止；复杂度理论是一门内容丰富的学科，世界上很多学者都致力于研究这个领域。不同于形式语言理论和可计算性理论，许多复杂度理论的重要问题至今仍未解决。<br>　　在这节课中我们将会更关注最重要的资源（从计算复杂性理论角度来看），时间。从某种意义上，这个动机是明显的：为了有用，通常我们期望计算能在一个合理的时间能完成。在极端情况下，如果我们有某个需要执行的计算任务，而且有人提供一个能执行这个任务的计算设备，但是需要在十亿年之后才能得到结果，那么这个设备就没有用处。除了时间，你们可能会考虑到其他资源，比如空间（或者内存占用），在分布式场景中的沟通，或者关于资源使用的各种其他抽象概念。<br>　　那么我们就从一个DTM的运行时定义开始吧。</p>
+<p><strong>定义19.1.</strong> 已知$M$是一个DTM，它的输入字母表是$\Sigma$。对于每个字符串$w\in\Sigma^{*}$，用$T(w)$表示$M$执行输入$w$的步数（可能是有限的）。$M$的运行时函数$t:\mathbb{N}\rightarrow\mathbb{N}\cup\{\infty\}$的定义如下</p>
+<script type="math/tex; mode=display">t(n)=max\{T(w):w\in\Sigma^{*},\mid w\mid=n\},\tag{19.1}</script><p>其中每个$n\in\mathbb{N}$。用文字表达，$t(n)$是$M$输入长度为$n$的字符串计算停止所需的最大步数。<br>　　我们将会把关注点限制对于所有输入长度的运行时都是有限的DTM上。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="DTIME和时间界限函数"><a href="#DTIME和时间界限函数" class="headerlink" title="DTIME和时间界限函数"></a>DTIME和时间界限函数</h3><h4 id="确定性时间复杂度类"><a href="#确定性时间复杂度类" class="headerlink" title="确定性时间复杂度类"></a>确定性时间复杂度类</h4><p>对于每个函数$f:\mathbb{N}\rightarrow\mathbb{N}$，我们定义一个语言类叫做$DTIME(f)$，它标识这些语言的判定时间都是$O(f(n))$。</p>
+<p><strong>定义19.2.</strong> 已知$f:\mathbb{N}\rightarrow\mathbb{N}$是一个函数。语言$A$属于DTIME$(f)$的条件是存在一个DTM $M$可以判定运行时$t$内判定$A$，且满足$t(n)=O(f(n))$。</p>
+<p>我们使用$O(f(n))$，而不是$f(n)$，来定义DTIME$(f)$的原因是我们不关心常数因子或者说有限的特殊案例。促使这种选择的一个原因是通常我们可以通过定义一个新的DTM来“超过”原来那个，使用一个更大的磁带字母表，这样它执行的每个步骤可以模拟原来DTM计算的多个步骤。<br>　　通常我们使用变量名$n$来表示输入长度，不管任何语言或者DTM，且这样做也是合理的。所以我们谈到一个DTM的运行时是$O(n^2)$或者语言类DTIME$(n^2)$，都明白我们说的是函数$f(n)=n^2$，不会明确指出$n$是输入长度。<br>　　我们也会提到一些类，比如</p>
+<script type="math/tex; mode=display">DTIME(n\sqrt{n})\ \ \ \ or\ \ \ \ DTIME(n^2log(n)),\tag{19.2}</script><p>这里的函数$f$输入$n$可能得出的值不是整数。但是为了尽可能让表达式更简单且直观，这样也能接受，你可以说明函数的形式为$f:\mathbb{N}\rightarrow\mathbb{N}$，对于每个输出值向上取整。比如，DTIME$(n^2log(n))$用DTIME$(f)$表示就是</p>
+<script type="math/tex; mode=display">f(n)=\begin{cases}0 &if\ n=0 \\ \lceil n^2log(n)\rceil & otherwise.\end{cases}\tag{19.3}</script><p><strong>案例19.3.</strong> 第12课中语言$SAME=\{0^m1^m:m\in\mathbb{N}\}$的DTM输入长度为$n$的运行时为$O(n^2)$，因此$SAME$属于DTIME$(n^2)$类。</p>
+<p>　　事实上如果做得更好会得出：$SAME\in DTIME(n log(n))$。为了达成这个效果，我们需要定义一个DTM重复地间隔“删除”磁带上的符号，然后每次遍历后计算出删除的符号中0和1的数量差。使用这个方法，$SAME$就能在$O(n log(n))$时间内被判定，因为只需要对数次遍历包含初始输入的部分磁带即可。</p>
+<p>　　在思考了前一个例子过后，很自然会有人问到有没有比$O(n log(n))$更快的DTM可以判定语言$SAME$。答案是没有。这是下面这个定理的推论（我们将不会证明它）。</p>
+<p><strong>定理19.4.</strong> 已知$A$是一个语言。如果存在一个DTM $M$能在时间$o(n log(n))$内判定$A$，也就是$M$的运行时$t$满足</p>
+<script type="math/tex; mode=display">\lim\limits_{n\to\infty}\frac{t(n)}{n\ log(n)}=0,\tag{19.4}</script><p>那么$A$是正则的。</p>
+<p>当然需要注意的是上面这个定理试用的是普通单磁带DTM。要是我们使用双磁带DTM，很容易能在时间$O(n)$内判定一些非正则语言，也包括$SAME$。</p>
+<h4 id="时间可构建函数"><a href="#时间可构建函数" class="headerlink" title="时间可构建函数"></a>时间可构建函数</h4><p>复杂度类DTIME$(f)$的定义函数形式为$f:\mathbb{N}\rightarrow\mathbb{N}$，但是从计算复杂性的角度来看大多数这种形式的函数都是无趣的 — 因为他们和任何DTM的运行时都无关。<br>　　事实上有一些函数$f:\mathbb{N}\rightarrow\mathbb{N}$的选择是很奇怪的，他们看起非常反直觉。比如，一个函数$f$使得</p>
+<script type="math/tex; mode=display">DTIME(f)=DTIME(g),\ \ \ \ for\ g(n)=2^{f(n)};\tag{19.5}</script><p>尽管$g$是$f$的指数级，他们仍然属于同样一个确定性时间复杂度类。对于时间复杂度来说这一点并不重要，它只能说明函数$f$比较特殊。<br>　　由于这个原因我们定义一个函数集合，佳作<strong>时间可构建函数（time-constructible function）</strong>，它代表所有在可能的运行时上界表现良好的DTM。这里有一个精确定义。</p>
+<p><strong>定义19.5.</strong> 已知$f:\mathbb{N}\rightarrow\mathbb{N}$是一个函数，它满足$f(n)=\Omega(n log(n))$。这个函数被称为时间可构建的条件是存在一个DTM $M$运行规则如下：</p>
+<ol>
+<li>对于每个输入$0^n$，DTM $M$输出$f(n)$（二进制形式）,其中每个$n\in\mathbb{N}$。</li>
+<li>$M$的运行时为$O(f(n))$。</li>
+</ol>
+<p>为什么我们要种这种特殊方式来定义一个函数类，这一点并不明确，但本质上这些函数是可以作为DTM计算上界的。也就是一个DTM对于任意输入长度$n$都能计算出$f(n)$，而且步骤不会超过$O(f(n))$ — 然后它以二进制形式存储数字$f(n)$，这样就能用这个数字来限制随后的计算（也许这个数字就是他的计算第二阶段所需的步数）。<br>　　事实证明，任意合理的函数$f$，$f(n)=\Omega(n log(n))$，你想用它来作为运行时界限都是时间可构建的。<br>　　包含如下的例子：</p>
+<ol>
+<li>对于任意整数$k\geq 2$，函数$f(n)=n^k$是时间可构建的。</li>
+<li>对于任意整数$k\geq 2$，函数$f(n)=k^n$是时间可构建的。</li>
+<li>对于任意整数$k\geq 1$，函数<script type="math/tex; mode=display">f(n)=\begin{cases}0 & if\ n=0 \\ \lceil n^klog(n)\rceil & otherwise\end{cases}\tag{19.6}</script>以及<script type="math/tex; mode=display">f(n)\lceil n^k\sqrt{n}\rceil\tag{19.7}</script>都是时间可构建的。</li>
+<li>如果$f$和$g$都是时间可构建函数，那么函数<script type="math/tex; mode=display">h_1(n)=f(n)+g(n),\ \ \ \ h_2(n)=f(n)g(n),\ \ \ \ h_3(n)=f(g(n))\tag{19.8}</script>也都是时间可构建的。</li>
+</ol>
+<h3 id="时间层谱定理"><a href="#时间层谱定理" class="headerlink" title="时间层谱定理"></a>时间层谱定理</h3><p>接下来我们讨论的是相当直观的一个理论，关于时间复杂度。关于这个定理非常正式的表述：时间越多，能被判定的语言就越多。这确实是一个直观的想法，但这个正式版本表述的证明可就不那么明显了。我们以某个此定理证明高水平讨论来开头，然后声明一个该定理已知的最强形式（不讨论那些获取更强形式所需的低水平细节）。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/tbc/tbc1.png" alt="image"><br>　　假设已经选好了一个时间可构建函数$f$，然后定义一个DTM $K$，如图19.1所描述。我们不能立即判断出$K$的运行时，因为它取决于第3步中$M$的模拟；不同的方式执行模拟可能导致不同的运行时。暂时让我们用$g$来表示$K$的运行时，稍后我们再来讨论$g$和$f$的关系。<br>　　接着，让我们考虑一下$K$所判定的语言$L(K)$。这个语言是基于二进制字母表的，很明显$L(K)\in DTIME(g)$，因为$K$本身就是一个DTM，能在$g(n)$时间内判定$L(K)$。我们将要说明的是$L(K)$不可能在$o(f(n))$时间内被一个DTM判定。<br>　　为了这个目的，我们使用反证法，假设存在一个DTM $M$可在$o(f(n))$时间内判定$L(K)$。因为$M$的运行时是$o(f(n))$，我们知道一定存在一个自然数$n_0$使得，对于所有$n\geq n_0$，DTM $M$输入所有长度为$n$的字符串后停止的步骤数量小于$f(n)$。选择足够大的$k$，使得$w=\langle M\rangle 01^k$满足$|w|\geq n_0$，并且让$n=|w|$。因为$M$输入$w$后停止的步数少于$f(n)$，我们发现</p>
+<script type="math/tex; mode=display">w\in L(K)\Leftrightarrow w\notin L(M).\tag{19.9}</script><p>原因是$K$模拟在$M$输入$w$，它完成这个模拟，因为$M$运行的步数少于$f(n)$，并且它的结论和$M$相反（如果$M$接受，则$K$拒绝；如果$M$拒绝，则$K$接受）。这个假设就和$M$能够判定$L(K)$矛盾了。我们得出不存在运行时为$o(f(n))$并且能判定$L(K)$的DTM。<br>　　有人可能会问为什么我们要让$K$的输入形式为$\langle M\rangle 01^k$，而不是仅仅是$\langle M\rangle$（比如）。原因很简单，就是为了让输入字符串的长度能够增长，从而让函数$f$的和$M$的运行时渐进的行为（尽管我们实际关心的只是这个$M$）。如果我们要改变这个语言，让这个输入的形式变成$w=\langle M\rangle$而不是$\langle M\rangle 01^k$，我们将不能保证$K$能在$f(|\langle M\rangle|)$步之内完成在$M$中输入$\langle M\rangle$的模拟 — 因为有可能在$M$中输入$\langle M\rangle$的步数会超过$f(|\langle M\rangle|)$，就算在输入足够大的情况下$M$的运行时会小于$f$。<br>　　我们所证明的是，对于任意一个时间可构建函数$f:\mathbb{N}\rightarrow\mathbb{N}$，真子集关系</p>
+<script type="math/tex; mode=display">DTIME(h)\subsetneq DTIME(g)</script><p>保持的条件是$h(n)=o(f(n))$，$g$是$K$的运行时（它取决于某个$f$）。</p>
+<p><strong>备注19.6.</strong> 刚才所呈现的论证中有需要注意的一个方面。我们获得的语言$L(K)$，属于DTIME$(g)$而不是DTIME$(h)$，假设$h(n)=o(f(n))$，而且我们没有实际地清晰描述这个语言，只是简单说DTM $K$判定了它。的确，很难想象描述语言$L(K)$会比描述$K$本身更简洁。有时候，当你希望证明存在某个语言具备一种属性时，不需要明确定义这个语言，可以定义一个指定运行方式的DTM $M$，然后用$L(M)$来表示你所寻找的这个语言。</p>
+<p>　　如果你致力于让$K$运行起来更有效率，就能得出接下来这个定理。</p>
+<p><strong>定理19.7.（时间层谱定理）.</strong> 如果$f,g:\mathbb{N}\rightarrow\mathbb{N}$是时间可构建函数，其中$f(n)=o(g(n) / log(g(n))$，那么</p>
+<script type="math/tex; mode=display">DTIME(f)\subsetneq DTIME(g).\tag{19.11}</script><p>这里我们不讲证明细节的主要原因是优化$K$尽可能高效地模拟已知DTM的需要很多专业技术。为了节省篇幅，弄懂这个证明的基本思路就够了。特别注意，这又是一个使用对角化技术的证明示例；而且它的技术含量更高，也和DIAG非半可判定的证明有类似之处，还有$\mathcal{P}(\mathbb{N})$是不可数的证明。<br>　　根据时间层谱定理，我们可以得出一个实用的推论。</p>
+<p><strong>推论19.8.</strong> 对于所有$k\geq 1$，在这种情况下$DTIME(n^k)\subsetneq DTIME(n^{k+1})$。</p>
+<h3 id="多项式和指数级时间"><a href="#多项式和指数级时间" class="headerlink" title="多项式和指数级时间"></a>多项式和指数级时间</h3><p>在本节课结束之前我们要介绍一个关于确定性时间复杂度的重要概念。首先让我们定义两个复杂度类，被称为$P$和$EXP$，如下：</p>
+<script type="math/tex; mode=display">P=\bigcup\limits_{k\geq 1}DTIME(n^k)\ \ \ \ and\ \ \ \ EXP=\bigcup\limits_{k\geq 1}DTIME(2^{n^k}).\tag{19.12}</script><p>用文字表达，一个语言$A$属于复杂度类$P$的条件是存在一个DTM $M$能判定$A$且运行时是多项式级的，就是说运行时是$O(n^k)$，其中$k\geq 1$；一个语言$A$属于复杂度类$EXP$的条件是存在一个DTM $M$能判定$A$且运行时是指数级的，就是说运行时是$O(2^{n^k})$，其中$k\geq 1$。<br>　　做一个粗略但实用的简化，我们通常认为$P$代表着语言都能够由DTM高效判定，而$EXP$代表的语言都是通过暴力求解的方式判定的。从某些方面来说这有点过分简化了，但是语言相关的“自然”计算问题出现在实际的设置中，这一点是需要记住的。<br>　　根据时间层谱定理，我们可以得出$P\subsetneq EXP$。具体一点，如果我们让$f(n)=2^n$和$g(n)=2^{2n}$，那么时间层谱定理确立了这个表达式</p>
+<script type="math/tex; mode=display">P\subseteq DTIME(2^n)\subsetneq DTIME(2^{2n})\subseteq EXP\tag{19.13}</script><p>的中间（恰好）包含关系。</p>
+<p>　　有许多语言示例都包含在类$P$中，如果我们仅限于我们目前课程中所讨论的语言，我们来回忆一下。</p>
+<ul>
+<li>第15课中的语言$A_{DFA},E_{DFA},EQ_{DFA}$和$E_{CFG}$都属于$P$；如果分析这些语言的运行时，你会发现他们他们的运行时都是多项式级的。</li>
+<li>语言$A_{NFA},A_{REX},E_{NFA}$和$E_{REX}$也都属于$P$，但是从我们第15课给出的这些DTM并不能看出这一点。这些DTM的运行时都是指数级的，因为将一个NFA或者正则表达式转换成一个DFA的确需要一个指数级倍数的DFA。然而通过其他方式我们不难在多项式级时间内判定这些语言。<br>具体一点，我们判定$A_{NFA}$可以直接模拟，跟踪读取输入的过程中的每个状态集合，而我们判断$A_{REX}$则可以通过执行一个多项式级时间的转换，将一直的正则表达式变成一个等价的$NFA$，将这个问题在多项式级时间内约化成$A_{NFA}$。语言$E_{NFA}$的判定则可以把它当做一个图连通性问题来考虑，$E_{REX}$也能够在多项式时间内约化成$E_{NFA}$。</li>
+<li>语言$A_{CFG}$也属于$P$，但是我们第15课中讨论的DTM也不能说明这一点。然而有一种稍微复杂的方法，基于动态规划的算法技巧，允许我们在多项式时间内判定$A_{CFG}$。这个事实告诉我们：每个上下文无关语言都属于$P$。</li>
+</ul>
+<p>　　目前没有证据表明语言$EQ_{NFA}$和$EQ_{REX}$不属于$P$，但是存在这种情况的猜想。这是因为这些语言是完整的$PSPACE$类语言，这类语言能在多项式级空间内被判定。如果$EQ_{NFA}$和$EQ_{REX}$都属于$P$，也就是说$P=PSPACE$，这看起来很不合理。然而情况是$EQ_{NFA}$和$EQ_{REX}$都属于$EXP$，对于指数级的时间我们就能执行一个将$NFA$或者正则表达式转换成DFA，然后用我们早前提到的方式来验证这两个DFA（大小可能是指数级的）的等价性。<br>　　最后，你们可能会想到不仅能被DTM判定的语言有运行时界限，而且能被DTM计算的函数也有。比如多项式级时间的可计算函数类，就是那些能被DTM在$O(n^k)$时间内执行的函数，其中$k$是正整数，在理论计算机科学中就是至关重要的，以及算法课程也会代表性地讨论很多关于这种函数的重要示例。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.19.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.19.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/05/28/John Watrous -- 可计算性的进一步讨论/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》18 -- 可计算性的进一步讨论">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》18 -- 可计算性的进一步讨论
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DTIME和时间界限函数"><span class="nav-number">2.1.</span> <span class="nav-text">DTIME和时间界限函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#确定性时间复杂度类"><span class="nav-number">2.1.1.</span> <span class="nav-text">确定性时间复杂度类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间可构建函数"><span class="nav-number">2.1.2.</span> <span class="nav-text">时间可构建函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间层谱定理"><span class="nav-number">2.2.</span> <span class="nav-text">时间层谱定理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多项式和指数级时间"><span class="nav-number">2.3.</span> <span class="nav-text">多项式和指数级时间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2021/06/22/John Watrous -- 时间界限计算/';
+          this.page.identifier = '2021/06/22/John Watrous -- 时间界限计算/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》19 -- 时间界限计算';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
