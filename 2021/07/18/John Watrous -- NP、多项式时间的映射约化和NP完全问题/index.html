@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/npp/npp1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/npp/npp2.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/npp/npp3.png">
-<meta property="og:updated_time" content="2021-07-18T12:47:03.769Z">
+<meta property="og:updated_time" content="2021-07-18T12:52:50.905Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》20 -- NP、多项式时间的映射约化和NP-完全性">
 <meta name="twitter:description" content="前言在上一节课中我们讨论过确定性时间复杂度，以及时间层谱定理，还介绍了两个复杂度类：P和EXP。这节课我们将会介绍另外一个复杂度类，叫做NP，并且学习它于P和EXP的关系。此外，我们将会定义一个改版的多项式时间的映射约化，再加一个NP类的完全性概念。 备注20.1. NP-完全性的概念是目前计算机科学对当今科学界最重要的贡献之一；NP-完全性问题，非常著名，在整个数理科学中随处可见。因此本书有必要">
@@ -336,7 +336,7 @@
 
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一节课中我们讨论过确定性时间复杂度，以及时间层谱定理，还介绍了两个复杂度类：P和EXP。这节课我们将会介绍另外一个复杂度类，叫做NP，并且学习它于P和EXP的关系。此外，我们将会定义一个改版的多项式时间的映射约化，再加一个NP类的完全性概念。</p>
-<p><strong>备注20.1.</strong> NP-完全性的概念是目前计算机科学对当今科学界最重要的贡献之一；NP-完全性问题，非常著名，在整个数理科学中随处可见。因此本书有必要提及这个 概念。<br>　　然而在滑铁卢大学中，复杂度类NP和NP完全性概念，包含在一个不同的课程中，CS 341 Algorithm。由于这个原因，我们在本课程中没有着重讲解 — 这里我们只当NP类是一个重要的复杂度类案例。特别是，我们将不会提及证明某个语言是NP-完全性的证明技术，但是那些刚接触这个课题的人可以放心，有成千上万个有趣的案例，包括一些具有重要现实意义的例子，都是已知的。<br><a id="more"></a></p>
+<p><strong>备注20.1.</strong> NP-完全性的概念是目前计算机科学对当今科学界最重要的贡献之一；NP-完全性问题，非常著名，在整个数理科学中随处可见。因此本书有必要提及这个概念。<br>　　然而在滑铁卢大学中，复杂度类NP和NP完全性概念，包含在一个不同的课程中，CS 341 Algorithm。由于这个原因，我们在本课程中没有着重讲解 — 这里我们只当NP类是一个重要的复杂度类案例。特别是，我们将不会提及证明某个语言是NP-完全性的证明技术，但是那些刚接触这个课题的人可以放心，有成千上万个有趣的案例，包括一些具有重要现实意义的例子，都是已知的。<br><a id="more"></a></p>
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="复杂度类NP"><a href="#复杂度类NP" class="headerlink" title="复杂度类NP"></a>复杂度类NP</h3><p>可以从两个角度来理解复杂度类NP，一个是NP这个名称，它是那些可以在非确定性多项式时间内判定的语言所组成的类。另一个就更直观也更好应用，它是可以在多项式时间内验证的的语言所组成的类，给出这个语言中任意字符串对于所求问题的多项式长度的<strong>证书（certificate）</strong>。</p>
 <h4 id="NP作为多项式时间的非确定性计算"><a href="#NP作为多项式时间的非确定性计算" class="headerlink" title="NP作为多项式时间的非确定性计算"></a>NP作为多项式时间的非确定性计算</h4><p>正如我们上面说到的，我们可以通过NP类的名称来做定义，也就是<strong>非确定性多项式时间</strong><br>　　开始之前，我们先明确一个非确定性图灵机的运行时有什么意义。</p>
 <p><strong>定义20.2.</strong> 已知$N$是一个NTM，它的输入字母表是$\Sigma$。对于每个输入字符串$w\in\Sigma^{*}$，让$T(w)$表示$N$执行$w$最大步数，考虑所有可能的非确定行计算路径。$N$的运行时函数$t:\mathbb{N}\rightarrow\mathbb{N}\cup\{\infty\}$的定义如下</p>
@@ -353,8 +353,8 @@
 <h4 id="P、NP和EXP的关系"><a href="#P、NP和EXP的关系" class="headerlink" title="P、NP和EXP的关系"></a>P、NP和EXP的关系</h4><p>现在让我们观察下面这个包含关系：</p>
 <script type="math/tex; mode=display">P\subseteq NP\subseteq EXP.\tag{20.4}</script><p>第一个包含关系，$P\subseteq NP$，是很明显的。每个DTM都有一个与之等价的没有非确定性选择的NTM，所以</p>
 <script type="math/tex; mode=display">DTIME(f)\subseteq NTIME(f)\tag{20.5}</script><p>其中所有函数形式为$f:\mathbb{N}\rightarrow\mathbb{N}$。这表示</p>
-<script type="math/tex; mode=display">DTIME(n^k)\subseteq NTIME(n^k)\tag{20.6}</script><p>其中所有$k\geq 1$，因此$P\subseteq NP$。<br>　　或者，根据定理20.3中NP的描述，假设$A\subseteq\Sigma^{*}$是一个基于字母表$Sigma$的语言，并且$A\in P$。那么我们可以定义一个语言$B$如下：</p>
-<script type="math/tex; mode=display">B=\{\langle x,\varepsilon\rangle :x\in A\}.\tag{20.7}</script><p>很显然$B\in P$；只要$A$是多项式时间内可判定的，我们也可以轻松在多项式时间内判定$B$。对于任意多项式界限函数$P$，定理（20.3）的情况是满足的，因此$A\in NP$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/npp/npp1.png" alt="image"><br>　　现在让我们看看$NP\subseteq EXP$。假设$A\subseteq\Sigma^{*}$是一个基于字母表$\Sigma$的语言，并且$A\in NP$。根据定理20.3，存在一个多项式界限的函数$p$和一个语言$B\in P$使得定理（20.3）有效。定义一个DTM $M$如图20.1所示。显然$M$能够判定$A$，它只需要搜索所有二进制字符串$y$的集合，$|y|\leq p(|y|)$，看是否存在一个字符串使得$\langle x,y\rangle\in B$。<br>　　剩下的就是考虑$M$的运行时，让我们先观察第2步，其中$M$检测$\langle x,y\rangle\in B$，输入字符串$x\in\Sigma^{*}$，还有$y$满足$|y|\leq p(|x|)$。这个检测的步数是$|x|$的多项式级时间，原因如下。首先，我们有$|y|\leq p(|x|)$，因此字符串$\langle x,y\rangle$的长度是多项式界限的。现在，因为$B\in P$，我们可以在多项式时间内确定从属于$B$这个关系。因为输入是$\langle x,y\rangle$，这表示检测从属于$B$的时间是$|\langle x,y\rangle|$的多项式级。然而，因为两个多项式界限函数的符合还是多项式界限的，我们发现检测是否$\langle x,y\rangle\in B$的时间是$x$的多项式级。第3步也能$x$的多项式时间内执行完，同样第4步也可以。<br>　　最后，再次假设$f$是一个多项式界限函数，那么$f(n)=O(n^k)$，其中$k$是正整数，我们发现刚才所讨论的步骤总共需要执行的步数做多是</p>
+<script type="math/tex; mode=display">DTIME(n^k)\subseteq NTIME(n^k)\tag{20.6}</script><p>其中所有$k\geq 1$，因此$P\subseteq NP$。<br>　　或者，根据定理20.3中NP的描述，假设$A\subseteq\Sigma^{*}$是一个基于字母表$\Sigma$的语言，并且$A\in P$。那么我们可以定义一个语言$B$如下：</p>
+<script type="math/tex; mode=display">B=\{\langle x,\varepsilon\rangle :x\in A\}.\tag{20.7}</script><p>很显然$B\in P$；只要$A$是多项式时间内可判定的，我们也可以轻松在多项式时间内判定$B$。对于任意多项式界限函数$P$，定理（20.3）的情况是满足的，因此$A\in NP$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/npp/npp1.png" alt="image"><br>　　现在让我们看看$NP\subseteq EXP$。假设$A\subseteq\Sigma^{*}$是一个基于字母表$\Sigma$的语言，并且$A\in NP$。根据定理20.3，存在一个多项式界限的函数$p$和一个语言$B\in P$使得定理（20.3）有效。定义一个DTM $M$如图20.1所示。显然$M$能够判定$A$，它只需要搜索所有二进制字符串$y$的集合，$|y|\leq p(|y|)$，看是否存在一个字符串使得$\langle x,y\rangle\in B$。<br>　　剩下的就是考虑$M$的运行时，让我们先观察第2步，其中$M$检测$\langle x,y\rangle\in B$，输入字符串$x\in\Sigma^{*}$，还有$y$满足$|y|\leq p(|x|)$。这个检测的步数是$|x|$的多项式级时间，原因如下。首先，我们有$|y|\leq p(|x|)$，因此字符串$\langle x,y\rangle$的长度是多项式界限的。现在，因为$B\in P$，我们可以在多项式时间内确定从属于$B$这个关系。因为输入是$\langle x,y\rangle$，这表示检测从属于$B$的时间是$|\langle x,y\rangle|$的多项式级。然而，因为两个多项式界限函数的复合还是多项式界限的，我们发现检测是否$\langle x,y\rangle\in B$的时间是$x$的多项式级。第3步也能$x$的多项式时间内执行完，同样第4步也可以。<br>　　最后，再次假设$f$是一个多项式界限函数，那么$f(n)=O(n^k)$，其中$k$是正整数，我们发现刚才所讨论的步骤总共需要执行的步数做多是</p>
 <script type="math/tex; mode=display">2^{p(n)+1}-1=O(2^{n^{k+1}}).\tag{20.8}</script><p>使用上界模糊处理，每个多项式界限函数$g$，满足$g(n)=O(2^n)$，我们发现整个$M$的计算运行时是</p>
 <script type="math/tex; mode=display">O(2^{n^{k+2}}).\tag{20.9}</script><p>我们已构建出$M$的运行时是指数级时间的，所以$A\in EXP$。<br>　　现在我们知道</p>
 <script type="math/tex; mode=display">P\subseteq NP\subseteq EXP,\tag{20.10}</script><p>而且我们也知道</p>
@@ -385,7 +385,7 @@
 <script type="math/tex; mode=display">x\in A\Leftrightarrow f(x)\in B\tag{20.14}</script><p>其中所有$x\in\Sigma^{*}$。因为$f$是一个多项式时间内可计算的，一定存在一个多项式界限函数$p$使得$|f(x)|\leq p(|x|)$，对于所有$x\in\Sigma^{*}$。<br>　　然后，根据假设$B\in NP$，一定存在一个多项式界限函数$q$和一个语言$C\in P$满足</p>
 <script type="math/tex; mode=display">B=\{x\in\Gamma^{*}:\exists y\in\{0,1\}^{*}使得\mid y\mid\leq q(\mid x\mid)并且\langle x, y\rangle\in C\}.\tag{20.15}</script><p>　　现在，我们定义一个新的语言</p>
 <script type="math/tex; mode=display">D=\{\langle x,y\rangle:\langle f(x),y\rangle\in C\}.\tag{20.16}</script><p>很明显$D\in P$，因为我们可以轻松地在多项式时间内通过$\langle x,y\rangle$得出$\langle x,y\rangle$（已知$f$是多项式时间内可计算的），然后检验是否$\langle f(x),y\rangle\in C$，这个过程也是多项式时间的，因为$C\in P$。<br>　　最后，观察一下</p>
-<script type="math/tex; mode=display">A=\{x\in\Sigma^{*}:\exists y\in\{0,1\}^{*}使得\mid y\mid\leq q(p(\mid x\mid))并且\langle x,y\rangle\in D\}.\tag{20.17}</script><p>因为符合函数$q\circ p$是多项式界限的，并且$D\in P$，也就是说$A\in NP$。</p>
+<script type="math/tex; mode=display">A=\{x\in\Sigma^{*}:\exists y\in\{0,1\}^{*}使得\mid y\mid\leq q(p(\mid x\mid))并且\langle x,y\rangle\in D\}.\tag{20.17}</script><p>因为复合函数$q\circ p$是多项式界限的，并且$D\in P$，也就是说$A\in NP$。</p>
 <p>本节课我们得出了下面这个推论，它是上一个命题跟时间层谱定理结合的有趣应用。</p>
 <p><strong>推论20.7.</strong> $NP\neq DTIME(2^n)$.</p>
 <p>证明：使用反证法假设$NP=DTIME(2^n)$。让$\Sigma$作为任意一个字母表，$A\subseteq\Sigma^{*}$是一个任意属于$DTIME(4^n)$的语言，然后定义</p>
