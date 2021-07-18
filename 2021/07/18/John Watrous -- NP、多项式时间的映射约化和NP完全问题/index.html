@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言在上一节课中我们讨论过确定性时间复杂度，以及时间层谱定理，还介绍了两个复杂度类：P和EXP。这节课我们将会介绍另外一个复杂度类，叫做NP，并且学习它于P和EXP的关系。此外，我们将会定义一个改版的多项式时间的映射约化，再加一个NP类的完全性概念。 备注20.1. NP-完全性的概念是目前计算机科学对当今科学界最重要的贡献之一；NP-完全性问题，非常著名，在整个数理科学中随处可见。因此本书有必要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="John Watrous 《Introduction to the Theory of Computing》20 -- NP、多项式时间的映射约化和NP-完全性">
+<meta property="og:url" content="http://yoursite.com/2021/07/18/John Watrous -- NP、多项式时间的映射约化和NP完全问题/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言在上一节课中我们讨论过确定性时间复杂度，以及时间层谱定理，还介绍了两个复杂度类：P和EXP。这节课我们将会介绍另外一个复杂度类，叫做NP，并且学习它于P和EXP的关系。此外，我们将会定义一个改版的多项式时间的映射约化，再加一个NP类的完全性概念。 备注20.1. NP-完全性的概念是目前计算机科学对当今科学界最重要的贡献之一；NP-完全性问题，非常著名，在整个数理科学中随处可见。因此本书有必要">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/npp/npp1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/npp/npp2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/npp/npp3.png">
+<meta property="og:updated_time" content="2021-07-18T12:47:03.769Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="John Watrous 《Introduction to the Theory of Computing》20 -- NP、多项式时间的映射约化和NP-完全性">
+<meta name="twitter:description" content="前言在上一节课中我们讨论过确定性时间复杂度，以及时间层谱定理，还介绍了两个复杂度类：P和EXP。这节课我们将会介绍另外一个复杂度类，叫做NP，并且学习它于P和EXP的关系。此外，我们将会定义一个改版的多项式时间的映射约化，再加一个NP类的完全性概念。 备注20.1. NP-完全性的概念是目前计算机科学对当今科学界最重要的贡献之一；NP-完全性问题，非常著名，在整个数理科学中随处可见。因此本书有必要">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/npp/npp1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/07/18/John Watrous -- NP、多项式时间的映射约化和NP完全问题/"/>
+
+
+
+
+
+  <title>John Watrous 《Introduction to the Theory of Computing》20 -- NP、多项式时间的映射约化和NP-完全性 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/07/18/John Watrous -- NP、多项式时间的映射约化和NP完全问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">John Watrous 《Introduction to the Theory of Computing》20 -- NP、多项式时间的映射约化和NP-完全性</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-07-18T20:43:42+08:00">
+                2021-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/07/18/John Watrous -- NP、多项式时间的映射约化和NP完全问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/07/18/John Watrous -- NP、多项式时间的映射约化和NP完全问题/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/07/18/John Watrous -- NP、多项式时间的映射约化和NP完全问题/" class="leancloud_visitors" data-flag-title="John Watrous 《Introduction to the Theory of Computing》20 -- NP、多项式时间的映射约化和NP-完全性">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一节课中我们讨论过确定性时间复杂度，以及时间层谱定理，还介绍了两个复杂度类：P和EXP。这节课我们将会介绍另外一个复杂度类，叫做NP，并且学习它于P和EXP的关系。此外，我们将会定义一个改版的多项式时间的映射约化，再加一个NP类的完全性概念。</p>
+<p><strong>备注20.1.</strong> NP-完全性的概念是目前计算机科学对当今科学界最重要的贡献之一；NP-完全性问题，非常著名，在整个数理科学中随处可见。因此本书有必要提及这个 概念。<br>　　然而在滑铁卢大学中，复杂度类NP和NP完全性概念，包含在一个不同的课程中，CS 341 Algorithm。由于这个原因，我们在本课程中没有着重讲解 — 这里我们只当NP类是一个重要的复杂度类案例。特别是，我们将不会提及证明某个语言是NP-完全性的证明技术，但是那些刚接触这个课题的人可以放心，有成千上万个有趣的案例，包括一些具有重要现实意义的例子，都是已知的。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="复杂度类NP"><a href="#复杂度类NP" class="headerlink" title="复杂度类NP"></a>复杂度类NP</h3><p>可以从两个角度来理解复杂度类NP，一个是NP这个名称，它是那些可以在非确定性多项式时间内判定的语言所组成的类。另一个就更直观也更好应用，它是可以在多项式时间内验证的的语言所组成的类，给出这个语言中任意字符串对于所求问题的多项式长度的<strong>证书（certificate）</strong>。</p>
+<h4 id="NP作为多项式时间的非确定性计算"><a href="#NP作为多项式时间的非确定性计算" class="headerlink" title="NP作为多项式时间的非确定性计算"></a>NP作为多项式时间的非确定性计算</h4><p>正如我们上面说到的，我们可以通过NP类的名称来做定义，也就是<strong>非确定性多项式时间</strong><br>　　开始之前，我们先明确一个非确定性图灵机的运行时有什么意义。</p>
+<p><strong>定义20.2.</strong> 已知$N$是一个NTM，它的输入字母表是$\Sigma$。对于每个输入字符串$w\in\Sigma^{*}$，让$T(w)$表示$N$执行$w$最大步数，考虑所有可能的非确定行计算路径。$N$的运行时函数$t:\mathbb{N}\rightarrow\mathbb{N}\cup\{\infty\}$的定义如下</p>
+<script type="math/tex; mode=display">t(n)=max\{T(w):w\in\Sigma^{*},\mid w\mid=n\}\tag{20.1}</script><p>其中每个$n\in\mathbb{N}$。用文字表达，对于所有长度为$n$的输入字符串及其在$N$中全部非确定性选择，$t(n)$是$N$停止所需的最大步数。</p>
+<p>和我们上节课中一样，我们要先定NTM对于所有长度的输入的运行时都是有限的。</p>
+<p>　　让我们回想第18课中非确定性图灵机的判定性是怎么表示的：一个NTM $N$能判定一个语言$A$的条件是$A=L(N)$并且$N$对于每个输入都存在一个有限的计算树。这样，如果$N$是一个NTM，它的运行时是$t$，$w$是一个$N$的输入字符串，$N$输入$w$的的计算树的深度边界是$t(|w|)$。这个成为一个可接受计算条件是它至少存在一个接受配置，否则，如果整个树中都没有接受配置，  那他就是一个拒绝计算。<br>　　我们现在可以定义NTIME$(f)$，对于每个函数$f:\mathbb{N}\rightarrow\mathbb{N}$，作为所有能被非确定性图灵机判定语言的复杂度类，运行时为$O(f(n))$。这样定义NTIME$(f)$之后，我们像定义P那样来定义NP：</p>
+<script type="math/tex; mode=display">NP=\bigcup_{k\geq 1}NTIME(n^k).\tag{20.2}</script><h4 id="NP作为证书校验"><a href="#NP作为证书校验" class="headerlink" title="NP作为证书校验"></a>NP作为证书校验</h4><p>第二种看待NP的方式是作为一个可以在多项式时间内验证的语言类，已知一个多项式长度的从属关系证书。我们将要声明一个定理，这个概念将等价于复杂度类NP的从属关系，正如（20.2）定义。<br>　　然而在我们声明这个定理之前，让我们引入一个简单的术语。往后，一个形如：$p:\mathbb{N}\rightarrow\mathbb{N}$的函数是一个多项式界限函数的条件是它是时间可构建的并且对于某个正整数$k$满足$p(n)=O(n^k)$。</p>
+<p><strong>定理20.3.</strong> 已知$\Sigma$是一个字母表，$A\subseteq\Sigma^{*}$是一个语言。语言$A$包含于NP当且仅当存在一个多项式界限函数$p$和一个语言$B\in P$使得</p>
+<script type="math/tex; mode=display">A\{x\in\Sigma^{*},\exists y\in\{0,1\}^{*}使得\mid y\mid\leq p(\mid x\mid)并且\langle x,y\rangle\in B\}.\tag{20.3}</script><p>　　关于这个定理的解释是字符串$y$扮演了验证或者证明字符串$x$包含于$A$的角色，同时语言$B$代表着一个有效的验证程序，检测$x$关系证明的有效性。术语<strong>证据（witness）</strong>是证书的另外一个称呼。<br>　　证明这个定理需要验证如下两层含义，我们不做详细讲解。</p>
+<ol>
+<li>已知一个语言$A$如定理中等式（20.3）中所描述，我们可以得出$A\in NP$，通过定义一个多项式时间的NTP $N$，那么它可以非确定性地猜测一个二进制字符串$y$，长度最多为$p(|x|)$，并且判定关系$\langle x,y\rangle$属于$B$。</li>
+<li>如果$A\in NP$，那么我们可以找到一个可以判定$A$的多项式时间的NTM $N$，我们可以将$N$输入$x$的每个非确定性计算的路径编码某个二进制字符串$y$，它的长度不超过$p(|x|)$，$p$是某个多项式界限函数。然后我们定义$B$是一个可以在多项式时间内判定字符串$\langle x,y\rangle$的语言。</li>
+</ol>
+<h4 id="P、NP和EXP的关系"><a href="#P、NP和EXP的关系" class="headerlink" title="P、NP和EXP的关系"></a>P、NP和EXP的关系</h4><p>现在让我们观察下面这个包含关系：</p>
+<script type="math/tex; mode=display">P\subseteq NP\subseteq EXP.\tag{20.4}</script><p>第一个包含关系，$P\subseteq NP$，是很明显的。每个DTM都有一个与之等价的没有非确定性选择的NTM，所以</p>
+<script type="math/tex; mode=display">DTIME(f)\subseteq NTIME(f)\tag{20.5}</script><p>其中所有函数形式为$f:\mathbb{N}\rightarrow\mathbb{N}$。这表示</p>
+<script type="math/tex; mode=display">DTIME(n^k)\subseteq NTIME(n^k)\tag{20.6}</script><p>其中所有$k\geq 1$，因此$P\subseteq NP$。<br>　　或者，根据定理20.3中NP的描述，假设$A\subseteq\Sigma^{*}$是一个基于字母表$Sigma$的语言，并且$A\in P$。那么我们可以定义一个语言$B$如下：</p>
+<script type="math/tex; mode=display">B=\{\langle x,\varepsilon\rangle :x\in A\}.\tag{20.7}</script><p>很显然$B\in P$；只要$A$是多项式时间内可判定的，我们也可以轻松在多项式时间内判定$B$。对于任意多项式界限函数$P$，定理（20.3）的情况是满足的，因此$A\in NP$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/npp/npp1.png" alt="image"><br>　　现在让我们看看$NP\subseteq EXP$。假设$A\subseteq\Sigma^{*}$是一个基于字母表$\Sigma$的语言，并且$A\in NP$。根据定理20.3，存在一个多项式界限的函数$p$和一个语言$B\in P$使得定理（20.3）有效。定义一个DTM $M$如图20.1所示。显然$M$能够判定$A$，它只需要搜索所有二进制字符串$y$的集合，$|y|\leq p(|y|)$，看是否存在一个字符串使得$\langle x,y\rangle\in B$。<br>　　剩下的就是考虑$M$的运行时，让我们先观察第2步，其中$M$检测$\langle x,y\rangle\in B$，输入字符串$x\in\Sigma^{*}$，还有$y$满足$|y|\leq p(|x|)$。这个检测的步数是$|x|$的多项式级时间，原因如下。首先，我们有$|y|\leq p(|x|)$，因此字符串$\langle x,y\rangle$的长度是多项式界限的。现在，因为$B\in P$，我们可以在多项式时间内确定从属于$B$这个关系。因为输入是$\langle x,y\rangle$，这表示检测从属于$B$的时间是$|\langle x,y\rangle|$的多项式级。然而，因为两个多项式界限函数的符合还是多项式界限的，我们发现检测是否$\langle x,y\rangle\in B$的时间是$x$的多项式级。第3步也能$x$的多项式时间内执行完，同样第4步也可以。<br>　　最后，再次假设$f$是一个多项式界限函数，那么$f(n)=O(n^k)$，其中$k$是正整数，我们发现刚才所讨论的步骤总共需要执行的步数做多是</p>
+<script type="math/tex; mode=display">2^{p(n)+1}-1=O(2^{n^{k+1}}).\tag{20.8}</script><p>使用上界模糊处理，每个多项式界限函数$g$，满足$g(n)=O(2^n)$，我们发现整个$M$的计算运行时是</p>
+<script type="math/tex; mode=display">O(2^{n^{k+2}}).\tag{20.9}</script><p>我们已构建出$M$的运行时是指数级时间的，所以$A\in EXP$。<br>　　现在我们知道</p>
+<script type="math/tex; mode=display">P\subseteq NP\subseteq EXP,\tag{20.10}</script><p>而且我们也知道</p>
+<script type="math/tex; mode=display">P\subsetneq EXP\tag{20.11}</script><p>根据时间层谱定理。当然这表示两个真包含关系：(i)$P\subsetneq NP$，和(ii)$NP\subsetneq EXP$中有一个或者两个都满足。但是至今都还没有证明，任意一个正确的证明都能为复杂度理论带来突破性进展。的确，判定是否$P=NP$被认为是当今数学领域最重要的未解决问题之一。</p>
+<h3 id="多项式时间约化和NP-完全性"><a href="#多项式时间约化和NP-完全性" class="headerlink" title="多项式时间约化和NP-完全性"></a>多项式时间约化和NP-完全性</h3><p>在第17节课中我们讨论过约化，并且使用它来证明特定语言的不可判定性和非半可判定性。多项式时间约化的定义也是类似的，除了一个限定条件：约化必须由一个多项式时间的可计算函数得出。</p>
+<p><strong>定义20.4.</strong> 已知$\Sigma$和$\Gamma$是字母表，$A\subseteq\Sigma^{*}$和$B\subseteq\Gamma^{*}$是语言。我们说$A$能够多项式时间约化成$B$的条件是存在一个多项式时间的可计算函数$f:\Sigma^{*}\rightarrow\Gamma^{*}$使得</p>
+<script type="math/tex; mode=display">w\in A\Leftrightarrow f(w)\in B\tag{20.12}</script><p>其中所有$w\in\Sigma^{*}$。我们写作</p>
+<script type="math/tex; mode=display">A\leq^p_m B\tag{20.13}</script><p>来表示$A$能够多项式约化成$B$，并且任意构造这个关系的函数$f$被我们成为$A$到$B$的多项式时间约化。</p>
+<p>　　有时候我们又把多项式时间约化称作多项式时间映射约化（或者多项式时间多一约化）来区别于其他类型的约化 — 但是这里我们简单一点就叫它多项式时间约化即可。有时候我们也称它为<strong>卡普约化（Karp reduction）</strong>，得名于Richard Karp，一个NP-完全性理论的先驱。<br>　　有了多项式时间约化的定义在手，我们现在就能定义NP-完全性了。</p>
+<p><strong>定义20.5.</strong> 已知$\Sigma$是一个字母表，$B\subseteq\Sigma^{*}$是一个语言。</p>
+<ol>
+<li>我们说$B$是NP-困难的条件是对于每个语言$A\in NP$存在关系$A\leq^p_m B$。</li>
+<li>我们说$B$是NP-完全的条件是$B$是NP-困难并且$B\in NP$。</li>
+</ol>
+<p>这个定义背后的想法是NP-完全语言代表着NP中最难判定的语言；每个NP中的语言都能在多项式时间约化成一个NP-完全语言，所以如果我们忽略执行一个多项式时间约化的难度，那么判定任意一个NP-完全语言都能降低整个NP类的计算难度。图20.2说明了类P、NP、NP-困难和NP-完全语言的关系，假设了$P\neq NP$。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/npp/npp2.png" alt="image"></p>
+<p>这里有一些关于多项式时间约化和NP的基本事实。这些所有的事实都基于假设A、B和C的字母表是任意的。</p>
+<ol>
+<li>如果$A\leq^p_m B$并且$B\leq^p_m C$，那么$A\leq^p_m C$。</li>
+<li>如果$A\leq^p_m B$并且$B\in P$，那么$A\in P$。</li>
+<li>如果$A\leq^p_m B$并且$B\in NP$，那么$A\in NP$。</li>
+<li>如果$A\leq^p_m B$并且$A$是NP-困难的，那么$B$也是NP-困难的。</li>
+<li>如果$A\leq^p_m B$，$A$是NP-完全的并且$B\in NP$，那么$B$是NP-完全的。</li>
+<li>如果$A\in P$并且$A$是NP-困难的，那么$P=NP$。</li>
+</ol>
+<p>通常我们使用第5条声明来证明某个特定的语言$B$是NP-完全的：首先我们证明$B\in NP$（通常比较简单），然后找到一个已知的NP-完全语言$A$，我们来证明$A\leq^p_m B$。<br>　　这条声明的证明就是上面所说这么直接，有兴趣你们可以自己证明。这里我们就只选取一条声明来证明。</p>
+<p><strong>命题20.6.</strong> 已知$A\in\Sigma^{*}$和$B\in\Gamma^{*}$是语言，其中$\Sigma$和$\Gamma$是字母表，假设$A\leq^p_m B$并且$B\in NP$。那么情况是这样$A\in NP$。</p>
+<p>证明：让我们把关于这个命题所有假设的细节汇集起来。<br>　　首先因为$A\leq^p_m B$，我们知道一定存在一个多项式时间的可计算函数$f:\Sigma^{*}\rightarrow\Gamma^{*}$使得</p>
+<script type="math/tex; mode=display">x\in A\Leftrightarrow f(x)\in B\tag{20.14}</script><p>其中所有$x\in\Sigma^{*}$。因为$f$是一个多项式时间内可计算的，一定存在一个多项式界限函数$p$使得$|f(x)|\leq p(|x|)$，对于所有$x\in\Sigma^{*}$。<br>　　然后，根据假设$B\in NP$，一定存在一个多项式界限函数$q$和一个语言$C\in P$满足</p>
+<script type="math/tex; mode=display">B=\{x\in\Gamma^{*}:\exists y\in\{0,1\}^{*}使得\mid y\mid\leq q(\mid x\mid)并且\langle x, y\rangle\in C\}.\tag{20.15}</script><p>　　现在，我们定义一个新的语言</p>
+<script type="math/tex; mode=display">D=\{\langle x,y\rangle:\langle f(x),y\rangle\in C\}.\tag{20.16}</script><p>很明显$D\in P$，因为我们可以轻松地在多项式时间内通过$\langle x,y\rangle$得出$\langle x,y\rangle$（已知$f$是多项式时间内可计算的），然后检验是否$\langle f(x),y\rangle\in C$，这个过程也是多项式时间的，因为$C\in P$。<br>　　最后，观察一下</p>
+<script type="math/tex; mode=display">A=\{x\in\Sigma^{*}:\exists y\in\{0,1\}^{*}使得\mid y\mid\leq q(p(\mid x\mid))并且\langle x,y\rangle\in D\}.\tag{20.17}</script><p>因为符合函数$q\circ p$是多项式界限的，并且$D\in P$，也就是说$A\in NP$。</p>
+<p>本节课我们得出了下面这个推论，它是上一个命题跟时间层谱定理结合的有趣应用。</p>
+<p><strong>推论20.7.</strong> $NP\neq DTIME(2^n)$.</p>
+<p>证明：使用反证法假设$NP=DTIME(2^n)$。让$\Sigma$作为任意一个字母表，$A\subseteq\Sigma^{*}$是一个任意属于$DTIME(4^n)$的语言，然后定义</p>
+<script type="math/tex; mode=display">B=\{xx:x\in A\}.</script><p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/npp/npp3.png" alt="image"><br>　　首先我们观察到$B\in DTIME(2^n)$。具体一点，图20.3中的DTM $M$可以在时间$O(2^n)$之内判定$B$。$M$运行时为$O(2^n)$的理由是：第一步能轻松在多项式时间内完成，第二步需要步骤数是$O(4^{n/2})=O(2^n)$，因为$A$对于输入长度$m$能在时间$O(4^m)$内判定，并且这里我们判定关系在$A$中的字符串长度是$m=n/2$。因此$M$的运行时是$O(2^n)$。因为我们假设了$NP=DTIME(2^n)$，也就是说$B\in NP$。<br>　　现在我们定义一个函数$f:\Sigma^{*}\rightarrow\Sigma^{*}$为</p>
+<script type="math/tex; mode=display">f(x)=xx</script><p>其中所有$x\in\Sigma^{*}$。函数$f$能够在多项式时间内计算，通过$B$的定义我们得出</p>
+<script type="math/tex; mode=display">x\in A\Leftrightarrow f(x)\in B.</script><p>因此我们得到了$A\leq^p_m B$。根据命题20.6，得出$A\in NP$，而且已知假设$NP=DTIME(2^n)$，也就是说$A\in DTIME(2^n)$。<br>　　然而，因为$A$是一个任意选取属于$DTIME(4^n)$的语言，我们得出$DTIME(4^n)\subseteq DTIME(2^n)$。这就和时间层谱定理矛盾了，所以假设$NP=DTIME(2^n)$是错误的。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.20.pdf" target="_blank" rel="noopener">https://cs.uwaterloo.ca/~watrous/ToC-notes/ToC-notes.20.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/06/22/John Watrous -- 时间界限计算/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》19 -- 时间界限计算">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》19 -- 时间界限计算
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#复杂度类NP"><span class="nav-number">2.1.</span> <span class="nav-text">复杂度类NP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NP作为多项式时间的非确定性计算"><span class="nav-number">2.1.1.</span> <span class="nav-text">NP作为多项式时间的非确定性计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NP作为证书校验"><span class="nav-number">2.1.2.</span> <span class="nav-text">NP作为证书校验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#P、NP和EXP的关系"><span class="nav-number">2.1.3.</span> <span class="nav-text">P、NP和EXP的关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多项式时间约化和NP-完全性"><span class="nav-number">2.2.</span> <span class="nav-text">多项式时间约化和NP-完全性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2021/07/18/John Watrous -- NP、多项式时间的映射约化和NP完全问题/';
+          this.page.identifier = '2021/07/18/John Watrous -- NP、多项式时间的映射约化和NP完全问题/';
+          this.page.title = 'John Watrous 《Introduction to the Theory of Computing》20 -- NP、多项式时间的映射约化和NP-完全性';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
