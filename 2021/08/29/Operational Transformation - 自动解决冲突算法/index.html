@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言由于工作需要，最近在学习实时协同编辑相关的知识。我在分享会听大佬讲了两个理论，分别是OT（Operational Transformation）和CDRT。但是听的时候跟不上，无奈只能下来找时间消化吸收了。会后拿到了两篇博客，看完理解之后还是想翻译一遍，留个存档。（偷个懒，图片链接我用的原文博客中的，所以要翻墙才能看）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Operational Transformation - 自动解决冲突算法">
+<meta property="og:url" content="http://yoursite.com/2021/08/29/Operational Transformation - 自动解决冲突算法/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言由于工作需要，最近在学习实时协同编辑相关的知识。我在分享会听大佬讲了两个理论，分别是OT（Operational Transformation）和CDRT。但是听的时候跟不上，无奈只能下来找时间消化吸收了。会后拿到了两篇博客，看完理解之后还是想翻译一遍，留个存档。（偷个懒，图片链接我用的原文博客中的，所以要翻墙才能看）">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*4EUfGIIaP6NqIFF-5c_cJQ.png">
+<meta property="og:image" content="https://miro.medium.com/max/1300/1*iCijf5TLS_J1O6fG2WyBPA.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*sEYQSYhBbN4af3170YSXYA.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*_tFzPFx3HOJLGDCsiNh1Qw.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*AV8lESOJQJ4kkrxaszMY6Q.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*BLGt84jccv_fsUZIStqBmw.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*wl7dBOXFv6AuKNVpUDcKWg.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*pmB7gNDy6C8exEqtdk_wAQ.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*sJwiV_Fq3AXYF21m5d_qbg.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*gniXNp-3jSn80W5hAyKFXA.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*UyAkY9pQKv1FJDQQYYHdYQ.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*KDmHx3XEqGDx5OMxChNwYw.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*8BXqfOAbcIB7gn6nMqo6kw.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*3UXzjN5tAlmefA6FamDtPQ.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*Bj0WRLkfMkQTIg3SXXNxDg.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*c9UY0TqETUT6EyUYQKEbxg.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*LcyVuX-wGLH_o3Q3XFi3bA.jpeg">
+<meta property="og:image" content="https://miro.medium.com/max/900/1*wA2dxxrvha6Nlgiy9GfY_A.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*sC3JLMNUyiMwWXzbJK7EeA.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*ZciC8AQVnABiIK_md6lgiA.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*Fiq13Z01D-xG6h934LaPvQ.png">
+<meta property="og:image" content="https://miro.medium.com/max/1400/1*BFY8zJarSyvfJ2jk19g7kA.png">
+<meta property="og:updated_time" content="2021-08-29T01:14:14.790Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Operational Transformation - 自动解决冲突算法">
+<meta name="twitter:description" content="前言由于工作需要，最近在学习实时协同编辑相关的知识。我在分享会听大佬讲了两个理论，分别是OT（Operational Transformation）和CDRT。但是听的时候跟不上，无奈只能下来找时间消化吸收了。会后拿到了两篇博客，看完理解之后还是想翻译一遍，留个存档。（偷个懒，图片链接我用的原文博客中的，所以要翻墙才能看）">
+<meta name="twitter:image" content="https://miro.medium.com/max/1400/1*4EUfGIIaP6NqIFF-5c_cJQ.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/08/29/Operational Transformation - 自动解决冲突算法/"/>
+
+
+
+
+
+  <title>Operational Transformation - 自动解决冲突算法 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/08/29/Operational Transformation - 自动解决冲突算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Operational Transformation - 自动解决冲突算法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-08-29T09:11:03+08:00">
+                2021-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/08/29/Operational Transformation - 自动解决冲突算法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/08/29/Operational Transformation - 自动解决冲突算法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/08/29/Operational Transformation - 自动解决冲突算法/" class="leancloud_visitors" data-flag-title="Operational Transformation - 自动解决冲突算法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>由于工作需要，最近在学习实时协同编辑相关的知识。我在分享会听大佬讲了两个理论，分别是OT（Operational Transformation）和CDRT。但是听的时候跟不上，无奈只能下来找时间消化吸收了。会后拿到了两篇博客，看完理解之后还是想翻译一遍，留个存档。（偷个懒，图片链接我用的原文博客中的，所以要翻墙才能看）<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>多群首节点（本文中我们说的群首节点是指一个接受数据修改请求的节点）分布式系统的自动解决冲突算法是一个相当有趣的研究领域。关于这一块有很多不同的方法和算法，都有自己的权衡处理。本文我们将会重点讨论OT技术，它的目的就是解决想谷歌文档或者Etherpad这类协同编辑应用中的冲突。</p>
+<p>从发展的角度来看，协同编辑是一个艰难的任务，因为客户端可以同时对相同的文档部分作出修改。为了模拟实时响应，每个客户端都要维护一个文档的本地复制，否则客户端就必须等待与其他客户端的数据同步，这可能会消耗很长的时间。所以协同编辑最主要的问题是保证本地复制之间的一致性。所有复制都能汇聚成一个正确版本的文件（在某些时候我们不能要求所有复制都和原文件一样，因为编辑过程可能不会停止）。</p>
+<h4 id="谷歌文档早期版本"><a href="#谷歌文档早期版本" class="headerlink" title="谷歌文档早期版本"></a>谷歌文档早期版本</h4><p>谷歌文档第一版使用了文件版本对比（其他类似的应用也是如此）。想象一下，我们有两个客户 — Alice和Bob，还有一份已经同步了的文档。当服务器收到来自Alice的改动，它会计算两个版本之间的差异，并且尝试合并这两个版本。然后服务端把合并后的版本发送给Bob。如果Bob自己有未发送的改动，他尝试将收到的服务端版本和自己的合并。然后重复这个过程。</p>
+<p>很多时候这个方法并不太奏效。比如，想象一下Alice，Bob和服务端已有一个同步文档“The quick brown fox”。<br><img src="https://miro.medium.com/max/1400/1*4EUfGIIaP6NqIFF-5c_cJQ.png" alt="image"><br>Alice加粗了单词“brown fox”，同时Bob将“fox”改成了“dog”。Alice的改动先传到了服务端，并且它使用之后再讲改动发送给Bob。合并后正确的结果应该是“The quick <strong>brown dog</strong>”，但是合并算法并没有充足的信息来执行正确的合并。从算法的观点“The quick <strong>brown fox</strong> dog”、“The quick <strong>brown</strong> dog”、“The quick <strong>brown</strong> dog <strong>fox</strong>”都是正确有效的结果。（在git中这种情况就需要我们手动解决冲突了）。所以这是最主要的问题 — 我们不能依赖这种方法来进行合并。</p>
+<h4 id="谷歌文档当前版本"><a href="#谷歌文档当前版本" class="headerlink" title="谷歌文档当前版本"></a>谷歌文档当前版本</h4><p>当前版本的谷歌文档采用了另一种方法 — 一位文档被存储为一个操作序列，这些操作按照顺序（这里我们称之为全序）执行而不是比较文档版本。</p>
+<p>好了，现在我们需要知道什么实用应用这些改动 — 我们需要一个合作协议。在谷歌文档中所有的操作分为3中类型：</p>
+<ul>
+<li>插入文本</li>
+<li>删除文本</li>
+<li>改变样式</li>
+</ul>
+<p>当你编辑一个文档时所有的改动都会按照这三种类型加入到改动日志中，当你打开一个文档所有日志中的改动又会重现出来。</p>
+<p>（第一个（公开的）谷歌OT支持的项目是Google Wave，它的操作集合也更为丰富）</p>
+<h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><p>让Alice和Bob从一个同步文档“LIFE 2017”开始。</p>
+<p>Alice将2017改成2018，它产生了两个操作：<br><img src="https://miro.medium.com/max/1300/1*iCijf5TLS_J1O6fG2WyBPA.png" alt="image"></p>
+<p>同时Bob将文本改成了“CRAZY LIFE 2017”：<br><img src="https://miro.medium.com/max/1400/1*sEYQSYhBbN4af3170YSXYA.png" alt="image"></p>
+<p>如果在接收到Alice的删除操作后直接应用，那么他就会得到一个错误的文档（实际上应该是数字7被删除）<br><img src="https://miro.medium.com/max/1400/1*_tFzPFx3HOJLGDCsiNh1Qw.png" alt="image"></p>
+<p>Bog需要根据他的本地改动来转变删除操作，得到文档的正确形式：<br><img src="https://miro.medium.com/max/1400/1*AV8lESOJQJ4kkrxaszMY6Q.png" alt="image"><br><img src="https://miro.medium.com/max/1400/1*BLGt84jccv_fsUZIStqBmw.png" alt="image"></p>
+<p>现在就完美了。</p>
+<p>为了更正式一点，让我们考虑下面的例子：<br><img src="https://miro.medium.com/max/1400/1*wl7dBOXFv6AuKNVpUDcKWg.png" alt="image"></p>
+<p>那么<br><img src="https://miro.medium.com/max/1400/1*pmB7gNDy6C8exEqtdk_wAQ.png" alt="image"></p>
+<p>瞧！上述的算法就是Operational Transformation（操作转换）</p>
+<h3 id="操作转换"><a href="#操作转换" class="headerlink" title="操作转换"></a>操作转换</h3><h4 id="一致性模型"><a href="#一致性模型" class="headerlink" title="一致性模型"></a>一致性模型</h4><p>有一些一致性模型被开发出来保证OT的一致性。<br>让我们来看看其中一个 — CCI模型</p>
+<p>CCI模型包含以下属性：</p>
+<ol>
+<li><p>收敛：所有相同文档的副本在执行完所有操作后都会相同<br><img src="https://miro.medium.com/max/1400/1*sJwiV_Fq3AXYF21m5d_qbg.png" alt="image"><br>Alice和Bob从同样的文档开始，然后他们都做了本地改动，副本就会有偏差（这样达成了快速响应）。收敛属性要求Alice和Bob在接受到改动后看到的是同样的文档。</p>
+</li>
+<li><p>意图保留：保证执行一个操作后对于文档的影响要和这个操作的意图一致。操作的意图可以解释为它的执行对所创建副本的影响。<br>让我们来看一个违背这个属性的例子：<br><img src="https://miro.medium.com/max/1400/1*gniXNp-3jSn80W5hAyKFXA.png" alt="image"><br>Alice和Bob从同样的文档开始，然后做他们的本地改动。Alice的操作意图是在位置1插入‘12’，而Bob的操作意图是删除‘CD’。同步之后Bob的操作意图就被破坏的。我们也观察到副本之间出现了分歧，但是这并不是意图保留属性的要求。练习：这个例子正确的结果应该是什么？（A12BE）</p>
+</li>
+<li><p>因果关系保留：在协作过程中操作必须根据他们的自然的因果关系顺序执行（根据先行发生关系）。<br>让我们来看一个未被这个属性的例子：<br><img src="https://miro.medium.com/max/1400/1*UyAkY9pQKv1FJDQQYYHdYQ.png" alt="image"><br>Alice、Bob和经理Smith从同样的文档开始。Alice做了她的改动并且发送到了其他客户端。Bob先收到了，然后纠正了拼写错误后把这个改动发送给其他客户端。由于网络延迟，经理Smith先收到了Bob的改动，删除了一个他的副本不存在的符号。</p>
+</li>
+</ol>
+<p>OT不能保证这个属性，所以像Vector clock这样的算法就派上用场了。</p>
+<h4 id="OT的设计"><a href="#OT的设计" class="headerlink" title="OT的设计"></a>OT的设计</h4><p>有一种OT的设计策略可以分为3个部分：</p>
+<p><img src="https://miro.medium.com/max/1400/1*KDmHx3XEqGDx5OMxChNwYw.png" alt="image"></p>
+<ol>
+<li>转换控制算法：作用是决定一个操作（转换的目标）是否准备好做转换，哪个操作（转换的参照）应该作为转换的对比，转换应该按照什么样的顺序实行。</li>
+<li>转换函数：作用根据一个参照操作的影响对目标操作进行实际转换。</li>
+<li>属性和条件：定义转换控制算法和函数的关系，作为OT算法的正确性的标准。</li>
+</ol>
+<h4 id="转换函数"><a href="#转换函数" class="headerlink" title="转换函数"></a>转换函数</h4><p>转换函数可以分为两种类型：</p>
+<ul>
+<li>向前包含转换：在执行$O_b$之前先转换$O_a$，而且$O_b$的影响会包含在转换中（比如两个插入操作）。</li>
+<li>向后排除转换：在执行$O_b$之前先转换$O_a$，但是$O_b$的影响不包含在转换中（比如删除之后再插入）。</li>
+</ul>
+<p>这里有一个转换函数的例子，它的作用于字符变动：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Tii(Ins[p1, c1], Ins[p2, c2]) &#123;</span><br><span class="line">  <span class="keyword">if</span> (p1 &lt; p2) || ((p1 == p2) &amp;&amp; (order() == -<span class="number">1</span>))  <span class="comment">// order() – order calculation</span></span><br><span class="line">	<span class="keyword">return</span> Ins[p1, c1]; <span class="comment">// Tii(Ins[3, ‘a’], Ins[4, ‘b’]) = Ins[3, ‘a’]</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">	<span class="keyword">return</span> Ins[p1 + <span class="number">1</span>, c1]; <span class="comment">// Tii(Ins[3, ‘a’], Ins[1, ‘b’]) = Ins[4, ‘a’]</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Tid(Ins[p1, c1], Del[p2]) &#123;</span><br><span class="line">  <span class="keyword">if</span> (p1 &lt;= p2)</span><br><span class="line">    <span class="keyword">return</span> Ins[p1, c1]; <span class="comment">// Tid(Ins[3, ‘a’], Del[4]) = Ins[3, ‘a’]</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> Ins[p1 – <span class="number">1</span>, c1]; <span class="comment">// Tid(Ins[3, ‘a’], Del[1]) = Ins[2, ‘a’]</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Tdi(Del[p1], Ins[p2, c1]) &#123;</span><br><span class="line">  <span class="comment">// Exercise</span></span><br><span class="line">   <span class="keyword">if</span> (p1 &lt;= p2)</span><br><span class="line">    <span class="keyword">return</span> Del[p1]; <span class="comment">// Tdi(Del[2], Ins[3, ‘a’]) = Del[2]</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> Del[p1 + <span class="number">1</span>]; <span class="comment">// Tid(Del[5], Ins[3, ‘a’]) = Del[6]</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Tdd(Del[p1], Del[p2]) &#123;</span><br><span class="line">  <span class="keyword">if</span> (p1 &lt; p2)</span><br><span class="line">    <span class="keyword">return</span> Del[p1]; <span class="comment">// Tdd(Del[3], Del[4]) = Del[3]</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">if</span> (p1 &gt; p2) <span class="keyword">return</span> Del[p1 – <span class="number">1</span>]; <span class="comment">// Tdd(Del[3], Del[1]) = Del[2]</span></span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> Id; <span class="comment">// Id – identity operator</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="谷歌文档的合作协议"><a href="#谷歌文档的合作协议" class="headerlink" title="谷歌文档的合作协议"></a>谷歌文档的合作协议</h3><p>让我们来看看谷歌文档合作协议的细节部分。</p>
+<p>每个客户端维护以下信息：</p>
+<ul>
+<li>上一个同步版本（id）</li>
+<li>所有未发送到服务端的本地改动（即将发生的改动）</li>
+<li>所有发送到到服务端带还未确认的改动（已发送改动）</li>
+<li>当前文档状态对用户可见</li>
+</ul>
+<p>服务端维护以下信息：</p>
+<ul>
+<li>收到到还未处理的改动（即将处理的改动）</li>
+<li>已处理改动的日志（归档日志）</li>
+<li>最后一次处理完改动后的文档状态</li>
+</ul>
+<p>假设我们已知Alice、Server、Bob，他们从一个空的同步文档开始。</p>
+<p>Alice打出了“Hello”：<br><img src="https://miro.medium.com/max/1400/1*8BXqfOAbcIB7gn6nMqo6kw.png" alt="image"></p>
+<p>她的改动加入了即将发生的改动列表中，发送到服务端后加入到已发送列表中。</p>
+<p>同时，Alice又加入了单词“World”。同时Bob在他的空文档中加入了一个“!”（他还没有收到Alice的改动）：<br><img src="https://miro.medium.com/max/1400/1*3UXzjN5tAlmefA6FamDtPQ.png" alt="image"></p>
+<p>Alice的${Insert’World’,@5}$加入到了即将发生的改动中，但是这个改动并没有被发送，因为她的第一个改动还没有得到确认，<strong>我们一次只发送一个改动</strong>。而且还要注意服务端处理了Alice的第一个改动，并且把它加入到了归档日志。那么它发送一个确认信息给Alice，然后再将这个改动通知到Bob：<br><img src="https://miro.medium.com/max/1400/1*Bj0WRLkfMkQTIg3SXXNxDg.png" alt="image"></p>
+<p>Bob接收到了改动，并且对它试用了转换函数，结果即将发生的改动索引从0变成了5。注意Alice和Bob都把他们的最新同步版本更新到了1。Alice最终将第一个改动从她已发送改动中移除了。</p>
+<p>接着Alice和Bob又发送他们改动到服务端：<br><img src="https://miro.medium.com/max/1400/1*c9UY0TqETUT6EyUYQKEbxg.png" alt="image"></p>
+<p>服务端先接收到了Alice的改动，进行了处理，然后发送一个确认信息给Alice，并且通知Bob。Bob使用了转换函数，他本地改动的索引变成了11。</p>
+<p>接下来就到了重要时刻了。服务端开始处理Bob的改动，但是因为Bob的最新同步版本id已经被废弃了（2已经使用过了，实际上应该用3），服务端将这个改动根据所有Bob还不知道的改动做了转换，然后将最新同步版本改为了3。<br><img src="https://miro.medium.com/max/1400/1*LcyVuX-wGLH_o3Q3XFi3bA.jpeg" alt="image"></p>
+<p>现在Alice的同步处理就完成了，Bob仍然需要接收服务端转换后的改动，然后发送确认信息。</p>
+<h3 id="Etherpad"><a href="#Etherpad" class="headerlink" title="Etherpad"></a>Etherpad</h3><p>我们来瞧瞧另外一个协同编辑应用，它也使用了OT技术 — <a href="http://etherpad.org" target="_blank" rel="noopener">http://etherpad.org</a></p>
+<p>Etherpad使用的转换函数略微不同 — 他讲改动作为一个集合发送到服务端，形式如下：</p>
+<script type="math/tex; mode=display">(p_1 -> p_2)[c_1, c_2, …],</script><p>其中：</p>
+<ul>
+<li>$p_1$ — 改动前的文本长度</li>
+<li>$p_2$ — 改动后的文本长度</li>
+<li>如果$c_i$是数字或者区间，那么它表示原文档中保留字符的索引，如果$c_i$是字符或者字符串，那么它表示插入</li>
+</ul>
+<p>比如：</p>
+<ul>
+<li>“” + (0 -&gt; 5)[“Hello”] = “Hello”</li>
+<li>“Hllo World” + (10 -&gt; 14)[0, ‘e’, 1–9, “!!!”] = “Hello World!!!”</li>
+</ul>
+<p>通过把这些改动集合按照时间顺序应用于一个空文档就能得到正确的文档。</p>
+<p>我们注意到服务端不能直接应用客户端的改动（虽然在谷歌文档中可能会这么做），因为文档的长度可能会不一致。比如，如果客户端A和B从同样的长度为n的文档X开始各自改动：</p>
+<p>A: (n -&gt; n_a)[…],<br>B: (n -&gt; n_b)[…]</p>
+<p>那么$B(A(X)$是不可行的，因为B要求文档的长度是n，在执行A后实际为n_a。为了解决这个问题Etherpad引入了所谓的合并函数，它让两个改动集合作用于同样状态的文档，计算出一个新的改动集合，它要求<br><img src="https://miro.medium.com/max/900/1*wA2dxxrvha6Nlgiy9GfY_A.png" alt="image"></p>
+<p>当客户端A接收到B的改动时，我们去计算m(A,B)就没什么意义了。因为m(A,B)适用的状态是X，而A现在的状态是A(X)。相反我们应该计算A’和B’，也就是<br><img src="https://miro.medium.com/max/1400/1*sC3JLMNUyiMwWXzbJK7EeA.png" alt="image"></p>
+<p>为了方便理解，我们定义函数$f$:<br><img src="https://miro.medium.com/max/1400/1*ZciC8AQVnABiIK_md6lgiA.png" alt="image"></p>
+<p>它根据以下算法构建（对于f(A,B)）：</p>
+<ul>
+<li>在A中的插入变成保留符号</li>
+<li>在B中的插入保持不变</li>
+<li>A和B都有的保留符号也保持不变</li>
+</ul>
+<p><strong>案例</strong><br><img src="https://miro.medium.com/max/1400/1*Fiq13Z01D-xG6h934LaPvQ.png" alt="image"></p>
+<p>那么<br><img src="https://miro.medium.com/max/1400/1*BFY8zJarSyvfJ2jk19g7kA.png" alt="image"></p>
+<p>现在尝试去计算m(A,B)(X)的最终状态。（“besiow”）</p>
+<h3 id="OT的缺点"><a href="#OT的缺点" class="headerlink" title="OT的缺点"></a>OT的缺点</h3><ul>
+<li>所有文档改动必须存储在一个操作集合中</li>
+<li>OT的实现是一个非常复杂的任务，应用字维基百科：<br>Joseph Gentle是前Google Wave的工程师，也是Share.JS library的作者，他这样写道，“OT这个功能做起来太操蛋了！”。现在有上百万个算法，衡量标准不一，大多数还局限于学术文章。这些算法都很晦涩，想要正确执行非常耗时。[…]Google Wave花了2年的时间来写，如果我们今天想要重写一遍，耗费的时间估计也不会比第一次少到哪儿去。</li>
+</ul>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="https://medium.com/coinmonks/operational-transformations-as-an-algorithm-for-automatic-conflict-resolution-3bf8920ea447" target="_blank" rel="noopener">https://medium.com/coinmonks/operational-transformations-as-an-algorithm-for-automatic-conflict-resolution-3bf8920ea447</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/07/18/John Watrous -- NP、多项式时间的映射约化和NP完全问题/" rel="next" title="John Watrous 《Introduction to the Theory of Computing》20 -- NP、多项式时间的映射约化和NP-完全性">
+                <i class="fa fa-chevron-left"></i> John Watrous 《Introduction to the Theory of Computing》20 -- NP、多项式时间的映射约化和NP-完全性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-number">2.1.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#谷歌文档早期版本"><span class="nav-number">2.1.1.</span> <span class="nav-text">谷歌文档早期版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#谷歌文档当前版本"><span class="nav-number">2.1.2.</span> <span class="nav-text">谷歌文档当前版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#举例"><span class="nav-number">2.1.3.</span> <span class="nav-text">举例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作转换"><span class="nav-number">2.2.</span> <span class="nav-text">操作转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一致性模型"><span class="nav-number">2.2.1.</span> <span class="nav-text">一致性模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OT的设计"><span class="nav-number">2.2.2.</span> <span class="nav-text">OT的设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转换函数"><span class="nav-number">2.2.3.</span> <span class="nav-text">转换函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#谷歌文档的合作协议"><span class="nav-number">2.3.</span> <span class="nav-text">谷歌文档的合作协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Etherpad"><span class="nav-number">2.4.</span> <span class="nav-text">Etherpad</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OT的缺点"><span class="nav-number">2.5.</span> <span class="nav-text">OT的缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2021/08/29/Operational Transformation - 自动解决冲突算法/';
+          this.page.identifier = '2021/08/29/Operational Transformation - 自动解决冲突算法/';
+          this.page.title = 'Operational Transformation - 自动解决冲突算法';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
