@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言我原本打算翻译一篇跟CRDT相关的文章，但是奈何找到博客都讲得过于精简，而关于CRDT的论文有把我看得一头雾水。那只能先从基础的理论开始了，以后看能不能把这些资料汇总一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Order Theory - 序理论介绍">
+<meta property="og:url" content="http://yoursite.com/2021/09/12/Order Theory - 序理论介绍/index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言我原本打算翻译一篇跟CRDT相关的文章，但是奈何找到博客都讲得过于精简，而关于CRDT的论文有把我看得一头雾水。那只能先从基础的理论开始了，以后看能不能把这些资料汇总一下。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2021-09-12T08:10:17.983Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Order Theory - 序理论介绍">
+<meta name="twitter:description" content="前言我原本打算翻译一篇跟CRDT相关的文章，但是奈何找到博客都讲得过于精简，而关于CRDT的论文有把我看得一头雾水。那只能先从基础的理论开始了，以后看能不能把这些资料汇总一下。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/09/12/Order Theory - 序理论介绍/"/>
+
+
+
+
+
+  <title>Order Theory - 序理论介绍 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/09/12/Order Theory - 序理论介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Order Theory - 序理论介绍</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-09-12T16:10:17+08:00">
+                2021-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/09/12/Order Theory - 序理论介绍/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/09/12/Order Theory - 序理论介绍/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/09/12/Order Theory - 序理论介绍/" class="leancloud_visitors" data-flag-title="Order Theory - 序理论介绍">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我原本打算翻译一篇跟CRDT相关的文章，但是奈何找到博客都讲得过于精简，而关于CRDT的论文有把我看得一头雾水。那只能先从基础的理论开始了，以后看能不能把这些资料汇总一下。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>在开始之前我们需要预热一下。首先，我们会回顾一些序理论（它是一个解决二进制关系的数学分支）的结论。徐理论中提供的一些结论是我们感兴趣的，因为有许多已发表的理论现在看来都包含了偏好关系某些形式或者其他，而且偏好关系只是二进制关系中一个特殊类型。</p>
+<h4 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h4><p>序理论的最小分析单元是二进制关系。一个非空集合$X$的二进制关系$R$是$X\times  X$的子集。换个说法就是一些有顺序的元素对组成的列表。如果${x,y}\in R$，那么$x$就和$y$有关系，相反如果${x,y}\notin R$，你妈$x$和$y$就没有关系。简便一些，如果${x,y}\in R$我们就写作$xRy$。（你应该注意到了，我们通常使用的是$\succeq$来表示二进制关系）</p>
+<p><strong>定义 1：</strong> 我们可以将任意二进制关系区分为对于元素对称和不对称的。我们定义前者如下</p>
+<script type="math/tex; mode=display">xUy\ \ iff\ \ xRy\ \ and\ \ yRx</script><p>以及后者如下</p>
+<script type="math/tex; mode=display">xPy\ \ iff\ \ xRy\ \ but\ \ not\ \ yRx</script><p>（ps：iff表示当且仅当）记住$R=P\cup U$。（还有我们可以单独使用$\sim$和$\succ$表示$\succeq$的对称和不对称部分）</p>
+<p>这里有一些二进制关系可能有的属性。</p>
+<p><strong>定义 2：</strong> 以下是二进制关系可能有的属性：</p>
+<ul>
+<li>Reflexivity（自反性）：$xRx \forall  x\in X$</li>
+<li>Symmetry（对称性）：$xRy implies yRx$</li>
+<li>Antisymmetric（反对称性）：$if xRy then not yRx$</li>
+<li>Asymmetric（非对称性）：$xRyRx implies that x=y$</li>
+<li>Transitive（传递性）：$xRyRz implies xRy$</li>
+<li>Complete（完全性）：$xRy or yRx$</li>
+<li>Acyclic（无环性）：$x_1Rx_2R…Rx_n implies that x_1\neq x_n$</li>
+</ul>
+<p>我们可以用这些属性来定义偏好关系类。</p>
+<p><strong>定义 3：</strong> 下面是一些偏好关系类：</p>
+<ul>
+<li>如果$R$具有自反性、对称性和传递性，那么它是一个<strong>等价关系（equivalence relation）</strong></li>
+<li>如果$R$具有自反性和传递性，那么它是一个<strong>预序关系（preorder）</strong></li>
+<li>如果$R$具有自反性、传递性和反对称性，那么它是一个<strong>偏序关系（partial order）</strong></li>
+<li>如果一个偏序关系具有完全性，那么它是一个<strong>线序关系（linear order）</strong></li>
+</ul>
+<p>注意预序和偏序有差异。前者不允许反对称性，而后者允许。</p>
+<p>我们称一个集合和一个陪伴的二进制关系$(X,R)$为<strong>偏序集合（poset）</strong>仅当$R$是一个偏序关系，为<strong>线序集合（loset）</strong>仅当$R$是一个线序关系。</p>
+<p>一个等价关系允许我们定义等价类的概念。一个元素$x$的等价类包含了所有$x$有关的元素。这样如果$\sim$是集合$X$的一个等价关系，我们定义$x\in X$的等价类如下</p>
+<script type="math/tex; mode=display">[x]_{\sim}=\{y\in X\mid x\sim y\}</script><p>我们也可以定义$X$关于$\sim$的商集（quotient set）。这是一个等价类集合的集合。</p>
+<p><strong>定义 4：</strong> 对于集合使用等价关系$\sim$会生成一个商集，定义如下</p>
+<script type="math/tex; mode=display">X\backslash_{\sim}=\{[x]_{\sim}\ x\in X\}</script><p>对于任意二进制关系，我们可以定义最大元素和上界（upper bound）的概念：</p>
+<p><strong>定义 5：</strong>已知$\succeq$是集合$X$的一个二进制关系：集合$X$根据$\succeq$的最大元素的定义是</p>
+<script type="math/tex; mode=display">Max(X,\succeq)=\{x\in X\mid y\succ x\ \ for\ no\ y\in X\}</script><p>而上界的定义是</p>
+<script type="math/tex; mode=display">M(X,\succeq)=\{x\in X\mid x\succeq y\ \ \forall\ \ y\in X\}</script><p>你可能会直观地把上界和最大元素想成是等价的，但是普遍情况下对于任意二进制关系，这不是一回事。</p>
+<h4 id="传递闭包和传递扩展"><a href="#传递闭包和传递扩展" class="headerlink" title="传递闭包和传递扩展"></a>传递闭包和传递扩展</h4><p>有个我们感性兴趣的问题是，我们观察到的二进制关系，是否能被看作是某些完全预序的不完全视角（我把glimpse翻译为了“视角”，也不知道对不对，暂时先这样）。为了回答这个问题，我们需要介绍传递闭包和扩展的概念。</p>
+<p><strong>定义 6：</strong> 一个二进制关系$R$的<strong>传递闭包</strong>也是一个二进制关系$T(R)$，而且是包含$R$的最小传递关系。（举例：$T(R)$是传递的，就意义上而言它包含了$R$，$xRy$蕴含了$xT(R)y$，并且任意更小（从子集层面上）的二进制关系都是不传递或者不包含$R$）</p>
+<p>传递闭包对于我们的将要了解的东西很有帮助，所以值得描述一下他们的属性。</p>
+<p><strong>备注 1：</strong> 任意集合$X$的每个二进制关系$R$都有一个传递闭包。</p>
+<p><strong>证明 .</strong> 这里我们注意到总是存在一个包含$R$的传递二进制关系：$xTy$中$x,y\in X$。此外，任意传递关系集合的交集本身就是传递的。这样所有包含$R$的传递关系的交集总是存在的，而且是包含了$R$的最小传递闭包关系。$\blacksquare$</p>
+<p><strong>备注 2：</strong> 我们可以交替定义二进制关系$R$的传递闭包如下：</p>
+<ol>
+<li>定义$R_0=R$</li>
+<li>如果存在$z_1,z_2,…,z_m\in X$使得$xRz_1R…Rz_mRy$，定义$R_m$简化表达式为$xR_my$</li>
+<li>$T=R\cup_{i\in\mathbb{N}}R_i$</li>
+</ol>
+<p><strong>证明 .</strong> 我们需要谈三个点 — $R$包含于$T$，$T$是传递的，任意包含$R$的传递集合也包含了$T$。第一点很好理解。第二点来看实际情况，如果$xTyTz$，那么$xR_myR_nz$，其中$m,n\in\mathbb{N}$。这样存在$xR_pz$，其中$p\leq m+n$，所以就有$xTz$。最后已知$G$是一个包含$R$的传递集合。我们需要证明这个集合也包含了$T$。同样的我们也需要证明对于每个$i$它都包含了$R_i$。我们可以归纳证明这一点。很明显$G$包含了$R_0$，也就是$R$。现在假设它包含了$R_n$，这是某个$x$和$y$的关系，对于某些关系</p>
+<script type="math/tex; mode=display">xR_{z_1}R...R_{z_n}R_{z_{n+1}}Ry</script><p>的$z_1,…z_{n+1}$。根据归纳假设，我们已知$xGz_{n+1}$和$z_{n+1}Gy$。这样根据$G$的传递性得出$xGy$，所以由此可见$G$包含了$T$，证毕。$\blacksquare$</p>
+<p><strong>定义 7：</strong> 已知$\succeq$是集合$X$的一个预序关系。一个$\succeq$的<strong>传递扩展</strong>也是一个预序关系使得</p>
+<script type="math/tex; mode=display">\succeq\ \subset\ \unrhd</script><script type="math/tex; mode=display">\succ\ \subset\ \rhd</script><p>换句话说，一个预序关系$\succeq$的扩展是另外一个预序关系，从某种程度上它“认同”关系$\succeq$，也就是$x\succeq y$包含于$x\unrhd y$，但是$x\succ y$意味着一定不会存在$y\unrhd x$。</p>
+<p>我们特别感兴趣的是预序$\succeq$的完全传递扩展，也就是$succeq$的传递扩展，而且具有完整性。序理论的一个基本结论是，每个偏序都能扩展成一个线序。对于任意集合$X$的一个预序，不管它的基数如何，这个结论也成立。</p>
+<p><strong>定理 1（Sziplrajn）：</strong> 对于任意非空集合$X$和偏序关系$\succ$，一定存在一个线序（拓扑排序），而且它是$\succ$的一个传递扩展。</p>
+<blockquote>
+<p>此处我有一个疑问，这个定理为真就意味着，集合X中任意两个元素都直接或者间接存在关系。比如集合X={A,B,C,D,E}中的元素表示城市，定义一个偏序关系≥是“两个城市之间存在直达的道路”，(A,B)表示城市A和B之间存在直达的道路。假设存在关系(A,B)、(B,C)、(D,E)，现在将≥传递扩展成≥1 — “通过最多两条路可以到达的城市”，得到新的元素关系(A,B)1、(B,C)1、(A,C)1、(D,E)1。但是不管我们将通过的道路数量扩展为多少条，{A,B,C}和{D,E}中的元素就是完全没有关系（直接或者间接）。所以不管怎么做传递扩展都不能得到一个关系≥n使得(X,≥n)具有完全性。</p>
+<p>这里应该是我对“传递扩展”或者“偏序集”存在什么误解，希望以后能解开我这里的疑惑。</p>
+</blockquote>
+<p>这里$X$是有限的，Sziplrajn的定理很容易证明。然而如果$X$是任意集合，那就需要在一些公理的形式下进行更多数学运算。稍后我们会讨论证明，但是在此之前，值得注意一下这个定义本身的含义，明确一点同样的结论用在预序上也没问题。</p>
+<p><strong>协理 1：</strong> 对于任意非空集合$X$和预序$\succeq^{*}$，一定存在一个完全预序，并且它是$\succeq^{*}$的一个传递扩展。</p>
+<p><strong>证明 .</strong> 已知$\sim$是$\succeq^{*}$的对称部分。$\sim$是一个等价关系。我们可以使用$\succeq^{*}$来生成一个商集$X\backslash_{\sim}$偏好关系$\unrhd^{*}$，方式如下：</p>
+<script type="math/tex; mode=display">[x]_{\sim}\ \unrhd^{*}\ [y]_{\sim}\ if\ and\ only\ if\ x\succeq^{*} y</script><p>很明显$\unrhd^{*}$是一个商集$X\backslash_{\sim}$的一个偏序关系。这样，根据Sziplrajn的理论，一定存在一个基于$X\backslash_{\sim}$的线性关系$\unrhd$，它是$\unrhd^{*}$的传递扩展。定义$X$的偏好关系$\succeq$如下</p>
+<script type="math/tex; mode=display">x\succeq y\ if\ and\ only\ if\ [x]_{\sim}\unrhd [y]_{\sim}</script><p>仔细思考一下你会发现$\succeq$就是由$\succeq^{*}$传递扩展得到的一个完全预序。</p>
+<p>另外一个对于这个结论的灵活概括是不仅仅只有预序可以传递扩展成完全预序。事实上，一个充分（以及必要）条件是一个非循环性质的变体，我称之为弱循环性质（OWC - only weak cycle）</p>
+<p><strong>定义 8：</strong> 已知$\succeq$s是一个非空集合$X$的关系，$\succ$是$\succeq$和$T(\succeq)$的非对称部分。我们说$\succeq$满足弱循环性质仅当</p>
+<script type="math/tex; mode=display">xT(\succeq)y\ implies\ not\ y\succ x</script><p>正如其名，OWC条件是一个比非循环性质更弱的条件 — 它允许环的存在，但是仅限于$\succeq$的对称部分。还要注意，这个条件与显示性偏好的广义公理（Generlized Axiom of Revealed Preference）密切相关。</p>
+<p><strong>命题 1：</strong> 已知$\succeq$是任意一个非空集合$X$的二进制关系。那么$\succeq$能被传递扩展成一个完全预序当且仅当它满足OWC</p>
+<p><strong>证明（OWC意味着完全预序传递扩展的存在） .</strong> 已知$T(\succeq)$是$\succeq$的传递闭包，而且在$X$上有自反关系。如果$\succeq$满足$OWC$，那么$T(\succeq)$就是一个$\succeq$的传递扩展。这个结论来自于OWC条件，因为如果$y\succ x$，不可能存在关系$T(\succeq)y$。此外$T(\succeq)$是一个预序，因为它具有传递性的自反性。这样根据协理1，一定存在一个$T(\succeq)$的传递扩展是完全预序，那么$\succeq$也不例外，证毕。$\blacksquare$</p>
+<p><strong>证明（完全预序传递扩展的存在意味着OWC）.</strong> 假设$\succeq$违反了OWC，那么一定存在一个$x$和$y$使得</p>
+<script type="math/tex; mode=display">xT(\succeq)y\ and\ y\succ x</script><p>在任何$\succeq$的传递扩展$R$中，不可能存在$xRy$但$R$不具备传递性。</p>
+<h4 id="选择公理（The-Axiom-of-Choice）"><a href="#选择公理（The-Axiom-of-Choice）" class="headerlink" title="选择公理（The Axiom of Choice）"></a>选择公理（The Axiom of Choice）</h4><p>为了证明Sziplrajn的定理，我们将会用到选择公理。我们只是简单使用一些高级的吉和理论，并不会具体讲清楚。但是因为这些结论在决策理论中被反复提及，值得我们在这里快速的概括一下他们。</p>
+<p>选择公理让人觉得困惑，但是它的概念是这样的： 已知$\mathcal{A}$是一个任意非空集合的集合。我们想知道的是：在什么情况下我们可以构造一个函数，他能从每个元素集合中选出一个元素。换句话说，在什么情况下我们能构造一个函数</p>
+<script type="math/tex; mode=display">\begin{align}f:\mathcal{A}\rightarrow\cup\mathcal{A} \\ such\ that\ f(a)\in A\forall A\in\mathcal{A}\end{align}</script><p>换个说法，如果我们面前有一堆箱子，在什么情况下我们能确保我们能找到一种方式从每个箱子中选中一个物品。</p>
+<p>从字面上看，我们总是能做到这个要求。在很多情况下，很容易证明这是事实。比如：</p>
+<ul>
+<li>如果$\mathcal{A}$由一些自然数集合组成，那么我们能构造这样一个函数：我们定义一个函数来获取每个集合中的最小数字。</li>
+<li>如果$\mathcal{A}$是实线上的间距，那么我们能构造这样一个函数：我们定义一个函数来获取线段的中点。</li>
+<li>如果$\mathcal{A}$是无限的，那也许我们不能构造这样一个函数（如果我们不知道集合中是什么东西），但是我们知道一个现有的。让我们枚举这些集合$A_1,…A_n$。事实上$A_1\in\mathcal{A}$是非空意味着存在某个元素$a_1\in A_1$。这样我们让$f(A_1)=a_1$。根据归纳法我们可以将这个原理扩展到任意包含$n$个集合的集合。</li>
+</ul>
+<p>问题来了如果我们的集合$\mathcal{A}$同时包含了一个有限的数字集合和其他我们不知道性质的集合。所以如果$\mathcal{A}$是实线的所有子集。这里我们不能构造一条明确的规则（你可以尝试，但是你找不到一条适用于实线的任意子集的规则），而且我们不能使用归纳法来证明存在这样一条规则，所以我们怎么知道这些规则的存在呢？</p>
+<p>答案是否定的：这表明标准数学公理（(the ZermeloFraenkel-Skolem axioms）不能保证任意非空集合的集合有一条这样的规则存在。然而，同样的情况是，这种规则的存在与其他公理一致。因此，这种规则的存在独立于数学的其他部分：我们可以有一个一致的数学系统，在其中假定这个规则总是存在，或者假设它不存在。换句话说，我们可以选择是否接受<strong>选择公理</strong>。</p>
+<p><strong>定义 9（选择公理）：</strong> 已知$\mathcal{A}$是一个任意的非空集合的集合。那么一定存在一个函数</p>
+<script type="math/tex; mode=display">\begin{align}f:\mathcal{A}\rightarrow\cup\mathcal{A} \\ such\ that\ f(a)\in A\forall A\in\mathcal{A}\end{align}</script><p>现如今的大多数学家选择相信选择功能，部分原因是它看起来如此直观。虽然你需要小心 — 选择公理可能会有一些非预期的后果。其中一个（the Banach-Tarski paradox）是，如果我们接受选择公理，那么一个三维空间中的固体球能被分解成有限数量的不重叠碎片，他们又能通过不能的方式组合生成两个原始球的两个相同副本。重组的过程包括移动和旋转碎片，不改变其形状。</p>
+<p>忽略这个有点糟糕的结论，接下来我们将会试用选择公理。因为它非常好用。比如下面例子都是真的当且仅当选择公理成立：</p>
+<ol>
+<li>任意数量的非空集合的笛卡尔积都是定义明确的。</li>
+<li>(Zornís Lemma)如果一个已知偏序集的每个线序集都有一个上界，那么这个线序最多只有一个极大元。</li>
+<li>(The Hausdor§ Maximum principle) 每个偏序集存在一个$\supseteq$-最大的线序集。（存在一个线序集$\{X,\succeq\}$使得没有其他的线序集$\{Y,\succeq\}$可以让$Y\supset X$）</li>
+</ol>
+<p>我们可以用这些来证明Sziplrajn的定理（切记，事实上这个定理并不等价于选择公理）</p>
+<p><strong>(Sziplrajn的定理).</strong> 已知$\succeq$是一个非空集合的偏序。让$T_X$作为所有$\succeq$传递扩展的偏序关系集合。很明显$\{T_X,\supseteq\}$是一个偏序集合，所以根据the Hausforff maximum principle，一定有一个最大的线序集$\{A,\supseteq\}$。定义$\succeq^{*}=\cup A$（所有$A$中二进制关系的并集）。因为$A$是一个线序集（所以所有$A$中的元素都能用子集关系来排序），那么$\succeq^{*}$是一个$\succeq$传递扩展得到的偏序。此外，$\succeq^{*}$具有完全性。为了证明这一点，我们假设不是这样，那么选取某个$x,y$使得既非$x\succeq^{*}$也非$y\succeq^{*}$。那么，如果我们求$\succeq^{*}\cup\{x,y\}$的传递闭包，可以得到一个$T_X$的元素，它包含$\succeq^{*}$作为子集。但这与事实$\{A,\supseteq\}$是$\{T_X,\supseteq\}$中的最大线序集相矛盾。$\blacksquare$</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="http://www.columbia.edu/~md3405/DT_Order_15.pdf" target="_blank" rel="noopener">http://www.columbia.edu/~md3405/DT_Order_15.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/08/29/Operational Transformation - 自动解决冲突算法/" rel="next" title="Operational Transformation - 自动解决冲突算法">
+                <i class="fa fa-chevron-left"></i> Operational Transformation - 自动解决冲突算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#介绍"><span class="nav-number">2.0.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基础"><span class="nav-number">2.0.2.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#传递闭包和传递扩展"><span class="nav-number">2.0.3.</span> <span class="nav-text">传递闭包和传递扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选择公理（The-Axiom-of-Choice）"><span class="nav-number">2.0.4.</span> <span class="nav-text">选择公理（The Axiom of Choice）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2021/09/12/Order Theory - 序理论介绍/';
+          this.page.identifier = '2021/09/12/Order Theory - 序理论介绍/';
+          this.page.title = 'Order Theory - 序理论介绍';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
