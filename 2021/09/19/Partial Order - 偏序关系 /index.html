@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言上一篇关于序理论的文章对于偏序关系的介绍不多，于是这一篇我准备重点整理偏序关系的相关知识，内容摘抄自南京大学的课件。这一篇的重点是引出join-semilattice概念，它是CRDT数据结构的核心。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Partial Order - 偏序关系">
+<meta property="og:url" content="http://yoursite.com/2021/09/19/Partial Order - 偏序关系 /index.html">
+<meta property="og:site_name" content="CYberseERker">
+<meta property="og:description" content="前言上一篇关于序理论的文章对于偏序关系的介绍不多，于是这一篇我准备重点整理偏序关系的相关知识，内容摘抄自南京大学的课件。这一篇的重点是引出join-semilattice概念，它是CRDT数据结构的核心。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi4.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi6.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi9.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi10.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi11.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi12.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi13.png">
+<meta property="og:updated_time" content="2021-09-19T11:54:26.727Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Partial Order - 偏序关系">
+<meta name="twitter:description" content="前言上一篇关于序理论的文章对于偏序关系的介绍不多，于是这一篇我准备重点整理偏序关系的相关知识，内容摘抄自南京大学的课件。这一篇的重点是引出join-semilattice概念，它是CRDT数据结构的核心。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/09/19/Partial Order - 偏序关系 /"/>
+
+
+
+
+
+  <title>Partial Order - 偏序关系 | CYberseERker</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?41fc030db57d5570dd22f78997dc4a7e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CYberseERker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/09/19/Partial Order - 偏序关系 /">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Cai Yuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CYberseERker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Partial Order - 偏序关系</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-09-19T19:54:26+08:00">
+                2021-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/09/19/Partial Order - 偏序关系 /#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2021/09/19/Partial Order - 偏序关系 /" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/09/19/Partial Order - 偏序关系 /" class="leancloud_visitors" data-flag-title="Partial Order - 偏序关系">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>上一篇关于序理论的文章对于偏序关系的介绍不多，于是这一篇我准备重点整理偏序关系的相关知识，内容摘抄自南京大学的课件。这一篇的重点是引出join-semilattice概念，它是CRDT数据结构的核心。<br><a id="more"></a></p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><h3 id="偏序和全序"><a href="#偏序和全序" class="headerlink" title="偏序和全序"></a>偏序和全序</h3><p><strong>偏序的定义：</strong> 集合上的满足自反性、反对称性、传递性的关系，通常记作$\preceq$。</p>
+<p>定义了偏序关系的集合成为偏序集，记作$(A,\preceq)$。</p>
+<p><strong>举例：</strong></p>
+<p>集合包含关系$(2^A,\subseteq)$（$2^A$应该表示$A$的所有子集组成的集合），其中$A$是集合。</p>
+<p>$(Z^+,\mid)$，$Z^+$是正整数集，$\mid$是整除关系。</p>
+<p><strong>既是偏序又是等价的关系：</strong></p>
+<p>任意非空集合$A$上的恒等关系$I_A$</p>
+<p><strong>“字典顺序”</strong></p>
+<p>设$\preceq$是非空集合$A$上的偏序关系，定义$A\times A$上的关系$R$如下：(iff = 当且仅当)</p>
+<script type="math/tex; mode=display">(x_1,y_1)R(x_2,y_2)\ iff\ x_1\neq x_2\ and\ x_1\preceq x_2,\ or\ x_1=x_2\ and\ y_1\preceq y_2</script><p>易证$R$是$A\times A$上的偏序关系</p>
+<p>给定有限字符集合$\Sigma$，若在$\Sigma$上有一个偏序关系，类似上述办法，可以对任意正整数$k$，定义$\Sigma^k$（有$\Sigma$中字符构成的长度为$k$的字符串的集合）上的偏序关系。加以适当的技术处理，则容易定义$\Sigma^+$（有$\Sigma$中字符构成的长度为任意正整数的字符串的集合）上的偏序关系：字典关系。</p>
+<p>注意：在通常的字典关系中，任何两个元素均可比。</p>
+<p><strong>全序：一种特殊的偏序关系</strong></p>
+<p>如果对$a,b\in A$，$a\preceq b$和$b\preceq a$中有一个成立，则$a,b$科比。</p>
+<p>设$R$是$A$上的偏序关系，如果$A$中的任意两个元素是可比的，则称$R$是$A$上的<strong>全序关系（或线序关系）</strong>。</p>
+<p><strong>举例：</strong></p>
+<p>实数集上的“不大于”关系$\leq$、基于拉丁字母表的字典顺序。</p>
+<p><strong>偏序集上的“小于”关系及覆盖</strong></p>
+<p>设$(A,\preceq)$是偏序集，$A$上的“小于”关系$\prec$定义如下：</p>
+<script type="math/tex; mode=display">x\prec y\ iff\ x\preceq y\ \wedge\ x\neq y</script><p>元素$y$<strong>覆盖</strong>$x$定义如下：</p>
+<script type="math/tex; mode=display">x\prec y, 且不存在z\in A使得x\prec z\prec y</script><h3 id="哈斯图"><a href="#哈斯图" class="headerlink" title="哈斯图"></a>哈斯图</h3><p>一般的关系图可以表示偏序关系</p>
+<p><strong>哈斯图（Hasse）：</strong> 利用特定的性质简化图示方法</p>
+<ul>
+<li>利用自反性省略圈</li>
+<li>利用反对称性省略箭头</li>
+<li>利用传递性省略部分连线（覆盖）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi1.png" alt="image"></p>
+<p>ρ({a,b,c})上的包含关系</p>
+<p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi2.png" alt="image"></p>
+<p>{1,2,…,12}上的整除关系</p>
+<p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi3.png" alt="image"></p>
+<p>{1,2,3,4,6,8,12,24}上的整除关系</p>
+<p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi4.png" alt="image"></p>
+<h3 id="偏序集的特殊元素"><a href="#偏序集的特殊元素" class="headerlink" title="偏序集的特殊元素"></a>偏序集的特殊元素</h3><h4 id="极大-小-元"><a href="#极大-小-元" class="headerlink" title="极大(小)元"></a>极大(小)元</h4><p>$x$是偏序集$(A,\preceq)$中极大元，当且仅当对于任意$y\in A$，如果$x\preceq y$，则$x=y$。</p>
+<p>$x$是偏序集$(A,\preceq)$中极小元，当且仅当对于任意$y\in A$，如果$y\preceq x$，则$x=y$。</p>
+<p><strong>讨论：</strong></p>
+<ul>
+<li>不一定存在，但是有穷集合一定有极大(小)元</li>
+<li>不一定唯一</li>
+<li>一个元素可能兼当极大(小)元</li>
+</ul>
+<h4 id="最大-小-元"><a href="#最大-小-元" class="headerlink" title="最大(小)元"></a>最大(小)元</h4><p>$x$是偏序集$(A,\preceq)$中最大元，当且仅当对于任意$y\in A$，都有$y\preceq x$。</p>
+<p>$x$是偏序集$(A,\preceq)$中最小元，当且仅当对于任意$y\in A$，都有$x\preceq y$。</p>
+<p><strong>讨论：</strong></p>
+<ul>
+<li>可能不存在</li>
+<li>若存在，必唯一</li>
+</ul>
+<h4 id="上-下-确界"><a href="#上-下-确界" class="headerlink" title="上(下)确界"></a>上(下)确界</h4><p><strong>上界：</strong>对于偏序集$(A,\preceq)$和$A$的子集$B$，若存在$y\in A$，对于$B$中任意元素$x$，均有$x\preceq y$，则$y$是$B$的上界。</p>
+<p><strong>最小上界：</strong>如果$B$的上界构成的偏序集有最小元，则该最小元为$B$的最小上界（lub），也称上确界。</p>
+<p>类似地可以定义下界、最大下界，也称下确界。</p>
+<p><strong>讨论：</strong></p>
+<ul>
+<li>不一定存在</li>
+<li>最小上界若存在，则必唯一</li>
+</ul>
+<h4 id="从哈斯图来看特殊元素"><a href="#从哈斯图来看特殊元素" class="headerlink" title="从哈斯图来看特殊元素"></a>从哈斯图来看特殊元素</h4><p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi5.png" alt="image"></p>
+<h4 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h4><p>有向无环图<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi6.png" alt="image"></p>
+<p>构造一种线性排序<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi7.png" alt="image"></p>
+<h3 id="良序"><a href="#良序" class="headerlink" title="良序"></a>良序</h3><p><strong>定义：</strong>给定集合$A$上的偏序$\preceq$，若$A$的任一非空子集均存在最小元素，则该偏序为良序。</p>
+<p>良序必为全序，因为对任意$a,b\in A$，$\{a,b\}$必有最小元，则$a,b$一定可比。</p>
+<p>实际上，“反对称性+任一非空子集存在最小元”就能保证全序性质（偏序性质+任何两个元素均可比）。</p>
+<p><strong>讨论：</strong></p>
+<ul>
+<li>全序是否一定是良序？<br>当$A$是无穷结合时，全序不一定是良序。比如$(R,\leq)$，在开区间上没有最小元素。</li>
+<li>良序$\rightarrow$全序$\rightarrow$偏序</li>
+<li>偏序/全序/良序的逆关系是否仍为偏序/全序/良序？<br>良序的逆关系不一定是良序，比如$(N,\leq)$。</li>
+</ul>
+<h3 id="链与反链"><a href="#链与反链" class="headerlink" title="链与反链"></a>链与反链</h3><p><strong>定义：</strong>设$C$是偏序集$(P,\preceq)$的一个子集，如果$C$中任何两个元素均可比，则$C$构成一个链；如果$C$中任何两个元素均不可比，则$C$构成一个反链。</p>
+<p><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi8.png" alt="image"></p>
+<h4 id="Dilworth定理"><a href="#Dilworth定理" class="headerlink" title="Dilworth定理"></a>Dilworth定理</h4><p><strong>链覆盖</strong>是$(P,\preceq)$中一组互不相交的链，他们一起包含了$P$中的所有元素。</p>
+<p><strong>Dilworth定理（1950）：</strong>在任意有限偏序集$(P,\preceq)$中，覆盖$P$的最小链数等于$P$中最长反链的长度（元素个数）。</p>
+<p>注：覆盖$P$的链数$\geq P$中任一反链的元素个数。<br>等价结论：有限偏序集汇总存在一个链覆盖和一个反链，他们大小相等。</p>
+<p><strong>Dilworth定理的归纳证明：</strong>按照$P$中元素个数($\mid P\mid=1,2…$)进行归纳证明。设$a$是$P$中一个极大元素，$P’=P-\{a\}$。<br>设$(P’,\preceq)$有一个大小为$k$的反链$\{a_1,a_2,…,a_k\}$，并有一个规模为$k$的链覆盖$\{C_1,C_2,…,C_k\}$。<br>对任意$C_i$，$P’$中大小为$k$的任一反链均有唯一的元素属于$C_i$，这些元素有一个最大元，记为$x_i$。<br>$A=\{x_1,x_2,…,x_k\}$必是反链。否则，不妨假设$A$中有两个元素$x_i\preceq x_j$。根据$x_j$的定义，$P’$中必有一个大小为$k$的反链$A_j$，$x_j$是$A_j$和$C_j$的公共元素，假设$y$是$A_j$和$C_i$的公共元素，则$y\preceq x_i$。从而$y\preceq x_j$。这与$A_j$是反链矛盾。<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi9.png" alt="image"><br>如果$\{a,x_1,x_2,…,x_k\}$是$P$中的反链，而$P$的链覆盖$\{\{a\},C_1,C_2,…,C_k\}$就是规模为$k+1$的覆盖，得证。<br>如果$\{a,x_1,x_2,…,x_k\}$不是$P$中的反链，即：存在某个$x_m$使得$x_m\preceq a$。（$a$是极大元，不会出现$a\preceq x_m$）<br>令$K=\{a\}\cup\{z\in C_m\mid z\preceq x_m\}$。显然$K$是$P$中的一条链。$P-K$中最大的反链大小为$k-1$（根据$x_m$的定义，$P-K$中没有含$k$个元素的反链）。有归纳假设，$P-K$有大小为$k-1$的一个链覆盖，改链覆盖与$K$构成$P$的链覆盖（链数为k），已知$\{x_1,x_2,…,x_k\}$是$P$中的反链（含$k$个元素），得证。</p>
+<p><strong>命题：</strong>自然数$1,2,3,…,n^2+1$的任何一种排列，必然含有一个长度不小于$n+1$的严格递增链或严格递减链。</p>
+<p><strong>证明：</strong>给定$1,2,…,n^2+1(=m)$的一种排列$v_1v_2…v_m$，定义集合：</p>
+<script type="math/tex; mode=display">A=\{(i,v_i)\mid i=1,2,...,n^2+1\}</script><p>建立两个偏序关系$R_1$和$R_2$：</p>
+<p>$(i,v_i)R_1(j,v_j)$当且仅当$i&lt;j$并且$v_i&lt;v_j$，或者$(i,v_i)=(j,v_j)$</p>
+<p>$(i,v_i)R_2(j,v_j)$当且仅当$i<j$并且$v_i>v_j$，或者$(i,v_i)=(j,v_j)$</j$并且$v_i></p>
+<p>$R_1\cap R_2=I_A, R_1\cup R_2=A\times A$。$R_1$的链是$R_2$的反链。</p>
+<p>问题：一定存在$A$的一个至少包含$n+1$个元素的子集，它是$R_1$的链或者$R_2$的反链。</p>
+<p>若$R_1$链的长度均$\leq n$，即$R_2$反链的大小均$\leq n$，则存在$k\leq n$的$R_2$覆盖，有长度超过$n$的$R_2$链，否则元素个数$\leq n^2$。如此则会产生矛盾。</p>
+<h3 id="格-lattice"><a href="#格-lattice" class="headerlink" title="格(lattice)"></a>格(lattice)</h3><p><strong>定义：</strong>设$(S,\preceq)$是偏序集，任意$x,y\in S$存在最小上界$lub\{x,y\}$(least upper bound)，记为$x\vee y$。任意$x,y\in S$存在$\{x,y\}$的最大下界$glb\{x,y\}$，记为$x\wedge y$。则称$S$关于$\preceq$构成<strong>格</strong>。</p>
+<p><strong>举例：</strong></p>
+<ul>
+<li>$(\rho(B),\subseteq)$。$x\wedge y = x\cap y$，$x\vee y=x\cup y$。</li>
+<li>$(\{x\in N^+\mid x|60\},\mid)$，60的正因子集合及整除关系。$x\wedge y=gcd(x,y)$，$x\vee y=lcm(x,y)$。</li>
+<li>$(Z,\leq)$。$x\wedge y=min\{x,y\}$，$x\vee y=max\{x,y\}$。</li>
+</ul>
+<p><strong>格的示例图</strong><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi10.png" alt="image"><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi11.png" alt="image"></p>
+<p><strong>格与哈斯图</strong><br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi12.png" alt="image"><br>上图中右边两个哈斯图所表示的偏序集不是格<br><img src="https://raw.githubusercontent.com/Ebbbb/BlogResource/master/poi/poi13.png" alt="image"></p>
+<p><strong>格的基本关系式</strong><br>根据“最小上界”和“最大下界”的定义，有如下关系式：</p>
+<script type="math/tex; mode=display">a\preceq c, b\preceq c\Rightarrow a\vee b\preceq c</script><script type="math/tex; mode=display">c\preceq a, c\preceq b\Rightarrow c\preceq a\wedge b</script><p><strong>格的性质</strong><br>若$(S,\preceq)$是格，则任意$a,b\in S$满足：$a\preceq b\Leftrightarrow a\wedge b=a\Leftrightarrow a\vee b=b$。</p>
+<p>而且$(S,\wedge,\vee)$还符合一下规律：</p>
+<ul>
+<li>结合律：$(a\wedge b)\wedge c=a\wedge (b\wedge c)$，$(a\vee b)\vee c=a\vee (b\vee c)$。</li>
+<li>交换律：$a\wedge b=b\wedge a$，$a\vee b=b\vee a$。</li>
+<li>吸收律：$a\wedge (a\vee b)=a$，$a\vee (a\wedge b)=a$。</li>
+</ul>
+<h3 id="join-semilattice"><a href="#join-semilattice" class="headerlink" title="join-semilattice"></a>join-semilattice</h3><p>在数学上又把寻找最大下界的操作称为“meet”，把寻找最小上界的操作称为“join”。<br>join-semilattice的定义则是一个弱化版的lattice，它只要求任意两个元素存在最小上界，并不要求任意两个元素有最大下界。</p>
+<h2 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h2><p><a href="http://ws.nju.edu.cn/courses/dm/courseware/20150415-Partial_order.pdf" target="_blank" rel="noopener">http://ws.nju.edu.cn/courses/dm/courseware/20150415-Partial_order.pdf</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/09/12/Order Theory - 序理论介绍/" rel="next" title="Order Theory - 序理论介绍">
+                <i class="fa fa-chevron-left"></i> Order Theory - 序理论介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Cai Yuan</p>
+              <p class="site-description motion-element" itemprop="description">万物皆空 唯有音乐</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span class="nav-number">2.</span> <span class="nav-text">知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#偏序和全序"><span class="nav-number">2.1.</span> <span class="nav-text">偏序和全序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈斯图"><span class="nav-number">2.2.</span> <span class="nav-text">哈斯图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#偏序集的特殊元素"><span class="nav-number">2.3.</span> <span class="nav-text">偏序集的特殊元素</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#极大-小-元"><span class="nav-number">2.3.1.</span> <span class="nav-text">极大(小)元</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最大-小-元"><span class="nav-number">2.3.2.</span> <span class="nav-text">最大(小)元</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上-下-确界"><span class="nav-number">2.3.3.</span> <span class="nav-text">上(下)确界</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从哈斯图来看特殊元素"><span class="nav-number">2.3.4.</span> <span class="nav-text">从哈斯图来看特殊元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拓扑排序"><span class="nav-number">2.3.5.</span> <span class="nav-text">拓扑排序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#良序"><span class="nav-number">2.4.</span> <span class="nav-text">良序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链与反链"><span class="nav-number">2.5.</span> <span class="nav-text">链与反链</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dilworth定理"><span class="nav-number">2.5.1.</span> <span class="nav-text">Dilworth定理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格-lattice"><span class="nav-number">2.6.</span> <span class="nav-text">格(lattice)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#join-semilattice"><span class="nav-number">2.7.</span> <span class="nav-text">join-semilattice</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原文链接"><span class="nav-number">3.</span> <span class="nav-text">原文链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cai Yuan</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fredciy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2021/09/19/Partial Order - 偏序关系 /';
+          this.page.identifier = '2021/09/19/Partial Order - 偏序关系 /';
+          this.page.title = 'Partial Order - 偏序关系';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fredciy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("yX0i6AsnLyAEA10UvcFMbLBs-gzGzoHsz", "8BFW6cb4Ao0FOKHtdPvKKuN5");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
